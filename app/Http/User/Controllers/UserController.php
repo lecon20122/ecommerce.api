@@ -8,6 +8,7 @@ use Application\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Domain\User\Models\User;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -22,20 +23,23 @@ class UserController extends BaseController
      */
     public function login(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        try {
+            $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
-        }
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                throw ValidationException::withMessages([
+                    'email' => ['The provided credentials are incorrect.'],
+                ]);
+            }
+            return $this->ok(
+                [
+                    'user' => $user,
+                    'token' => $user->createToken($request->email, ['customer'])->plainTextToken,
+                ]
+            );
+        } catch (\Exception $exception) {
+            $this->sendError($exception->getMessage(), $exception->getCode());        }
 
-        return $this->Ok(
-            [
-                'user' => $user,
-                'token' => $user->createToken($request->email, ['customer'])->plainTextToken,
-            ]
-        );
     }
 
     /**
@@ -49,20 +53,19 @@ class UserController extends BaseController
             DB::beginTransaction();
             $user = User::create($request->validated());
             DB::commit();
-            return $this->Ok([
+            return $this->ok([
                 'user' => $user,
                 'token' => $user->createToken($request->email, ['customer'])->plainTextToken
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             DB::rollBack();
-            $this->sendError($e->getMessage(), $e->getCode());
-        }
+            $this->sendError($exception->getMessage(), $exception->getCode());        }
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @return JsonResponse
      */
     public function logout(Request $request)
@@ -72,40 +75,17 @@ class UserController extends BaseController
             $request->user()->currentAccessToken()->delete();
             DB::commit();
             return $this->sendSuccess('user logged out successfully');
-        }catch (\Exception $e){
+        } catch (\Exception $exception) {
             DB::rollBack();
-            $this->sendError($e->getMessage(), $e->getCode());
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+            $this->sendError($exception->getMessage(), $exception->getCode());        }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -116,7 +96,7 @@ class UserController extends BaseController
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {

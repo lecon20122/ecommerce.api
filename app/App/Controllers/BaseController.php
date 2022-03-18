@@ -35,9 +35,21 @@ class BaseController extends Controller
     }
 
     /**
+     * return a 200 success response json with results for Paginate Results.
+     *
+     * @param mixed $result
+     * @return JsonResponse
+     */
+    public function okWithPaginate(mixed $result): JsonResponse
+    {
+        return response()->json($result, 200);
+    }
+
+    /**
      * return error response.
      *
-     * @param Exception $exception
+     * @param $error
+     * @param int $code
      * @param array $errorMessages
      * @return JsonResponse
      */
@@ -52,8 +64,6 @@ class BaseController extends Controller
         if (!empty($errorMessages)) {
             $response['data'] = $errorMessages;
         }
-
-
         return response()->json($response, $code);
     }
 

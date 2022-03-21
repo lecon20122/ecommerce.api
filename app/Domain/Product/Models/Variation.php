@@ -5,7 +5,6 @@ namespace App\Domain\Product\Models;
 use App\Domain\Inventory\Models\Stock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Variation extends Model

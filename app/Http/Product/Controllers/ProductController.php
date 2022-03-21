@@ -2,10 +2,12 @@
 
 namespace App\Http\Product\Controllers;
 
+use App\Domain\Product\Services\ProductService;
 use App\Domain\Product\Models\Product;
-use App\Domain\Product\Models\Variation;
+use App\Http\Product\Requests\storeProductRequest;
 use App\Http\Product\Resources\ProductResource;
 use Application\Controllers\BaseController;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -22,11 +24,10 @@ class ProductController extends BaseController
     public function index(): AnonymousResourceCollection
     {
         try {
-
             $products = DB::table('products')
                 ->paginate(20);
             return ProductResource::collection($products);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return $this->sendError($exception->getMessage(), 400);
         }
     }
@@ -44,12 +45,21 @@ class ProductController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return Response
+     * @param StoreProductRequest $request
+     * @param ProductService $service
+     * @return ProductResource
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request , ProductService $service)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $product = $service->store($request);
+            DB::commit();
+            return new ProductResource($product);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->sendError($exception->getMessage(), 400);
+        }
     }
 
     /**
@@ -60,7 +70,8 @@ class ProductController extends BaseController
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id)->with('media')->get();
+        return $product;
     }
 
     /**
@@ -97,11 +108,12 @@ class ProductController extends BaseController
         //
     }
 
-    public function productVariation(){
+    public function productVariation()
+    {
         try {
             $products = Product::with('variations')->paginate();
             return $this->okWithPaginate($products);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->sendError($exception->getMessage(), $exception->getCode());
         }
     }

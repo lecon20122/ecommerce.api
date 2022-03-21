@@ -16,7 +16,7 @@ use App\Http\User\Controllers\UserController;
 */
 
 //user Routes
-Route::group([],'app/Http/User/Routes/userRoutes.php');
+Route::group([],base_path().'/app/Http/User/Routes/userRoutes.php');
 
 //Product Routes
-Route::group([],'app/Http/User/Routes/productRoutes.php');
+Route::group([],base_path().'/app/Http/User/Routes/productRoutes.php');

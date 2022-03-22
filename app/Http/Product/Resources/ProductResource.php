@@ -2,6 +2,7 @@
 
 namespace App\Http\Product\Resources;
 
+use App\Http\Media\Resources\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,10 +22,8 @@ class ProductResource extends JsonResource
             'price' => $this->price,
             'slug' => $this->slug,
             'description' => $this->description,
+            'media' => MediaResource::collection($this->whenLoaded('media')),
         ];
-//        if ($this->variations->exists()) {
-//            $data['variations'] = VariationResource::collection($this->whenLoaded('variations'));
-//        }
         return $data;
     }
 }

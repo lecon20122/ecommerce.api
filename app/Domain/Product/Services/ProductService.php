@@ -5,6 +5,7 @@ namespace App\Domain\Product\Services;
 use App\Domain\Product\Models\Product;
 use App\Http\Product\Requests\storeProductRequest;
 use App\Support\Jobs\UploadImageJob;
+use Illuminate\Support\Str;
 
 class ProductService
 {
@@ -20,6 +21,7 @@ class ProductService
         if ($product && $request->hasFile('images')) {
             UploadImageJob::dispatchAfterResponse($product, 'images', 'products');
         }
+        $product->load('media');
         return $product;
     }
 }

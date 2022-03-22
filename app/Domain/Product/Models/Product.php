@@ -16,7 +16,6 @@ class Product extends Model implements HasMedia
     use HasFactory , InteractsWithMedia;
 
     protected $fillable = ['title', 'description', 'price'];
-
     public function setTitleAttribute($value)
     {
         $this->attributes['title'] = $value;
@@ -34,6 +33,9 @@ class Product extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb200x200')
-            ->fit(Manipulations::FIT_CROP, 200, 200);
+            ->fit(Manipulations::FIT_CROP, 232, 320);
+
+        $this->addMediaConversion('small38x50')
+            ->fit(Manipulations::FIT_CROP, 38, 50);
     }
 }

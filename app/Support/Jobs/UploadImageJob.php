@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class UploadImageJob implements ShouldQueue
 {
@@ -39,7 +40,11 @@ class UploadImageJob implements ShouldQueue
     {
         $this->model->addMultipleMediaFromRequest([$this->keyName])
             ->each(function ($fileAdder) {
-                $fileAdder->toMediaCollection($this->collectionName);
+                $fileAdder->usingFileName(Str::uuid() . '.' . 'jpg')
+                    ->addCustomHeaders([
+                        'ACL' => 'public-read'
+                    ])
+                    ->toMediaCollection($this->collectionName , 'do');
             });
     }
 }

@@ -21,11 +21,10 @@ class ProductController extends BaseController
      *
      * @return AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index()
     {
         try {
-            $products = DB::table('products')
-                ->paginate(20);
+            $products = Product::with('media')->paginate(20,['id' , 'title' , 'price' , 'slug' , 'description']);
             return ProductResource::collection($products);
         } catch (Exception $exception) {
             return $this->sendError($exception->getMessage(), 400);

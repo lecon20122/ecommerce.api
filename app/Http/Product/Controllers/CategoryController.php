@@ -3,8 +3,8 @@
 namespace App\Http\Product\Controllers;
 
 use App\Domain\Product\Models\Category;
-use App\Http\Product\Requests\storeCategoryRequest;
-use App\Http\Product\Requests\updateCategoryRequest;
+use App\Http\Product\Requests\StoreCategoryRequest;
+use App\Http\Product\Requests\UpdateCategoryRequest;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -44,7 +44,7 @@ class CategoryController extends BaseController
      * @param storeCategoryRequest $request
      * @return JsonResponse|void
      */
-    public function store(storeCategoryRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -82,11 +82,11 @@ class CategoryController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param updateCategoryRequest $request
+     * @param UpdateCategoryRequest $request
      * @param Category $category
      * @return JsonResponse
      */
-    public function update(updateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         try {
             DB::beginTransaction();

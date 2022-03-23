@@ -4,11 +4,10 @@ namespace App\Http\Product\Controllers;
 
 use App\Domain\Product\Services\ProductService;
 use App\Domain\Product\Models\Product;
-use App\Http\Product\Requests\storeProductRequest;
+use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Resources\ProductResource;
 use Application\Controllers\BaseController;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;

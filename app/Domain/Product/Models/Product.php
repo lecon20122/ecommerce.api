@@ -32,7 +32,7 @@ class Product extends Model implements HasMedia
      */
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('thumb200x200')
+        $this->addMediaConversion('thumb232x320')
             ->fit(Manipulations::FIT_CROP, 232, 320);
 
         $this->addMediaConversion('small38x50')

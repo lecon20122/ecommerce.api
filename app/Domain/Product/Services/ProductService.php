@@ -19,9 +19,8 @@ class ProductService
         $product = Product::create($request->validated());
 
         if ($product && $request->hasFile('images')) {
-            UploadImageJob::dispatchAfterResponse($product, 'images', 'products');
+//            UploadImageJob::dispatchAfterResponse($product, 'images', 'products');
         }
-        $product->load('media');
         return $product;
     }
 }

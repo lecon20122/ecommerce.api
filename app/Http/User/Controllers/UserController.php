@@ -38,8 +38,8 @@ class UserController extends BaseController
                 ]
             );
         } catch (\Exception $exception) {
-            $this->sendError($exception->getMessage(), $exception->getCode());        }
-
+            $this->sendError($exception->getMessage(), $exception->getCode());
+        }
     }
 
     /**
@@ -59,7 +59,8 @@ class UserController extends BaseController
             ]);
         } catch (\Exception $exception) {
             DB::rollBack();
-            $this->sendError($exception->getMessage(), $exception->getCode());        }
+            $this->sendError($exception->getMessage(), $exception->getCode());
+        }
     }
 
     /**
@@ -77,7 +78,8 @@ class UserController extends BaseController
             return $this->sendSuccess('user logged out successfully');
         } catch (\Exception $exception) {
             DB::rollBack();
-            $this->sendError($exception->getMessage(), $exception->getCode());        }
+            $this->sendError($exception->getMessage(), $exception->getCode());
+        }
     }
 
     /**

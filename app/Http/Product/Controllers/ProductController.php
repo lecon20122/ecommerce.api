@@ -23,7 +23,7 @@ class ProductController extends BaseController
     public function index()
     {
         try {
-            $products = Product::with('media')->paginate(20,['id' , 'title' , 'price' , 'slug' , 'description']);
+            $products = Product::with('media')->paginate(20, ['id', 'title', 'price', 'slug', 'description']);
             return ProductResource::collection($products);
         } catch (Exception $exception) {
             return $this->sendError($exception->getMessage(), 400);
@@ -47,7 +47,7 @@ class ProductController extends BaseController
      * @param ProductService $service
      * @return ProductResource
      */
-    public function store(StoreProductRequest $request , ProductService $service)
+    public function store(StoreProductRequest $request, ProductService $service)
     {
         try {
             DB::beginTransaction();

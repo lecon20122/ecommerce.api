@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\User\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +13,10 @@ use App\Http\User\Controllers\UserController;
 |
 */
 
-//user Routes
-Route::group([],base_path().'/app/Http/User/Routes/userRoutes.php');
+Route::prefix('v1')->group(function () {
+    //user Routes
+    Route::group([], base_path() . '/app/Http/User/Routes/userRoutes.php');
 
-//Product Routes
-Route::group([],base_path().'/app/Http/Product/Routes/productRoutes.php');
+    //Product Routes
+    Route::group([], base_path() . '/app/Http/Product/Routes/productRoutes.php');
+});

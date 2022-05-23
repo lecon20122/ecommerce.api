@@ -105,14 +105,4 @@ class ProductController extends BaseController
     {
         //
     }
-
-    public function productVariation()
-    {
-        try {
-            $products = Product::with('variations')->paginate();
-            return $this->okWithPaginate($products);
-        } catch (Exception $exception) {
-            $this->sendError($exception->getMessage(), $exception->getCode());
-        }
-    }
 }

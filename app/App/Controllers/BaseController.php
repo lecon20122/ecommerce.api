@@ -23,15 +23,11 @@ class BaseController extends Controller
      */
     public function ok(mixed $result, string $message = null): JsonResponse
     {
-        $response = [
-            'data' => $result,
-        ];
-
         if (!empty($message)) {
             $response['message'] = $message;
         }
 
-        return response()->json($response, 200);
+        return response()->json($result, 200);
     }
 
     /**

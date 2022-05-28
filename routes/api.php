@@ -19,4 +19,7 @@ Route::prefix('v1')->group(function () {
 
     //Product Routes
     Route::group([], base_path() . '/app/Http/Product/Routes/productRoutes.php');
+
+    //Auth Routes
+    Route::group([], base_path() . '/app/Http/Auth/Routes/auth.php');
 });

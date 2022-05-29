@@ -39,14 +39,26 @@ class UserAuthenticationTest extends TestCase
         $this->assertArrayHasKey('token', $response->json());
     }
 
-   public function test_a_user_can_logout()
-   {
+    public function test_a_user_can_logout()
+    {
         //create a user
         $user = User::factory()->create();
         //login this user
-        Sanctum::actingAs($user , ['*']);
+        $loginResponse = $this->post('api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ])->assertOk();
 
-        //call logout api
-        $response = $this->post('api/v1/auth/logout')->assertOk();
-   }
+        $token = $loginResponse->json()['token'];
+        $headers = ['Authorization' => 'Bearer ' . $token];
+
+        $logoutResponse = $this->post(route('auth.logout'), [], $headers)->assertOk();
+
+        $this->assertArrayHasKey('success', $logoutResponse->json());
+    }
+
+    public function test_a_user_can_request_forget_password_link()
+    {
+        
+    }
 }

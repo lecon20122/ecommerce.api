@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -24,6 +26,8 @@ class UserAuthenticationTest extends TestCase
             'password' => '123456'
         ]);
         $response->assertOk();
+        $user = User::first();
+        $this->assertEquals('Mustafa Khaled', $user->name);
         $this->assertArrayHasKey('token', $response->json());
     }
 
@@ -57,8 +61,24 @@ class UserAuthenticationTest extends TestCase
         $this->assertArrayHasKey('success', $logoutResponse->json());
     }
 
-    public function test_a_user_can_request_forget_password_link()
+    public function test_a_user_can_reset_his_password()
     {
-        
+        // create account
+        $user = User::factory()->create();
+
+        $token = Password::createToken($user);
+
+        $this->post(route('auth.reset-password',[
+            'email' => $user->email,
+            'password' => 'newpassword',
+            'password_confirmation' => 'newpassword',
+            'token' => $token
+        ]))->assertOk();
+
+        $user->refresh();
+
+        $this->assertTrue(Hash::check('newpassword' , $user->password));
+        $this->assertFalse(Hash::check('password' , $user->password));
+
     }
 }

@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('v1')->group(function () {
+    //Auth Routes
+    Route::group([], base_path() . '/app/Http/Auth/Routes/web.php');
+});

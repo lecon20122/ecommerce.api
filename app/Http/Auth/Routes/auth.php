@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Auth\Controller\SocialiteController;
 use App\Http\Auth\Controllers\ForgetPasswordController;
 use App\Http\Auth\Controllers\LoginController;
 use App\Http\Auth\Controllers\LogoutController;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Auth;
 
 use App\Http\Auth\Notifications\ResetPasswordNotification;
 use Domain\User\Models\User;
@@ -23,7 +23,7 @@ class UserAuthenticationTest extends TestCase
      *
      * @return void
      */
-    public function test_user_can_create_a_new_account()
+    public function test_user_can_register()
     {
         $response = $this->post('api/v1/auth/register', [
             'name' => 'Mustafa Khaled',

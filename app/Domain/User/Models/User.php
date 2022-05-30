@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function sendPasswordResetNotification($token)
     {
-        $url = config('client.spa-domain') . AppURLsEnums::FORGET_PASSWORD_SPA_URL .  '?token=' . $token;
-        $this->notify(new ResetPasswordNotification($url));
+        $url = config('client.spa-domain') . AppURLsEnums::FORGET_PASSWORD_SPA_URL . '?token=' . $token;
+        $this->notify(new ResetPasswordNotification($url, $this));
     }
 }

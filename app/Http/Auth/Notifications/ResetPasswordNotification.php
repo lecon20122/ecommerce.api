@@ -10,16 +10,18 @@ use Illuminate\Notifications\Notification;
 class ResetPasswordNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-    protected $url;
+    protected $url , $user;
+
     /**
-     * Create a new notification instance.
-     *
-     * @return void
+     * @param $url
+     * @param $user
      */
-    public function __construct(string $url)
+    public function __construct($url, $user)
     {
         $this->url = $url;
+        $this->user = $user;
     }
+
 
     /**
      * Get the notification's delivery channels.
@@ -41,7 +43,8 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('Forget Password.')
+            ->greeting('Hello ' . $this->user->name)
+            ->line('Here is your Reset password link')
             ->action('Reset Password', url($this->url))
             ->line('Thank you for using our application!');
     }

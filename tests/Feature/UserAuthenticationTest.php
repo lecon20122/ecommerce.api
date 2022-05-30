@@ -2,17 +2,22 @@
 
 namespace Tests\Feature;
 
+use App\Http\Auth\Notifications\ResetPasswordNotification;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UserAuthenticationTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
+
+    protected const NEWPASSWORD = 'newpassword';
+    protected const PASSWORD = 'password';
+
     /**
      * A basic feature test example.
      *
@@ -23,7 +28,7 @@ class UserAuthenticationTest extends TestCase
         $response = $this->post('api/v1/auth/register', [
             'name' => 'Mustafa Khaled',
             'email' => $this->faker->email,
-            'password' => '123456'
+            'password' => self::PASSWORD,
         ]);
         $response->assertOk();
         $user = User::first();
@@ -37,7 +42,7 @@ class UserAuthenticationTest extends TestCase
 
         $response = $this->post('api/v1/auth/login', [
             'email' => $user->email,
-            'password' => 'password',
+            'password' => self::PASSWORD,
         ])->assertOk();
 
         $this->assertArrayHasKey('token', $response->json());
@@ -50,7 +55,7 @@ class UserAuthenticationTest extends TestCase
         //login this user
         $loginResponse = $this->post('api/v1/auth/login', [
             'email' => $user->email,
-            'password' => 'password',
+            'password' => self::PASSWORD,
         ])->assertOk();
 
         $token = $loginResponse->json()['token'];
@@ -61,6 +66,20 @@ class UserAuthenticationTest extends TestCase
         $this->assertArrayHasKey('success', $logoutResponse->json());
     }
 
+    public function test_a_user_can_request_forget_password_token()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create();
+
+        // trigger the notification
+        $this->post(route('auth.forget-password', [
+            'email' => $user->email,
+        ]))->assertOk();
+
+        Notification::assertSentTo($user, ResetPasswordNotification::class);
+    }
+
     public function test_a_user_can_reset_his_password()
     {
         // create account
@@ -68,17 +87,17 @@ class UserAuthenticationTest extends TestCase
 
         $token = Password::createToken($user);
 
-        $this->post(route('auth.reset-password',[
+        //update the password
+        $this->post(route('auth.reset-password', [
             'email' => $user->email,
-            'password' => 'newpassword',
-            'password_confirmation' => 'newpassword',
+            'password' => self::NEWPASSWORD,
+            'password_confirmation' => self::NEWPASSWORD,
             'token' => $token
         ]))->assertOk();
 
         $user->refresh();
 
-        $this->assertTrue(Hash::check('newpassword' , $user->password));
-        $this->assertFalse(Hash::check('password' , $user->password));
-
+        $this->assertTrue(Hash::check(self::NEWPASSWORD, $user->password));
+        $this->assertFalse(Hash::check(self::PASSWORD, $user->password));
     }
 }

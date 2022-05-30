@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Product\Models;
+namespace App\Domain\Category\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,9 +9,14 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Category extends Model
 {
-    use HasFactory , HasRecursiveRelationships;
+    use HasFactory, HasRecursiveRelationships;
 
-    protected $fillable = ['title' , 'slug' , 'parent_id'];
+    protected $fillable = ['title', 'slug', 'parent_id'];
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
 
     public function setTitleAttribute($value)
     {

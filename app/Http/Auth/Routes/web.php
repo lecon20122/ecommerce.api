@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Auth\Controller\SocialiteController;
+use App\Http\Auth\Controllers\SocialiteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/auth/{provider}/redirect', [SocialiteController::class, 'oauthProviderRedirect'])->name('auth.provider-redirect');

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Product\Controllers;
+namespace App\Http\Category\Controllers;
 
-use App\Domain\Product\Models\Category;
+use App\Domain\Category\Models\Category;
+use App\Http\Category\Resources\CategoryResource;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
 use Application\Controllers\BaseController;
@@ -21,9 +22,10 @@ class CategoryController extends BaseController
     public function index()
     {
         try {
-            $categories = Category::Tree()->get()->toTree();
-            return $this->ok($categories);
-        }catch (\Exception $exception){
+            $categories = Category::with('children')->get();
+            // dd($categories);
+            return CategoryResource::collection($categories);
+        } catch (\Exception $exception) {
             $this->sendError($exception->getMessage(), $exception->getCode());
         }
     }
@@ -51,7 +53,7 @@ class CategoryController extends BaseController
             $categories = Category::create($request->validated());
             DB::commit();
             return $this->ok($categories);
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             DB::rollback();
             $this->sendError($exception->getMessage(), $exception->getCode());
         }
@@ -92,8 +94,8 @@ class CategoryController extends BaseController
             DB::beginTransaction();
             $category->update($request->validated());
             DB::commit();
-            return $this->ok($category);
-        }catch (Exception $exception){
+            return new CategoryResource($category);
+        } catch (Exception $exception) {
             DB::rollback();
             $this->sendError($exception->getMessage(), $exception->getCode());
         }
@@ -112,7 +114,7 @@ class CategoryController extends BaseController
             $category->delete();
             DB::commit();
             return $this->sendSuccess('record has been deleted Successfully');
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             DB::rollback();
             $this->sendError($exception->getMessage(), $exception->getCode());
         }

@@ -15,7 +15,7 @@ class UserAuthenticationTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected const NEWPASSWORD = 'newpassword';
+    protected const NEW_PASSWORD = 'NEW_PASSWORD';
     protected const PASSWORD = 'password';
 
     /**
@@ -90,14 +90,14 @@ class UserAuthenticationTest extends TestCase
         //update the password
         $this->post(route('auth.reset-password', [
             'email' => $user->email,
-            'password' => self::NEWPASSWORD,
-            'password_confirmation' => self::NEWPASSWORD,
+            'password' => self::NEW_PASSWORD,
+            'password_confirmation' => self::NEW_PASSWORD,
             'token' => $token
         ]))->assertOk();
 
         $user->refresh();
 
-        $this->assertTrue(Hash::check(self::NEWPASSWORD, $user->password));
+        $this->assertTrue(Hash::check(self::NEW_PASSWORD, $user->password));
         $this->assertFalse(Hash::check(self::PASSWORD, $user->password));
     }
 }

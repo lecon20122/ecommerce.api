@@ -11,16 +11,22 @@ class Category extends Model
 {
     use HasFactory, HasRecursiveRelationships;
 
-    protected $fillable = ['title', 'slug', 'parent_id'];
+    protected $fillable = ['name', 'slug', 'parent_id'];
 
     public function children()
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->hasMany(Category::class, 'parent_id');
     }
 
-    public function setTitleAttribute($value)
+    // recursive, loads all descendants
+    public function childrenRecursive()
     {
-        $this->attributes['title'] = $value;
+        return $this->children()->with('childrenRecursive');
+    }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
 }

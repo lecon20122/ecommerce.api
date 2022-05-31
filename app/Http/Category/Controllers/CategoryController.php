@@ -22,8 +22,8 @@ class CategoryController extends BaseController
     public function index()
     {
         try {
-            $categories = Category::with('children')->get();
-            // dd($categories);
+            //dump the parents will all children
+            $categories = Category::with('childrenRecursive')->whereNull('parent_id')->get(['name', 'slug', 'id']);
             return CategoryResource::collection($categories);
         } catch (\Exception $exception) {
             $this->sendError($exception->getMessage(), $exception->getCode());

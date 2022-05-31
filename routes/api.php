@@ -15,8 +15,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     //user Routes
-    Route::group([], base_path() . '/app/Http/User/Routes/userRoutes.php');
+    Route::group([], base_path() . '/app/Http/User/Routes/api.php');
 
     //Product Routes
-    Route::group([], base_path() . '/app/Http/Product/Routes/productRoutes.php');
+    Route::group([], base_path() . '/app/Http/Product/Routes/api.php');
+
+    //Auth Routes
+    Route::group([], base_path() . '/app/Http/Auth/Routes/api.php');
+
+    //Category Routes
+    Route::group([], base_path() . '/app/Http/Category/Routes/api.php');
 });

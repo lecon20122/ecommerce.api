@@ -2,11 +2,13 @@
 
 namespace Domain\User\Models;
 
+use App\Http\Auth\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Support\Enums\AppURLsEnums;
 
 class User extends Authenticatable
 {
@@ -21,6 +23,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'oauth_provider_type',
+        'provider_id',
+        'provider_token',
+        'provider_refresh_token',
     ];
 
     /**
@@ -31,6 +37,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'provider_token',
+        'provider_id',
+        'oauth_provider_type',
+        'provider_refresh_token'
     ];
 
     /**
@@ -45,5 +55,11 @@ class User extends Authenticatable
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = config('client.spa-domain') . AppURLsEnums::FORGET_PASSWORD_SPA_URL . '?token=' . $token;
+        $this->notify(new ResetPasswordNotification($url, $this));
     }
 }

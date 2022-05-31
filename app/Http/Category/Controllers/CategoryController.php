@@ -10,6 +10,7 @@ use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategoryController extends BaseController
@@ -23,8 +24,11 @@ class CategoryController extends BaseController
     {
         try {
             //dump the parents will all children
-            $categories = Category::with('childrenRecursive')->whereNull('parent_id')->get(['name', 'slug', 'id']);
-            return CategoryResource::collection($categories);
+            return CategoryResource::collection(Cache::remember('categories', 3600, function () {
+                return Category::with('childrenRecursive')->where([
+                    ['parent_id', '!=', null]
+                ])->get(['name', 'slug', 'id']);
+            }));
         } catch (\Exception $exception) {
             $this->sendError($exception->getMessage(), $exception->getCode());
         }

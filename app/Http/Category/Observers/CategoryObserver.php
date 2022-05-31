@@ -3,20 +3,12 @@
 namespace App\Http\Category\Observers;
 
 use App\Domain\Category\Models\Category;
+use App\Support\Observers\BaseObserver;
+use Illuminate\Support\Facades\Cache;
 
-class CategoryObserver
+class CategoryObserver extends BaseObserver
 {
-    /**
-     * Handle the Category "created" event.
-     *
-     * @param  \App\Category  $category
-     * @return void
-     */
-    public function created(Category $category)
-    {
-        //
-    }
-
+    protected $key = 'categories';
     /**
      * Handle the Category "updated" event.
      *

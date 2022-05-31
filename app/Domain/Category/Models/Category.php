@@ -11,7 +11,7 @@ class Category extends Model
 {
     use HasFactory, HasRecursiveRelationships;
 
-    protected $fillable = ['name', 'slug', 'parent_id'];
+    protected $fillable = ['title', 'slug', 'parent_id'];
 
     public function children()
     {
@@ -24,9 +24,9 @@ class Category extends Model
         return $this->children()->with('childrenRecursive');
     }
 
-    public function setNameAttribute($value)
+    public function setTitleAttribute($value)
     {
-        $this->attributes['name'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = Str::slug($value, '-');
     }
 }

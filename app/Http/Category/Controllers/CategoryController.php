@@ -23,14 +23,11 @@ class CategoryController extends BaseController
     public function index()
     {
         try {
-            //dump the parents will all children
             return CategoryResource::collection(Cache::remember('categories', 3600, function () {
-                return Category::with('childrenRecursive')->where([
-                    ['parent_id', '!=', null]
-                ])->get(['name', 'slug', 'id']);
+                return Category::with('childrenRecursive')->whereNull('parent_id')->get(['title', 'slug', 'id']);
             }));
         } catch (\Exception $exception) {
-            $this->sendError($exception->getMessage(), $exception->getCode());
+            return $this->sendError($exception->getMessage());
         }
     }
 
@@ -56,10 +53,10 @@ class CategoryController extends BaseController
             DB::beginTransaction();
             $categories = Category::create($request->validated());
             DB::commit();
-            return $this->ok($categories);
+            return new CategoryResource($categories);
         } catch (Exception $exception) {
             DB::rollback();
-            $this->sendError($exception->getMessage(), $exception->getCode());
+            return $this->sendError($exception->getMessage());
         }
     }
 

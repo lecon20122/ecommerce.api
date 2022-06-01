@@ -9,6 +9,7 @@ use App\Http\Product\Requests\UpdateCategoryRequest;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ class CategoryController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
@@ -45,7 +46,7 @@ class CategoryController extends BaseController
      * Store a newly created resource in storage.
      *
      * @param storeCategoryRequest $request
-     * @return JsonResponse|void
+     * @return CategoryResource
      */
     public function store(StoreCategoryRequest $request)
     {
@@ -87,7 +88,7 @@ class CategoryController extends BaseController
      *
      * @param UpdateCategoryRequest $request
      * @param Category $category
-     * @return JsonResponse
+     * @return CategoryResource
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {

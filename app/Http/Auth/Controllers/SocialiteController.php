@@ -4,6 +4,8 @@ namespace App\Http\Auth\Controllers;
 
 use Application\Controllers\BaseController;
 use Domain\User\Models\User;
+use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +14,7 @@ use Support\Enums\ThirdPartyEnums;
 
 class SocialiteController extends BaseController
 {
-    public function oauthProviderRedirect(string $provider)
+    public function oauthProviderRedirect(string $provider): \Symfony\Component\HttpFoundation\RedirectResponse|RedirectResponse
     {
         return Socialite::driver($provider)->redirect();
     }
@@ -25,11 +27,12 @@ class SocialiteController extends BaseController
             DB::beginTransaction();
             $user = $this->createOrUpdateUser($providerUser);
             DB::commit();
+            Auth::login($user);
             return $this->ok([
                 'user' => $user,
                 'token' => $user->createToken($user->email, ['customer'])->plainTextToken,
             ]);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             $this->sendError($exception->getMessage());
         }
@@ -49,8 +52,7 @@ class SocialiteController extends BaseController
 
         $user = User::where('provider_id', $providerUser->id)->first();
         if ($user) {
-            User::where('provider_id', $providerUser->id)->first()->update($data);
-            $user->refresh();
+            $user->update($data);
         } else {
             $user = User::create($data);
         }

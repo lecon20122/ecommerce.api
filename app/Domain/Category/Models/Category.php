@@ -4,13 +4,14 @@ namespace App\Domain\Category\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Spatie\Translatable\HasTranslations;
 
 class Category extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory, HasTranslations, SoftDeletes;
 
     protected $fillable = ['title', 'slug', 'parent_id'];
     public $translatable = ['title', 'slug'];

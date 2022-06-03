@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+use function PHPUnit\Framework\assertTrue;
+
 class StoreTest extends TestCase
 {
     /**
@@ -15,6 +17,6 @@ class StoreTest extends TestCase
      */
     public function test_store_can_be_created()
     {
-        
+        $this->assertTrue(true);
     }
 }

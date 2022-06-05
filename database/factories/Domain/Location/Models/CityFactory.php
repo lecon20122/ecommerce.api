@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Domain\Location\Models;
 
 use App\Domain\Location\Models\City;
 use App\Domain\Location\Models\Country;

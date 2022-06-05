@@ -1,7 +1,8 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Domain\Location\Models;
 
+use App\Domain\Location\Enums\LocationEnums;
 use App\Domain\Location\Models\Country;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,7 +20,7 @@ class CountryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'egypt'
+            'name' => $this->faker->country,
         ];
     }
 }

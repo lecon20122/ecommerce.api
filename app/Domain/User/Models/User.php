@@ -2,6 +2,8 @@
 
 namespace Domain\User\Models;
 
+use App\Domain\Location\Models\Address;
+use App\Domain\Store\Models\Store;
 use App\Http\Auth\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -61,5 +63,15 @@ class User extends Authenticatable
     {
         $url = config('client.spa-domain') . AppURLsEnums::FORGET_PASSWORD_SPA_URL . '?token=' . $token;
         $this->notify(new ResetPasswordNotification($url, $this));
+    }
+
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'addressable');
+    }
+
+    public function stores()
+    {
+        return $this->hasMany(Store::class);
     }
 }

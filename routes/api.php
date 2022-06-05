@@ -20,6 +20,9 @@ Route::prefix('v1')->group(function () {
     //Product Routes
     Route::group([], base_path() . '/app/Http/Product/Routes/api.php');
 
+    //Store Routes
+    Route::group([], base_path() . '/app/Http/Store/Routes/api.php');
+
     //Auth Routes
     Route::group([], base_path() . '/app/Http/Auth/Routes/api.php');
 

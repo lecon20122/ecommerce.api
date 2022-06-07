@@ -19,8 +19,12 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('description')->nullable();
             $table->integer('price')->unsigned();
+            $table->foreignId('store_id')->constrained();
             $table->dateTime('live_at')->nullable();
             $table->timestamps();
+
+
+            // $table->foreign('store_id')->references('id')->on('stores');
         });
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Product\Controllers;
 use App\Domain\Product\Services\ProductService;
 use App\Domain\Product\Models\Product;
 use App\Http\Product\Requests\StoreProductRequest;
+use App\Http\Product\Requests\UpdateProductRequest;
 use App\Http\Product\Resources\ProductResource;
 use Application\Controllers\BaseController;
 use Exception;
@@ -90,9 +91,17 @@ class ProductController extends BaseController
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request,  ProductService $service,  Product $product)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $service->update($request->validated(), $product);
+            DB::commit();
+            return new ProductResource($product->refresh());
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->sendError($exception->getMessage(), 400);
+        }
     }
 
     /**
@@ -101,8 +110,16 @@ class ProductController extends BaseController
      * @param int $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(ProductService $service, Product $product)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $service->destroy($product);
+            DB::commit();
+            return $product;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->sendError($exception->getMessage(), 400);
+        }
     }
 }

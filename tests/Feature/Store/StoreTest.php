@@ -24,7 +24,7 @@ class StoreTest extends TestCase
      */
     public function test_store_can_be_created()
     {
-        $this->user = User::factory()->hasAddresses()->create();
+        $this->user = User::factory()->create();
 
         $this->token = $this->user->createToken($this->user->email, ['customer'])->plainTextToken;
         $headers = ['Authorization' => 'Bearer ' . $this->token];
@@ -33,7 +33,6 @@ class StoreTest extends TestCase
             'name' => $this->faker->unique()->firstName,
             'description' => $this->faker->realText(),
             'user_id' => $this->user->id,
-            'address_id' => $this->user->addresses[0]->id,
         ];
 
         $response = $this->post(route('stores.store'), $data, $headers)->assertStatus(HttpStatusEnums::CREATED);
@@ -43,12 +42,11 @@ class StoreTest extends TestCase
 
     public function test_store_can_be_updated()
     {
-        $this->user = User::factory()->hasAddresses()->create();
+        $this->user = User::factory()->create();
 
         $store = $this->user->stores()->create([
             'name' => $this->faker->unique()->firstName,
             'description' => $this->faker->realText(),
-            'address_id' => $this->user->addresses[0]->id,
         ]);
 
 
@@ -68,12 +66,11 @@ class StoreTest extends TestCase
 
     public function test_store_can_be_destroyed()
     {
-        $this->user = User::factory()->hasAddresses()->create();
+        $this->user = User::factory()->create();
 
         $store = $this->user->stores()->create([
             'name' => $this->faker->unique()->firstName,
             'description' => $this->faker->realText(),
-            'address_id' => $this->user->addresses[0]->id,
         ]);
 
         $this->token = $this->user->createToken($this->user->email, ['customer'])->plainTextToken;

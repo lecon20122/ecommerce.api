@@ -27,7 +27,6 @@ class StoreCreateRequest extends FormRequest
             'name' => 'required',
             'description' => 'required',
             'user_id' => 'required',
-            'address_id' => 'required',
         ];
     }
 }

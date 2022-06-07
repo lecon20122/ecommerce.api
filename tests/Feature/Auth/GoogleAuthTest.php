@@ -15,14 +15,14 @@ class GoogleAuthTest extends TestCase
      *
      * @return void
      */
-    public function test_a_user_can_redirect_to_google_auth()
+    public function a_user_can_redirect_to_google_auth()
     {
         $this->get(route('auth.provider-redirect', [
             'provider' => ThirdPartyEnums::Google,
         ]))->assertStatus(302);
     }
 
-    public function test_google_callback_have_user_info()
+    public function google_callback_have_user_info()
     {
         Socialite::shouldReceive('driver->fields->scopes->user')->andReturns(['id','token']);
 

@@ -9,7 +9,9 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Variation extends Model
 {
-    use HasFactory, HasRecursiveRelationships;
+    use HasFactory;
+
+    protected $guarded = [];
 
     public function product()
     {

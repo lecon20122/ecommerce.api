@@ -74,14 +74,15 @@ class ProductTest extends TestCase
     public function test_product_can_be_destroyed()
     {
         $user = User::factory()->create();
+        
+        $token = $user->createToken($user->email, ['customer'])->plainTextToken;
+        $headers = ['Authorization' => 'Bearer ' . $token];
 
         $store = $user->stores()->create([
             'name' => $this->faker->unique()->firstName,
             'description' => $this->faker->realText(),
         ]);
 
-        $token = $user->createToken($user->email, ['customer'])->plainTextToken;
-        $headers = ['Authorization' => 'Bearer ' . $token];
 
         $data = [
             'title' => $this->faker->title,

@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('provider_id')->nullable();
             $table->string('provider_token')->nullable();
             $table->string('provider_refresh_token')->nullable();
-
+            
+            $table->boolean('status')->default(true);
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

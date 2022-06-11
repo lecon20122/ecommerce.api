@@ -10,6 +10,7 @@ use App\Http\Product\Requests\UpdateVariationRequest;
 use App\Http\Product\Resources\VariationResource;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +19,7 @@ class VariationController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
@@ -28,7 +29,7 @@ class VariationController extends BaseController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function create()
     {
@@ -38,8 +39,9 @@ class VariationController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param VariationService $variationService
+     * @param StoreVariationRequest $request
+     * @return JsonResponse|VariationResource
      */
     public function store(VariationService $variationService, StoreVariationRequest $request)
     {
@@ -58,7 +60,7 @@ class VariationController extends BaseController
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function show($id)
     {
@@ -69,7 +71,7 @@ class VariationController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function edit($id)
     {
@@ -79,9 +81,10 @@ class VariationController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param VariationService $service
+     * @param UpdateVariationRequest $request
+     * @param Variation $variation
+     * @return JsonResponse|VariationResource
      */
     public function update(VariationService $service, UpdateVariationRequest $request, Variation $variation)
     {
@@ -99,8 +102,9 @@ class VariationController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param VariationService $service
+     * @param Variation $variation
+     * @return JsonResponse|Variation
      */
     public function destroy(VariationService $service, Variation $variation)
     {

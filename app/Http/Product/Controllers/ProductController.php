@@ -9,6 +9,7 @@ use App\Http\Product\Requests\UpdateProductRequest;
 use App\Http\Product\Resources\ProductResource;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
@@ -87,9 +88,10 @@ class ProductController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return Response
+     * @param UpdateProductRequest $request
+     * @param ProductService $service
+     * @param Product $product
+     * @return JsonResponse|ProductResource
      */
     public function update(UpdateProductRequest $request,  ProductService $service,  Product $product)
     {
@@ -107,8 +109,9 @@ class ProductController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return Response
+     * @param ProductService $service
+     * @param Product $product
+     * @return JsonResponse|Product
      */
     public function destroy(ProductService $service, Product $product)
     {

@@ -51,6 +51,7 @@ class CategoryController extends BaseController
     public function store(StoreCategoryRequest $request)
     {
         try {
+            //TODOs: add later the slug in StoreCategoryRequest
             DB::beginTransaction();
             $categories = Category::create($request->validated());
             DB::commit();

@@ -31,17 +31,17 @@ class CategoryTest extends TestCase
         $this->assertArrayHasKey('title', $response->json());
     }
 
-//    public function test_cache_is_forgotten_when_new_item_created()
-//    {
-//        $this->post(route('categories.store'), [
-//            'title' => 'test category',
-//        ])->assertStatus(HttpStatusEnums::CREATED);
-//
-//        Cache::shouldReceive('forget')
-//            ->once()
-//            ->with(CacheKeyEnums::CATEGORY)
-//            ->andReturn([]);
-//    }
+    //    public function test_cache_is_forgotten_when_new_item_created()
+    //    {
+    //        $this->post(route('categories.store'), [
+    //            'title' => 'test category',
+    //        ])->assertStatus(HttpStatusEnums::CREATED);
+    //
+    //        Cache::shouldReceive('forget')
+    //            ->once()
+    //            ->with(CacheKeyEnums::CATEGORY)
+    //            ->andReturn([]);
+    //    }
 
     public function test_that_category_title_is_slugged()
     {

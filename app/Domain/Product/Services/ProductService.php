@@ -4,7 +4,10 @@ namespace App\Domain\Product\Services;
 
 use App\Domain\Product\Models\Product;
 use App\Http\Product\Requests\StoreProductRequest;
+use App\Http\Product\Requests\UpdateProductRequest;
+use App\Http\Product\Resources\ProductResource;
 use App\Support\Jobs\UploadImageJob;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ProductService
@@ -22,5 +25,15 @@ class ProductService
             UploadImageJob::dispatchAfterResponse($product, 'images', 'products');
         }
         return $product;
+    }
+
+    public function update($data, Product $product)
+    {
+        $product->update($data);
+    }
+
+    public function destroy(Product $product)
+    {
+        $product->delete();
     }
 }

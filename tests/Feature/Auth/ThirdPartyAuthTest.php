@@ -8,7 +8,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Support\Enums\ThirdPartyEnums;
 use Tests\TestCase;
 
-class GoogleAuthTest extends TestCase
+class ThirdPartyAuthTest extends TestCase
 {
     /**
      * A basic feature test example.
@@ -19,12 +19,11 @@ class GoogleAuthTest extends TestCase
     {
         $this->get(route('auth.provider-redirect', [
             'provider' => ThirdPartyEnums::Google,
-        ]))->assertStatus(302);
+        ]))->assertRedirect();
     }
 
     public function test_google_callback_have_user_info()
     {
-        Socialite::shouldReceive('driver->fields->scopes->user')->andReturns(['id','token']);
-
+        Socialite::shouldReceive('driver->fields->scopes->user')->andReturns(['id', 'token']);
     }
 }

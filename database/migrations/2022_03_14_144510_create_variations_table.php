@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained();
             $table->string('title');
-            $table->integer('price')->unsigned()->default(0);
+            $table->decimal('price')->unsigned()->default(0);
             $table->string('type');
             $table->string('sku')->nullable();
-            $table->unsignedBigInteger('parent_id')->nullable();
             $table->integer('order');
+            $table->foreignId('product_id')->constrained();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
         });
     }

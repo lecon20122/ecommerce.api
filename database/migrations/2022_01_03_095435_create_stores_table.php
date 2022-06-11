@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('description');
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('address_id')->constrained();
             $table->timestamps();
         });
     }

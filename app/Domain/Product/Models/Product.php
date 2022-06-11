@@ -2,6 +2,7 @@
 
 namespace App\Domain\Product\Models;
 
+use App\Domain\Store\Models\Store;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -13,18 +14,18 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory , InteractsWithMedia;
+    use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['title', 'description', 'price'];
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
-    }
+    protected $fillable = ['title', 'description', 'price' , 'store_id'];
 
     public function variations()
     {
         return $this->hasMany(Variation::class)->orderBy('order', 'asc')->groupBy('type');
+    }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
     }
 
     /**
@@ -37,5 +38,11 @@ class Product extends Model implements HasMedia
 
         $this->addMediaConversion('small38x50')
             ->fit(Manipulations::FIT_CROP, 38, 50);
+    }
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
     }
 }

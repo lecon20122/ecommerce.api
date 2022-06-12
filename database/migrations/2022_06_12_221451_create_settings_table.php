@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order_variation', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('variation_id')->constrained();
-			$table->foreignId('order_id')->constrained();
-			$table->integer('qty')->unsigned()->default(1);
-			$table->string('notes')->nullable();
-            $table->decimal('price')->unsigned();
+            $table->string('key');
+            $table->json('value');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_variations');
+        Schema::dropIfExists('settings');
     }
 };

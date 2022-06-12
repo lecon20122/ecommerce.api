@@ -21,6 +21,8 @@ class Order extends Model
         'store_id',
         'user_id',
         'address_id',
+        'pickup_address_id',
+        'shipping_address_id',
     ];
 
     public function user()
@@ -30,6 +32,6 @@ class Order extends Model
 
     public function variations()
     {
-        //
+        ''
     }
 }

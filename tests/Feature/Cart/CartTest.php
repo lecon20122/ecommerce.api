@@ -20,7 +20,7 @@ class CartTest extends TestCase
      *
      * @return void
      */
-    public function test_authenticated_user_can_add_items_to_cart()
+    public function test_authenticated_user_can_add_item_to_cart()
     {
         $user = User::factory()->create();
         $tokenHeader = $this->generateBearerTokenHeader($user);
@@ -36,7 +36,6 @@ class CartTest extends TestCase
         $response = $this->post(route('cart.store'), $data, $tokenHeader)->assertCreated();
 
         $this->assertEquals(1, Cart::first()->count());
-
     }
 
     /**
@@ -49,7 +48,7 @@ class CartTest extends TestCase
         return ['Authorization' => 'Bearer ' . $user->createToken($user->email, ['customer'])->plainTextToken];
     }
 
-    public function test_authenticated_user_can_update_items_to_cart()
+    public function test_authenticated_user_can_update_item_to_cart()
     {
         $user = User::factory()->create();
         $tokenHeader = $this->generateBearerTokenHeader($user);
@@ -59,17 +58,43 @@ class CartTest extends TestCase
         $data = [
             'notes' => $this->faker->sentence,
             'qty' => 3,
+            'variation_id' => $variation->id,
         ];
 
-        $cart = $variation->carts()->create($data);
+        $cart = $user->carts()->create($data);
 
-        $response = $this->put(route('cart.update', ['cart' => $cart]),
-            ['qty' => 1]
-            , $tokenHeader)
+        $this->put(
+            route('cart.update', ['cart' => $cart]),
+            ['qty' => 1],
+            $tokenHeader
+        )
             ->assertOk();
 
-
         $this->assertEquals(1, Cart::first()->qty);
+    }
 
+    public function test_authenticated_user_can_remove_item_to_cart()
+    {
+        $user = User::factory()->create();
+        $tokenHeader = $this->generateBearerTokenHeader($user);
+
+        $variation = Variation::factory()->create();
+
+        $data = [
+            'notes' => $this->faker->sentence,
+            'qty' => 3,
+            'variation_id' => $variation->id,
+        ];
+
+        $cart = $user->carts()->create($data);
+
+        $this->delete(
+            route('cart.destroy', ['cart' => $cart]),
+            [],
+            $tokenHeader
+        )
+            ->assertOk();
+
+        $this->assertNull(Cart::first());
     }
 }

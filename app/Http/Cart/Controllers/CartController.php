@@ -2,8 +2,10 @@
 
 namespace App\Http\Cart\Controllers;
 
+use App\Domain\Cart\Models\Cart;
 use App\Domain\Cart\Services\CartService;
 use App\Http\Cart\Requests\StoreCartRequest;
+use App\Http\Cart\Requests\UpdateCartRequest;
 use App\Http\Cart\Resources\CartResource;
 use App\Http\Controllers\Controller;
 use Application\Controllers\BaseController;
@@ -84,9 +86,17 @@ class CartController extends BaseController
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCartRequest $request, Cart $cart, CartService $service)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $service->update($request->validated(), $cart);
+            DB::commit();
+            return new CartResource($cart->refresh());
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->sendError($exception->getMessage(), 400);
+        }
     }
 
     /**
@@ -95,8 +105,16 @@ class CartController extends BaseController
      * @param int $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Cart $cart, CartService $service)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $service->delete($cart);
+            DB::commit();
+            return $cart;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->sendError($exception->getMessage(), 400);
+        }
     }
 }

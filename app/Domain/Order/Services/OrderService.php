@@ -19,7 +19,7 @@ class OrderService
             DB::beginTransaction();
             $store = Store::find($request->store_id);
 
-            
+
             //check if the store is open
             if (!$store->is_active) {
                 return response()->json("store Closed at the time , come back later", 200);
@@ -57,7 +57,7 @@ class OrderService
             //     //minimum charge
             if ($cost >= $store->min_order) {
                 $total = $cost + $delivery_cost;
-                $commission = settings('commission')->value * $total;
+                $commission =  0.5 * $total; //TODO:put setting here
                 $net = $total - $commission;
                 // updating the rest of the calculations
                 $order->update([

@@ -28,4 +28,7 @@ Route::prefix('v1')->group(function () {
 
     //Category Routes
     Route::group([], base_path() . '/app/Http/Category/Routes/api.php');
+
+    //Cart Routes
+    Route::group([], base_path() . '/app/Http/Cart/Routes/api.php');
 });

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Product\Models;
 
+use App\Domain\Cart\Models\Cart;
 use App\Domain\Inventory\Models\Stock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,5 +22,10 @@ class Variation extends Model
     public function stocks()
     {
         return $this->hasMany(Stock::class);
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
     }
 }

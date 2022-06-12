@@ -2,6 +2,7 @@
 
 namespace Domain\User\Models;
 
+use App\Domain\Cart\Models\Cart;
 use App\Domain\Location\Models\Address;
 use App\Domain\Store\Models\Store;
 use App\Http\Auth\Notifications\ResetPasswordNotification;
@@ -73,5 +74,10 @@ class User extends Authenticatable
     public function stores()
     {
         return $this->hasMany(Store::class);
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
     }
 }

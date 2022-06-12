@@ -59,6 +59,7 @@ class VariationTest extends TestCase
         $response = $this->post(route('variations.store'), $data, $header)->assertCreated();
 
         $this->assertEquals($response->json()['title'], Variation::first()->title);
+        $this->assertEquals(1, Variation::first()->count());
     }
 
     public function test_variation_can_be_updated()

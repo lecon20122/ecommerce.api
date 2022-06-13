@@ -31,4 +31,7 @@ Route::prefix('v1')->group(function () {
 
     //Cart Routes
     Route::group([], base_path() . '/app/Http/Cart/Routes/api.php');
+
+    //Order Routes
+    Route::group([], base_path() . '/app/Http/Order/Routes/api.php');
 });

@@ -29,6 +29,7 @@ class StoreVariationRequest extends FormRequest
             'type' => 'required',
             'order' => 'required',
             'product_id' => 'required',
+            'store_id' => 'required',
         ];
     }
 }

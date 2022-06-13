@@ -2,6 +2,7 @@
 
 namespace App\Domain\Order\Models;
 
+use App\Domain\Product\Models\Variation;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,6 @@ class Order extends Model
 
     public function variations()
     {
-        ''
+        return $this->belongsToMany(Variation::class, 'order_variation')->withPivot('qty', 'notes', 'price');
     }
 }

@@ -2,10 +2,16 @@
 
 namespace App\Http\Order\Controllers;
 
+use App\Domain\Order\Services\OrderService;
 use App\Http\Controllers\Controller;
+use App\Http\Order\Requests\StoreOrderRequest;
+use App\Http\Order\Resources\OrderResource;
+use Application\Controllers\BaseController;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class OrderController extends Controller
+class OrderController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -33,9 +39,17 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderService $service, StoreOrderRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $order = $service->store($request->validated());
+            DB::commit();
+            return new OrderResource($order);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->sendError($exception->getMessage(), 400);
+        }
     }
 
     /**

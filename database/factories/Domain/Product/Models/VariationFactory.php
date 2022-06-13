@@ -4,6 +4,7 @@ namespace Database\Factories\Domain\Product\Models;
 
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Models\Variation;
+use App\Domain\Store\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,6 +27,7 @@ class VariationFactory extends Factory
             'type' => $this->faker->unique()->sentence,
             'order' => $this->faker->randomDigit(),
             'product_id' => Product::factory(),
+            'store_id' => Store::factory(),
         ];
     }
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('sku')->nullable();
             $table->integer('order');
             $table->foreignId('product_id')->constrained();
+            $table->foreignId('store_id')->constrained();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
         });

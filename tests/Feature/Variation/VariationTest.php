@@ -54,10 +54,11 @@ class VariationTest extends TestCase
             'type' => $this->faker->unique()->sentence,
             'order' => $this->faker->randomDigit(),
             'product_id' => $product->id,
+            'store_id' => $product->store_id,
         ];
 
-        $response = $this->post(route('variations.store'), $data, $header)->assertCreated();
-
+        $response = $this->post(route('variations.store'), $data, $header);
+        
         $this->assertEquals($response->json()['title'], Variation::first()->title);
         $this->assertEquals(1, Variation::first()->count());
     }
@@ -75,6 +76,7 @@ class VariationTest extends TestCase
             'price' => $this->faker->randomFloat(null, 99, 500),
             'type' => $this->faker->unique()->sentence,
             'order' => $this->faker->randomDigit(),
+            'store_id' => $product->store_id,
         ];
 
         $variation = $product->variations()->create($data);
@@ -97,6 +99,7 @@ class VariationTest extends TestCase
             'price' => $this->faker->randomFloat(null, 99, 500),
             'type' => $this->faker->unique()->sentence,
             'order' => $this->faker->randomDigit(),
+            'store_id' => $product->store_id,
         ];
 
         $variation = $product->variations()->create($data);

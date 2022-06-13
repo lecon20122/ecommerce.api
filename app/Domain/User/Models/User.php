@@ -4,6 +4,7 @@ namespace Domain\User\Models;
 
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Location\Models\Address;
+use App\Domain\Order\Models\Order;
 use App\Domain\Store\Models\Store;
 use App\Http\Auth\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -79,5 +80,9 @@ class User extends Authenticatable
     public function carts()
     {
         return $this->hasMany(Cart::class);
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

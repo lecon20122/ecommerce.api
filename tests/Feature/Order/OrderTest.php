@@ -3,13 +3,14 @@
 namespace Tests\Feature\Order;
 
 use App\Domain\Location\Enums\LocationEnums;
-use App\Domain\Location\Models\Address;
 use App\Domain\Location\Models\District;
 use App\Domain\Product\Models\Variation;
+use App\Domain\Shipping\Models\ShippingType;
 use App\Domain\Store\Models\Store;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use JetBrains\PhpStorm\NoReturn;
 use Tests\TestCase;
 
 class OrderTest extends TestCase
@@ -40,7 +41,7 @@ class OrderTest extends TestCase
      *
      * @return void
      */
-    public function test_order_can_be_submitted()
+    #[NoReturn] public function test_order_can_be_submitted()
     {
         $user = User::factory()->create();
         $tokenHeader = $this->generateBearerTokenHeader($user);
@@ -55,18 +56,18 @@ class OrderTest extends TestCase
 
         //create cart
         $user->carts()->create($data);
-
+        $shippingType = ShippingType::factory()->create();
         $store = Store::with('addresses')->where('id', $variation->store_id)->first();
         $address = $store->addresses()->create($this->addressData());
 
-        $data = [
+        $formRequest = [
             'store_id' => $variation->store_id,
             'notes' => $this->faker->sentence,
             'shipping_address_id' => $address->id,
             'pickup_address_id' => $address->id,
+            'shipping_type_id' => $shippingType->id,
         ];
 
-        $response = $this->post(route('order.store'), $data, $tokenHeader);
-        dd($response->json());
+        $response = $this->post(route('order.store'), $formRequest, $tokenHeader)->assertCreated();
     }
 }

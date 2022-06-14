@@ -4,6 +4,7 @@ namespace App\Domain\Order\Services;
 
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Product\Models\Variation;
+use App\Domain\Shipping\Models\ShippingType;
 use App\Domain\Store\Models\Store;
 use App\Http\Cart\Requests\StoreCartRequest;
 use App\Http\Cart\Requests\UpdateCartRequest;
@@ -22,17 +23,18 @@ class OrderService
             return response()->json("store Closed at the time , come back later", 200);
         }
 
-        dd($request);
 
         $order = auth()->user()->orders()->create([
             'store_id' => $request['store_id'],
-            'notes' => $$request['notes'],
+            'notes' => $request['notes'],
             'shipping_address_id' => $request['shipping_address_id'],
             'pickup_address_id' => $request['pickup_address_id'],
+            'shipping_type_id' => $request['shipping_type_id'],
         ]);
 
-        $cost = 0;
-        $delivery_cost = $store->delivery_fees;
+        //        dd($request);
+        $subtotal = 0;
+        $delivery_fees = ShippingType::find($request['shipping_type_id'])->price;
 
         $items = Cart::where('user_id', auth()->user()->id)->get();
         foreach ($items as $item) {
@@ -49,24 +51,21 @@ class OrderService
 
             //attaching the order info to pivot table
             $order->variations()->attach($readyVariation);
-            //calculating the cost
-            $cost += $this->calculateVariationCost($variation->price, $item->qty);
-        }
-        //     //minimum charge
-        if ($cost >= $store->min_order) {
-            $total = $cost + $delivery_cost;
-            $commission =  0.5 * $total; //TODO:put setting here
-            $net = $total - $commission;
-            // updating the rest of the calculations
-            $order->update([
-                'total' => $total,
-                'cost' => $cost,
-                'delivery_fees' => $delivery_cost,
-                'commission' => $commission,
-                'net' => $net,
-            ]);
+            //calculating the subtotal
+            $subtotal += $this->calculateVariationsubtotal($variation->price, $item->qty);
         }
 
+        $total = $subtotal + $delivery_fees;
+        $commission =  0.1 * $subtotal;
+        $net = $total - ($commission + $delivery_fees);
+        // updating the rest of the calculations
+        $order->update([
+            'total' => $total,
+            'subtotal' => $subtotal,
+            'delivery_fees' => $delivery_fees,
+            'commission' => $commission,
+            'net' => $net,
+        ]);
         // $store->notifications()->create([
         //     'title' => 'You Have a New Order',
         //     'content' => 'you have new order from '  . $request->user()->name . ' and Total Price is  ' . $total,
@@ -77,7 +76,7 @@ class OrderService
         return $order;
     }
 
-    public function calculateVariationCost($price, $qty)
+    public function calculateVariationsubtotal($price, $qty)
     {
         return ($price * $qty);
     }

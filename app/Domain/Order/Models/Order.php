@@ -15,7 +15,7 @@ class Order extends Model
         'state',
         'notes',
         'total',
-        'cost',
+        'subtotal',
         'delivery_fees',
         'commission',
         'net',
@@ -24,6 +24,11 @@ class Order extends Model
         'address_id',
         'pickup_address_id',
         'shipping_address_id',
+        'uuid',
+        'placed_at',
+        'packaged_at',
+        'shipped_at',
+        'shipping_type_id'
     ];
 
     public function user()

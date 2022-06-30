@@ -33,7 +33,6 @@ class UserAuthenticationTest extends TestCase
         $response->assertOk();
         $user = User::first();
         $this->assertEquals('Mustafa Khaled', $user->name);
-        $this->assertArrayHasKey('token', $response->json());
     }
 
     public function test_a_user_can_login()
@@ -45,7 +44,7 @@ class UserAuthenticationTest extends TestCase
             'password' => self::PASSWORD,
         ])->assertOk();
 
-        $this->assertArrayHasKey('token', $response->json());
+        $response->assertHeader('Authorization', $response->headers->get('Authorization'));
     }
 
     public function test_a_user_can_logout()
@@ -58,7 +57,8 @@ class UserAuthenticationTest extends TestCase
             'password' => self::PASSWORD,
         ])->assertOk();
 
-        $token = $loginResponse->json()['token'];
+        $token = $loginResponse->headers->get('Authorization');
+
         $headers = ['Authorization' => 'Bearer ' . $token];
 
         $logoutResponse = $this->post(route('auth.logout'), [], $headers)->assertOk();

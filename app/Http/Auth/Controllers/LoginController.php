@@ -3,6 +3,7 @@
 namespace App\Http\Auth\Controllers;
 
 use App\Http\Auth\Requests\LoginRequest;
+use App\Http\Auth\Resources\UserResource;
 use Application\Controllers\BaseController;
 use Domain\User\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -25,10 +26,17 @@ class LoginController extends BaseController
                     'email' => ['The provided credentials are incorrect.'],
                 ]);
             }
-            return $this->ok(
+            $token = $user->createToken($request->email, ['customer'])->plainTextToken;
+            // return $this->ok(
+            //     [
+            //         'user' => new UserResource($user),
+            //         'token' => $user->createToken($request->email, ['customer'])->plainTextToken,
+            //     ]
+            // );
+            return (new UserResource($user))->response()->withHeaders(
                 [
-                    'user' => $user,
-                    'token' => $user->createToken($request->email, ['customer'])->plainTextToken,
+                    'Authorization' =>  $token,
+                    'Access-Control-Expose-Headers' => 'Authorization'
                 ]
             );
         } catch (\Exception $exception) {

@@ -5,13 +5,14 @@ namespace App\Http\Auth\Controllers;
 use App\Http\Auth\Requests\LoginRequest;
 use App\Http\Auth\Resources\UserResource;
 use Application\Controllers\BaseController;
+use Domain\Auth\Traits\HasLogin;
 use Domain\User\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends BaseController
 {
+    use HasLogin;
     /**
      * Display a listing of the resource.
      *
@@ -21,26 +22,14 @@ class LoginController extends BaseController
     {
         try {
             $user = User::where('email', $request->email)->first();
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                throw ValidationException::withMessages([
-                    'email' => ['The provided credentials are incorrect.'],
-                ]);
-            }
-            $token = $user->createToken($request->email, ['customer'])->plainTextToken;
-            // return $this->ok(
-            //     [
-            //         'user' => new UserResource($user),
-            //         'token' => $user->createToken($request->email, ['customer'])->plainTextToken,
-            //     ]
-            // );
-            return (new UserResource($user))->response()->withHeaders(
-                [
-                    'Authorization' =>  $token,
-                    'Access-Control-Expose-Headers' => 'Authorization'
-                ]
-            );
+            return $this->login($user, $request->validated('password'), $user->password);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage());
         }
+    }
+
+    public function user()
+    {
+        return new UserResource(Auth::user());
     }
 }

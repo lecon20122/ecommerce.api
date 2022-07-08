@@ -30,6 +30,7 @@ class UserAuthenticationTest extends TestCase
             'name' => 'Mustafa Khaled',
             'email' => $this->faker->email,
             'password' => self::PASSWORD,
+            'phone' =>  $this->faker()->unique()->phoneNumber,
         ]);
         $response->assertOk();
         $user = User::first();

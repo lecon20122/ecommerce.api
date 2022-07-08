@@ -13,16 +13,18 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends BaseController
 {
     use HasLogin;
+
     /**
      * Display a listing of the resource.
      *
+     * @param LoginRequest $request
      * @return JsonResponse
      */
-    public function __invoke(LoginRequest $request)
+    public function __invoke(LoginRequest $request): JsonResponse
     {
         try {
             $user = User::where('email', $request->email)->first();
-            return $this->login($user, $request->validated('password'), $user->password);
+            return $this->login($user, $request->validated('password'));
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage());
         }

@@ -27,7 +27,7 @@ class AuthTest extends TestCase
             'email' => $user->email,
             'password' => self::PASSWORD,
         ], ['Accept' => 'application/json'])->assertOk();
-
+        
         $this->assertEquals($user->email, $response['user']['email']);
         $this->assertArrayHasKey('token' , $response->json());
     }

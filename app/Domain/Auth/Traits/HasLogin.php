@@ -2,6 +2,7 @@
 
 namespace Domain\Auth\Traits;
 
+use App\Http\Auth\Requests\LoginRequest;
 use App\Http\Auth\Resources\UserResource;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -9,32 +10,33 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 trait HasLogin
 {
     /**
-     * uses Hash::check() to validate the hashed password
+     * Undocumented function
      *
-     * @param [Authenticatable] $user
-     * @param string $value
-     * @return JsonResponse
-     * @throws ValidationException
-     * @throws Exception
+     * @param LoginRequest $request
+     * @param [type] $guard
+     * @return void
      */
-    public function login($user, string $value): JsonResponse
+    public function login($request, $guard)
     {
-        if (!$user instanceof Authenticatable) throw new Exception('this model not extending Authenticatable');
+        if (Auth::guard($guard)->attempt($request->validated())) {
+            $request->session()->regenerate(); // Session fixation vulnerability
 
-        if (!$user || !Hash::check($value, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+            $user = auth($guard)->user();
+            $token = $user->createToken($user->email, ['customer'])->plainTextToken;
+
+            return $this->ok([
+                'user' => new UserResource($user),
+                'token' => $token
             ]);
         }
-        $token = $user->createToken($user->email, ['customer'])->plainTextToken;
 
-        return $this->ok([
-            'user' => new UserResource($user),
-            'token' => $token
-        ])->withCookie(cookie('token', $token, 24 * 60, '/', null, null, true, true, 'strict'));
+        throw ValidationException::withMessages([
+            'email' => 'the provided credentials are incorrect'
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Auth\Controllers;
 
 use Application\Controllers\BaseController;
+use Domain\Auth\Traits\HasLogout;
 use Domain\User\Models\User;
 use Faker\Provider\Base;
 use Illuminate\Http\JsonResponse;
@@ -11,25 +12,19 @@ use Illuminate\Support\Facades\DB;
 
 class LogoutController extends BaseController
 {
+    use HasLogout;
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
      * @return JsonResponse
      */
-    public function __invoke(): JsonResponse
+    public function __invoke(Request $request)
     {
         try {
-            DB::beginTransaction();
-            auth()->user()->tokens()->delete();
-            DB::commit();
-            if (auth()->user()->tokens->isNotEmpty()) {
-                return $this->sendError('something went wrong');
-            }
-            return $this->sendSuccess('user logged out successfully');
+            return $this->logout($request, 'web');
         } catch (\Exception $exception) {
-            DB::rollBack();
-            $this->sendError($exception->getMessage(), $exception->getCode());
+            $this->sendError($exception->getMessage());
         }
     }
 }

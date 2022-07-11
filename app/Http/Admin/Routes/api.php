@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', AdminLoginController::class)->name('admin.login');
 
 Route::middleware(['auth:admin'])->group(function () {
+    Route::post('verify', [AdminLoginController::class, 'verify'])->name('admin.verify');
     Route::get('users', [UserController::class, 'index'])->name('admin.users');
 });
-
-Route::get('protected', function () {
-    return auth('admin')->user();
-})->middleware(['auth:admin'])->name('protected');

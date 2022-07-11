@@ -24,7 +24,7 @@ class BaseController extends Controller
     public function ok(array $result, string $message = null): JsonResponse
     {
         if (!empty($message)) {
-            $response['message'] = $message;
+            $result['message'] = $message;
         }
         return response()->json($result);
     }
@@ -48,11 +48,8 @@ class BaseController extends Controller
      * @param array $errorMessages
      * @return JsonResponse
      */
-    public function sendError($error, int $code = 400, array $errorMessages = []): JsonResponse
+    public function sendError($error, int $code = 400): JsonResponse
     {
-        if (!empty($errorMessages)) {
-            $response['data'] = $errorMessages;
-        }
         return response()->json(['error' => $error], $code);
     }
 
@@ -64,11 +61,8 @@ class BaseController extends Controller
      */
     public function sendSuccess($message = null): JsonResponse
     {
-        $response = [
-            'success' => true,
-        ];
         if (!empty($message)) {
-            $response['message'] = $message;
+            $response['success'] = $message;
         }
         return response()->json($response, 200);
     }

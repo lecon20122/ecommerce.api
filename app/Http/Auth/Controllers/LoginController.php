@@ -23,8 +23,7 @@ class LoginController extends BaseController
     public function __invoke(LoginRequest $request): JsonResponse
     {
         try {
-            $user = User::where('email', $request->email)->first();
-            return $this->login($user, $request->validated('password'));
+            return $this->login($request, 'web');
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage());
         }

@@ -10,13 +10,19 @@ use Domain\User\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class UserController extends BaseController
 {
     public function index()
     {
         try {
-            return new UserResource(User::paginate(15));
+            $users =  new UserResource(User::paginate(15));
+            // dd($users);
+            // return response()->json($users);
+            return Inertia::render('Dashboard/customers/index' , [
+                'users' => $users
+            ]);
         } catch (Exception $exception) {
             $this->sendError($exception->getMessage());
         }

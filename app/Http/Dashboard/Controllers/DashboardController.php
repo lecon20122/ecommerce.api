@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Http\Dashboard\Controllers;
+
+use Application\Controllers\Controller;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+class DashboardController extends Controller
+{
+    public function index()
+    {
+        try {
+            return Inertia::render('Dashboard/index');
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+}

@@ -8,30 +8,39 @@ use App\Http\Auth\Resources\UserResource;
 use Application\Controllers\BaseController;
 use Domain\Auth\Traits\HasLogin;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 
 class AdminLoginController extends BaseController
 {
-    use HasLogin;
-
     /**
      * @param AdminLoginRequest $request
      * @return JsonResponse
      */
-    public function __invoke(AdminLoginRequest $request): JsonResponse
+    public function login(AdminLoginRequest $request)
     {
         try {
-            return $this->login($request, 'admin');
+            if (Auth::guard('admin')->attempt($request->validated())) {
+                return redirect(route('dashboard.index'));
+            }
         } catch (\Exception $exception) {
-            return response()->json($exception->getMessage());
+            return dd($exception->getMessage());
         }
     }
 
-    public function verify()
+    public function view()
     {
         try {
-            return new UserResource(auth('admin')->user());
-        } catch (\Exception $exception) {
-            return response()->json($exception->getMessage());
+            return Inertia::render('Auth/login');
+        } catch (\Throwable $th) {
+            return redirect()->back();
         }
+    }
+
+    public function logout()
+    {
+        auth('admin')->logout();
+        return redirect(route('admin.getLogin'));
     }
 }

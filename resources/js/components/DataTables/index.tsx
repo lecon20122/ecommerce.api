@@ -21,14 +21,15 @@ export default function DataTable<T>({ columns, data }: Props<T>) {
             {columns.length > 0 && columns.map((column, index) => (
               <th className="px-3 py-3" key={index}>{column.replace('_', ' ')}</th>
             ))}
+            <th className="px-3 py-3" >Controls</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y">
-          {data.map((item) => (
-            <tr>
+          {data.length > 0 && data.map((item, index) => (
+            <tr key={index}>
               {
                 columns.map((column, index) => (
-                  <td className="px-3 py-3" key={index} colSpan={index}>
+                  <td className="px-3 py-3" key={index}>
                     {(item as any)[column]}
                   </td>
                 ))

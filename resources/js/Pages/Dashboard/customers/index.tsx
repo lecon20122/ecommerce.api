@@ -57,7 +57,7 @@ export default function index({ users }: Props) {
     <DashboardLayout>
       <section className="container p-6 mx-auto">
         {/* <!-- scrolling horiz. table --> */}
-        <DataTable<User> columns={['id', 'name' , 'updated_at' , 'controls']} data={users.data} />
+        <DataTable<User> columns={['id', 'name', 'updated_at', 'created_at']} data={users.data} />
       </section>
     </DashboardLayout>
   )

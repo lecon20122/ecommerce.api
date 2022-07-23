@@ -17,7 +17,7 @@ class UserController extends BaseController
     public function index()
     {
         try {
-            $users =  new UserResource(User::paginate(15));
+            $users =  new UserResource(User::all());
             // dd($users);
             // return response()->json($users);
             return Inertia::render('Dashboard/customers/index' , [

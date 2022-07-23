@@ -1,5 +1,3 @@
-import { User } from './auth';
-
 export interface ResponseMessage {
   setErrors?: string,
   setStatus?: string,

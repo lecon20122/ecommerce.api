@@ -2,16 +2,18 @@
 
 namespace App\Domain\Category\Models;
 
+use App\Domain\Product\Models\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
-use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 
-class Category extends Model
+class Category extends Model implements HasMedia
 {
-    use HasFactory, HasTranslations, SoftDeletes;
+    use HasFactory, HasTranslations, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = ['title', 'slug', 'parent_id'];
     public $translatable = ['title', 'slug'];
@@ -29,6 +31,11 @@ class Category extends Model
     public function childrenRecursive()
     {
         return $this->children()->with('childrenRecursive');
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
     }
 
     public function setTitleAttribute($value)

@@ -4,6 +4,7 @@ namespace Domain\Auth\Traits;
 
 use App\Http\Auth\Requests\LoginRequest;
 use App\Http\Auth\Resources\UserResource;
+use Domain\User\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -21,22 +22,30 @@ trait HasLogin
      * @param [type] $guard
      * @return void
      */
-    public function login($request, $guard)
+    public function mobileLogin($request)
     {
-        if (Auth::guard($guard)->attempt($request->validated())) {
-            $request->session()->regenerate(); // Session fixation vulnerability
+        $user = User::where('email', $request->validated('email'))->first();
 
-            $user = auth($guard)->user();
-            $token = $user->createToken($user->email, ['customer'])->plainTextToken;
-
-            return $this->ok([
-                'user' => new UserResource($user),
-                'token' => $token
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
             ]);
         }
+
+        $token = $user->createToken($user->email, ['customer'])->plainTextToken;
+
+        return $this->ok([
+            'user' => new UserResource($user),
+            'token' => $token
+        ]);
 
         throw ValidationException::withMessages([
             'email' => 'the provided credentials are incorrect'
         ]);
+    }
+
+    public function clientLogin(LoginRequest $request)
+    {
+        return Auth::guard('web')->attempt($request->validated());
     }
 }

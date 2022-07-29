@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }: IDashboardLayout) {
         <Aside />
         <main className='w-full'>
           <Navbar />
-            {children}
+          {children}
         </main>
       </div>
     </div>

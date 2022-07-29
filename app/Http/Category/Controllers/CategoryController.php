@@ -24,9 +24,9 @@ class CategoryController extends BaseController
     public function index()
     {
         try {
-            return CategoryResource::collection(Cache::remember('categories', 3600, function () {
-                return Category::with('childrenRecursive')->whereNull('parent_id')->get(['title', 'slug', 'id']);
-            }));
+            return CategoryResource::collection(Category::with(
+                'products',
+            )->where('parent_id', '=', 21)->get());
         } catch (\Exception $exception) {
             return $this->sendError($exception->getMessage());
         }

@@ -14,3 +14,9 @@ export interface User extends ModelData {
   email: string;
   name: string;
 }
+
+
+export interface LoginInfo extends ResponseMessage {
+  email: string;
+  password: string;
+}

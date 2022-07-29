@@ -13,7 +13,7 @@ trait HasLogout
      * @param [type] $guard
      * @return void
      */
-    public function logout($request, $guard)
+    public function logout($request, $guard = null)
     {
         auth($guard)->user()->tokens()->delete();
         Auth::guard($guard)->logout();

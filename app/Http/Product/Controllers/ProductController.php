@@ -7,6 +7,7 @@ use App\Domain\Product\Models\Product;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
 use App\Http\Product\Resources\ProductResource;
+use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +26,7 @@ class ProductController extends BaseController
     public function index()
     {
         try {
-            $products = Product::with('media')->paginate(20, ['id', 'title', 'price', 'slug', 'description']);
+            $products = Product::with('media')->paginate(48, ['id', 'title', 'price', 'slug', 'description']);
             return ProductResource::collection($products);
         } catch (Exception $exception) {
             return $this->sendError($exception->getMessage(), 400);
@@ -49,12 +50,10 @@ class ProductController extends BaseController
      * @param ProductService $service
      * @return ProductResource
      */
-    public function store(StoreProductRequest $request, ProductService $service)
+    public function store(StoreProductRequest $request, ProductService $service, ImageService  $imageService)
     {
         try {
-            DB::beginTransaction();
-            $product = $service->store($request);
-            DB::commit();
+            $product = $service->store($request, $imageService);
             return new ProductResource($product);
         } catch (Exception $exception) {
             DB::rollBack();

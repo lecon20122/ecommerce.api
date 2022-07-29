@@ -2,6 +2,7 @@
 
 namespace App\Domain\Product\Models;
 
+use App\Domain\Category\Models\Category;
 use App\Domain\Store\Models\Store;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,8 @@ class Product extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['title', 'description', 'price' , 'store_id'];
+    protected $fillable = ['title', 'description', 'price', 'store_id'];
+    protected $with = ['media'];
 
     public function variations()
     {
@@ -28,6 +30,16 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Store::class);
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
+    }
     /**
      * @throws InvalidManipulation
      */
@@ -38,11 +50,5 @@ class Product extends Model implements HasMedia
 
         $this->addMediaConversion('small38x50')
             ->fit(Manipulations::FIT_CROP, 38, 50);
-    }
-
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
     }
 }

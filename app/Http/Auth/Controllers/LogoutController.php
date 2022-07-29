@@ -22,7 +22,7 @@ class LogoutController extends BaseController
     public function __invoke(Request $request)
     {
         try {
-            return $this->logout($request, 'web');
+            return $this->logout($request);
         } catch (\Exception $exception) {
             $this->sendError($exception->getMessage());
         }

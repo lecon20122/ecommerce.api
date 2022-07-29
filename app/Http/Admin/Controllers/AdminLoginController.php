@@ -2,14 +2,10 @@
 
 namespace App\Http\Admin\Controllers;
 
-use App\Domain\Admin\Models\Admin;
 use App\Http\Admin\Requests\AdminLoginRequest;
-use App\Http\Auth\Resources\UserResource;
 use Application\Controllers\BaseController;
-use Domain\Auth\Traits\HasLogin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class AdminLoginController extends BaseController

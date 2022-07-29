@@ -16,12 +16,13 @@ class MediaResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'file_name' => $this->file_name,
             'mime_type' => $this->mime_type,
-            'original_url' => $this->original_url,
-            'small_url' => 'https://product-cdn.nyc3.cdn.digitaloceanspaces.com' . $this->getPath('small38x50'),
-            'thumb_url' => 'https://product-cdn.nyc3.cdn.digitaloceanspaces.com' . $this->getPath('thumb232x320'),
+            'original_url' => $this->getPath(),
+            'small_url' => $this->getPath('small38x50'),
+            'thumb_url' => $this->getPath('thumb232x320'),
         ];
     }
 }

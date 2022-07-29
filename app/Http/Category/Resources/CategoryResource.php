@@ -2,6 +2,7 @@
 
 namespace App\Http\Category\Resources;
 
+use App\Http\Product\Resources\ProductResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryResource extends JsonResource
@@ -19,6 +20,7 @@ class CategoryResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'children' => CategoryResource::collection($this->whenLoaded('childrenRecursive')),
+            'products' => ProductResource::collection($this->whenLoaded('products')),
         ];
     }
 }

@@ -86,10 +86,10 @@ export default function Footer() {
             <aside className="w-1/2 sm:w-auto lg:w-40 mb-5">
               <h3 className="font-semibold">Apps</h3>
               <a href="#" className="mt-3 inline-block">
-                <img className="h-10" src="images/misc/btn-appstore.png" height="38" />
+                {/* <img className="h-10" src="images/misc/btn-appstore.png" height="38" /> */}
               </a>
               <a href="#" className="inline-block">
-                <img className="h-10" src="images/misc/btn-market.png" height="38" />
+                {/* <img className="h-10" src="images/misc/btn-market.png" height="38" /> */}
               </a>
             </aside>
             {/* <!-- col .// --> */}
@@ -102,7 +102,7 @@ export default function Footer() {
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="lg:flex justify-between">
             <div className="mb-3">
-              <img src="images/misc/payments.png" height="24" className="h-6" alt="Payment methods" />
+              {/* <img src="images/misc/payments.png" height="24" className="h-6" alt="Payment methods" /> */}
             </div>
             {/* <!-- col .// --> */}
             <div className="space-x-6">

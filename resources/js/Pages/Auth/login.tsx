@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from '@inertiajs/inertia-react'
 import route from 'ziggy-js';
-import Footer from "../../components/client/includes/footer";
 
 
 export default function AdminLogin() {
@@ -118,7 +117,6 @@ export default function AdminLogin() {
           {/* <!--  COMPONENT: SIGN IN //END --> */}
         </div>
       </section>
-      <Footer />
     </div>
   );
 }

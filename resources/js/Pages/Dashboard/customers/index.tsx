@@ -1,13 +1,9 @@
-import { faEllipsis, faEllipsisH, faPenAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react'
-import DataTable from '../../../components/DataTables';
-import DataGrid from '../../../components/DataTables/DataGrid';
-import DashboardLayout from '../../../layouts/dashboard'
+
+import React, { lazy, Suspense } from 'react'
 import { User } from '../../../types/auth';
-import { PaginatedData, ModelData } from '../../../types/globalTypes';
+import { PaginatedData, } from '../../../types/globalTypes';
 import { ColDef } from 'ag-grid-community';
+import type { DataGridType } from '../../../components/DataTables/DataGrid';
 
 interface IUsers extends PaginatedData {
   data: User[]
@@ -20,6 +16,9 @@ interface Props {
 
 
 export default function index({ users }: Props) {
+
+  const DataGrid = lazy(() => import('../../../components/DataTables/DataGrid')) as DataGridType;
+  const DashboardLayout = lazy(() => import('../../../layouts/dashboard'));
 
   const filterParams = {
     // provide comparator function
@@ -51,16 +50,18 @@ export default function index({ users }: Props) {
   const columns: ColDef[] = [
     { field: 'id', headerName: 'ID', },
     { field: 'name', headerName: 'Name', floatingFilter: true, flex: 1, cellClass: 'font-bold text-lg' },
-    { field: 'created_at', headerName: 'Join Date', filter: 'agDateColumnFilter', floatingFilter: true, filterParams:  filterParams },
+    { field: 'created_at', headerName: 'Join Date', filter: 'agDateColumnFilter', floatingFilter: true, filterParams: filterParams },
     { field: 'status', headerName: 'Status' },
   ]
   return (
-    <DashboardLayout>
-      <DataGrid<User>
-        gridData={users}
-        colDef={columns}
-        size={{ height: '90vh', width: 'auto' }}
-      />
-    </DashboardLayout>
+    <Suspense fallback={<div>Loading...</div>}>
+      <DashboardLayout>
+        <DataGrid<User>
+          gridData={users}
+          colDef={columns}
+          size={{ height: '90vh', width: 'auto' }}
+        />
+      </DashboardLayout>
+    </Suspense>
   )
 }

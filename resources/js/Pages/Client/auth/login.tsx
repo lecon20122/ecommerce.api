@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { lazy, Suspense, useState } from 'react'
 import { LoginInfo } from '../../../types/auth';
 
 
 export default function login() {
+
+  const Footer = lazy(() => import("../../../components/client/includes/footer"))
+
   const [formData, setFormData] = useState<LoginInfo>({ email: '', password: '' })
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -47,15 +50,15 @@ export default function login() {
               <span className="px-3 bg-white text-gray-400">or</span>
             </div>
 
-            <a href="#" className="mb-2 px-4 py-2 w-full flex items-center justify-center text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600">
+            {/* <a href="#" className="mb-2 px-4 py-2 w-full flex items-center justify-center text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600">
               <img src="images/icons/social/google.svg" className="mr-3" width="20" height="20" />
               Continue with Google
-            </a>
+            </a> */}
 
-            <a href="#" className="mb-2 px-4 py-2 w-full flex items-center justify-center text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600">
+            {/* <a href="#" className="mb-2 px-4 py-2 w-full flex items-center justify-center text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600">
               <img src="images/icons/social/facebook.svg" className="mr-3" width="20" height="20" />
               Continue with Facebook
-            </a>
+            </a> */}
 
             <p className="text-center mt-5">
               Don’t have an account?  <a className="text-blue-500" href="#">Sign up</a>
@@ -63,6 +66,9 @@ export default function login() {
           </form>
         </div>
       </div>
+      <Suspense fallback={<div>loading</div>}>
+        <Footer />
+      </Suspense>
     </section>
   )
 }

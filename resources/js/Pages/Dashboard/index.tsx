@@ -1,14 +1,16 @@
-import React from 'react'
-import Navbar from '../../includes/navbar'
-import DashboardLayout from '../../layouts/dashboard'
+import React, { lazy } from 'react'
+import { Suspense } from 'react';
 
 export default function index() {
+  const DashboardLayout = lazy(() => import('../../layouts/dashboard'));
   return (
-    <DashboardLayout>
-      <div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <DashboardLayout>
+        <div>
           'Home Page'
-      </div>
-    </DashboardLayout>
+        </div>
+      </DashboardLayout>
+    </Suspense>
   )
 }
 

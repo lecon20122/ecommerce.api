@@ -38,3 +38,5 @@ export default function DataGrid<T>({ size, showNoRowsOverlay, gridData, colDef,
     </div>
   )
 }
+
+export type DataGridType = typeof DataGrid

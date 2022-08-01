@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { ModelData, PaginatedData } from '../../types/globalTypes';
-import { User } from '../../types/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faPenAlt, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 

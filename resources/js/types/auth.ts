@@ -1,4 +1,4 @@
-import { ResponseMessage, ModelData } from './globalTypes';
+import { ResponseMessage, ModelCommonData } from './globalTypes';
 export interface GetUser extends ResponseMessage {
   user?: User | null;
 }
@@ -10,7 +10,7 @@ export interface LoginInfo extends ResponseMessage {
 
 
 
-export interface User extends ModelData {
+export interface User extends ModelCommonData {
   email: string;
   name: string;
 }

@@ -63,8 +63,6 @@ var inertia_react_1 = __webpack_require__(/*! @inertiajs/inertia-react */ "./nod
 
 var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
 
-var footer_1 = __importDefault(__webpack_require__(/*! ../../components/client/includes/footer */ "./resources/js/components/client/includes/footer.tsx"));
-
 function AdminLogin() {
   var _this = this;
 
@@ -174,7 +172,7 @@ function AdminLogin() {
   }, "Don\u2019t have an account?", react_1["default"].createElement("a", {
     className: "text-blue-500",
     href: "#"
-  }, "Sign up")))))), react_1["default"].createElement(footer_1["default"], null));
+  }, "Sign up")))))));
 }
 
 exports["default"] = AdminLogin;
@@ -251,6 +249,12 @@ Object.defineProperty(exports, "__esModule", ({
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
 function login() {
+  var Footer = (0, react_1.lazy)(function () {
+    return Promise.resolve().then(function () {
+      return __importStar(__webpack_require__(/*! ../../../components/client/includes/footer */ "./resources/js/components/client/includes/footer.tsx"));
+    });
+  });
+
   var _ref = (0, react_1.useState)({
     email: '',
     password: ''
@@ -320,28 +324,14 @@ function login() {
     className: "text-center border-b my-5 leading-[0.1rem]"
   }, react_1["default"].createElement("span", {
     className: "px-3 bg-white text-gray-400"
-  }, "or")), react_1["default"].createElement("a", {
-    href: "#",
-    className: "mb-2 px-4 py-2 w-full flex items-center justify-center text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"
-  }, react_1["default"].createElement("img", {
-    src: "images/icons/social/google.svg",
-    className: "mr-3",
-    width: "20",
-    height: "20"
-  }), "Continue with Google"), react_1["default"].createElement("a", {
-    href: "#",
-    className: "mb-2 px-4 py-2 w-full flex items-center justify-center text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"
-  }, react_1["default"].createElement("img", {
-    src: "images/icons/social/facebook.svg",
-    className: "mr-3",
-    width: "20",
-    height: "20"
-  }), "Continue with Facebook"), react_1["default"].createElement("p", {
+  }, "or")), react_1["default"].createElement("p", {
     className: "text-center mt-5"
   }, "Don\u2019t have an account?  ", react_1["default"].createElement("a", {
     className: "text-blue-500",
     href: "#"
-  }, "Sign up"))))));
+  }, "Sign up"))))), react_1["default"].createElement(react_1.Suspense, {
+    fallback: react_1["default"].createElement("div", null, "loading")
+  }, react_1["default"].createElement(Footer, null)));
 }
 
 exports["default"] = login;
@@ -357,6 +347,145 @@ exports["default"] = login;
 "use strict";
 
 
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+function HomePage() {
+  var AppLayout = (0, react_1.lazy)(function () {
+    return Promise.resolve().then(function () {
+      return __importStar(__webpack_require__(/*! ../../layouts/client */ "./resources/js/layouts/client.tsx"));
+    });
+  });
+  var CategoriesNavigation = (0, react_1.lazy)(function () {
+    return Promise.resolve().then(function () {
+      return __importStar(__webpack_require__(/*! ../../components/client/includes/categoriesNavigation */ "./resources/js/components/client/includes/categoriesNavigation.tsx"));
+    });
+  });
+  var Hero = (0, react_1.lazy)(function () {
+    return Promise.resolve().then(function () {
+      return __importStar(__webpack_require__(/*! ../../components/client/includes/hero */ "./resources/js/components/client/includes/hero.tsx"));
+    });
+  });
+  var HomePageCategories = (0, react_1.lazy)(function () {
+    return Promise.resolve().then(function () {
+      return __importStar(__webpack_require__(/*! ../../components/client/shards/homePageCategories */ "./resources/js/components/client/shards/homePageCategories.tsx"));
+    });
+  });
+  return react_1["default"].createElement("div", {
+    className: 'bg-[#EAEDED]'
+  }, react_1["default"].createElement(react_1.Suspense, {
+    fallback: react_1["default"].createElement("div", null, react_1["default"].createElement("h1", null, "loading..."))
+  }, react_1["default"].createElement(AppLayout, null, react_1["default"].createElement(Hero, null), react_1["default"].createElement(CategoriesNavigation, null), react_1["default"].createElement(HomePageCategories, null))));
+}
+
+exports["default"] = HomePage;
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Dashboard/categories/index.tsx":
+/*!***********************************************************!*\
+  !*** ./resources/js/Pages/Dashboard/categories/index.tsx ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
 var __importDefault = this && this.__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
     "default": mod
@@ -367,23 +496,231 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
-var categoriesNavigation_1 = __importDefault(__webpack_require__(/*! ../../components/client/includes/categoriesNavigation */ "./resources/js/components/client/includes/categoriesNavigation.tsx"));
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
 
-var hero_1 = __importDefault(__webpack_require__(/*! ../../components/client/includes/hero */ "./resources/js/components/client/includes/hero.tsx"));
+var formDialog_1 = __importDefault(__webpack_require__(/*! ../../shards/formDialog */ "./resources/js/Pages/shards/formDialog.tsx"));
 
-var homePageCategories_1 = __importDefault(__webpack_require__(/*! ../../components/client/shards/homePageCategories */ "./resources/js/components/client/shards/homePageCategories.tsx"));
+var dashboard_1 = __importDefault(__webpack_require__(/*! ../../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
 
-var client_1 = __importDefault(__webpack_require__(/*! ../../layouts/client */ "./resources/js/layouts/client.tsx"));
+var DataGrid_1 = __importDefault(__webpack_require__(/*! ../../../components/DataTables/DataGrid */ "./resources/js/components/DataTables/DataGrid.tsx"));
 
-function HomePage() {
-  return react_1["default"].createElement("div", {
-    className: 'bg-[#EAEDED]'
-  }, react_1["default"].createElement(client_1["default"], null, react_1["default"].createElement(hero_1["default"], null), react_1["default"].createElement(categoriesNavigation_1["default"], null), react_1["default"].createElement(homePageCategories_1["default"], null)));
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+var react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var free_regular_svg_icons_1 = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.js");
+
+function index(_ref) {
+  var categories = _ref.categories,
+      locale = _ref.locale;
+
+  var _ref2 = (0, react_hook_form_1.useForm)(),
+      register = _ref2.register,
+      handleSubmit = _ref2.handleSubmit,
+      watch = _ref2.watch,
+      errors = _ref2.formState.errors,
+      reset = _ref2.reset,
+      setValue = _ref2.setValue,
+      control = _ref2.control;
+
+  var _ref3 = (0, react_1.useState)(false),
+      _ref4 = _slicedToArray(_ref3, 2),
+      openAddDialog = _ref4[0],
+      setOpenAddDialog = _ref4[1];
+
+  var _ref5 = (0, react_1.useState)(false),
+      _ref6 = _slicedToArray(_ref5, 2),
+      openUpdateDialog = _ref6[0],
+      setOpenUpdateDialog = _ref6[1];
+
+  var _ref7 = (0, react_1.useState)(false),
+      _ref8 = _slicedToArray(_ref7, 2),
+      openDeleteDialog = _ref8[0],
+      setOpenDeleteDialog = _ref8[1];
+
+  var _ref9 = (0, react_1.useState)(),
+      _ref10 = _slicedToArray(_ref9, 2),
+      dataWillBeUpdated = _ref10[0],
+      setDataWillBeUpdated = _ref10[1];
+
+  var handleAddDialog = function handleAddDialog() {
+    setOpenAddDialog(!openAddDialog);
+  };
+
+  var handleUpdateDialog = function handleUpdateDialog(event, params) {
+    setOpenUpdateDialog(!openUpdateDialog);
+    setDataWillBeUpdated(Object.assign({}, params.data));
+    console.log('====================================');
+    console.log(params);
+    console.log(dataWillBeUpdated);
+    console.log('====================================');
+  };
+
+  var handleDeleteDialog = function handleDeleteDialog() {
+    setOpenDeleteDialog(!openDeleteDialog);
+  };
+
+  var columns = [{
+    field: 'id',
+    headerName: 'ID'
+  }, {
+    field: "title.".concat(locale),
+    headerName: 'Title',
+    floatingFilter: true,
+    flex: 1,
+    cellClass: 'font-bold'
+  }, {
+    field: "parent.title.".concat(locale),
+    headerName: 'Parent',
+    floatingFilter: true,
+    cellClass: 'font-bold'
+  }, {
+    field: 'created_at',
+    headerName: 'Created At',
+    filter: 'agDateColumnFilter',
+    floatingFilter: true
+  }, {
+    headerName: 'Actions',
+    cellRenderer: function cellRenderer(params) {
+      return react_1["default"].createElement("div", null, react_1["default"].createElement(material_1.Button, {
+        onClick: function onClick(event) {
+          return handleUpdateDialog(event, params);
+        }
+      }, "UPDATE"));
+    }
+  }];
+
+  var formSubmitHandler = function formSubmitHandler(data) {
+    var resolveData = Object.assign({}, data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.categories.store'), resolveData);
+    reset();
+  };
+
+  var selectParentMenuItems = categories.map(function (category) {
+    return react_1["default"].createElement(material_1.MenuItem, {
+      value: category.id,
+      key: category.id
+    }, category.title.en);
+  });
+  return react_1["default"].createElement(dashboard_1["default"], null, react_1["default"].createElement("div", null, react_1["default"].createElement("div", {
+    id: 'update'
+  }, react_1["default"].createElement(formDialog_1["default"], {
+    btnLabel: 'Update Category',
+    header: 'Update Category',
+    handleClose: function handleClose() {
+      return setOpenUpdateDialog(!openUpdateDialog);
+    },
+    open: openUpdateDialog
+  }, react_1["default"].createElement("form", {
+    onSubmit: handleSubmit(formSubmitHandler)
+  }, react_1["default"].createElement(material_1.InputLabel, {
+    id: "demo-simple-select-standard-label",
+    margin: 'dense'
+  }, "Choose Parent ", react_1["default"].createElement("small", null, "optional")), react_1["default"].createElement(react_hook_form_1.Controller, {
+    control: control,
+    name: 'parent_id',
+    render: function render() {
+      return react_1["default"].createElement(material_1.Select, {
+        labelId: "demo-simple-select-standard-label",
+        id: "demo-simple-select-standard",
+        label: "Select Parent Category",
+        margin: "dense",
+        fullWidth: true,
+        defaultValue: '',
+        autoFocus: true
+      }, selectParentMenuItems);
+    }
+  }), react_1["default"].createElement(material_1.TextField, Object.assign({}, register('title'), {
+    autoFocus: true,
+    margin: "dense",
+    id: "title",
+    name: 'title',
+    label: "Category Title",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.Button, {
+    variant: "outlined",
+    component: "label"
+  }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
+    icon: free_regular_svg_icons_1.faFileImage
+  }), " ", react_1["default"].createElement("span", {
+    className: 'ml-2'
+  }, "add Image"), react_1["default"].createElement("input", Object.assign({}, register('images'), {
+    type: "file",
+    name: 'images',
+    hidden: true
+  }))), react_1["default"].createElement(material_1.DialogActions, null, react_1["default"].createElement(material_1.Button, {
+    type: 'submit',
+    color: "primary",
+    variant: 'contained'
+  }, "Submit"))))), react_1["default"].createElement("div", {
+    id: 'add'
+  }, react_1["default"].createElement(material_1.Button, {
+    className: "absolute top-3 lg:left-24",
+    variant: 'contained',
+    onClick: handleAddDialog
+  }, "Add Category"), react_1["default"].createElement(formDialog_1["default"], {
+    btnLabel: 'Add Category',
+    header: 'Create New Category',
+    handleClose: handleAddDialog,
+    open: openAddDialog
+  }, react_1["default"].createElement("form", {
+    onSubmit: handleSubmit(formSubmitHandler)
+  }, react_1["default"].createElement(material_1.InputLabel, {
+    id: "demo-simple-select-standard-label",
+    margin: 'dense'
+  }, "Choose Parent ", react_1["default"].createElement("small", null, "optional")), react_1["default"].createElement(material_1.Select, Object.assign({}, register('parent_id'), {
+    labelId: "demo-simple-select-standard-label",
+    id: "demo-simple-select-standard",
+    label: "Select Parent Category",
+    margin: "dense",
+    name: 'parent_id',
+    fullWidth: true,
+    autoFocus: true
+  }), react_1["default"].createElement(material_1.MenuItem, {
+    value: ''
+  }, "No Parent"), selectParentMenuItems), react_1["default"].createElement(material_1.TextField, Object.assign({}, register('title'), {
+    autoFocus: true,
+    margin: "dense",
+    id: "title",
+    name: 'title',
+    label: "Category Title",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.Button, {
+    variant: "outlined",
+    component: "label"
+  }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
+    icon: free_regular_svg_icons_1.faFileImage
+  }), " ", react_1["default"].createElement("span", {
+    className: 'ml-2'
+  }, "add Image"), react_1["default"].createElement("input", Object.assign({}, register('images'), {
+    type: "file",
+    name: 'images',
+    hidden: true
+  }))), react_1["default"].createElement(material_1.DialogActions, null, react_1["default"].createElement(material_1.Button, {
+    type: 'submit',
+    color: "primary",
+    variant: 'contained'
+  }, "Submit"))))), react_1["default"].createElement(DataGrid_1["default"], {
+    gridData: categories,
+    colDef: columns,
+    size: {
+      height: '90vh',
+      width: 'auto'
+    }
+  })));
 }
 
-exports["default"] = HomePage;
+exports["default"] = index;
 
 /***/ }),
 
@@ -396,24 +733,64 @@ exports["default"] = HomePage;
 "use strict";
 
 
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
 };
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-
-var DataGrid_1 = __importDefault(__webpack_require__(/*! ../../../components/DataTables/DataGrid */ "./resources/js/components/DataTables/DataGrid.tsx"));
-
-var dashboard_1 = __importDefault(__webpack_require__(/*! ../../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
 function index(_ref) {
   var users = _ref.users;
+  var DataGrid = (0, react_1.lazy)(function () {
+    return Promise.resolve().then(function () {
+      return __importStar(__webpack_require__(/*! ../../../components/DataTables/DataGrid */ "./resources/js/components/DataTables/DataGrid.tsx"));
+    });
+  });
+  var DashboardLayout = (0, react_1.lazy)(function () {
+    return Promise.resolve().then(function () {
+      return __importStar(__webpack_require__(/*! ../../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
+    });
+  });
   var filterParams = {
     // provide comparator function
     comparator: function comparator(filterLocalDateAtMidnight, cellValue) {
@@ -459,14 +836,16 @@ function index(_ref) {
     field: 'status',
     headerName: 'Status'
   }];
-  return react_1["default"].createElement(dashboard_1["default"], null, react_1["default"].createElement(DataGrid_1["default"], {
+  return react_1["default"].createElement(react_1.Suspense, {
+    fallback: react_1["default"].createElement("div", null, "Loading...")
+  }, react_1["default"].createElement(DashboardLayout, null, react_1["default"].createElement(DataGrid, {
     gridData: users,
     colDef: columns,
     size: {
       height: '90vh',
       width: 'auto'
     }
-  }));
+  })));
 }
 
 exports["default"] = index;
@@ -482,6 +861,78 @@ exports["default"] = index;
 "use strict";
 
 
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+function index() {
+  var DashboardLayout = (0, react_1.lazy)(function () {
+    return Promise.resolve().then(function () {
+      return __importStar(__webpack_require__(/*! ../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
+    });
+  });
+  return react_1["default"].createElement(react_2.Suspense, {
+    fallback: react_1["default"].createElement("div", null, "Loading...")
+  }, react_1["default"].createElement(DashboardLayout, null, react_1["default"].createElement("div", null, "'Home Page'")));
+}
+
+exports["default"] = index;
+
+/***/ }),
+
+/***/ "./resources/js/Pages/shards/formDialog.tsx":
+/*!**************************************************!*\
+  !*** ./resources/js/Pages/shards/formDialog.tsx ***!
+  \**************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var __importDefault = this && this.__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
     "default": mod
@@ -492,15 +943,47 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 
+var Button_1 = __importDefault(__webpack_require__(/*! @mui/material/Button */ "./node_modules/@mui/material/Button/index.js"));
+
+var Dialog_1 = __importDefault(__webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/index.js"));
+
+var DialogActions_1 = __importDefault(__webpack_require__(/*! @mui/material/DialogActions */ "./node_modules/@mui/material/DialogActions/index.js"));
+
+var DialogContent_1 = __importDefault(__webpack_require__(/*! @mui/material/DialogContent */ "./node_modules/@mui/material/DialogContent/index.js"));
+
+var DialogContentText_1 = __importDefault(__webpack_require__(/*! @mui/material/DialogContentText */ "./node_modules/@mui/material/DialogContentText/index.js"));
+
+var DialogTitle_1 = __importDefault(__webpack_require__(/*! @mui/material/DialogTitle */ "./node_modules/@mui/material/DialogTitle/index.js"));
+
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
-var dashboard_1 = __importDefault(__webpack_require__(/*! ../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
+var progress_1 = __webpack_require__(/*! @inertiajs/progress */ "./node_modules/@inertiajs/progress/dist/index.js");
 
-function index() {
-  return react_1["default"].createElement(dashboard_1["default"], null, react_1["default"].createElement("div", null, "'Home Page'"));
+function FormDialog(_ref) {
+  var children = _ref.children,
+      header = _ref.header,
+      content = _ref.content,
+      _ref$open = _ref.open,
+      open = _ref$open === void 0 ? false : _ref$open,
+      handleClose = _ref.handleClose;
+  progress_1.InertiaProgress.init({
+    showSpinner: true,
+    delay: 250
+  });
+  return react_1["default"].createElement("div", {
+    className: 'relative'
+  }, react_1["default"].createElement(Dialog_1["default"], {
+    open: open,
+    onClose: handleClose,
+    fullWidth: true
+  }, react_1["default"].createElement(DialogActions_1["default"], null, react_1["default"].createElement(Button_1["default"], {
+    onClick: handleClose,
+    color: "secondary",
+    variant: 'text'
+  }, "X")), react_1["default"].createElement(DialogTitle_1["default"], null, header), react_1["default"].createElement(DialogContent_1["default"], null, react_1["default"].createElement(DialogContentText_1["default"], null, content), children)));
 }
 
-exports["default"] = index;
+exports["default"] = FormDialog;
 
 /***/ }),
 
@@ -541,7 +1024,7 @@ function DataGrid(_ref) {
 
   };
   return react_1["default"].createElement("div", {
-    className: 'container p-6 mx-auto ag-theme-balham',
+    className: 'container p-6 mx-auto ag-theme-material',
     style: size
   }, react_1["default"].createElement(ag_grid_react_1.AgGridReact, {
     rowSelection: 'multiple',
@@ -724,18 +1207,10 @@ function Footer() {
   }, "Apps"), react_1["default"].createElement("a", {
     href: "#",
     className: "mt-3 inline-block"
-  }, react_1["default"].createElement("img", {
-    className: "h-10",
-    src: "images/misc/btn-appstore.png",
-    height: "38"
-  })), react_1["default"].createElement("a", {
+  }), react_1["default"].createElement("a", {
     href: "#",
     className: "inline-block"
-  }, react_1["default"].createElement("img", {
-    className: "h-10",
-    src: "images/misc/btn-market.png",
-    height: "38"
-  })))))), react_1["default"].createElement("section", {
+  }))))), react_1["default"].createElement("section", {
     className: "bg-blue-700 py-6 text-white"
   }, react_1["default"].createElement("div", {
     className: "container max-w-screen-xl mx-auto px-4"
@@ -743,12 +1218,7 @@ function Footer() {
     className: "lg:flex justify-between"
   }, react_1["default"].createElement("div", {
     className: "mb-3"
-  }, react_1["default"].createElement("img", {
-    src: "images/misc/payments.png",
-    height: "24",
-    className: "h-6",
-    alt: "Payment methods"
-  })), react_1["default"].createElement("div", {
+  }), react_1["default"].createElement("div", {
     className: "space-x-6"
   }, react_1["default"].createElement("nav", {
     className: "text-sm space-x-4"
@@ -1229,8 +1699,8 @@ function Aside() {
     className: "ml-3"
   }, "Dashboard"))), react_1["default"].createElement("li", {
     className: "hover:bg-blue-100 relative"
-  }, react_1["default"].createElement("a", {
-    href: "admin-form-add.html",
+  }, react_1["default"].createElement(inertia_react_1.InertiaLink, {
+    href: (0, ziggy_js_1["default"])('admin.categories.index'),
     className: "flex px-5 py-3 items-center w-full text-white hover:text-white hover:bg-blue-700"
   }, react_1["default"].createElement("span", {
     "aria-hidden": "true"
@@ -1255,7 +1725,7 @@ function Aside() {
     d: "M16 10a4 4 0 0 1-8 0"
   }))), react_1["default"].createElement("span", {
     className: "ml-3"
-  }, "Products"))), react_1["default"].createElement("li", {
+  }, "Categories"))), react_1["default"].createElement("li", {
     className: "hover:bg-blue-100 relative"
   }, react_1["default"].createElement("a", {
     href: "#",
@@ -1515,6 +1985,58 @@ exports["default"] = AppLayout;
 "use strict";
 
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
 var __importDefault = this && this.__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
     "default": mod
@@ -1525,7 +2047,11 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var inertia_react_1 = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
 var aside_1 = __importDefault(__webpack_require__(/*! ../includes/aside */ "./resources/js/includes/aside.tsx"));
 
@@ -1535,6 +2061,13 @@ function DashboardLayout(_ref) {
   var children = _ref.children;
   var sidebar = document.getElementById("sidebar");
   var backdrop = document.getElementById("backdrop");
+
+  var _ref2 = (0, react_1.useState)(false),
+      _ref3 = _slicedToArray(_ref2, 2),
+      openFlashMessage = _ref3[0],
+      setOpenFlashMessage = _ref3[1];
+
+  var flash = (0, inertia_react_1.usePage)().props.flash;
 
   var hide_sidebar = function hide_sidebar() {
     sidebar === null || sidebar === void 0 ? void 0 : sidebar.classList.add("-left-full");
@@ -1553,7 +2086,21 @@ function DashboardLayout(_ref) {
     className: 'flex min-h-screen dark:bg-gray-900'
   }, react_1["default"].createElement(aside_1["default"], null), react_1["default"].createElement("main", {
     className: 'w-full'
-  }, react_1["default"].createElement(navbar_1["default"], null), children)));
+  }, react_1["default"].createElement(navbar_1["default"], null), flash.message && react_1["default"].createElement(material_1.Snackbar, {
+    open: true,
+    autoHideDuration: 6000,
+    onClose: function onClose() {
+      return setOpenFlashMessage(false);
+    }
+  }, react_1["default"].createElement(material_1.Alert, {
+    onClose: function onClose() {
+      return setOpenFlashMessage(false);
+    },
+    severity: flash.message,
+    sx: {
+      width: '100%'
+    }
+  }, flash.message)), children)));
 }
 
 exports["default"] = DashboardLayout;
@@ -1570,7 +2117,7 @@ exports["default"] = DashboardLayout;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 /* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
@@ -1585,7 +2132,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
     var el = _ref.el,
         App = _ref.App,
         props = _ref.props;
-    (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.render)( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(App, props), el);
+    (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(el).render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(App, props));
   }
 });
 
@@ -1652,12 +2199,18 @@ var map = {
 	"./Client/index.tsx": "./resources/js/Pages/Client/index.tsx",
 	"./Dashboard": "./resources/js/Pages/Dashboard/index.tsx",
 	"./Dashboard/": "./resources/js/Pages/Dashboard/index.tsx",
+	"./Dashboard/categories": "./resources/js/Pages/Dashboard/categories/index.tsx",
+	"./Dashboard/categories/": "./resources/js/Pages/Dashboard/categories/index.tsx",
+	"./Dashboard/categories/index": "./resources/js/Pages/Dashboard/categories/index.tsx",
+	"./Dashboard/categories/index.tsx": "./resources/js/Pages/Dashboard/categories/index.tsx",
 	"./Dashboard/customers": "./resources/js/Pages/Dashboard/customers/index.tsx",
 	"./Dashboard/customers/": "./resources/js/Pages/Dashboard/customers/index.tsx",
 	"./Dashboard/customers/index": "./resources/js/Pages/Dashboard/customers/index.tsx",
 	"./Dashboard/customers/index.tsx": "./resources/js/Pages/Dashboard/customers/index.tsx",
 	"./Dashboard/index": "./resources/js/Pages/Dashboard/index.tsx",
-	"./Dashboard/index.tsx": "./resources/js/Pages/Dashboard/index.tsx"
+	"./Dashboard/index.tsx": "./resources/js/Pages/Dashboard/index.tsx",
+	"./shards/formDialog": "./resources/js/Pages/shards/formDialog.tsx",
+	"./shards/formDialog.tsx": "./resources/js/Pages/shards/formDialog.tsx"
 };
 
 

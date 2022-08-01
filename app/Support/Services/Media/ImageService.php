@@ -11,7 +11,6 @@ class ImageService
 {
     public function imageUpload(Model $model, $keyName, $collectionName, $store_id)
     {
-        // dd($store_id . '_' . now()->timestamp . '.jpg');
         $model->addMultipleMediaFromRequest([$keyName])
             ->each(function ($fileAdder) use ($collectionName, $store_id) {
                 $fileAdder

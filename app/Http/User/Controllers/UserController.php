@@ -18,8 +18,6 @@ class UserController extends BaseController
     {
         try {
             $users =  new UserResource(User::all());
-            // dd($users);
-            // return response()->json($users);
             return Inertia::render('Dashboard/customers/index' , [
                 'users' => $users
             ]);

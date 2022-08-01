@@ -18,7 +18,7 @@ export interface PaginatedData {
   total: number;
 }
 
-export interface ModelData {
+export interface ModelCommonData {
   id: number;
   created_at?: string;
   updated_at?: string;
@@ -29,4 +29,6 @@ export interface Link {
   label: string;
   active: boolean;
 }
+
+
 

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 
 class Category extends Model implements HasMedia
@@ -21,6 +22,11 @@ class Category extends Model implements HasMedia
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
     }
 
     /**
@@ -42,5 +48,13 @@ class Category extends Model implements HasMedia
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = json_encode([app()->getLocale() => Str::slug($value, '-')]);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('categories')
+            ->singleFile()
+            ->useDisk(config('env-settings.media-filesystem'));
     }
 }

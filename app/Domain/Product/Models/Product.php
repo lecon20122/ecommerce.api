@@ -51,4 +51,12 @@ class Product extends Model implements HasMedia
         $this->addMediaConversion('small38x50')
             ->fit(Manipulations::FIT_CROP, 38, 50);
     }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('products')
+            ->singleFile()
+            ->useDisk(config('env-settings.media-filesystem'));
+    }
 }

@@ -4,15 +4,19 @@ namespace App\Http\Category\Controllers;
 
 use App\Domain\Category\Models\Category;
 use App\Http\Category\Resources\CategoryResource;
+use App\Http\Category\Services\CategoryService;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
+use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class CategoryController extends BaseController
 {
@@ -21,14 +25,17 @@ class CategoryController extends BaseController
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(CategoryService $categoryService)
     {
         try {
-            return CategoryResource::collection(Category::with(
-                'products',
-            )->where('parent_id', '=', 21)->get());
+            return Inertia::render(
+                'Dashboard/categories/index',
+                [
+                    'categories' => $categoryService->index()
+                ]
+            );
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage());
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -48,17 +55,14 @@ class CategoryController extends BaseController
      * @param storeCategoryRequest $request
      * @return CategoryResource
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request, CategoryService $categoryService, ImageService $imageService)
     {
         try {
-            //TODOs: add later the slug in StoreCategoryRequest
-            DB::beginTransaction();
-            $categories = Category::create($request->validated());
-            DB::commit();
-            return new CategoryResource($categories);
+            $categoryService->store($request, $imageService);
+            return redirect()->back()->with('message', 'success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->sendError($exception->getMessage());
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -79,9 +83,16 @@ class CategoryController extends BaseController
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit($id, CategoryService $categoryService)
     {
-        //
+        try {
+            return Inertia::render('Dashboard/categories/edit', [
+                'currentCategory' => $categoryService->edit($id),
+                'categories' => $categoryService->index()
+            ]);
+        } catch (Exception $exception) {
+            return $this->webMessage($exception->getMessage());
+        }
     }
 
     /**
@@ -91,13 +102,11 @@ class CategoryController extends BaseController
      * @param Category $category
      * @return CategoryResource
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category, CategoryService $categoryService, ImageService  $imageService)
     {
         try {
-            DB::beginTransaction();
-            $category->update($request->validated());
-            DB::commit();
-            return new CategoryResource($category);
+            $categoryService->update($request, $imageService, $category);
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
             $this->sendError($exception->getMessage(), $exception->getCode());

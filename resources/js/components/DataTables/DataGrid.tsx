@@ -22,7 +22,7 @@ export default function DataGrid<T>({ size, showNoRowsOverlay, gridData, colDef,
   }
 
   return (
-    <div className='container p-6 mx-auto ag-theme-balham' style={size} >
+    <div className='container p-6 mx-auto ag-theme-material' style={size} >
       <AgGridReact
         rowSelection={'multiple'}
         defaultColDef={{

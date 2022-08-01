@@ -79,8 +79,8 @@ export default function Aside() {
         </li>
 
         <li className="hover:bg-blue-100 relative">
-          <a
-            href="admin-form-add.html"
+          <InertiaLink
+            href={route('admin.categories.index')}
             className="flex px-5 py-3 items-center w-full text-white hover:text-white hover:bg-blue-700"
           >
             <span aria-hidden="true">
@@ -100,8 +100,8 @@ export default function Aside() {
                 <path d="M16 10a4 4 0 0 1-8 0"></path>
               </svg>
             </span>
-            <span className="ml-3">Products</span>
-          </a>
+            <span className="ml-3">Categories</span>
+          </InertiaLink>
         </li>
 
         <li className="hover:bg-blue-100 relative">

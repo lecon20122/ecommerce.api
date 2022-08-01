@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'media-filesystem' => env('MEDIA_FILESYSTEM', 'local'),
+    'media-filesystem' => env('MEDIA_FILESYSTEM'),
 ];

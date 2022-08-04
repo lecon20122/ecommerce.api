@@ -21,7 +21,14 @@ class CategoryService
     public function store(StoreCategoryRequest $request, ImageService $imageService)
     {
         DB::beginTransaction();
-        $category = Category::create($request->validated());
+        $data = $request->validated();
+
+        $data['title'] = [
+            'en' => $request->validated('en'),
+            'ar' => $request->validated('ar'),
+        ];
+
+        $category = Category::create($data);
 
         if ($category && $request->hasFile('images')) {
             $imageService->imageUpload($category, 'images',  'categories', $category->id);
@@ -39,11 +46,24 @@ class CategoryService
     public function update(UpdateCategoryRequest $request, ImageService $imageService, Category $category)
     {
         DB::beginTransaction();
-        $category->update($request->validated());
-        if ($category && $request->hasFile('images')) {
-            $category->media()->delete();
-            $imageService->imageUpload($category, 'images',  'categories', $category->id);
+        $data = $request->validated();
+
+        if ($request->has('en') || $request->has('ar')) {
+            $data['title'] = [
+                'en' => $request->validated('en'),
+                'ar' => $request->validated('ar'),
+            ];
         }
+
+        $category->update($data);
+
+        if ($category && $request->hasFile('images')) {
+            if ($imageService->deleteImage($request->validated('image_id'))) {
+                $imageService->imageUpload($category, 'images',  'categories', $category->id);
+            }
+        }
+
+        $category->save();
         DB::commit();
     }
 }

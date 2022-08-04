@@ -21,7 +21,7 @@ class AdminLoginController extends BaseController
                 return redirect(route('dashboard.index'));
             }
         } catch (\Exception $exception) {
-            return dd($exception->getMessage());
+            return $this->webMessage($exception->getMessage());
         }
     }
 

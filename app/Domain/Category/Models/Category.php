@@ -47,7 +47,7 @@ class Category extends Model implements HasMedia
     public function setTitleAttribute($value)
     {
         $this->attributes['title'] = $value;
-        $this->attributes['slug'] = json_encode([app()->getLocale() => Str::slug($value, '-')]);
+        $this->attributes['slug'] = Str::slug($value, '-');
     }
 
     public function registerMediaCollections(): void

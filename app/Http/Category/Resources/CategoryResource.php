@@ -19,7 +19,7 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'parent_id' => $this->parent_id,
-            'title' => $this->title,
+            'title' => $this->getTranslations('title'),
             'slug' => $this->slug,
             'children' => CategoryResource::collection($this->whenLoaded('children')),
             'products' => ProductResource::collection($this->whenLoaded('products')),

@@ -108,8 +108,9 @@ class CategoryController extends BaseController
             $categoryService->update($request, $imageService, $category);
             return $this->webMessage('success');
         } catch (Exception $exception) {
+            dd($exception->getMessage());
             DB::rollback();
-            $this->sendError($exception->getMessage(), $exception->getCode());
+            $this->webMessage($exception->getMessage());
         }
     }
 

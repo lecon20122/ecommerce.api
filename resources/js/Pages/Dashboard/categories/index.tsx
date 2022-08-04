@@ -19,7 +19,8 @@ interface Props {
 }
 interface IFormProps {
   parent_id?: string,
-  title: string,
+  en: string,
+  ar: string,
   images: string
 }
 
@@ -48,7 +49,8 @@ export default function CategoryIndex({ categories, locale }: Props) {
 
   const columns: ColDef[] = [
     { field: 'id', headerName: 'ID' },
-    { field: `title.${locale}`, headerName: 'Title', floatingFilter: true, flex: 1, cellClass: 'font-bold' },
+    { field: `title.ar`, headerName: 'Title AR', floatingFilter: true, flex: 1, cellClass: 'font-bold' },
+    { field: `title.en`, headerName: 'Title EN', floatingFilter: true, flex: 1, cellClass: 'font-bold' },
     { field: `parent.title.${locale}`, headerName: 'Parent', floatingFilter: true, cellClass: 'font-bold' },
     { field: 'created_at', headerName: 'Created At', filter: 'agDateColumnFilter', floatingFilter: true },
     {
@@ -77,7 +79,7 @@ export default function CategoryIndex({ categories, locale }: Props) {
           </Button>
           <FormDialog btnLabel='Add Category' header='Create New Category' handleClose={handleAddDialog} open={openAddDialog}>
             <form onSubmit={handleSubmit(formAddSubmitHandler)}>
-              <InputLabel id="demo-simple-select-standard-label" margin='dense'>Choose Parent <small>optional</small></InputLabel>
+              <InputLabel id="demo-simple-select-standard-label" margin='dense'>Choose Parent <small>(optional)</small></InputLabel>
               <Select
                 {...register('parent_id')}
                 labelId="demo-simple-select-standard-label"
@@ -92,12 +94,23 @@ export default function CategoryIndex({ categories, locale }: Props) {
                 {selectParentMenuItems}
               </Select>
               <TextField
-                {...register('title')}
+                {...register("en")}
                 autoFocus
                 margin="dense"
-                id="title"
-                name='title'
-                label="Category Title"
+                id="en"
+                name='en'
+                label="Category Title EN"
+                type="text"
+                fullWidth
+                variant="outlined"
+              />
+              <TextField
+                {...register("ar")}
+                autoFocus
+                margin="dense"
+                id="ar"
+                name='ar'
+                label="Category Title AR"
                 type="text"
                 fullWidth
                 variant="outlined"

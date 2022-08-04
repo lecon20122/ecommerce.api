@@ -26,23 +26,23 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //  User::factory(1000)->create();
-        // Admin::factory(1)->create();
+        Admin::factory(1)->create();
         // Cart::factory(5)->create();
         // Store::factory(2)->hasAddresses(3)->create();
         // seeding Products with Me
 
-        Category::factory(5)->create();
-        $categories = Category::all();
+        // Category::factory(5)->create();
+        // $categories = Category::all();
 
-        $folder = File::files(storage_path('images'));
-        foreach ($folder as  $path) {
-            $filePath = storage_path('images') . '/' . $path->getFilename();
-            echo 1;
-            $product = Product::factory()->create();
-            $product->categories()->attach(
-                $categories->random(rand(1, 5))->pluck('id')->toArray()
-            );
-            $product->addMedia($filePath)->toMediaCollection('products');
-        }
+        // $folder = File::files(storage_path('images'));
+        // foreach ($folder as  $path) {
+        //     $filePath = storage_path('images') . '/' . $path->getFilename();
+        //     echo 1;
+        //     $product = Product::factory()->create();
+        //     $product->categories()->attach(
+        //         $categories->random(rand(1, 5))->pluck('id')->toArray()
+        //     );
+        //     $product->addMedia($filePath)->toMediaCollection('products');
+        // }
     }
 }

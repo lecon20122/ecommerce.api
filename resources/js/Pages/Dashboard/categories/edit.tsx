@@ -9,6 +9,7 @@ import route from 'ziggy-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImage, faSave } from '@fortawesome/free-solid-svg-icons';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import RenderMediaList from '../../../components/shards/renderMediaList';
 
 interface Props {
   currentCategory: CategoryWithMedia
@@ -18,48 +19,55 @@ interface Props {
 
 interface IFormProps {
   parent_id?: string,
-  title: string,
+  en: string,
+  ar: string,
   images: string
+  image_id: number
 }
 
 
 export default function CategoryEdit({ currentCategory, locale, categories }: Props) {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormProps>()
+  const form = useForm<IFormProps>()
+  const { register, handleSubmit, formState: { errors }, reset, setValue } = form
 
-  const imageListItems = currentCategory.media?.map((img) => (
-    <ImageListItem key={img.id}>
-      <img
-        src={img.original_url}
-        alt={img.name}
-        loading="lazy"
-      />
-      <ImageListItemBar
-        title={img.name}
-        actionIcon={
-          <div>
-            <Button
-              variant="contained"
-              component="label"
-            >
-              <FontAwesomeIcon icon={faFileImage} /> <span className='ml-2'>Change Image</span>
-              <input
-                {...register('images')}
-                type="file"
-                name='images'
-                hidden
-              />
-            </Button>
-          </div>
-        }
-      />
-    </ImageListItem>
-  ))
+
+
+  // const imageListItems = currentCategory.media?.map((img) => (
+  //   <ImageListItem key={img.id}>
+  //     <img
+  //       src={img.original_url}
+  //       alt={img.name}
+  //       loading="lazy"
+  //     />
+  //     <ImageListItemBar
+  //       title={img.name}
+  //       actionIcon={
+  //         <div>
+  //           <Button
+  //             variant="contained"
+  //             component="label"
+  //             onClick={(e: any) => handleImageClick(e, img.id)}
+  //           >
+  //             <FontAwesomeIcon icon={faFileImage} /> <span className='ml-2'>Change Image</span>
+  //             <input
+  //               {...register('images')}
+  //               type="file"
+  //               name='images'
+  //               hidden
+  //             />
+  //           </Button>
+  //         </div>
+  //       }
+  //     />
+  //   </ImageListItem>
+  // ))
 
   const selectParentMenuItems = categories.map((category) => {
     return (
       <MenuItem value={category.id} key={category.id}>{category.title[locale as keyof typeof category.title]}</MenuItem>
     )
   })
+
 
 
   const handleUpdateCategory: SubmitHandler<IFormProps> = (data) => {
@@ -74,25 +82,25 @@ export default function CategoryEdit({ currentCategory, locale, categories }: Pr
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
           <form onSubmit={handleSubmit(handleUpdateCategory)} >
             <div className="-mx-3 md:flex mb-6">
-              <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-                <TextField {...register('title')} name={'title'} fullWidth label="Category Title" defaultValue={currentCategory.title} />
+              <div className="md:w-1/3 px-3 mb-6 md:mb-0">
+                <TextField {...register('ar')} name={'ar'} fullWidth label="Category Title AR" defaultValue={currentCategory.title.ar} />
               </div>
-              <div className="md:w-1/2 px-3">
+              <div className="md:w-1/3 px-3 mb-6 md:mb-0">
+                <TextField {...register('en')} name={'en'} fullWidth label="Category Title EN" defaultValue={currentCategory.title.en} />
+              </div>
+              <div className="md:w-1/3 px-3">
                 <Select margin="dense"
                   {...register('parent_id')}
                   name='parent_id'
                   fullWidth
                   autoFocus
                   defaultValue={currentCategory.parent_id ?? ''}>
-                  <MenuItem value={currentCategory.parent_id} selected>{currentCategory.title[locale as keyof typeof currentCategory.title]}</MenuItem>
                   {selectParentMenuItems}
                 </Select>
               </div>
             </div>
             <div className="-mx-3 md:flex mb-6">
-              <ImageList>
-                {imageListItems}
-              </ImageList>
+              <RenderMediaList media={currentCategory.media} form={form} />
             </div>
             <Button type='submit' color="primary" variant='contained'>save changes</Button>
           </form>

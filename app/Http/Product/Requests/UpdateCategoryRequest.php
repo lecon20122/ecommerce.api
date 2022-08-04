@@ -24,8 +24,10 @@ class UpdateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'nullable|string',
-            'parent_id' => 'integer|numeric',
+            'ar' => 'nullable|string',
+            'en' => 'nullable|string',
+            'parent_id' => 'integer|numeric|nullable',
+            'image_id' => 'nullable',
             'images' => 'nullable',
             'images.*' => 'mimes:jpg|max:1024',
         ];

@@ -69,6 +69,6 @@ class BaseController extends Controller
 
     public function webMessage($message)
     {
-        return redirect()->back()->with('message', $message);
+        return back()->with('message', $message);
     }
 }

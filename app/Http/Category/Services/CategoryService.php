@@ -24,8 +24,8 @@ class CategoryService
         $data = $request->validated();
 
         $data['title'] = [
-            'en' => $request->validated('en'),
-            'ar' => $request->validated('ar'),
+            'en' => $data['en'],
+            'ar' => $data['ar'],
         ];
 
         $category = Category::create($data);
@@ -58,7 +58,7 @@ class CategoryService
         $category->update($data);
 
         if ($category && $request->hasFile('images')) {
-            if ($imageService->deleteImage($request->validated('image_id'))) {
+            if ($imageService->isImageDeleted($request->validated('image_id'))) {
                 $imageService->imageUpload($category, 'images',  'categories', $category->id);
             }
         }

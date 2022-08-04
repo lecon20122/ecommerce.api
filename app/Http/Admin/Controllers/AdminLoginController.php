@@ -18,8 +18,12 @@ class AdminLoginController extends BaseController
     {
         try {
             if (Auth::guard('admin')->attempt($request->validated())) {
-                return redirect(route('dashboard.index'));
+                return redirect()->route('dashboard.index');
             }
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+            
         } catch (\Exception $exception) {
             return $this->webMessage($exception->getMessage());
         }

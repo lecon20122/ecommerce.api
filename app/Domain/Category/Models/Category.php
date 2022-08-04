@@ -9,15 +9,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Category extends Model implements HasMedia
 {
     use HasFactory, HasTranslations, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = ['title', 'slug', 'parent_id'];
-    public $translatable = ['title', 'slug'];
+    public $translatable = ['title'];
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('categories')
+            ->singleFile()
+            ->useDisk(config('env-settings.media-filesystem'));
+    }
 
     public function children()
     {
@@ -42,19 +51,5 @@ class Category extends Model implements HasMedia
     public function products()
     {
         return $this->belongsToMany(Product::class);
-    }
-
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::slug($value, '-');
-    }
-
-    public function registerMediaCollections(): void
-    {
-        $this
-            ->addMediaCollection('categories')
-            ->singleFile()
-            ->useDisk(config('env-settings.media-filesystem'));
     }
 }

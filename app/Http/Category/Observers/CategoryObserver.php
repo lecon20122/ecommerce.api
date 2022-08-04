@@ -6,10 +6,18 @@ use App\Domain\Category\Models\Category;
 use App\Support\Enums\CacheKeyEnums;
 use App\Support\Observers\BaseObserver;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class CategoryObserver extends BaseObserver
 {
     protected string $key = CacheKeyEnums::CATEGORY;
+
+
+    public function creating(Category $category)
+    {
+        $category->slug = Str::slug($category->title);
+    }
+
     /**
      * Handle the Category "updated" event.
      *

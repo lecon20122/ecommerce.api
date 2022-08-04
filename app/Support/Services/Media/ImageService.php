@@ -23,7 +23,7 @@ class ImageService
     }
 
 
-    public function deleteImage($image_Id)
+    public function isImageDeleted($image_Id)
     {
         $media = Media::find($image_Id);
         if ($media) {

@@ -11,10 +11,8 @@ use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -59,7 +57,7 @@ class CategoryController extends BaseController
     {
         try {
             $categoryService->store($request, $imageService);
-            return redirect()->back()->with('message', 'success');
+            return redirect(route('admin.categories.index'))->with('message' , 'success');
         } catch (Exception $exception) {
             DB::rollback();
             return $this->webMessage($exception->getMessage());

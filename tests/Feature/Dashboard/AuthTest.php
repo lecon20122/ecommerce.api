@@ -10,9 +10,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
-class Auth extends TestCase
+class AuthTest extends TestCase
 {
-    use WithFaker, DatabaseTransactions;
+    use WithFaker, RefreshDatabase;
     /**
      * A basic feature test example.
      *

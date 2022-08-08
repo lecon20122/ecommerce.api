@@ -47,9 +47,8 @@ export default function Navbar() {
             </button>
           </li> */}
           <li>
-            <InertiaLink href={route('admin.logout')} className="w-10 h-10 flex items-center justify-center bg-gray-200 border border-transparent rounded-full hover:border-blue-400 overflow-hidden" aria-label="Button name">
-              <FontAwesomeIcon icon={faSignOutAlt}/>
-            </InertiaLink>
+            <InertiaLink href={route('admin.logout')} className="w-10 h-10 flex items-center justify-center bg-gray-200 border border-transparent rounded-full hover:border-blue-400 overflow-hidden logout" aria-label="Button name">
+              <FontAwesomeIcon icon={faSignOutAlt} /></InertiaLink>
           </li>
         </ul>
       </div>

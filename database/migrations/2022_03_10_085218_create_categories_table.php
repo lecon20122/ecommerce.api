@@ -20,9 +20,11 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->index('parent_id');
         });
     }
- 
+
     /**
      * Reverse the migrations.
      *

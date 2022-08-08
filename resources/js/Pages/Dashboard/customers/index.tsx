@@ -1,67 +1,72 @@
-
-import React, { lazy, Suspense } from 'react'
-import { User } from '../../../types/auth';
-import { PaginatedData, } from '../../../types/globalTypes';
-import { ColDef } from 'ag-grid-community';
-import type { DataGridType } from '../../../components/DataTables/DataGrid';
-
-interface IUsers extends PaginatedData {
-  data: User[]
-}
+import React, {useState} from 'react'
+import {User} from '../../../types/auth';
+import {ColDef} from 'ag-grid-community';
+import DataGrid from "../../../components/DataTables/DataGrid";
+import {Button} from "@mui/material";
+import CreateStore from "../stores/create";
+import DashboardLayout from "../../../layouts/dashboard";
+import {FormProvider, SubmitHandler, useForm} from "react-hook-form";
+import {Inertia} from "@inertiajs/inertia";
+import route from "ziggy-js";
 
 interface Props {
   users: User[]
 }
 
+interface IFormProps {
+  name: string
+  description: string
+  user_id: number
+}
 
 
-export default function index({ users }: Props) {
+export default function index({users}: Props) {
+  const form = useForm<IFormProps>()
+  const {register, handleSubmit, formState: {errors}, setValue, reset} = form
 
-  const DataGrid = lazy(() => import('../../../components/DataTables/DataGrid')) as DataGridType;
-  const DashboardLayout = lazy(() => import('../../../layouts/dashboard'));
+  const [userId, setUserId] = useState(0)
+  const [openAddDialog, setOpenAddDialog] = useState(false);
 
-  const filterParams = {
-    // provide comparator function
-    comparator: (filterLocalDateAtMidnight: any, cellValue: any) => {
-      const dateAsString = cellValue;
+  const handleAddDialog = () => {
+    setOpenAddDialog(!openAddDialog);
+  };
 
-      if (dateAsString == null) {
-        return 0;
-      }
+  const handleOnClickUpdateDialog = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
+    setValue('user_id',data.id)
+    handleAddDialog()
+  };
 
-      // In the example application, dates are stored as dd/mm/yyyy
-      // We create a Date object for comparison against the filter date
-      const dateParts = dateAsString.split('/');
-      const year = Number(dateParts[2]);
-      const month = Number(dateParts[1]) - 1;
-      const day = Number(dateParts[0]);
-      const cellDate = new Date(year, month, day);
-
-      // Now that both parameters are Date objects, we can compare
-      if (cellDate < filterLocalDateAtMidnight) {
-        return -1;
-      } else if (cellDate > filterLocalDateAtMidnight) {
-        return 1;
-      }
-      return 0;
-    }
+  const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
+    const resolveData = {...data}
+    Inertia.post(route('admin.stores.store'), resolveData)
+    reset()
   }
 
   const columns: ColDef[] = [
-    { field: 'id', headerName: 'ID', },
-    { field: 'name', headerName: 'Name', floatingFilter: true, flex: 1, cellClass: 'font-bold text-lg' },
-    { field: 'created_at', headerName: 'Join Date', filter: 'agDateColumnFilter', floatingFilter: true, filterParams: filterParams },
-    { field: 'status', headerName: 'Status' },
+    {field: 'id', headerName: 'ID'},
+    {field: 'name', headerName: 'Name', floatingFilter: true, flex: 1},
+    {field: 'created_at', headerName: 'Join Date'},
+    {field: 'status', headerName: 'Status'},
+    {
+      headerName: 'Actions', cellRenderer: (params: any) =>
+        <Button color='success' variant={'outlined'} onClick={event => handleOnClickUpdateDialog(event, params)}>Add
+          Store</Button>
+    }
   ]
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <DashboardLayout>
+    <DashboardLayout>
+      <div>
+        <FormProvider {...form}>
+          <input{...register('user_id')} hidden/>
+          <CreateStore user_id={userId} handleAddDialog={handleAddDialog} openAddDialog={openAddDialog}
+                       formAddSubmitHandler={formAddSubmitHandler}/>
+        </FormProvider>
         <DataGrid<User>
           gridData={users}
           colDef={columns}
-          size={{ height: '90vh', width: 'auto' }}
+          size={{height: '90vh', width: 'auto'}}
         />
-      </DashboardLayout>
-    </Suspense>
+      </div>
+    </DashboardLayout>
   )
 }

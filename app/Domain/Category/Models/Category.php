@@ -3,37 +3,44 @@
 namespace App\Domain\Category\Models;
 
 use App\Domain\Product\Models\Product;
+use App\Support\Enums\MediaCollectionEnums;
+use App\Support\Traits\CustomHasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
+use Spatie\Image\Exceptions\InvalidManipulation;
+use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 
 class Category extends Model implements HasMedia
 {
-    use HasFactory, HasTranslations, SoftDeletes, InteractsWithMedia;
+    use HasFactory, HasTranslations, SoftDeletes, CustomHasMedia;
 
-    protected $fillable = ['title', 'slug', 'parent_id'];
     public $translatable = ['title'];
+    protected $fillable = ['title', 'slug', 'parent_id'];
 
     public function registerMediaCollections(): void
     {
-        $this
-            ->addMediaCollection('categories')
-            ->singleFile()
-            ->useDisk(config('env-settings.media-filesystem'));
+        $this->addMediaCollection(MediaCollectionEnums::THUMBNAIL);
     }
 
-    public function children()
+    /**
+     * @throws InvalidManipulation
+     */
+    public function registerMediaConversions(Media $media = null): void
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        $this->addMediaConversion('thumb310x303')
+            ->fit(Manipulations::FIT_CROP, 310, 303)
+            ->performOnCollections(MediaCollectionEnums::THUMBNAIL);
     }
 
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
@@ -41,15 +48,33 @@ class Category extends Model implements HasMedia
     /**
      * Dump all the parent's children recursively
      *
-     * @return void
+     * @return HasMany
      */
-    public function childrenRecursive()
+    public function childrenRecursive(): HasMany
     {
         return $this->children()->with('childrenRecursive');
     }
 
-    public function products()
+    public function children(): HasMany
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
+    }
+
+    /**
+     * @return MorphOne
+     */
+    public function thumbnail(): MorphOne
+    {
+        return $this->morphOneMedia()->where('collection_name', MediaCollectionEnums::THUMBNAIL);
+    }
+
+    public function scopeIsParent($query)
+    {
+        return $query->whereNull('parent_id');
     }
 }

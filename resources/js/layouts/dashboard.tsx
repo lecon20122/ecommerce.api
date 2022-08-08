@@ -31,7 +31,7 @@ export default function DashboardLayout({ children }: IDashboardLayout) {
 
   return (
     <div className='bg-gray-100 text-gray-600'>
-      <b id="backdrop" onClick={() => hide_sidebar()} className="fixed hidden md:hidden bg-black opacity-60 top-0 left-0 right-0 bottom-0 z-30"></b>
+      <b id="backdrop" onClick={() => hide_sidebar()} className="fixed hidden md:hidden bg-black opacity-60 top-0 left-0 right-0 bottom-0 z-30"/>
       <div className='flex min-h-screen dark:bg-gray-900'>
         <Aside />
         <main className='w-full'>

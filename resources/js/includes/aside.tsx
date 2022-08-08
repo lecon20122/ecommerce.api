@@ -20,7 +20,7 @@ export default function Aside() {
   return (
     <aside
       id="sidebar"
-      className="fixed -left-full top-0 bottom-0 md:static z-40 w-60 overflow-y-auto bg-blue-800 flex-shrink-0 h-[113vh]"
+      className="fixed -left-full top-0 bottom-0 md:static z-40 w-60 overflow-y-auto bg-blue-800 flex-shrink-0 "
     >
       <header className="flex items-center h-14 px-4 py-2 mb-2 border-b border-blue-700">
         <a className="inline-block" href="https://tailwind-ecommerce.com">
@@ -105,8 +105,8 @@ export default function Aside() {
         </li>
 
         <li className="hover:bg-blue-100 relative">
-          <a
-            href="#"
+          <InertiaLink
+            href={route('admin.stores.index')}
             className="flex px-5 py-3 items-center w-full text-white hover:text-white hover:bg-blue-700"
           >
             <span aria-hidden="true">
@@ -126,8 +126,8 @@ export default function Aside() {
                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
               </svg>
             </span>
-            <span className="ml-3">Orders</span>
-          </a>
+            <span className="ml-3">Stores</span>
+          </InertiaLink>
         </li>
 
         <li className="hover:bg-blue-100 relative">

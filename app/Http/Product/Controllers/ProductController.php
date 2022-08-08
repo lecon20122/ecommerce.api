@@ -2,8 +2,8 @@
 
 namespace App\Http\Product\Controllers;
 
-use App\Domain\Product\Services\ProductService;
 use App\Domain\Product\Models\Product;
+use App\Domain\Product\Services\ProductService;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
 use App\Http\Product\Resources\ProductResource;
@@ -11,25 +11,24 @@ use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class ProductController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return AnonymousResourceCollection
+     * @return RedirectResponse|\Inertia\Response
      */
     public function index()
     {
         try {
-            $products = Product::with('media')->paginate(48, ['id', 'title', 'price', 'slug', 'description']);
-            return ProductResource::collection($products);
+            return Inertia::render('Dashboard/products/index');
         } catch (Exception $exception) {
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -50,7 +49,7 @@ class ProductController extends BaseController
      * @param ProductService $service
      * @return ProductResource
      */
-    public function store(StoreProductRequest $request, ProductService $service, ImageService  $imageService)
+    public function store(StoreProductRequest $request, ProductService $service, ImageService $imageService)
     {
         try {
             $product = $service->store($request, $imageService);
@@ -92,7 +91,7 @@ class ProductController extends BaseController
      * @param Product $product
      * @return JsonResponse|ProductResource
      */
-    public function update(UpdateProductRequest $request,  ProductService $service,  Product $product)
+    public function update(UpdateProductRequest $request, ProductService $service, Product $product)
     {
         try {
             DB::beginTransaction();

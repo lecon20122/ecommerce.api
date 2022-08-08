@@ -6,15 +6,25 @@ use App\Domain\Category\Models\Category;
 use App\Http\Category\Resources\CategoryResource;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
+use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Services\Media\ImageService;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
 
-    public function index()
+    public function adminIndex()
     {
-        return Category::with('parent')->get();
+        return Cache::remember(
+            'categories',
+            3600,
+            fn() => Category::query()
+                ->select('id', 'title', 'parent_id', 'created_at')
+                ->with('parent:title,id')
+                ->get()
+        );
     }
 
 
@@ -22,7 +32,6 @@ class CategoryService
     {
         DB::beginTransaction();
         $data = $request->validated();
-
         $data['title'] = [
             'en' => $data['en'],
             'ar' => $data['ar'],
@@ -30,8 +39,9 @@ class CategoryService
 
         $category = Category::create($data);
 
-        if ($category && $request->hasFile('images')) {
-            $imageService->imageUpload($category, 'images',  'categories', $category->id);
+        if ($category && $request->hasFile('images') || $request->hasFile('new_images')) {
+            $keyName = $request->hasFile('images') == false ? 'new_images' : 'images';
+            $imageService->imageUpload($category, $keyName, 'categories', $category->id);
         }
 
         DB::commit();
@@ -47,7 +57,6 @@ class CategoryService
     {
         DB::beginTransaction();
         $data = $request->validated();
-
         if ($request->has('en') || $request->has('ar')) {
             $data['title'] = [
                 'en' => $request->validated('en'),
@@ -57,13 +66,32 @@ class CategoryService
 
         $category->update($data);
 
-        if ($category && $request->hasFile('images')) {
-            if ($imageService->isImageDeleted($request->validated('image_id'))) {
-                $imageService->imageUpload($category, 'images',  'categories', $category->id);
-            }
+        if ($request->hasFile('images') || $request->hasFile('new_images')) {
+            $keyName = $request->hasFile('images') == false ? 'new_images' : 'images';
+            $imageService->imageUpload($category, $keyName, 'categories', $category->id);
         }
 
         $category->save();
         DB::commit();
+    }
+
+    public function delete(int $id)
+    {
+        DB::beginTransaction();
+        $category = Category::query()->find($id);
+
+        if ($category) {
+            $category->delete();
+            DB::commit();
+        }
+    }
+
+    public function getCategoriesChildrenAndThumb(): Collection|array
+    {
+        return Category::query()
+            ->with('thumbnail', 'children.thumbnail')
+            ->select('id', 'title', 'slug', 'parent_id')
+            ->isParent()
+            ->get();
     }
 }

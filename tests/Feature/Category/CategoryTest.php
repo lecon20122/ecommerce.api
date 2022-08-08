@@ -2,12 +2,10 @@
 
 namespace Tests\Feature\Category;
 
+use App\Domain\Admin\Models\Admin;
 use App\Domain\Category\Models\Category;
-use App\Support\Enums\CacheKeyEnums;
-use App\Support\Enums\HttpStatusEnums;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
@@ -19,59 +17,59 @@ class CategoryTest extends TestCase
      *
      * @return void
      */
-    public function test_that_category_can_be_stored()
+    public function test_that_category_can_be_stored_with_translation()
     {
-        $response = $this->post(route('categories.store'), [
-            'title' => 'test category',
-        ])->assertStatus(201);
+        $admin = Admin::factory(1)->create()->first();
+        $this->actingAs($admin, 'admin');
+        $response = $this->post(route('admin.categories.store'), [
+            'en' => 'test category',
+            'ar' => 'هيللو',
+        ])->assertRedirect();
 
         $category = Category::first();
-
-        $this->assertEquals($category['title'], $response->json()['title']);
-        $this->assertArrayHasKey('title', $response->json());
+        $this->assertEquals($category->title, 'test category');
     }
-
-    //    public function test_cache_is_forgotten_when_new_item_created()
-    //    {
-    //        $this->post(route('categories.store'), [
-    //            'title' => 'test category',
-    //        ])->assertStatus(HttpStatusEnums::CREATED);
-    //
-    //        Cache::shouldReceive('forget')
-    //            ->once()
-    //            ->with(CacheKeyEnums::CATEGORY)
-    //            ->andReturn([]);
-    //    }
 
     public function test_that_category_title_is_slugged()
     {
-        $this->post(route('categories.store'), [
-            'title' => 'test category',
-        ])->assertStatus(HttpStatusEnums::CREATED);
-
+        $admin = Admin::factory(1)->create()->first();
+        $this->actingAs($admin, 'admin');
+        $response = $this->post(route('admin.categories.store'), [
+            'en' => 'test category',
+            'ar' => 'هيللو',
+        ])->assertRedirect();
+        $response->assertSessionHas('message', 'success');
         $category = Category::first();
-
-        $this->assertEquals($category['slug'], 'test-category');
+        $this->assertEquals('test-category', $category->slug);
     }
 
     public function test_that_category_can_be_updated()
     {
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin, 'admin');
         $category = Category::factory()->create();
 
-        $this->put(route('categories.update', ['category' => $category]), [
-            'title' => 'new category',
-        ])->assertOk();
+        $response = $this->post(route('admin.categories.update', ['category' => $category]), [
+            'en' => 'new category',
+        ])->assertRedirect();
 
+        $response->assertSessionHas('message', 'success');
         $category->refresh();
 
         $this->assertEquals('new category', $category->title);
+        $this->assertEquals('new-category', $category->slug);
     }
 
     public function test_that_category_can_be_destroyed()
     {
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin, 'admin');
+
         $category = Category::factory()->create();
 
-        $this->delete(route('categories.destroy', ['category' => $category]))->assertOk();
+        $response = $this->post(route('admin.categories.destroy', ['id' => $category->id]))
+            ->assertRedirect();
+        $response->assertSessionHas('message', 'success');
 
         $this->assertNull(Category::first());
     }

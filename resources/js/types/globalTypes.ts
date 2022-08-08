@@ -1,3 +1,5 @@
+import {ProductWithThumbnail} from "./products";
+
 export interface ResponseMessage {
   setErrors?: string,
   setStatus?: string,
@@ -30,5 +32,29 @@ export interface Link {
   active: boolean;
 }
 
+export interface Store {
+  id: number;
+  name: string;
+  description: string;
+  is_active: boolean;
+  created_at: Date;
+  user_id: number;
+  user: User;
+}
+
+export interface User {
+  id: number;
+  name: string;
+}
 
 
+export interface StoreWithProducts {
+  id: number;
+  name: string;
+  description: string;
+  is_active: boolean;
+  created_at: string;
+  user_id: number;
+  user: User;
+  products: ProductWithThumbnail[]
+}

@@ -23,7 +23,6 @@ class SocialiteController extends BaseController
     {
         try {
             $providerUser = Socialite::driver($provider)->stateless()->user();
-            // dd($providerUser);
             DB::beginTransaction();
             $user = $this->createOrUpdateUser($providerUser);
             DB::commit();

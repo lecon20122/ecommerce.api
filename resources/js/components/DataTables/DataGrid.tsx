@@ -8,11 +8,12 @@ interface DataGridProps<T> {
   gridData: T[];
   colDef: ColDef[];
   rowClickHandler?: (event: RowClickedEvent) => void;
+  rowHeight?: number
 }
 
 
 
-export default function DataGrid<T>({ size, showNoRowsOverlay, gridData, colDef, rowClickHandler = undefined }: DataGridProps<T>) {
+export default function DataGrid<T>({ size, showNoRowsOverlay, gridData, colDef, rowClickHandler = undefined , rowHeight }: DataGridProps<T>) {
 
   const gridOptions: GridOptions = {
     rowData: gridData,
@@ -34,6 +35,7 @@ export default function DataGrid<T>({ size, showNoRowsOverlay, gridData, colDef,
         pagination
         paginationAutoPageSize
         animateRows
+        rowHeight={rowHeight}
       />
     </div>
   )

@@ -22,6 +22,8 @@ return new class extends Migration
             $table->foreignId('store_id')->constrained();
             $table->dateTime('live_at')->nullable();
             $table->timestamps();
+
+            $table->index('created_at');
         });
     }
 

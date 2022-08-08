@@ -4,17 +4,16 @@
 namespace App\Support\Services\Media;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ImageService
 {
-    public function imageUpload(Model $model, $keyName, $collectionName, $store_id)
+    public function imageUpload(Model $model, $keyName, $collectionName, $model_id)
     {
         $model->addMultipleMediaFromRequest([$keyName])
-            ->each(function ($fileAdder) use ($collectionName, $store_id) {
+            ->each(function ($fileAdder) use ($collectionName, $model_id) {
                 $fileAdder
-                    ->usingFileName($store_id . '_' . now()->timestamp . '.jpg')
+                    ->usingFileName($model_id . '_' . now()->timestamp . '.jpg')
                     ->addCustomHeaders([
                         'ACL' => 'public-read'
                     ])
@@ -25,7 +24,8 @@ class ImageService
 
     public function isImageDeleted($image_Id)
     {
-        $media = Media::find($image_Id);
+        $media = Media::query()
+            ->find($image_Id);
         if ($media) {
             return $media->delete();
         } else {

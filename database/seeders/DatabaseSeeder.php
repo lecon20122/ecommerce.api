@@ -9,6 +9,7 @@ use App\Domain\Location\Models\District;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Models\Variation;
 use App\Domain\Store\Models\Store;
+use App\Support\Enums\MediaCollectionEnums;
 use Domain\User\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -26,23 +27,24 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //  User::factory(1000)->create();
-        Admin::factory(1)->create();
+//        Admin::factory(1)->create();
         // Cart::factory(5)->create();
-        // Store::factory(2)->hasAddresses(3)->create();
+//         Store::factory()->hasProducts(15)->create();
         // seeding Products with Me
-
+//        Product::factory(6)->create();
         // Category::factory(5)->create();
         // $categories = Category::all();
 
-        // $folder = File::files(storage_path('images'));
-        // foreach ($folder as  $path) {
-        //     $filePath = storage_path('images') . '/' . $path->getFilename();
-        //     echo 1;
-        //     $product = Product::factory()->create();
-        //     $product->categories()->attach(
-        //         $categories->random(rand(1, 5))->pluck('id')->toArray()
-        //     );
-        //     $product->addMedia($filePath)->toMediaCollection('products');
-        // }
+//         $folder = File::files(public_path('images'));
+//        $Store = Store::factory()->hasProducts(15)->create();
+//        foreach ($folder as  $path) {
+//             $filePath = public_path('images') . '/' . $path->getFilename();
+//             dd($filePath);
+//             echo 1;
+//             $products = $Store->products()->get();
+//             foreach ($products as $product){
+//                 $product->addMedia($filePath)->toMediaCollection(MediaCollectionEnums::THUMBNAIL);
+//             }
+//         }
     }
 }

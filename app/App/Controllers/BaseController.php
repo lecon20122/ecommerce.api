@@ -3,14 +3,8 @@
 namespace Application\Controllers;
 
 use App\Http\User\Requests\RegisterRequest;
-use Application\Controllers\Controller;
-use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Domain\User\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Http\RedirectResponse;
 
 class BaseController extends Controller
 {
@@ -67,8 +61,13 @@ class BaseController extends Controller
         return response()->json($response, 200);
     }
 
-    public function webMessage($message)
+    public function webMessage($message): RedirectResponse
     {
         return back()->with('message', $message);
+    }
+
+    public function redirectToWithMessage($route, $message): RedirectResponse
+    {
+        return redirect()->route($route)->with('message', $message);
     }
 }

@@ -1,6 +1,13 @@
-import React, { lazy, Suspense } from 'react'
+import React, {lazy, Suspense} from 'react'
+import {Category, CategoryWithMedia, CategoryWithThumbnail} from "../../types/products";
+import HomePageCategories from "../../components/client/shards/homePageCategories";
 
-export default function HomePage() {
+interface Props {
+  categories: CategoryWithThumbnail[]
+  locale: string
+}
+
+export default function HomePage(props: Props) {
 
   const AppLayout = lazy(() => import('../../layouts/client'));
   const CategoriesNavigation = lazy(() => import('../../components/client/includes/categoriesNavigation'));
@@ -12,9 +19,9 @@ export default function HomePage() {
     <div className='bg-[#EAEDED]'>
       <Suspense fallback={<div><h1>loading...</h1></div>}>
         <AppLayout>
-          <Hero />
-          <CategoriesNavigation />
-          <HomePageCategories />
+          <CategoriesNavigation/>
+          <Hero/>
+          <HomePageCategories {...props}/>
         </AppLayout>
       </Suspense>
     </div>

@@ -1,22 +1,23 @@
-
-import React, { useState } from 'react'
-import { ColDef } from 'ag-grid-community';
-import { Category } from '../../../types/products';
-import { Button, DialogActions, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import React, {useState} from 'react'
+import {ColDef} from 'ag-grid-community';
+import {Category} from '../../../types/products';
+import {Button, DialogActions, InputLabel, MenuItem, Select, TextField} from '@mui/material';
 import FormDialog from '../../shards/formDialog';
 import DashboardLayout from '../../../layouts/dashboard';
 import DataGrid from '../../../components/DataTables/DataGrid';
 import route from 'ziggy-js';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useForm, SubmitHandler, } from 'react-hook-form';
-import { Inertia, } from '@inertiajs/inertia';
-import { faFileImage } from '@fortawesome/free-regular-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {SubmitHandler, useForm,} from 'react-hook-form';
+import {Inertia,} from '@inertiajs/inertia';
+import {faFileImage} from '@fortawesome/free-regular-svg-icons';
+import ConfirmationAlertDialog from '../../../components/shards/confimationDialog';
 
 
 interface Props {
   categories: Array<Category>
   locale: string
 }
+
 interface IFormProps {
   parent_id?: string,
   en: string,
@@ -24,45 +25,52 @@ interface IFormProps {
   images: string
 }
 
-export default function CategoryIndex({ categories, locale }: Props) {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormProps>()
+export default function CategoryIndex({categories, locale}: Props) {
+  const {register, handleSubmit, formState: {errors}, reset} = useForm<IFormProps>()
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [dataWillBeUpdated, setDataWillBeUpdated] = useState<Category>({ title: { en: '', ar: '' }, id: 1, slug: '', parent_id: 1 })
+  const [currentCategoryId, setCurrentCategoryId] = useState(0);
 
   const handleAddDialog = () => {
     setOpenAddDialog(!openAddDialog);
   };
 
-  const handleUpdateDialog = (event: React.MouseEvent<HTMLElement>, { data }: any) => {
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
+  const handleOnClickUpdateDialog = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
     Inertia.get(route('admin.categories.edit', data.id))
   };
 
+  const handleOnClickDelete = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
+    setCurrentCategoryId(data.id)
+    setOpenDeleteDialog(true)
+  };
 
-  const handleDeleteDialog = () => {
-    setOpenDeleteDialog(!openDeleteDialog);
+  const handleDeleteClose = (e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+    setOpenDeleteDialog(false);
+  };
+
+  const handleAgreeDelete = (e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+    Inertia.post(route('admin.categories.destroy', currentCategoryId))
+    setOpenDeleteDialog(false);
   };
 
 
   const columns: ColDef[] = [
-    { field: 'id', headerName: 'ID' },
-    { field: `title.ar`, headerName: 'Title AR', floatingFilter: true, flex: 1, cellClass: 'font-bold' },
-    { field: `title.en`, headerName: 'Title EN', floatingFilter: true, flex: 1, cellClass: 'font-bold' },
-    { field: `parent.title.${locale}`, headerName: 'Parent', floatingFilter: true, cellClass: 'font-bold' },
-    { field: 'created_at', headerName: 'Created At', filter: 'agDateColumnFilter', floatingFilter: true },
+    {field: 'id', headerName: 'ID'},
+    {field: `title.ar`, headerName: 'Title AR', floatingFilter: true, flex: 1, cellClass: 'font-bold'},
+    {field: `title.en`, headerName: 'Title EN', floatingFilter: true, flex: 1, cellClass: 'font-bold'},
+    {field: `parent.title.${locale}`, headerName: 'Parent', floatingFilter: true, cellClass: 'font-bold'},
+    {field: 'created_at', headerName: 'Created At', filter: 'agDateColumnFilter', floatingFilter: true},
     {
       headerName: 'Actions', cellRenderer: (params: any) =>
         <div>
-          <Button onClick={event => handleUpdateDialog(event, params)}>UPDATE</Button>
+          <Button onClick={event => handleOnClickUpdateDialog(event, params)}>UPDATE</Button>
+          <Button color='error' onClick={event => handleOnClickDelete(event, params)}>delete</Button>
         </div>
     }
   ]
 
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
-    const resolveData = { ...data }
+    const resolveData = {...data}
     Inertia.post(route('admin.categories.store'), resolveData)
     reset()
   }
@@ -72,12 +80,12 @@ export default function CategoryIndex({ categories, locale }: Props) {
 
   return (
     <DashboardLayout>
-      <div >
+      <div>
         <div id='add'>
-          <Button className="absolute top-3 lg:left-24" variant={'contained'} onClick={handleAddDialog}>
-            Add Category
-          </Button>
-          <FormDialog btnLabel='Add Category' header='Create New Category' handleClose={handleAddDialog} open={openAddDialog}>
+          <Button className="absolute top-3 lg:left-24" variant={'contained'} onClick={handleAddDialog}>Add
+            Category</Button>
+          <FormDialog btnLabel='Add Category' header='Create New Category' handleClose={handleAddDialog}
+                      open={openAddDialog}>
             <form onSubmit={handleSubmit(formAddSubmitHandler)}>
               <InputLabel id="demo-simple-select-standard-label" margin='dense'>Choose Parent <small>(optional)</small></InputLabel>
               <Select
@@ -119,7 +127,7 @@ export default function CategoryIndex({ categories, locale }: Props) {
                 variant="outlined"
                 component="label"
               >
-                <FontAwesomeIcon icon={faFileImage} /> <span className='ml-2'>add Image</span>
+                <FontAwesomeIcon icon={faFileImage}/> <span className='ml-2'>add Image</span>
                 <input
                   {...register('images')}
                   type="file"
@@ -134,10 +142,12 @@ export default function CategoryIndex({ categories, locale }: Props) {
             </form>
           </FormDialog>
         </div>
+        < ConfirmationAlertDialog open={openDeleteDialog} handleClose={handleDeleteClose}
+                                  handleAgree={handleAgreeDelete}/>
         <DataGrid<Category>
           gridData={categories}
           colDef={columns}
-          size={{ height: '90vh', width: 'auto' }}
+          size={{height: '90vh', width: 'auto'}}
         />
       </div>
     </DashboardLayout>

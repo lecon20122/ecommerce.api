@@ -2,7 +2,7 @@
 
 namespace App\Http\Product\Resources;
 
-use App\Http\Media\Resources\MediaResource;
+use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,14 +16,14 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = [
+        return [
             'id' => $this->id,
             'title' => $this->title,
             'price' => $this->price,
             'slug' => $this->slug,
             'description' => $this->description,
-            'media' => MediaResource::collection($this->whenLoaded('media')),
+            'thumbnail' => $this->getFirstMediaUrl(MediaCollectionEnums::THUMBNAIL, 'thumb370x370'),
+            'small_thumbnail' => $this->getFirstMediaUrl(MediaCollectionEnums::THUMBNAIL, 'small50x50'),
         ];
-        return $data;
     }
 }

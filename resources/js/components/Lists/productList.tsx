@@ -20,6 +20,7 @@ function ProductList({products, locale}: Props) {
     },
     {field: 'id', headerName: 'ID'},
     {field: `title`, headerName: 'Title', floatingFilter: true, flex: 1, cellClass: 'font-bold'},
+    {field: `price`, headerName: 'Price'},
     // {field: `parent.title.${locale}`, headerName: 'Parent', floatingFilter: true, cellClass: 'font-bold'},
     {field: 'created_at', headerName: 'Created At', filter: 'agDateColumnFilter', floatingFilter: true},
     {

@@ -30,8 +30,6 @@ class UpdateCategoryRequest extends FormRequest
             'image_id' => 'nullable',
             'images' => 'nullable',
             'images.*' => 'mimes:jpg|max:1024',
-            'new_images' => 'nullable',
-            'new_images.*' => 'mimes:jpg|max:1024',
         ];
     }
 }

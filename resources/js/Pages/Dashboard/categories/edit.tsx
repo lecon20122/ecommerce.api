@@ -1,8 +1,8 @@
 import {Container} from '@mui/system'
-import React from 'react'
+import React, {useState} from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
 import TextField from '@mui/material/TextField';
-import {Category, CategoryWithMedia} from '../../../types/products';
+import {Category, CategoryWithMedia, CategoryWithThumbnail} from '../../../types/products';
 import {Button, MenuItem, Select} from '@mui/material';
 import {Inertia} from '@inertiajs/inertia';
 import route from 'ziggy-js';
@@ -12,7 +12,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFileImage} from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
-  currentCategory: CategoryWithMedia
+  currentCategory: CategoryWithThumbnail
   locale: string,
   categories: Category[]
 }
@@ -23,13 +23,13 @@ interface IFormProps {
   ar: string,
   images: string
   image_id: number,
-  new_images: string
 }
 
 
 export default function CategoryEdit({currentCategory, locale, categories}: Props) {
-  const form = useForm<IFormProps>()
-  const {register, handleSubmit, formState: {errors}} = form
+  const form = useForm<IFormProps>({mode : "onChange"})
+  const {register, handleSubmit, formState: {errors , isDirty , isValid} , getValues , reset } = form
+  const [disabled, setDisabled] = useState(true);
 
   const selectParentMenuItems = categories.map((category) => {
     return (
@@ -40,8 +40,8 @@ export default function CategoryEdit({currentCategory, locale, categories}: Prop
 
   const handleUpdateCategory: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
-    console.log(data)
     Inertia.post(route('admin.categories.update', currentCategory), resolveData)
+    reset(getValues())
   }
 
 
@@ -66,29 +66,17 @@ export default function CategoryEdit({currentCategory, locale, categories}: Prop
                           name='parent_id'
                           fullWidth
                           autoFocus
+                          onChange={(e) => setDisabled(true)}
                           defaultValue={currentCategory.parent_id ?? ''}>
                     {selectParentMenuItems}
                   </Select>
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6">
-                <RenderMediaListForForm media={currentCategory.media}/>
+                 <RenderMediaListForForm currentCategory={currentCategory}/>
               </div>
               <div className='flex gap-2'>
-                <Button type='submit' color="primary" variant='contained'>save changes</Button>
-                <Button
-                  variant="contained"
-                  component="label"
-                >
-                  <FontAwesomeIcon icon={faFileImage}/> <span className='ml-2'>Add Image</span>
-                  <input
-                    {...register('new_images')}
-                    type="file"
-                    name='new_images'
-                    multiple
-                    hidden
-                  />
-                </Button>
+                <Button disabled={!isDirty || !isValid} type='submit' color="primary" variant='contained'>save changes</Button>
               </div>
             </form>
           </FormProvider>

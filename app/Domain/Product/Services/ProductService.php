@@ -5,8 +5,9 @@ namespace App\Domain\Product\Services;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Http\Product\Requests\StoreProductRequest;
+use App\Http\Product\Requests\UpdateProductRequest;
+use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Services\Media\ImageService;
-use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
@@ -26,30 +27,48 @@ class ProductService
     /**
      * @param StoreProductRequest $request
      * @param ImageService $imageService
-     * @return mixed
+     *
      */
 
-    public function store(StoreProductRequest $request, ImageService $imageService): mixed
+    public function store(StoreProductRequest $request, ImageService $imageService)
     {
-        DB::beginTransaction();
-        $store = auth()->user()->stores()->where('id', $request->validated('store_id'))->first();
+        $data = $request->validated();
+
+        $store = Store::query()->find($data['store_id']);
         if ($store) {
-            $product = $store->products()->create($request->validated());
+            if ($request->has('en') || $request->has('ar')) {
+                $data['title'] = [
+                    'en' => $request->validated('en'),
+                    'ar' => $request->validated('ar'),
+                ];
+            }
+            $product = $store->products()->create($data);
             if ($product && $request->hasFile('images')) {
-                $imageService->imageUpload($product, 'images', 'products', $request->validated('store_id'));
+                $imageService->imageUpload($product, 'images', MediaCollectionEnums::THUMBNAIL, $data['store_id']);
             }
         }
-        DB::commit();
-        return $product;
     }
 
-    public function update($data, Product $product)
+    public function update(UpdateProductRequest $request, Product $product, ImageService $imageService)
     {
+        $data = $request->validated();
+
+        if ($request->has('en') || $request->has('ar')) {
+            $data['title'] = [
+                'en' => $request->validated('en'),
+                'ar' => $request->validated('ar'),
+            ];
+        }
         $product->update($data);
+
+        if ($request->hasFile('images')) {
+            $imageService->imageUpload($product, 'images', MediaCollectionEnums::THUMBNAIL, $product->id);
+        }
     }
 
-    public function destroy(Product $product)
+    public function destroy(int $id)
     {
-        $product->delete();
+        $product = Product::query()->find($id);
+        $product?->delete();
     }
 }

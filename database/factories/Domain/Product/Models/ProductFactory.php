@@ -7,7 +7,7 @@ use App\Domain\Store\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Product>
+ * @extends Factory
  */
 class ProductFactory extends Factory
 {
@@ -22,9 +22,12 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->sentence,
+            'title' => [
+                'en' => $this->faker->name,
+                'ar' => 'منتج',
+            ],
             'description' => $this->faker->text,
-            'price' => $this->faker->randomFloat(null, 99,  500),
+            'price' => $this->faker->randomFloat(null, 99, 500),
             'live_at' => now(),
             'store_id' => Store::factory(),
         ];

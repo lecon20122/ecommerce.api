@@ -6,6 +6,8 @@ use App\Domain\Admin\Models\Admin;
 use App\Domain\Category\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
@@ -17,16 +19,20 @@ class CategoryTest extends TestCase
      *
      * @return void
      */
-    public function test_that_category_can_be_stored_with_translation()
+    public function test_that_category_can_be_stored_with_translation_and_Thumbnail()
     {
         $admin = Admin::factory(1)->create()->first();
         $this->actingAs($admin, 'admin');
+        Storage::fake('public');
         $response = $this->post(route('admin.categories.store'), [
             'en' => 'test category',
             'ar' => 'هيللو',
-        ])->assertRedirect();
+            'images' => [
+                0 => UploadedFile::fake()->image("test.jpg", 1000 , 1000)
+            ]
+        ]);
+        $category = Category::with('media')->first();
 
-        $category = Category::first();
         $this->assertEquals($category->title, 'test category');
     }
 

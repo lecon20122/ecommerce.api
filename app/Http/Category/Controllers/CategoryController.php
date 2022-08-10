@@ -87,6 +87,7 @@ class CategoryController extends BaseController
      */
     public function edit(int $id, CategoryService $categoryService): \Inertia\Response|RedirectResponse
     {
+
         try {
             return Inertia::render('Dashboard/categories/edit', [
                 'currentCategory' => $categoryService->edit($id),

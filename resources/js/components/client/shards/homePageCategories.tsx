@@ -1,6 +1,6 @@
 import React from 'react'
 import CategoryCard from './categoryCard'
-import {Category, CategoryWithThumbnail} from "../../../types/products";
+import {CategoryWithThumbnail} from "../../../types/products";
 
 interface Props {
   categories: CategoryWithThumbnail[]

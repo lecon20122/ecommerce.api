@@ -94,20 +94,18 @@ class StoreController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int $id
-     * @return Response
+     * @param StoreUpdateRequest $request
+     * @param Store $store
+     * @return RedirectResponse
      */
-    public function update(StoreUpdateRequest $request, Store $store)
+    public function update(StoreUpdateRequest $request, Store $store): RedirectResponse
     {
         try {
-            DB::beginTransaction();
-            $store->update($request->validated());
-            return new StoreResource($store->refresh());
-            DB::commit();
+            (new StoreService())->update($store , $request);
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->sendError($exception->getMessage());
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -115,18 +113,18 @@ class StoreController extends BaseController
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return Response
+     * @return RedirectResponse
      */
-    public function destroy(Store $store)
+    public function destroy(int $id): RedirectResponse
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
-            $store->delete();
-            return new StoreResource($store->refresh());
+            (new StoreService())->delete($id);
             DB::commit();
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->sendError($exception->getMessage());
+            return $this->webMessage($exception->getMessage());
         }
     }
 }

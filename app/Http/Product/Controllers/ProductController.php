@@ -6,11 +6,9 @@ use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
-use App\Http\Product\Resources\ProductResource;
 use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -47,16 +45,19 @@ class ProductController extends BaseController
      *
      * @param StoreProductRequest $request
      * @param ProductService $service
-     * @return ProductResource
+     * @param ImageService $imageService
+     * @return RedirectResponse
      */
-    public function store(StoreProductRequest $request, ProductService $service, ImageService $imageService)
+    public function store(StoreProductRequest $request, ProductService $service, ImageService $imageService): RedirectResponse
     {
+        DB::beginTransaction();
         try {
-            $product = $service->store($request, $imageService);
-            return new ProductResource($product);
+            $service->store($request, $imageService);
+            DB::commit();
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -89,18 +90,19 @@ class ProductController extends BaseController
      * @param UpdateProductRequest $request
      * @param ProductService $service
      * @param Product $product
-     * @return JsonResponse|ProductResource
+     * @param ImageService $imageService
+     * @return RedirectResponse
      */
-    public function update(UpdateProductRequest $request, ProductService $service, Product $product)
+    public function update(UpdateProductRequest $request, ProductService $service, Product $product, ImageService $imageService): RedirectResponse
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
-            $service->update($request->validated(), $product);
+            $service->update($request, $product, $imageService);
             DB::commit();
-            return new ProductResource($product->refresh());
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -109,18 +111,18 @@ class ProductController extends BaseController
      *
      * @param ProductService $service
      * @param Product $product
-     * @return JsonResponse|Product
+     * @return RedirectResponse
      */
-    public function destroy(ProductService $service, Product $product)
+    public function destroy(int $id, ProductService $service): RedirectResponse
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
-            $service->destroy($product);
+            $service->destroy($id);
             DB::commit();
-            return $product;
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->redirectBackWithError();
         }
     }
 }

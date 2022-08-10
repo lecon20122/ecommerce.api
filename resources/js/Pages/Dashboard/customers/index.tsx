@@ -31,7 +31,7 @@ export default function index({users}: Props) {
     setOpenAddDialog(!openAddDialog);
   };
 
-  const handleOnClickUpdateDialog = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
+  const handleOnClickAddStoreDialog = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
     setValue('user_id',data.id)
     handleAddDialog()
   };
@@ -49,7 +49,7 @@ export default function index({users}: Props) {
     {field: 'status', headerName: 'Status'},
     {
       headerName: 'Actions', cellRenderer: (params: any) =>
-        <Button color='success' variant={'outlined'} onClick={event => handleOnClickUpdateDialog(event, params)}>Add
+        <Button color='success' variant={'outlined'} onClick={event => handleOnClickAddStoreDialog(event, params)}>Add
           Store</Button>
     }
   ]

@@ -1,12 +1,12 @@
 import {ImageList, ImageListItem} from '@mui/material';
 import React from 'react'
-import {Media, Thumbnail} from '../../types/products'
+import {ThumbnailProps} from '../../types/products'
 
 interface Props {
-  media: Thumbnail,
+  media: ThumbnailProps,
 }
 
-export default function RenderMediaList({media}: Props) {
+export default function MapCategoriesChildrenThumbnail({media}: Props) {
   // const defineColumnNumber = () => {
   //   if (media.length > 3) {
   //     return 3
@@ -25,14 +25,14 @@ export default function RenderMediaList({media}: Props) {
       sx={{height: 310, width: 303}}
     >
       {/*{media.map((img) => (*/}
-        <ImageListItem >
-          <img
-            className='w-full'
-            src={media.thumb}
-            alt={media.name}
-            loading="lazy"
-          />
-        </ImageListItem>
+      <ImageListItem>
+        <img
+          className='w-full'
+          src={media?.thumb}
+          alt={media?.name}
+          loading="lazy"
+        />
+      </ImageListItem>
       {/*))}*/}
     </ImageList>
   )

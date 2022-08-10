@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Variation;
 
+use App\Domain\Admin\Models\Admin;
+use App\Domain\Product\Models\Product;
 use App\Domain\Product\Models\Variation;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,25 +16,7 @@ class VariationTest extends TestCase
 
     public function createProduct($user)
     {
-        $store = $user->stores()->create([
-            'name' => $this->faker->unique()->firstName,
-            'description' => $this->faker->realText(),
-        ]);
 
-        $data = [
-            'title' => $this->faker->sentence,
-            'description' => $this->faker->text,
-            'price' => $this->faker->randomFloat(00, 50, 300),
-            'live_at' => now(),
-        ];
-
-        return $store->products()->create($data);
-    }
-
-    public function generateBearerTokenHeader($user)
-    {
-        $token = $user->createToken($user->email, ['customer'])->plainTextToken;
-        return ['Authorization' => 'Bearer ' . $token];
     }
 
     /**
@@ -51,14 +35,14 @@ class VariationTest extends TestCase
         $data = [
             'title' => $this->faker->unique()->sentence,
             'price' => $this->faker->randomFloat(null, 99, 500),
-            'type' => $this->faker->unique()->sentence,
+            'type' => 'Color',
             'order' => $this->faker->randomDigit(),
             'product_id' => $product->id,
             'store_id' => $product->store_id,
         ];
 
         $response = $this->post(route('variations.store'), $data, $header);
-        
+
         $this->assertEquals($response->json()['title'], Variation::first()->title);
         $this->assertEquals(1, Variation::first()->count());
     }

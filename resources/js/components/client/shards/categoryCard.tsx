@@ -1,9 +1,9 @@
 import React from 'react'
-import RenderMediaList from "../../shards/renderMediaList";
-import {Media, Thumbnail} from "../../../types/products";
+import MapCategoriesChildrenThumbnail from "../../shards/mapCategoriesChildrenThumbnail";
+import {ThumbnailProps} from "../../../types/products";
 
 interface Props {
-  media: Thumbnail,
+  media: ThumbnailProps,
   header?: string
 }
 
@@ -14,7 +14,7 @@ export default function CategoryCard({media, header}: Props) {
         <div className="py-2 h-[10%] font-bold">
           {header?.toUpperCase()}
         </div>
-        <RenderMediaList media={media}/>
+        <MapCategoriesChildrenThumbnail media={media}/>
         <a href="" className=''>see more</a>
       </div>
     </div>

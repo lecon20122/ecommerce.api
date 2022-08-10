@@ -13,7 +13,7 @@ export interface Category {
   slug: string;
   children?: Category[];
   products?: Product[];
-  thumbnail?:Thumbnail;
+  thumbnail?: Thumbnail;
 }
 
 export interface Product {
@@ -26,12 +26,12 @@ export interface Product {
 }
 
 export interface ProductWithThumbnail {
-  id:              number;
-  title:           string;
-  price:           string;
-  slug:            string;
-  description:     string;
-  thumbnail:       string;
+  id: number;
+  title: string;
+  price: string;
+  slug: string;
+  description: string;
+  thumbnail: string;
   small_thumbnail: string;
 }
 
@@ -49,7 +49,7 @@ export interface CategoryWithMedia {
   media: Media[];
 }
 
-export interface CategoryWithThumbnail {
+export interface CategoryWithThumbnail extends Thumbnail {
   id: number;
   title: {
     en?: string,
@@ -59,7 +59,6 @@ export interface CategoryWithThumbnail {
   slug: string;
   children?: Category[];
   products?: Product[];
-  thumbnail:Thumbnail;
 }
 
 export interface Media {
@@ -72,11 +71,16 @@ export interface Media {
   thumb_url?: string;
 }
 
+
 export interface Thumbnail {
-  id:           number;
-  name:         string;
-  file_name:    string;
-  mime_type:    string;
+  thumbnail : ThumbnailProps
+}
+
+export interface ThumbnailProps {
+  id: number;
+  name: string;
+  file_name: string;
+  mime_type: string;
   original_url: string;
-  thumb:        string;
+  thumb: string;
 }

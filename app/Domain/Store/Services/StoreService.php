@@ -4,11 +4,13 @@ namespace App\Domain\Store\Services;
 
 use App\Domain\Store\Models\Store;
 use App\Http\Store\Requests\StoreCreateRequest;
+use App\Http\Store\Requests\StoreUpdateRequest;
 use App\Http\Store\Resources\StoreResource;
 use App\Support\Enums\CacheKeyEnums;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class StoreService
 {
@@ -36,8 +38,25 @@ class StoreService
         return new StoreResource(
             Store::query()
                 ->with('products.media')
-                ->whereIn('id',[$id])
+                ->whereIn('id', [$id])
                 ->first()
         );
+    }
+
+    public function update(Store $store, StoreUpdateRequest $request)
+    {
+        DB::beginTransaction();
+        if ($store->update($request->validated())) {
+            DB::commit();
+        }
+    }
+
+    public function delete($id)
+    {
+        $store = Store::query()->find($id);
+        DB::beginTransaction();
+        if ($store->delete()) {
+            DB::commit();
+        }
     }
 }

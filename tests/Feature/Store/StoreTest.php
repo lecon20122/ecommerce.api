@@ -54,8 +54,8 @@ class StoreTest extends TestCase
             'name' => 'new store',
         ];
 
-        $this->post(route('admin.stores.update', ['store' => $store]), $data)->assertOk();
-
+        $response = $this->post(route('admin.stores.update', ['store' => $store]), $data)->assertRedirect();
+        $response->assertSessionHas('message', 'success');
         $store->refresh();
 
         $this->assertEquals('new store', $store->name);
@@ -74,8 +74,8 @@ class StoreTest extends TestCase
             'description' => $this->faker->realText(),
         ]);
 
-        $this->delete(route('stores.destroy', ['store' => $store]), [], $headers)->assertOk();
-
+        $response = $this->post(route('admin.stores.destroy', ['id' => $store->id]))->assertRedirect();
+        $response->assertSessionHas('message', 'success');
         $this->assertNull(Store::first());
     }
 }

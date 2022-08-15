@@ -3,6 +3,8 @@ import {ProductWithThumbnail} from "../../types/products";
 import {ColDef} from "ag-grid-community";
 import {Button} from "@mui/material";
 import DataGrid from "../DataTables/DataGrid";
+import {Inertia} from "@inertiajs/inertia";
+import route from "ziggy-js";
 
 interface Props {
   products: ProductWithThumbnail[];
@@ -10,28 +12,55 @@ interface Props {
 }
 
 function ProductList({products, locale}: Props) {
+  console.log(products)
+
+  const ToggleRestoreDeleteButton = (params: any) => {
+    if (params.data.deleted_at) {
+      return (
+        <Button color={'success'} onClick={event => handleOnClickRestore(event, params)}>Restore</Button>
+      )
+    } else {
+      return (
+        <Button color={'secondary'} onClick={event => handleOnClickDelete(event, params)}>Delete</Button>
+      )
+    }
+  }
+  const handleOnClickUpdateDialog = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
+    Inertia.get(route('admin.products.edit', data.id))
+
+  };
+
+  const handleOnClickDelete = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
+    Inertia.post(route('admin.products.destroy', data.id) , undefined , {
+      preserveState : true,
+      // onSuccess : () =>
+    })
+  };
+  const handleOnClickRestore = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
+    Inertia.post(route('admin.products.restore', data.id))
+  };
 
   const columns: ColDef[] = [
     {
-      field: 'small_thumbnail',
+      field: 'thumbnail',
       headerName: 'Image', cellRenderer: (params: any) =>
-        <img className='mx-auto mt-[4px]' src={params.data.small_thumbnail} alt={params.data.name} width={50}
+        <img className='mx-auto mt-[4px]' src={params.data.thumbnail} alt={params.data.name} width={50}
              height={50}/>
     },
     {field: 'id', headerName: 'ID'},
-    {field: `title`, headerName: 'Title', floatingFilter: true, flex: 1, cellClass: 'font-bold'},
+    {field: `title.en`, headerName: 'Title EN', floatingFilter: true, flex: 0.5, cellClass: 'font-bold'},
+    {field: `title.ar`, headerName: 'Title EN', floatingFilter: true, flex: 0.5, cellClass: 'font-bold'},
     {field: `price`, headerName: 'Price'},
-    // {field: `parent.title.${locale}`, headerName: 'Parent', floatingFilter: true, cellClass: 'font-bold'},
+    {field: `deleted_at`, headerName: 'deleted_at'},
     {field: 'created_at', headerName: 'Created At', filter: 'agDateColumnFilter', floatingFilter: true},
     {
       headerName: 'Actions', cellRenderer: (params: any) =>
         <div>
-          <Button>UPDATE</Button>
-          <Button color='error'>delete</Button>
+          {ToggleRestoreDeleteButton(params)}
+          <Button onClick={event => handleOnClickUpdateDialog(event, params)}>UPDATE</Button>
         </div>
     }
   ]
-
 
   return (
     <main className="bg-white shadow-md rounded">

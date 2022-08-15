@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Exceptions\InvalidManipulation;
@@ -37,8 +38,8 @@ class Category extends Model implements HasMedia
      */
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('thumb310x303')
-            ->crop(Manipulations::CROP_BOTTOM , 310, 303)
+        $this->addMediaConversion(MediaCollectionEnums::THUMB_CONVENTION)
+            ->crop(Manipulations::CROP_BOTTOM, 310, 303)
             ->performOnCollections(MediaCollectionEnums::THUMBNAIL);
     }
 
@@ -72,7 +73,16 @@ class Category extends Model implements HasMedia
      */
     public function thumbnail(): MorphOne
     {
-        return $this->morphOneMedia()->where('collection_name', MediaCollectionEnums::THUMBNAIL);
+        return $this->morphOneMedia()
+            ->where('collection_name', MediaCollectionEnums::THUMBNAIL);
+    }
+
+    /**
+     * @return MorphMany
+     */
+    public function thumbnails()
+    {
+        return $this->morphManyMedia()->where('collection_name', MediaCollectionEnums::THUMBNAIL);
     }
 
     public function scopeIsParent($query)

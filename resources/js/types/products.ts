@@ -1,3 +1,5 @@
+import {Title} from "./CategoryType";
+
 export interface Categories {
   categories: Category[] | null;
 }
@@ -5,10 +7,7 @@ export interface Categories {
 
 export interface Category {
   id: number;
-  title: {
-    en?: string,
-    ar?: string,
-  };
+  title: Title
   parent_id: number;
   slug: string;
   children?: Category[];
@@ -27,12 +26,16 @@ export interface Product {
 
 export interface ProductWithThumbnail {
   id: number;
-  title: string;
+  title: {
+    ar: string,
+    en: string,
+  };
   price: string;
   slug: string;
   description: string;
   thumbnail: string;
   small_thumbnail: string;
+  deleted_at: string | null,
 }
 
 
@@ -73,7 +76,7 @@ export interface Media {
 
 
 export interface Thumbnail {
-  thumbnail : ThumbnailProps
+  thumbnail: ThumbnailProps
 }
 
 export interface ThumbnailProps {
@@ -82,5 +85,14 @@ export interface ThumbnailProps {
   file_name: string;
   mime_type: string;
   original_url: string;
-  thumb: string;
+  thumbnail: string;
+}
+
+export interface NewMediaProps {
+  id: number;
+  name: string;
+  file_name: string;
+  mime_type: string;
+  thumbnail: string;
+  big: string;
 }

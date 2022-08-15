@@ -27,7 +27,7 @@ export default function CreateProduct({handleAddDialog, openAddDialog, watch}: P
 
   const {register, handleSubmit, formState: {errors}, reset, setValue} = useForm<IFormProps>()
   const store_id: number = watch('store_id')
-  console.log(store_id)
+
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
     console.log(data)
@@ -84,17 +84,17 @@ export default function CreateProduct({handleAddDialog, openAddDialog, watch}: P
             fullWidth
             variant="outlined"
           />
+          <span>{errors.price?.message}</span>
           <Button
             variant="outlined"
             component="label"
           >
-            <FontAwesomeIcon icon={faFileImage}/> <span className='ml-2'>add Image</span>
+            <FontAwesomeIcon icon={faFileImage}/> <span className='ml-2'></span>
             <input
               {...register('images')}
               type="file"
               multiple
               name='images'
-              hidden
             />
           </Button>
           <DialogActions>

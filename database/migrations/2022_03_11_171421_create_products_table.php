@@ -23,6 +23,7 @@ return new class extends Migration
             $table->dateTime('live_at')->nullable();
             $table->boolean('is_approved')->nullable();
             $table->foreignId('admin_id')->nullable()->constrained();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->index('created_at');

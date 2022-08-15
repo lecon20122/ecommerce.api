@@ -21,6 +21,10 @@ class ImageService
             });
     }
 
+    public function delete($id)
+    {
+        Media::destroy($id);
+    }
 
     public function isImageDeleted($image_Id)
     {

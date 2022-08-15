@@ -27,6 +27,7 @@ interface IFormProps {
 
 
 export default function CategoryEdit({currentCategory, locale, categories}: Props) {
+  console.log(currentCategory)
   const form = useForm<IFormProps>({mode : "onChange"})
   const {register, handleSubmit, formState: {errors , isDirty , isValid} , getValues , reset } = form
   const [disabled, setDisabled] = useState(true);

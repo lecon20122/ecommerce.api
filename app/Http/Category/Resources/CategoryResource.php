@@ -4,6 +4,7 @@ namespace App\Http\Category\Resources;
 
 use App\Http\Media\Resources\MediaResource;
 use App\Http\Product\Resources\ProductResource;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryResource extends JsonResource
@@ -11,8 +12,8 @@ class CategoryResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param Request $request
+     * @return array
      */
     public function toArray($request)
     {
@@ -22,6 +23,7 @@ class CategoryResource extends JsonResource
             'title' => $this->getTranslations('title'),
             'slug' => $this->slug,
             'children' => CategoryResource::collection($this->whenLoaded('children')),
+            'parent' => new CategoryResource($this->whenLoaded('parent')),
             'products' => ProductResource::collection($this->whenLoaded('products')),
             'thumbnail' => new MediaResource($this->whenLoaded('thumbnail')),
         ];

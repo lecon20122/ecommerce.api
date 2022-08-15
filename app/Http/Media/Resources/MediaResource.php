@@ -16,13 +16,21 @@ class MediaResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $data = [
             'id' => $this->id,
             'name' => $this->name,
             'file_name' => $this->file_name,
             'mime_type' => $this->mime_type,
-            'original_url' => $this->getFullUrl(),
-            'thumb' => $this->getFullUrl(MediaCollectionEnums::THUMB_CONVENTION),
         ];
+        if ($this->hasGeneratedConversion(MediaCollectionEnums::THUMB_CONVENTION)) {
+            $data['thumbnail'] = $this->getFullUrl(MediaCollectionEnums::THUMB_CONVENTION);
+        }
+        if ($this->hasGeneratedConversion(MediaCollectionEnums::BIG_CONVENTION)) {
+            $data['big'] = $this->getFullUrl(MediaCollectionEnums::BIG_CONVENTION);
+        }
+        if ($this->hasGeneratedConversion(MediaCollectionEnums::SMALL_CONVENTION)) {
+            $data['small'] = $this->getFullUrl(MediaCollectionEnums::SMALL_CONVENTION);
+        }
+        return $data;
     }
 }

@@ -1240,7 +1240,7 @@ exports["default"] = Footer;
 
 /***/ "./resources/js/components/client/includes/header.tsx":
 /*!************************************************************!*\
-  !*** ./resources/js/components/client/includes/header.tsx ***!
+  !*** ./resources/js/components/client/includes/navbar.tsx ***!
   \************************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 

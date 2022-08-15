@@ -2,26 +2,37 @@
 
 namespace App\Domain\Product\Services;
 
+use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
+use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
+use App\Http\Product\Resources\ProductResource;
 use App\Support\Enums\MediaCollectionEnums;
+use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+
 
 class ProductService
 {
 
-    public function getProductsByStoreId(int $store_id)
+    /**
+     * @param int $id
+     * @return Model|Builder|ProductResource|null
+     */
+    public function getProductsById(int $id): Model|Builder|ProductResource|null
     {
-        $store = Store::query()
-            ->find($store_id);
-
-        return $store?->products()
-            ->select('id', 'title', 'price', 'slug', 'description')
-            ->with('media')
-            ->latest()
-            ->get();
+        return new ProductResource(
+            Product::query()
+                ->with('media')
+                ->whereIn('id', [$id])
+                ->select('id', 'title', 'price', 'slug', 'description')
+                ->latest()
+                ->first()
+        );
     }
 
     /**
@@ -44,7 +55,7 @@ class ProductService
             }
             $product = $store->products()->create($data);
             if ($product && $request->hasFile('images')) {
-                $imageService->imageUpload($product, 'images', MediaCollectionEnums::THUMBNAIL, $data['store_id']);
+                $imageService->imageUpload($product, 'images', MediaCollectionEnums::PRODUCT, $data['store_id']);
             }
         }
     }
@@ -71,4 +82,35 @@ class ProductService
         $product = Product::query()->find($id);
         $product?->delete();
     }
+
+    public function restore(int $id)
+    {
+        $product = Product::withTrashed()->find($id);
+        $product?->restore();
+    }
+
+    public function addImagesToProduct(Product $product, StoreMediaRequest $request, ImageService $imageService)
+    {
+        if ($request->hasFile('images')) {
+            $imageService->imageUpload($product, 'images', MediaCollectionEnums::PRODUCT, $product->id);
+        }
+    }
+
+    public function attachCategoryToProduct(Product $product, ModelIDsRequest $request)
+    {
+        $category = Category::query()
+            ->find($request->validated('id'));
+        $product->categories()->syncWithoutDetaching($category);
+    }
+
+    public function deleteProductImage(Product $product, ModelIDsRequest $request)
+    {
+        $image = $product->media()->find($request->validated('id'));
+        $image?->delete();
+    }
+
+//    public function changeMediaOrder()
+//    {
+//
+//    }
 }

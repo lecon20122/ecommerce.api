@@ -87,8 +87,10 @@ class StoreController extends BaseController
                 'currentStore' => (new StoreService())->getStoreById($id)
             ]);
         } catch (Exception $exception) {
-            return $this->webMessage($exception->getMessage());
+//            return $this->webMessage($exception->getMessage());
+            dd($exception->getMessage());
         }
+
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Product\Resources;
 
+use App\Http\Media\Resources\MediaResource;
 use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,12 +19,14 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'ar' => $this->getTranslation('title' , 'ar' , true),
+            'en' => $this->getTranslation('title' , 'en' , true),
             'price' => $this->price,
             'slug' => $this->slug,
             'description' => $this->description,
-            'thumbnail' => $this->getFirstMediaUrl(MediaCollectionEnums::THUMBNAIL, 'thumb370x370'),
-            'small_thumbnail' => $this->getFirstMediaUrl(MediaCollectionEnums::THUMBNAIL, 'small50x50'),
+            'media' => MediaResource::collection($this->whenLoaded('media')),
+            'thumbnail' => $this->getFirstMedia(MediaCollectionEnums::PRODUCT)?->getFullUrl(MediaCollectionEnums::THUMB_CONVENTION),
+            'deleted_at' => $this->deleted_at,
         ];
     }
 }

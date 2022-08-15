@@ -13,9 +13,9 @@ trait CustomHasMedia
     /**
      * @return MorphOne
      */
-    public function morphOneMedia()
+    public function morphOneMedia(): MorphOne
     {
-        return $this->morphOne(config('media-library.media_model'), 'model')->orderBy('order_column')->take(1);
+        return $this->morphOne(config('media-library.media_model'), 'model')->orderBy('order_column');
     }
 
     /**

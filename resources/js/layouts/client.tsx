@@ -1,6 +1,6 @@
 import React from 'react'
 import Footer from '../components/client/includes/footer'
-import Header from '../components/client/includes/header'
+import Navbar from '../components/client/includes/navbar'
 
 interface IAppLayout {
   children: React.ReactNode
@@ -9,7 +9,7 @@ interface IAppLayout {
 export default function AppLayout({ children }: IAppLayout) {
   return (
     <div>
-      <Header />
+      <Navbar />
       {children}
       <Footer />
     </div>

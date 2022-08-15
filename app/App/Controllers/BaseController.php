@@ -5,6 +5,7 @@ namespace Application\Controllers;
 use App\Http\User\Requests\RegisterRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 
 class BaseController extends Controller
 {
@@ -68,7 +69,7 @@ class BaseController extends Controller
 
     public function redirectToWithMessage($route, $message): RedirectResponse
     {
-        return redirect()->route($route)->with('message', $message);
+        return Redirect::route($route)->with('message', $message);
     }
 
     public function redirectBackWithError($message = 'ops, something went wrong! dont worry we on it'): RedirectResponse

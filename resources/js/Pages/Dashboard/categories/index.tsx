@@ -26,6 +26,7 @@ interface IFormProps {
 }
 
 export default function CategoryIndex({categories, locale}: Props) {
+  console.log(categories)
   const {register, handleSubmit, formState: {errors}, reset} = useForm<IFormProps>()
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);

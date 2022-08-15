@@ -21,17 +21,18 @@ class CategoryService
         return Cache::remember(
             CacheKeyEnums::CATEGORY,
             3600,
-            fn() =>
+            fn() => CategoryResource::collection(
                 Category::query()
                     ->select('id', 'title', 'parent_id', 'created_at')
                     ->with('parent:title,id')
                     ->get()
+            )
 
         );
     }
 
 
-    public function store(StoreCategoryRequest $request, ImageService $imageService)
+    public function store(StoreCategoryRequest $request, ImageService $imageService): CategoryResource
     {
         DB::beginTransaction();
         $data = $request->validated();
@@ -48,7 +49,7 @@ class CategoryService
         return new CategoryResource($category);
     }
 
-    public function edit($id)
+    public function edit($id): CategoryResource
     {
         return new CategoryResource(Category::with('thumbnail')->find($id));
     }
@@ -70,8 +71,6 @@ class CategoryService
                 $imageService->imageUpload($category, 'images', MediaCollectionEnums::THUMBNAIL, $category->id);
             }
         }
-
-        $category->save();
         DB::commit();
     }
 
@@ -89,7 +88,7 @@ class CategoryService
     public function getCategoriesChildrenAndThumb(): Collection|array
     {
         return Category::query()
-            ->with('thumbnail', 'children.thumbnail')
+            ->with('thumbnail')
             ->select('id', 'title', 'slug', 'parent_id')
             ->isParent()
             ->get();

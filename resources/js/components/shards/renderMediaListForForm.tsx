@@ -21,7 +21,7 @@ export default function RenderMediaListForForm({currentCategory}: Props) {
         {currentCategory.thumbnail &&
         <ImageListItem>
           <img
-            src={currentCategory.thumbnail.thumb}
+            src={currentCategory.thumbnail.thumbnail}
             alt={currentCategory.thumbnail.name}
             loading="lazy"
           />

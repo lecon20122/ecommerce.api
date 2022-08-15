@@ -1,9 +1,10 @@
 import React, {lazy, Suspense} from 'react'
 import {Category, CategoryWithMedia, CategoryWithThumbnail} from "../../types/products";
 import HomePageCategories from "../../components/client/shards/homePageCategories";
+import {HomePageCategory} from "../../types/CategoryType";
 
 interface Props {
-  categories: CategoryWithThumbnail[]
+  categories: HomePageCategory[]
   locale: string
 }
 
@@ -18,8 +19,8 @@ export default function HomePage(props: Props) {
   return (
     <div className='bg-[#EAEDED]'>
       <Suspense fallback={<div><h1>loading...</h1></div>}>
-        <AppLayout>
           <CategoriesNavigation/>
+        <AppLayout>
           <Hero/>
           <HomePageCategories {...props}/>
         </AppLayout>

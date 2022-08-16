@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Product\Requests;
+namespace App\Http\Variation\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,7 +11,7 @@ class StoreVariationRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,12 +24,13 @@ class StoreVariationRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
+            'ar' => 'required',
+            'en' => 'required',
             'price' => 'required',
             'type' => 'required',
-            'order' => 'required',
+            'order' => 'nullable',
+            'parent_id' => 'nullable',
             'product_id' => 'required',
-            'store_id' => 'required',
         ];
     }
 }

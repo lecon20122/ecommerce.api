@@ -27,7 +27,6 @@ class VariationFactory extends Factory
             'type' => $this->faker->unique()->sentence,
             'order' => $this->faker->randomDigit(),
             'product_id' => Product::factory(),
-            'store_id' => Store::factory(),
         ];
     }
 }

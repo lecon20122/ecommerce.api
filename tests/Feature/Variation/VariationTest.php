@@ -8,87 +8,69 @@ use App\Domain\Product\Models\Variation;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Sanctum\Sanctum;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
 
 class VariationTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    public function createProduct($user)
-    {
-
-    }
-
     /**
      * A basic feature test example.
      *
      * @return void
      */
-    public function test_variation_can_be_created()
+    public function test_variation_can_be_created_with_images_by_admin()
     {
-        $user = User::factory()->create();
-
-        $product = $this->createProduct($user);
-
-        $header = $this->generateBearerTokenHeader($user);
-
+        $admin = Admin::factory()->create();
+        Sanctum::actingAs($admin, [], 'admin');
+        $product = Product::factory()->create();
+        Storage::fake('public');
         $data = [
-            'title' => $this->faker->unique()->sentence,
-            'price' => $this->faker->randomFloat(null, 99, 500),
-            'type' => 'Color',
-            'order' => $this->faker->randomDigit(),
+            'en' => 'black',
+            'ar' => 'اسود',
+            'price' => 150,
+            'type' => 'color',
+            'order' => 1,
             'product_id' => $product->id,
-            'store_id' => $product->store_id,
+            'images' => [
+                0 => UploadedFile::fake()->image("test.jpg", 1000, 1000)
+            ]
         ];
 
-        $response = $this->post(route('variations.store'), $data, $header);
-
-        $this->assertEquals($response->json()['title'], Variation::first()->title);
+        $response = $this->post(route('admin.variations.store'), $data)->assertRedirect();
+//        dd($response);
+        $response->assertSessionHas('message', 'success');
+        $this->assertEquals('black', Variation::first()->title);
         $this->assertEquals(1, Variation::first()->count());
+        $this->assertEquals(1, Media::first()->count());
     }
 
-    public function test_variation_can_be_updated()
+    public function test_variation_can_be_updated_by_admin()
     {
-        $user = User::factory()->create();
-
-        $product = $this->createProduct($user);
-
-        $header = $this->generateBearerTokenHeader($user);
+        $admin = Admin::factory()->create();
+        Sanctum::actingAs($admin, [], 'admin');
+        $variation = Variation::factory()->create();
 
         $data = [
-            'title' => $this->faker->unique()->sentence,
-            'price' => $this->faker->randomFloat(null, 99, 500),
-            'type' => $this->faker->unique()->sentence,
-            'order' => $this->faker->randomDigit(),
-            'store_id' => $product->store_id,
+            'en' => 'new black',
         ];
 
-        $variation = $product->variations()->create($data);
-
-        $this->put(route('variations.update', ['variation' => $variation]), ['title' => 'new title'], $header)->assertOk();
-
-        $this->assertEquals('new title', Variation::first()->title);
+        $response = $this->post(route('admin.variations.update', ['variation' => $variation]),$data)->assertRedirect();
+        $response->assertSessionHas('message', 'success');
+        $this->assertEquals('new black', Variation::first()->title);
     }
 
     public function test_variation_can_be_destroyed()
     {
-        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
+        Sanctum::actingAs($admin, [], 'admin');
+        $variation = Variation::factory()->create();
 
-        $product = $this->createProduct($user);
-
-        $header = $this->generateBearerTokenHeader($user);
-
-        $data = [
-            'title' => $this->faker->unique()->sentence,
-            'price' => $this->faker->randomFloat(null, 99, 500),
-            'type' => $this->faker->unique()->sentence,
-            'order' => $this->faker->randomDigit(),
-            'store_id' => $product->store_id,
-        ];
-
-        $variation = $product->variations()->create($data);
-
-        $this->delete(route('variations.destroy', ['variation' => $variation]), [], $header)->assertOk();
+        $this->post(route('admin.variations.destroy', ['id' => $variation->id]))->assertRedirect();
 
         $this->assertNull(Variation::first());
     }

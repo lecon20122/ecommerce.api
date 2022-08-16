@@ -108,9 +108,4 @@ class ProductService
         $image = $product->media()->find($request->validated('id'));
         $image?->delete();
     }
-
-//    public function changeMediaOrder()
-//    {
-//
-//    }
 }

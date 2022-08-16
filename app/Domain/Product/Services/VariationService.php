@@ -2,37 +2,56 @@
 
 namespace App\Domain\Product\Services;
 
-use App\Domain\Product\Models\Product;
 use App\Domain\Product\Models\Variation;
-use App\Http\Product\Requests\StoreProductRequest;
-use App\Http\Product\Requests\StoreVariationRequest;
+use App\Http\Variation\Requests\StoreVariationRequest;
+use App\Http\Variation\Requests\UpdateVariationRequest;
+use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Jobs\UploadImageJob;
+use App\Support\Services\Media\ImageService;
 
 class VariationService
 {
     /**
-     * @param StoreProductRequest $request
+     * @param StoreVariationRequest $request
      * @return mixed
      */
 
-    public function store(StoreVariationRequest $request)
+    public function store(StoreVariationRequest $request , ImageService $imageService): void
     {
-        $variation = Variation::create($request->validated());
+        $data = $request->validated();
 
-        if ($variation && $request->hasFile('images')) {
-            UploadImageJob::dispatchAfterResponse($variation, 'images', 'variations');
+        if ($request->has('en') || $request->has('ar')) {
+            $data['title'] = [
+                'en' => $request->validated('en'),
+                'ar' => $request->validated('ar'),
+            ];
         }
 
-        return $variation;
+        $variation = Variation::query()
+            ->create($data);
+
+        if ($variation && $request->hasFile('images')) {
+            $imageService->imageUpload($variation, 'images', MediaCollectionEnums::THUMBNAIL, $variation->id);
+        }
     }
 
-    public function update($data, Variation $variation)
+    public function update(UpdateVariationRequest $request, Variation $variation)
     {
+        $data = $request->validated();
+
+        if ($request->has('en') || $request->has('ar')) {
+            $data['title'] = [
+                'en' => $request->validated('en'),
+                'ar' => $request->validated('ar'),
+            ];
+        }
+
         $variation->update($data);
     }
 
-    public function destroy(Variation $variation)
+    public function destroy(int $id)
     {
-        $variation->delete();
+        $variation = Variation::query()->find($id);
+        $variation?->delete();
     }
 }

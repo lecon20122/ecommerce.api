@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Product\Requests;
+namespace App\Http\Variation\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +24,8 @@ class UpdateVariationRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'nullable',
+            'ar' => 'nullable',
+            'en' => 'nullable',
             'price' => 'nullable',
             'type' => 'nullable',
             'order' => 'nullable',

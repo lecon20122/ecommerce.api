@@ -62,8 +62,9 @@ export default function ProductEdit({currentProduct, locale}: Props) {
 
   const handleUpdateProduct: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
-    console.log(data)
-    Inertia.post(route('admin.products.update', currentProduct), resolveData)
+    Inertia.post(route('admin.products.update', currentProduct), resolveData, {
+      preserveState:false
+    })
     reset(getValues())
   }
   const handleAddMediaToProduct: SubmitHandler<MediaForm> = (data) => {

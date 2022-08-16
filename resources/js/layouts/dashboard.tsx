@@ -1,5 +1,5 @@
-import { Page } from '@inertiajs/inertia';
-import { usePage } from '@inertiajs/inertia-react';
+import {Inertia, Page} from '@inertiajs/inertia';
+import {InertiaApp, usePage} from '@inertiajs/inertia-react';
 import { Alert, AlertColor, Snackbar } from '@mui/material';
 import React, { useState } from 'react'
 import Aside from '../includes/aside';

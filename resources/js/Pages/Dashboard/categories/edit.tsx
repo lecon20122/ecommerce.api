@@ -41,7 +41,9 @@ export default function CategoryEdit({currentCategory, locale, categories}: Prop
 
   const handleUpdateCategory: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
-    Inertia.post(route('admin.categories.update', currentCategory), resolveData)
+    Inertia.post(route('admin.categories.update', currentCategory), resolveData , {
+      preserveState:false
+    })
     reset(getValues())
   }
 

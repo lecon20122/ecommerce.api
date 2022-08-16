@@ -50,7 +50,9 @@ export default function CategoryIndex({products, locale}: Props) {
   };
 
   const handleAgreeDelete = (e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
-    Inertia.post(route('admin.products.destroy', currentCategoryId))
+    Inertia.post(route('admin.products.destroy', currentCategoryId), {
+      preserveState:false
+    })
     setOpenDeleteDialog(false);
   };
 
@@ -72,7 +74,9 @@ export default function CategoryIndex({products, locale}: Props) {
 
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
-    Inertia.post(route('admin.products.store'), resolveData)
+    Inertia.post(route('admin.products.store'), resolveData, {
+      preserveState:false
+    })
     reset()
   }
 

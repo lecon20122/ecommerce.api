@@ -31,7 +31,9 @@ export default function CreateProduct({handleAddDialog, openAddDialog, watch}: P
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
     console.log(data)
-    Inertia.post(route('admin.products.store'), resolveData)
+    Inertia.post(route('admin.products.store'), resolveData, {
+      preserveState:false
+    })
     reset()
   }
 

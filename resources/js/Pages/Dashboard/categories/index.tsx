@@ -26,7 +26,6 @@ interface IFormProps {
 }
 
 export default function CategoryIndex({categories, locale}: Props) {
-  console.log(categories)
   const {register, handleSubmit, formState: {errors}, reset} = useForm<IFormProps>()
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -50,7 +49,9 @@ export default function CategoryIndex({categories, locale}: Props) {
   };
 
   const handleAgreeDelete = (e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
-    Inertia.post(route('admin.categories.destroy', currentCategoryId))
+    Inertia.post(route('admin.categories.destroy', currentCategoryId) , undefined , {
+      preserveState : false,
+    })
     setOpenDeleteDialog(false);
   };
 
@@ -72,7 +73,9 @@ export default function CategoryIndex({categories, locale}: Props) {
 
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
-    Inertia.post(route('admin.categories.store'), resolveData)
+    Inertia.post(route('admin.categories.store'), resolveData , {
+      preserveState:false
+    })
     reset()
   }
   const selectParentMenuItems = categories.map((category) => (

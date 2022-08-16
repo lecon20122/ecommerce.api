@@ -34,7 +34,9 @@ export default function CategoryIndex({stores, locale}: Props) {
   };
 
   const handleAgreeDelete = (e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
-    Inertia.post(route('admin.products.destroy', currentStoreId))
+    Inertia.post(route('admin.products.destroy', currentStoreId), {
+      preserveState:false
+    })
     setOpenDeleteDialog(false);
   };
 

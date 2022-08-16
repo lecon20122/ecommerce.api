@@ -31,13 +31,14 @@ function ProductList({products, locale}: Props) {
   };
 
   const handleOnClickDelete = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
-    Inertia.post(route('admin.products.destroy', data.id) , undefined , {
-      preserveState : true,
-      // onSuccess : () =>
+    Inertia.post(route('admin.products.destroy', data.id), {
+      preserveState:false
     })
   };
   const handleOnClickRestore = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
-    Inertia.post(route('admin.products.restore', data.id))
+    Inertia.post(route('admin.products.restore', data.id), {
+      preserveState:false
+    })
   };
 
   const columns: ColDef[] = [
@@ -49,9 +50,9 @@ function ProductList({products, locale}: Props) {
     },
     {field: 'id', headerName: 'ID'},
     {field: `title.en`, headerName: 'Title EN', floatingFilter: true, flex: 0.5, cellClass: 'font-bold'},
-    {field: `title.ar`, headerName: 'Title EN', floatingFilter: true, flex: 0.5, cellClass: 'font-bold'},
+    {field: `title.ar`, headerName: 'Title AR', floatingFilter: true, flex: 0.5, cellClass: 'font-bold'},
     {field: `price`, headerName: 'Price'},
-    {field: `deleted_at`, headerName: 'deleted_at'},
+    {field: `deleted_at`, headerName: 'Deleted at'},
     {field: 'created_at', headerName: 'Created At', filter: 'agDateColumnFilter', floatingFilter: true},
     {
       headerName: 'Actions', cellRenderer: (params: any) =>

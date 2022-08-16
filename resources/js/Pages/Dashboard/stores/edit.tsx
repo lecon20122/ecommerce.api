@@ -29,7 +29,6 @@ export default function StoreEdit({currentStore, locale}: Props) {
 
   const handleOnClickAddSProductDialog = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
     setValue('store_id', currentStore.id)
-    // Inertia.visit(route(''))
     handleAddDialog()
   };
 
@@ -46,7 +45,9 @@ export default function StoreEdit({currentStore, locale}: Props) {
 
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
-    Inertia.post(route('admin.stores.store'), resolveData)
+    Inertia.post(route('admin.stores.store'), resolveData , {
+      preserveState:false
+    })
     reset()
   }
 

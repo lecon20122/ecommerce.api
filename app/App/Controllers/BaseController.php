@@ -67,9 +67,9 @@ class BaseController extends Controller
         return back()->with('message', $message);
     }
 
-    public function redirectToWithMessage($route, $message): RedirectResponse
+    public function redirectToWithMessage($route, $message, $params = null): RedirectResponse
     {
-        return Redirect::route($route)->with('message', $message);
+        return Redirect::route($route, $params)->with('message', $message);
     }
 
     public function redirectBackWithError($message = 'ops, something went wrong! dont worry we on it'): RedirectResponse

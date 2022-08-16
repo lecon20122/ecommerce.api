@@ -38,7 +38,9 @@ export default function index({users}: Props) {
 
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
-    Inertia.post(route('admin.stores.store'), resolveData)
+    Inertia.post(route('admin.stores.store'), resolveData, {
+      preserveState:false
+    })
     reset()
   }
 

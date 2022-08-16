@@ -147,7 +147,7 @@ class ProductController extends BaseController
         try {
             $service->restore($id);
             DB::commit();
-            return $this->redirectToWithMessage('admin.stores.edit' , 'success');
+            return $this->redirectToWithMessage('admin.stores.edit', 'success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError();

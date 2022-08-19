@@ -29,15 +29,14 @@ function ProductList({products, locale}: Props) {
     Inertia.get(route('admin.products.edit', data.id))
 
   };
-
   const handleOnClickDelete = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
-    Inertia.post(route('admin.products.destroy', data.id), {
-      preserveState:false
+    Inertia.post(route('admin.products.destroy', data.id), undefined, {
+      preserveState: false
     })
   };
   const handleOnClickRestore = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
-    Inertia.post(route('admin.products.restore', data.id), {
-      preserveState:false
+    Inertia.post(route('admin.products.restore', data.id), undefined, {
+      preserveState: false
     })
   };
 

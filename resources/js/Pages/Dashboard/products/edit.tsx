@@ -9,6 +9,7 @@ import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {usePage} from "@inertiajs/inertia-react";
 import Alert from "../../../components/shards/alert";
 import MediaProductCollection from "../../../components/Lists/MediaProductCollection";
+import {Title} from "../../../types/CategoryType";
 
 interface Props {
   currentProduct: Product
@@ -26,8 +27,7 @@ interface IFormProps {
 
 interface Product {
   id: number;
-  ar: string;
-  en: string;
+  title:Title
   price: string;
   slug: string;
   description: string;
@@ -83,12 +83,12 @@ export default function ProductEdit({currentProduct, locale}: Props) {
               <div className="-mx-3 md:flex mb-6">
                 <div className="md:w-1/4 px-3 mb-6 md:mb-0">
                   <TextField {...register('ar')} name={'ar'} fullWidth label="Product Title AR"
-                             defaultValue={currentProduct.ar}/>
+                             defaultValue={currentProduct.title.ar}/>
                   {serverSideErrors.title && <Alert text={serverSideErrors.title} type={"red"}/>}
                 </div>
                 <div className="md:w-1/4 px-3 mb-6 md:mb-0">
                   <TextField {...register('en')} name={'en'} fullWidth label="Product Title EN"
-                             defaultValue={currentProduct.en} placeholder={currentProduct.en}/>
+                             defaultValue={currentProduct.title.en} placeholder={currentProduct.title.en}/>
                   {serverSideErrors.title && <Alert text={serverSideErrors.title} type={"red"}/>}
                 </div>
                 <div className="md:w-1/4 px-3">

@@ -4,6 +4,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import {Backdrop, Button, ImageListItemBar} from "@mui/material";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
+import {Title} from "../../types/CategoryType";
 
 interface Props {
   product: Product
@@ -11,8 +12,7 @@ interface Props {
 
 interface Product {
   id: number;
-  ar: string;
-  en: string;
+  title :Title
   price: string;
   slug: string;
   description: string;

@@ -2,21 +2,18 @@
 
 namespace Tests\Feature\Store;
 
-use App\Domain\Location\Models\Address;
+use App\Domain\Admin\Models\Admin;
 use App\Domain\Store\Models\Store;
 use App\Support\Enums\HttpStatusEnums;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use phpDocumentor\Reflection\Types\This;
 use Tests\TestCase;
-
-use function PHPUnit\Framework\assertTrue;
 
 class StoreTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
-    protected $user, $address, $token;
+
     /**
      * A basic feature test example.
      *
@@ -24,41 +21,41 @@ class StoreTest extends TestCase
      */
     public function test_store_can_be_created()
     {
-        $this->user = User::factory()->create();
-
-        $this->token = $this->user->createToken($this->user->email, ['customer'])->plainTextToken;
-        $headers = ['Authorization' => 'Bearer ' . $this->token];
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin, 'admin');
 
         $data = [
-            'name' => $this->faker->unique()->firstName,
+            'name' => 'JK',
             'description' => $this->faker->realText(),
-            'user_id' => $this->user->id,
+            'user_id' => User::factory()->create()->id,
         ];
 
-        $response = $this->post(route('stores.store'), $data, $headers)->assertStatus(HttpStatusEnums::CREATED);
+        $response = $this->post(route('admin.stores.store'), $data)
+            ->assertRedirect();
 
-        $this->assertEquals(Store::first()->name, $response->json()['name']);
+        $response->assertSessionHas('message', 'success');
+
+        $this->assertEquals(Store::first()->name, 'JK');
     }
 
     public function test_store_can_be_updated()
     {
-        $this->user = User::factory()->create();
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin, 'admin');
 
-        $store = $this->user->stores()->create([
+        $user = User::factory()->create();
+
+        $store = $user->stores()->create([
             'name' => $this->faker->unique()->firstName,
             'description' => $this->faker->realText(),
         ]);
-
-
-        $this->token = $this->user->createToken($this->user->email, ['customer'])->plainTextToken;
-        $headers = ['Authorization' => 'Bearer ' . $this->token];
 
         $data = [
             'name' => 'new store',
         ];
 
-        $this->put(route('stores.update', ['store' => $store]), $data, $headers)->assertOk();
-
+        $response = $this->post(route('admin.stores.update', ['store' => $store]), $data)->assertRedirect();
+        $response->assertSessionHas('message', 'success');
         $store->refresh();
 
         $this->assertEquals('new store', $store->name);
@@ -66,18 +63,19 @@ class StoreTest extends TestCase
 
     public function test_store_can_be_destroyed()
     {
-        $this->user = User::factory()->create();
 
-        $store = $this->user->stores()->create([
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin, 'admin');
+
+        $user = User::factory()->create();
+
+        $store = $user->stores()->create([
             'name' => $this->faker->unique()->firstName,
             'description' => $this->faker->realText(),
         ]);
 
-        $this->token = $this->user->createToken($this->user->email, ['customer'])->plainTextToken;
-        $headers = ['Authorization' => 'Bearer ' . $this->token];
-
-        $this->delete(route('stores.destroy', ['store' => $store]), [], $headers)->assertOk();
-
+        $response = $this->post(route('admin.stores.destroy', ['id' => $store->id]))->assertRedirect();
+        $response->assertSessionHas('message', 'success');
         $this->assertNull(Store::first());
     }
 }

@@ -24,6 +24,7 @@ class StoreFactory extends Factory
             'name' => $this->faker->unique()->firstName,
             'description' => $this->faker->realText(),
             'user_id' => User::factory(),
+            'is_active' => true,
         ];
     }
 }

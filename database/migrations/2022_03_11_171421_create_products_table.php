@@ -15,13 +15,18 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique();
+            $table->json('title')->unique();
             $table->string('slug')->unique();
             $table->string('description')->nullable();
-            $table->decimal('price')->unsigned();
+            $table->integer('price')->unsigned();
             $table->foreignId('store_id')->constrained();
             $table->dateTime('live_at')->nullable();
+            $table->boolean('is_approved')->nullable();
+            $table->foreignId('admin_id')->nullable()->constrained();
+            $table->softDeletes();
             $table->timestamps();
+
+            $table->index('created_at');
         });
     }
 

@@ -3,31 +3,39 @@
 namespace App\Http\Store\Controllers;
 
 use App\Domain\Store\Models\Store;
-use App\Http\Controllers\Controller;
+use App\Domain\Store\Services\StoreService;
 use App\Http\Store\Requests\StoreCreateRequest;
 use App\Http\Store\Requests\StoreUpdateRequest;
 use App\Http\Store\Resources\StoreResource;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class StoreController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function index()
+    public function index(): \Inertia\Response|RedirectResponse
     {
-        //
+        try {
+            return Inertia::render('Dashboard/stores/index', [
+                'stores' => StoreResource::collection((new StoreService())->index())]);
+        } catch (Exception $exception) {
+            return $this->webMessage($exception->getMessage());
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -37,26 +45,28 @@ class StoreController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreCreateRequest $request
+     * @param StoreService $storeService
+     * @return RedirectResponse
      */
-    public function store(StoreCreateRequest $request)
+    public function store(StoreCreateRequest $request, StoreService $storeService): RedirectResponse
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
-            return new StoreResource(Store::create($request->validated()));
+            $storeService->store($request);
             DB::commit();
+            return $this->redirectToWithMessage('admin.stores.index' , 'success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->sendError($exception->getMessage());
+            return $this->webMessage($exception->getMessage());
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function show($id)
     {
@@ -66,50 +76,57 @@ class StoreController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        //
+//        return \response()->json((new StoreService())->getStoreById($id));
+        try {
+            return Inertia::render('Dashboard/stores/edit' , [
+                'currentStore' => (new StoreService())->getStoreById($id)
+            ]);
+        } catch (Exception $exception) {
+//            return $this->webMessage($exception->getMessage());
+            dd($exception->getMessage());
+        }
+
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param StoreUpdateRequest $request
+     * @param Store $store
+     * @return RedirectResponse
      */
-    public function update(StoreUpdateRequest $request, Store $store)
+    public function update(StoreUpdateRequest $request, Store $store): RedirectResponse
     {
         try {
-            DB::beginTransaction();
-            $store->update($request->validated());
-            return new StoreResource($store->refresh());
-            DB::commit();
+            (new StoreService())->update($store , $request);
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->sendError($exception->getMessage());
+            return $this->webMessage($exception->getMessage());
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function destroy(Store $store)
+    public function destroy(int $id): RedirectResponse
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
-            $store->delete();
-            return new StoreResource($store->refresh());
+            (new StoreService())->delete($id);
             DB::commit();
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->sendError($exception->getMessage());
+            return $this->webMessage($exception->getMessage());
         }
     }
 }

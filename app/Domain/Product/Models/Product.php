@@ -2,47 +2,79 @@
 
 namespace App\Domain\Product\Models;
 
+use App\Domain\Category\Models\Category;
 use App\Domain\Store\Models\Store;
+use App\Support\Enums\MediaCollectionEnums;
+use App\Support\Traits\CustomHasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, CustomHasMedia, HasTranslations , SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'price' , 'store_id'];
-
-    public function variations()
-    {
-        return $this->hasMany(Variation::class)->orderBy('order', 'asc')->groupBy('type');
-    }
-
-    public function store()
-    {
-        return $this->belongsTo(Store::class);
-    }
+    public $translatable = ['title'];
+    protected $fillable = ['title', 'description', 'price', 'store_id'];
 
     /**
      * @throws InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('thumb232x320')
-            ->fit(Manipulations::FIT_CROP, 232, 320);
-
-        $this->addMediaConversion('small38x50')
-            ->fit(Manipulations::FIT_CROP, 38, 50);
+        $this->addMediaConversion(MediaCollectionEnums::THUMB_CONVENTION)
+            ->width(405)
+            ->height(539)
+            ->shouldBePerformedOn(MediaCollectionEnums::PRODUCT);
+        $this->addMediaConversion(MediaCollectionEnums::SMALL_CONVENTION)
+            ->width(219)
+            ->height(293)
+            ->shouldBePerformedOn(MediaCollectionEnums::PRODUCT);
+        $this->addMediaConversion(MediaCollectionEnums::BIG_CONVENTION)
+            ->width(600)
+            ->height(799)
+            ->shouldBePerformedOn(MediaCollectionEnums::PRODUCT);
+        $this->addMediaConversion(MediaCollectionEnums::ZOOM_CONVENTION)
+            ->width(1340)
+            ->height(1785)
+            ->shouldBePerformedOn(MediaCollectionEnums::PRODUCT);
     }
 
-    public function setTitleAttribute($value)
+    public function registerMediaCollections(): void
     {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
+        $this->addMediaCollection(MediaCollectionEnums::PRODUCT)
+            ->onlyKeepLatest(6);
     }
+
+    /**
+     * @return MorphOne
+     */
+    public function thumbnail(): MorphOne
+    {
+        return $this->morphOneMedia()->where('collection_name', MediaCollectionEnums::THUMBNAIL);
+    }
+
+    public function variations(): HasMany
+    {
+        return $this->hasMany(Variation::class)->orderBy('order', 'asc')->groupBy('type');
+    }
+
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
 }

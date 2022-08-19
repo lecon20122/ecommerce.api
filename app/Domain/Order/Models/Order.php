@@ -2,6 +2,7 @@
 
 namespace App\Domain\Order\Models;
 
+use App\Domain\Product\Models\Variation;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,13 +15,20 @@ class Order extends Model
         'state',
         'notes',
         'total',
-        'cost',
+        'subtotal',
         'delivery_fees',
         'commission',
         'net',
         'store_id',
         'user_id',
         'address_id',
+        'pickup_address_id',
+        'shipping_address_id',
+        'uuid',
+        'placed_at',
+        'packaged_at',
+        'shipped_at',
+        'shipping_type_id'
     ];
 
     public function user()
@@ -30,6 +38,6 @@ class Order extends Model
 
     public function variations()
     {
-        //
+        return $this->belongsToMany(Variation::class, 'order_variation')->withPivot('qty', 'notes', 'price');
     }
 }

@@ -3,36 +3,33 @@
 namespace App\Http\Auth\Controllers;
 
 use App\Http\Auth\Requests\LoginRequest;
+use App\Http\Auth\Resources\UserResource;
 use Application\Controllers\BaseController;
-use Domain\User\Models\User;
+use Domain\Auth\Traits\HasLogin;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends BaseController
 {
+    use HasLogin;
+
     /**
      * Display a listing of the resource.
      *
+     * @param LoginRequest $request
      * @return JsonResponse
      */
-    public function __invoke(LoginRequest $request)
+    public function __invoke(LoginRequest $request): JsonResponse
     {
         try {
-            $user = User::where('email', $request->email)->first();
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                throw ValidationException::withMessages([
-                    'email' => ['The provided credentials are incorrect.'],
-                ]);
-            }
-            return $this->ok(
-                [
-                    'user' => $user,
-                    'token' => $user->createToken($request->email, ['customer'])->plainTextToken,
-                ]
-            );
+            return $this->mobileLogin($request);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage());
         }
+    }
+
+    public function user()
+    {
+        return new UserResource(Auth::user());
     }
 }

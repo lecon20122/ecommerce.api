@@ -2,33 +2,33 @@
 
 namespace App\Http\Product\Controllers;
 
-use App\Domain\Product\Services\ProductService;
 use App\Domain\Product\Models\Product;
+use App\Domain\Product\Services\ProductService;
+use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
-use App\Http\Product\Resources\ProductResource;
+use App\Support\Requests\ModelIDsRequest;
+use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class ProductController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return AnonymousResourceCollection
+     * @return RedirectResponse|\Inertia\Response
      */
     public function index()
     {
         try {
-            $products = Product::with('media')->paginate(20, ['id', 'title', 'price', 'slug', 'description']);
-            return ProductResource::collection($products);
+            return Inertia::render('Dashboard/products/index');
         } catch (Exception $exception) {
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -47,18 +47,19 @@ class ProductController extends BaseController
      *
      * @param StoreProductRequest $request
      * @param ProductService $service
-     * @return ProductResource
+     * @param ImageService $imageService
+     * @return RedirectResponse
      */
-    public function store(StoreProductRequest $request, ProductService $service)
+    public function store(StoreProductRequest $request, ProductService $service, ImageService $imageService): RedirectResponse
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
-            $product = $service->store($request);
+            $service->store($request, $imageService);
             DB::commit();
-            return new ProductResource($product);
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -78,11 +79,17 @@ class ProductController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function edit($id)
+    public function edit(int $id): \Inertia\Response|RedirectResponse
     {
-        //
+        try {
+            return Inertia::render('Dashboard/products/edit', [
+                'currentProduct' => (new ProductService())->getProductsById($id)
+            ]);
+        } catch (Exception $exception) {
+            return $this->redirectBackWithError();
+        }
     }
 
     /**
@@ -91,38 +98,98 @@ class ProductController extends BaseController
      * @param UpdateProductRequest $request
      * @param ProductService $service
      * @param Product $product
-     * @return JsonResponse|ProductResource
+     * @param ImageService $imageService
+     * @return RedirectResponse
      */
-    public function update(UpdateProductRequest $request,  ProductService $service,  Product $product)
+    public function update(UpdateProductRequest $request, ProductService $service, Product $product, ImageService $imageService): RedirectResponse
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
-            $service->update($request->validated(), $product);
+            $service->update($request, $product, $imageService);
             DB::commit();
-            return new ProductResource($product->refresh());
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->webMessage($exception->getMessage());
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param int $id
      * @param ProductService $service
-     * @param Product $product
-     * @return JsonResponse|Product
+     * @return RedirectResponse
      */
-    public function destroy(ProductService $service, Product $product)
+    public function destroy(int $id, ProductService $service): RedirectResponse
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
-            $service->destroy($product);
+            $service->destroy($id);
             DB::commit();
-            return $product;
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->redirectBackWithError();
+        }
+    }
+
+    /**
+     * Restore the specified resource from Database.
+     *
+     * @param int $id
+     * @param ProductService $service
+     * @return RedirectResponse
+     */
+    public function restore(int $id, ProductService $service): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $service->restore($id);
+            DB::commit();
+            return $this->redirectToWithMessage('admin.stores.edit', 'success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError();
+        }
+    }
+
+    public function addMediaToProduct(Product $product, StoreMediaRequest $request, ImageService $imageService, ProductService $productService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $productService->addImagesToProduct($product, $request, $imageService);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError();
+        }
+    }
+
+    public function attachCategoriesToProduct(Product $product, ModelIDsRequest $request, ProductService $productService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $productService->attachCategoryToProduct($product, $request);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError();
+        }
+    }
+
+    public function deleteProductImage(Product $product, ModelIDsRequest $request, ProductService $productService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $productService->deleteProductImage($product, $request);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError();
         }
     }
 }

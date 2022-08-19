@@ -24,9 +24,9 @@ class StoreUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'nullable',
-            'description' => 'nullable',
-            'user_id' => 'nullable',
+            'name' => 'nullable|string',
+            'description' => 'nullable|string',
+            'user_id' => 'nullable|number|numeric',
         ];
     }
 }

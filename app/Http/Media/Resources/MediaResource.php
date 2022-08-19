@@ -2,6 +2,7 @@
 
 namespace App\Http\Media\Resources;
 
+use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,13 +16,21 @@ class MediaResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $data = [
+            'id' => $this->id,
             'name' => $this->name,
             'file_name' => $this->file_name,
             'mime_type' => $this->mime_type,
-            'original_url' => $this->original_url,
-            'small_url' => 'https://product-cdn.nyc3.cdn.digitaloceanspaces.com' . $this->getPath('small38x50'),
-            'thumb_url' => 'https://product-cdn.nyc3.cdn.digitaloceanspaces.com' . $this->getPath('thumb232x320'),
         ];
+        if ($this->hasGeneratedConversion(MediaCollectionEnums::THUMB_CONVENTION)) {
+            $data['thumbnail'] = $this->getFullUrl(MediaCollectionEnums::THUMB_CONVENTION);
+        }
+        if ($this->hasGeneratedConversion(MediaCollectionEnums::BIG_CONVENTION)) {
+            $data['big'] = $this->getFullUrl(MediaCollectionEnums::BIG_CONVENTION);
+        }
+        if ($this->hasGeneratedConversion(MediaCollectionEnums::SMALL_CONVENTION)) {
+            $data['small'] = $this->getFullUrl(MediaCollectionEnums::SMALL_CONVENTION);
+        }
+        return $data;
     }
 }

@@ -3,32 +3,38 @@
 namespace App\Http\Category\Controllers;
 
 use App\Domain\Category\Models\Category;
-use App\Http\Category\Resources\CategoryResource;
+use App\Http\Category\Services\CategoryService;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
+use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class CategoryController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return AnonymousResourceCollection
+     * @param CategoryService $categoryService
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function index()
+    public function index(CategoryService $categoryService): \Inertia\Response|RedirectResponse
     {
         try {
-            return CategoryResource::collection(Cache::remember('categories', 3600, function () {
-                return Category::with('childrenRecursive')->whereNull('parent_id')->get(['title', 'slug', 'id']);
-            }));
-        } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage());
+            return Inertia::render(
+                'Dashboard/categories/index',
+                [
+                    'categories' => $categoryService->adminIndex()
+                ]
+            );
+        } catch (Exception $exception) {
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -46,26 +52,25 @@ class CategoryController extends BaseController
      * Store a newly created resource in storage.
      *
      * @param storeCategoryRequest $request
-     * @return CategoryResource
+     * @param CategoryService $categoryService
+     * @param ImageService $imageService
+     * @return Application|RedirectResponse|Redirector
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request, CategoryService $categoryService, ImageService $imageService): Redirector|RedirectResponse|Application
     {
         try {
-            //TODOs: add later the slug in StoreCategoryRequest
-            DB::beginTransaction();
-            $categories = Category::create($request->validated());
-            DB::commit();
-            return new CategoryResource($categories);
+            $categoryService->store($request, $imageService);
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->sendError($exception->getMessage());
+            return $this->webMessage($exception->getMessage());
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function show($id)
@@ -76,12 +81,21 @@ class CategoryController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param int $id
+     * @param CategoryService $categoryService
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function edit($id)
+    public function edit(int $id, CategoryService $categoryService): \Inertia\Response|RedirectResponse
     {
-        //
+
+        try {
+            return Inertia::render('Dashboard/categories/edit', [
+                'currentCategory' => $categoryService->edit($id),
+                'categories' => $categoryService->adminIndex()
+            ]);
+        } catch (Exception $exception) {
+            return $this->webMessage($exception->getMessage());
+        }
     }
 
     /**
@@ -89,37 +103,36 @@ class CategoryController extends BaseController
      *
      * @param UpdateCategoryRequest $request
      * @param Category $category
-     * @return CategoryResource
+     * @param CategoryService $categoryService
+     * @param ImageService $imageService
+     * @return RedirectResponse
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category, CategoryService $categoryService, ImageService $imageService): RedirectResponse
     {
         try {
-            DB::beginTransaction();
-            $category->update($request->validated());
-            DB::commit();
-            return new CategoryResource($category);
+            $categoryService->update($request, $imageService, $category);
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            $this->sendError($exception->getMessage(), $exception->getCode());
+            return $this->webMessage($exception->getMessage());
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Category $category
-     * @return JsonResponse
+     * @param int $id
+     * @param CategoryService $categoryService
+     * @return RedirectResponse
      */
-    public function destroy(Category $category)
+    public function destroy(int $id, CategoryService $categoryService): RedirectResponse
     {
         try {
-            DB::beginTransaction();
-            $category->delete();
-            DB::commit();
-            return $this->sendSuccess('record has been deleted Successfully');
+            $categoryService->delete($id);
+            return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            $this->sendError($exception->getMessage(), $exception->getCode());
+            return $this->webMessage($exception->getMessage());
         }
     }
 }

@@ -4,6 +4,7 @@ namespace Domain\User\Models;
 
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Location\Models\Address;
+use App\Domain\Order\Models\Order;
 use App\Domain\Store\Models\Store;
 use App\Http\Auth\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -30,6 +31,7 @@ class User extends Authenticatable
         'provider_id',
         'provider_token',
         'provider_refresh_token',
+        'phone',
     ];
 
     /**
@@ -53,6 +55,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'created_at' => 'datetime:m/d/Y | D, h:m:s A',
+        'updated_at' => 'datetime:m/d/Y | h:m:s A',
     ];
 
     public function setPasswordAttribute($password)
@@ -79,5 +83,9 @@ class User extends Authenticatable
     public function carts()
     {
         return $this->hasMany(Cart::class);
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

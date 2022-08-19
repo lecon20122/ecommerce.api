@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->json('title')->unique();
-            $table->json('slug')->unique();
+            $table->string('slug')->unique();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->index('parent_id');
         });
     }
 

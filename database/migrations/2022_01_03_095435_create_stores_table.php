@@ -17,8 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('description');
+            $table->decimal('delivery_fees')->nullable()->default(0);
+            $table->boolean('is_active')->default(true);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
+
+
+            $table->index('created_at');
         });
     }
 

@@ -44,7 +44,7 @@ class UploadImageJob implements ShouldQueue
                     ->addCustomHeaders([
                         'ACL' => 'public-read'
                     ])
-                    ->toMediaCollection($this->collectionName , 'do');
+                    ->toMediaCollection($this->collectionName, 'do');
             });
     }
 }

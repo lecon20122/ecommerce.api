@@ -2,19 +2,30 @@
 
 namespace App\Http\User\Controllers;
 
+use App\Http\Auth\Resources\UserResource;
 use App\Http\User\Requests\LoginRequest;
 use App\Http\User\Requests\RegisterRequest;
 use Application\Controllers\BaseController;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Domain\User\Models\User;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 
 class UserController extends BaseController
 {
+    public function index()
+    {
+        try {
+            $users =  new UserResource(User::all());
+            return Inertia::render('Dashboard/customers/index' , [
+                'users' => $users
+            ]);
+        } catch (Exception $exception) {
+            $this->sendError($exception->getMessage());
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *

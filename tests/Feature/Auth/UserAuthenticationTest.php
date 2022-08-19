@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UserAuthenticationTest extends TestCase
@@ -29,11 +30,11 @@ class UserAuthenticationTest extends TestCase
             'name' => 'Mustafa Khaled',
             'email' => $this->faker->email,
             'password' => self::PASSWORD,
+            'phone' =>  $this->faker()->unique()->phoneNumber,
         ]);
         $response->assertOk();
         $user = User::first();
         $this->assertEquals('Mustafa Khaled', $user->name);
-        $this->assertArrayHasKey('token', $response->json());
     }
 
     public function test_a_user_can_login()
@@ -45,7 +46,7 @@ class UserAuthenticationTest extends TestCase
             'password' => self::PASSWORD,
         ])->assertOk();
 
-        $this->assertArrayHasKey('token', $response->json());
+        $this->assertEquals($user->email, $response['user']['email']);
     }
 
     public function test_a_user_can_logout()
@@ -53,13 +54,18 @@ class UserAuthenticationTest extends TestCase
         //create a user
         $user = User::factory()->create();
         //login this user
-        $loginResponse = $this->post('api/v1/auth/login', [
+
+        $loginResponse = $this->post(route('auth.login'), [
             'email' => $user->email,
             'password' => self::PASSWORD,
         ])->assertOk();
 
-        $token = $loginResponse->json()['token'];
-        $headers = ['Authorization' => 'Bearer ' . $token];
+        $token = $loginResponse['token'];
+
+        $headers = [
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json',
+        ];
 
         $logoutResponse = $this->post(route('auth.logout'), [], $headers)->assertOk();
 

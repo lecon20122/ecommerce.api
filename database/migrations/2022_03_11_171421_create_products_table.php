@@ -23,6 +23,10 @@ return new class extends Migration
             $table->dateTime('live_at')->nullable();
             $table->boolean('is_approved')->nullable();
             $table->foreignId('admin_id')->nullable()->constrained();
+            $table->text('meta_keywords')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->decimal('stock', 15, 4)->default(0);
+            $table->decimal('original_price', 15, 4)->nullable();
             $table->softDeletes();
             $table->timestamps();
 

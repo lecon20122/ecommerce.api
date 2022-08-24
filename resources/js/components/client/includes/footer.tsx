@@ -2,15 +2,15 @@ import React from 'react'
 
 export default function Footer() {
   return (
-    <footer className="bg-blue-600">
-      <section className="py-10 text-white">
+    <footer className="bg-[#F6F6F6] text-black">
+      <section className="py-10 text-black">
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="flex flex-wrap">
             <aside className="w-full md:w-1/3 lg:w-1/4 mb-5">
               {/* <img src="images/logo-white.png" height="38" alt="Company name" /> */}
               <p className="my-4">
-                Company name. <br />
-                © 2018- 2021 Templatemount. <br />
+                Company name. <br/>
+                © 2018- 2021 Templatemount. <br/>
                 All rights reserved.
               </p>
             </aside>
@@ -98,7 +98,7 @@ export default function Footer() {
         </div>
         {/* <!-- container .// --> */}
       </section>
-      <section className="bg-blue-700 py-6 text-white">
+      <section className="bg-[#F6F6F6] text-black">
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="lg:flex justify-between">
             <div className="mb-3">

@@ -1,6 +1,6 @@
-import { ColDef, ColumnApi, GridOptions, RowClickedEvent } from 'ag-grid-community';
+import {ColDef, GridOptions, RowClickedEvent} from 'ag-grid-community';
 import React from 'react'
-import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
+import {AgGridReact} from 'ag-grid-react';
 
 interface DataGridProps<T> {
   showNoRowsOverlay?: boolean,
@@ -12,8 +12,14 @@ interface DataGridProps<T> {
 }
 
 
-
-export default function DataGrid<T>({ size, showNoRowsOverlay, gridData, colDef, rowClickHandler = undefined , rowHeight }: DataGridProps<T>) {
+export default function DataGrid<T>({
+                                      size,
+                                      showNoRowsOverlay,
+                                      gridData,
+                                      colDef,
+                                      rowClickHandler = undefined,
+                                      rowHeight
+                                    }: DataGridProps<T>) {
 
   const gridOptions: GridOptions = {
     rowData: gridData,
@@ -23,7 +29,7 @@ export default function DataGrid<T>({ size, showNoRowsOverlay, gridData, colDef,
   }
 
   return (
-    <div className='container p-6 mx-auto ag-theme-material' style={size} >
+    <div className='p-6 mx-auto ag-theme-material' style={size}>
       <AgGridReact
         rowSelection={'multiple'}
         defaultColDef={{

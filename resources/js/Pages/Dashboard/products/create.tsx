@@ -1,5 +1,5 @@
-import React from 'react';
-import {Button, DialogActions, TextField} from "@mui/material";
+import React, {useState} from 'react';
+import {Autocomplete, Button, DialogActions, TextField} from "@mui/material";
 import FormDialog from "../../shards/formDialog";
 import {SubmitHandler, useForm, UseFormWatch} from "react-hook-form";
 import {Inertia} from "@inertiajs/inertia";
@@ -24,7 +24,7 @@ interface IFormProps {
 }
 
 export default function CreateProduct({handleAddDialog, openAddDialog, watch}: Props) {
-
+  const [tags, setTags] = useState(['fashion']);
   const {register, handleSubmit, formState: {errors}, reset, setValue} = useForm<IFormProps>()
   const store_id: number = watch('store_id')
 
@@ -32,7 +32,7 @@ export default function CreateProduct({handleAddDialog, openAddDialog, watch}: P
     const resolveData = {...data}
     console.log(data)
     Inertia.post(route('admin.products.store'), resolveData, {
-      preserveState:false
+      preserveState: false
     })
     reset()
   }

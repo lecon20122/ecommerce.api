@@ -17,7 +17,7 @@ export interface Thumbnail {
 
 export default function CategoryCard({media, header}: Props) {
   return (
-    <div className="bg-white flex justify-center lg:w-[350px] lg:h-[385px]  rounded-lg shadow-lg">
+    <div className="bg-white flex justify-center  lg:w-[350px] lg:h-[385px]  rounded-lg shadow-lg">
       <div className="block w-full text-center">
         <div className="py-2 h-[10%] font-bold">
           {header?.toUpperCase()}

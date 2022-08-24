@@ -45,8 +45,8 @@ class VariationTest extends TestCase
 //        dd($response);
         $response->assertSessionHas('message', 'success');
         $this->assertEquals('black', Variation::first()->title);
-        $this->assertEquals(1, Variation::first()->count());
-        $this->assertEquals(1, Media::first()->count());
+        $this->assertCount(1, Variation::all());
+        $this->assertCount(1,Media::all());
     }
 
     public function test_variation_can_be_updated_by_admin()
@@ -71,6 +71,32 @@ class VariationTest extends TestCase
         $variation = Variation::factory()->create();
 
         $this->post(route('admin.variations.destroy', ['id' => $variation->id]))->assertRedirect();
+
+        $this->assertNull(Variation::first());
+    }
+
+    public function test_variation_can_be_restored()
+    {
+        $admin = Admin::factory()->create();
+        Sanctum::actingAs($admin, [], 'admin');
+        $variation = Variation::factory()->trashed()->create();
+
+        $response = $this->post(route('admin.variations.restore', ['id' => $variation->id]))->assertRedirect();
+
+        $response->assertSessionHas('message', 'success');
+        $variation->refresh();
+        $this->assertNull(Variation::first()->deleted_at);
+    }
+
+    public function test_variation_can_be_force_delete()
+    {
+        $admin = Admin::factory()->create();
+        Sanctum::actingAs($admin, [], 'admin');
+        $variation = Variation::factory()->create();
+
+        $response = $this->post(route('admin.variations.permanent.delete', ['id' => $variation->id]))->assertRedirect();
+
+        $response->assertSessionHas('message', 'success');
 
         $this->assertNull(Variation::first());
     }

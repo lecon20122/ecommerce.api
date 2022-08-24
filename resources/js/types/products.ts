@@ -1,4 +1,5 @@
 import {Title} from "./CategoryType";
+import {Variation} from "./VariationType";
 
 export interface Categories {
   categories: Category[] | null;
@@ -36,6 +37,7 @@ export interface ProductWithThumbnail {
   thumbnail: string;
   small_thumbnail: string;
   deleted_at: string | null,
+  variations?: Variation[]
 }
 
 

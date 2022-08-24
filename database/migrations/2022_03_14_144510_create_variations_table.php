@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('sku')->nullable();
             $table->integer('order')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory, CustomHasMedia, HasTranslations , SoftDeletes;
+    use HasFactory, CustomHasMedia, HasTranslations, SoftDeletes;
 
     public $translatable = ['title'];
     protected $fillable = ['title', 'description', 'price', 'store_id'];
@@ -64,7 +64,8 @@ class Product extends Model implements HasMedia
 
     public function variations(): HasMany
     {
-        return $this->hasMany(Variation::class)->orderBy('order', 'asc')->groupBy('type');
+        return $this->hasMany(Variation::class)
+            ->orderBy('order', 'asc');
     }
 
     public function store(): BelongsTo

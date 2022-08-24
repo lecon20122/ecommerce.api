@@ -23,7 +23,7 @@ class ProductController extends BaseController
      *
      * @return RedirectResponse|\Inertia\Response
      */
-    public function index()
+    public function index(): \Inertia\Response|RedirectResponse
     {
         try {
             return Inertia::render('Dashboard/products/index');
@@ -69,10 +69,9 @@ class ProductController extends BaseController
      * @param int $id
      * @return Response
      */
-    public function show($id)
+    public function show(int $id): Response
     {
-        $product = Product::find($id)->with('media')->get();
-        return $product;
+        return Product::query()->find($id)->with('media')->get();
     }
 
     /**

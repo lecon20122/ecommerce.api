@@ -31,6 +31,8 @@ class StoreVariationRequest extends FormRequest
             'order' => 'nullable',
             'parent_id' => 'nullable',
             'product_id' => 'required',
+            'images' => 'nullable',
+            'images.*' => 'mimes:jpg|max:1024',
         ];
     }
 }

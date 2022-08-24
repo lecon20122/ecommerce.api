@@ -2,11 +2,12 @@
 module.exports = {
     darkMode: "class",
     content: [
-        "./resources/**/*.blade.php",
-        "./resources/**/*.js",
-        "./resources/**/*.tsx",
-        "./resources/**/*.ts",
-        // "./resources/**/*.vue",
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+        './resources/js/**/*.jsx',
+        './resources/js/**/*.ts',
+        './resources/js/**/*.tsx',
     ],
     theme: {
         extend: {},

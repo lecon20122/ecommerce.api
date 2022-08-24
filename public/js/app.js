@@ -368,7 +368,10 @@ var PrimeHero_1 = __importDefault(__webpack_require__(/*! ../../components/clien
 
 var PrimeCategoriesCarousel_1 = __importDefault(__webpack_require__(/*! ../../components/client/includes/PrimeCategoriesCarousel */ "./resources/js/components/client/includes/PrimeCategoriesCarousel.tsx"));
 
+var ProductsCarousel_1 = __importDefault(__webpack_require__(/*! ../../components/client/includes/ProductsCarousel */ "./resources/js/components/client/includes/ProductsCarousel.tsx"));
+
 function HomePage(props) {
+  console.log(props.products);
   var AppLayout = (0, react_1.lazy)(function () {
     return Promise.resolve().then(function () {
       return __importStar(__webpack_require__(/*! ../../layouts/client */ "./resources/js/layouts/client.tsx"));
@@ -394,7 +397,10 @@ function HomePage(props) {
     className: 'bg-white'
   }, react_1["default"].createElement(react_1.Suspense, {
     fallback: react_1["default"].createElement("div", null, react_1["default"].createElement("h1", null, "loading..."))
-  }, react_1["default"].createElement(CategoriesNavigation, null), react_1["default"].createElement(AppLayout, null, react_1["default"].createElement(PrimeHero_1["default"], null), react_1["default"].createElement(PrimeCategoriesCarousel_1["default"], Object.assign({}, props)))));
+  }, react_1["default"].createElement(AppLayout, null, react_1["default"].createElement(CategoriesNavigation, null), react_1["default"].createElement(PrimeHero_1["default"], null), react_1["default"].createElement(PrimeCategoriesCarousel_1["default"], Object.assign({}, props)), react_1["default"].createElement(ProductsCarousel_1["default"], {
+    products: props.products,
+    locale: props.locale
+  }))));
 }
 
 exports["default"] = HomePage;
@@ -3177,6 +3183,55 @@ exports["default"] = CategoryCircle;
 
 /***/ }),
 
+/***/ "./resources/js/components/client/includes/MobileNavigation.tsx":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/client/includes/MobileNavigation.tsx ***!
+  \**********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+function MobileNavigation() {
+  return react_1["default"].createElement("div", {
+    className: "btm-nav btm-nav-sm md:hidden"
+  }, react_1["default"].createElement("button", null, react_1["default"].createElement("i", {
+    className: "text-gray-400 w-5 pi pi-home text-black"
+  }), react_1["default"].createElement("span", {
+    className: "btm-nav-label"
+  }, "Home")), react_1["default"].createElement("button", null, react_1["default"].createElement("i", {
+    className: "text-gray-400 w-5 pi pi-user text-black"
+  }), react_1["default"].createElement("span", {
+    className: "btm-nav-label"
+  }, "Me")), react_1["default"].createElement("button", {
+    className: "active"
+  }, react_1["default"].createElement("i", {
+    className: "text-gray-400 w-5 pi pi-shopping-cart text-black"
+  }), react_1["default"].createElement("span", {
+    className: "btm-nav-label"
+  }, "Cart")), react_1["default"].createElement("button", null, react_1["default"].createElement("i", {
+    className: "text-gray-400 w-5 pi pi-user text-black"
+  }), react_1["default"].createElement("span", {
+    className: "btm-nav-label"
+  }, "Me")));
+}
+
+exports["default"] = MobileNavigation;
+
+/***/ }),
+
 /***/ "./resources/js/components/client/includes/PrimeCategoriesCarousel.tsx":
 /*!*****************************************************************************!*\
   !*** ./resources/js/components/client/includes/PrimeCategoriesCarousel.tsx ***!
@@ -3218,6 +3273,7 @@ function PrimeCategoriesCarousel(_ref) {
   }];
   var categoriesItems = categories.map(function (category) {
     return react_1["default"].createElement(CategoryCircle_1["default"], {
+      key: category.id,
       category: category,
       locale: locale
     });
@@ -3229,7 +3285,7 @@ function PrimeCategoriesCarousel(_ref) {
   }, react_1["default"].createElement("h1", {
     className: 'text-center uppercase text-3xl mb-[40px]'
   }, "Shop by category"), react_1["default"].createElement("nav", {
-    className: "grid grid-cols-4 sm:grid-cols-5 md:grid-cols-5 gap-x-3 gap-y-6"
+    className: "grid grid-cols-4 sm:grid-cols-5 md:grid-cols-5 gap-x-3 gap-y-6 mx-auto justify-content-center"
   }, categoriesItems)));
 }
 
@@ -3262,6 +3318,10 @@ var carousel_1 = __webpack_require__(/*! primereact/carousel */ "./node_modules/
 
 function PrimeHero() {
   var responsiveOptions = [{
+    breakpoint: '2000px',
+    numVisible: 1,
+    numScroll: 1
+  }, {
     breakpoint: '1024px',
     numVisible: 1,
     numScroll: 1
@@ -3292,17 +3352,95 @@ function PrimeHero() {
 
   return react_1["default"].createElement(carousel_1.Carousel, {
     value: images,
-    numVisible: 1,
+    containerClassName: 'hide-navigator',
+    numVisible: 2,
     numScroll: 1,
     responsiveOptions: responsiveOptions,
     itemTemplate: productTemplate,
-    autoplayInterval: 3000,
     circular: true,
-    indicatorsContentClassName: 'hidden'
+    indicatorsContentClassName: 'hidden',
+    autoplayInterval: 3000
   });
 }
 
 exports["default"] = PrimeHero;
+
+/***/ }),
+
+/***/ "./resources/js/components/client/includes/ProductsCarousel.tsx":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/client/includes/ProductsCarousel.tsx ***!
+  \**********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var carousel_1 = __webpack_require__(/*! primereact/carousel */ "./node_modules/primereact/carousel/carousel.esm.js");
+
+function ProductsCarousel(_ref) {
+  var products = _ref.products,
+      locale = _ref.locale;
+  var responsiveOptions = [{
+    breakpoint: '1024px',
+    numVisible: 3,
+    numScroll: 3
+  }, {
+    breakpoint: '600px',
+    numVisible: 2,
+    numScroll: 2
+  }, {
+    breakpoint: '480px',
+    numVisible: 1,
+    numScroll: 1
+  }];
+
+  var productTemplate = function productTemplate(product) {
+    return react_1["default"].createElement("div", null, react_1["default"].createElement("article", {
+      className: "shadow-sm rounded bg-white border border-gray-200 mb-5"
+    }, react_1["default"].createElement("div", {
+      className: "relative p-1"
+    }, react_1["default"].createElement("img", {
+      src: product.thumbnail,
+      className: "mx-auto",
+      alt: product.title[locale]
+    })), react_1["default"].createElement("div", {
+      className: "p-4 border-t border-t-gray-200"
+    }, react_1["default"].createElement("h6", null, react_1["default"].createElement("a", {
+      href: "#",
+      className: "text-gray-600 hover:text-blue-500"
+    }, product.title[locale])), react_1["default"].createElement("span", {
+      className: "font-semibold text-gray-800"
+    }, product.price))));
+  };
+
+  return react_1["default"].createElement("div", null, react_1["default"].createElement("h1", {
+    className: 'text-center uppercase text-3xl my-[40px]'
+  }, "New Arrivals"), react_1["default"].createElement(carousel_1.Carousel, {
+    value: products,
+    numVisible: 3,
+    containerClassName: 'container mx-auto',
+    numScroll: 1,
+    responsiveOptions: responsiveOptions,
+    circular: true,
+    autoplayInterval: 3000,
+    itemTemplate: productTemplate
+  }));
+}
+
+exports["default"] = ProductsCarousel;
 
 /***/ }),
 
@@ -3329,11 +3467,11 @@ var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/r
 
 function CategoriesNavigation() {
   return react_1["default"].createElement("nav", {
-    className: "border-b bg-[#4E4E50]"
+    className: "bg-white"
   }, react_1["default"].createElement("div", {
     className: "container max-w-screen-xl mx-auto px-4"
   }, react_1["default"].createElement("div", {
-    className: "hidden lg:flex flex-1 items-center py-1 text-white"
+    className: "hidden lg:flex flex-1 items-center py-1 text-black"
   }, react_1["default"].createElement("a", {
     className: "px-3 py-2 rounded-md hover:bg-gray-200",
     href: "#"
@@ -3382,9 +3520,9 @@ var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/r
 
 function Footer() {
   return react_1["default"].createElement("footer", {
-    className: "bg-blue-600"
+    className: "bg-[#F6F6F6] text-black"
   }, react_1["default"].createElement("section", {
-    className: "py-10 text-white"
+    className: "py-10 text-black"
   }, react_1["default"].createElement("div", {
     className: "container max-w-screen-xl mx-auto px-4"
   }, react_1["default"].createElement("div", {
@@ -3473,7 +3611,7 @@ function Footer() {
     href: "#",
     className: "inline-block"
   }))))), react_1["default"].createElement("section", {
-    className: "bg-blue-700 py-6 text-white"
+    className: "bg-[#F6F6F6] text-black"
   }, react_1["default"].createElement("div", {
     className: "container max-w-screen-xl mx-auto px-4"
   }, react_1["default"].createElement("div", {
@@ -3541,7 +3679,7 @@ function Hero() {
   }, react_1["default"].createElement(react_2.Swiper, {
     pagination: true,
     modules: [swiper_1.Navigation, swiper_1.Pagination],
-    className: "md:col-span-4 w-[470px] sm:w-auto lg:w-[1500px]",
+    className: "md:col-span-4 ",
     loop: true
   }, react_1["default"].createElement(react_2.SwiperSlide, null, react_1["default"].createElement(heroCoursel_1["default"], null)), react_1["default"].createElement(react_2.SwiperSlide, null, react_1["default"].createElement(heroCoursel_1["default"], null)), react_1["default"].createElement(react_2.SwiperSlide, null, react_1["default"].createElement(heroCoursel_1["default"], null)))))));
 }
@@ -3572,6 +3710,17 @@ Object.defineProperty(exports, "__esModule", ({
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
 function Navbar() {
+  var menuItems = [{
+    label: 'Users',
+    icon: 'pi pi-fw pi-user',
+    items: [{
+      label: 'New',
+      icon: 'pi pi-fw pi-user-plus'
+    }, {
+      label: 'Delete',
+      icon: 'pi pi-fw pi-user-minus'
+    }]
+  }];
   return react_1["default"].createElement("header", {
     className: "bg-white py-3 border-b"
   }, react_1["default"].createElement("div", {
@@ -3583,8 +3732,9 @@ function Navbar() {
   }, react_1["default"].createElement("a", {
     href: "#"
   }, " ", react_1["default"].createElement("img", {
-    src: "images/logo.svg",
-    height: "38",
+    src: "https://static.vecteezy.com/system/resources/thumbnails/007/967/852/small_2x/shopping-bags-colorful-paper-bags-for-shopping-mall-products-vector.jpg",
+    height: "42",
+    width: "42",
     alt: "Brand"
   }), " ")), react_1["default"].createElement("div", {
     className: "flex flex-nowrap items-center w-full order-last md:order-none mt-5 md:mt-0 md:w-2/4 lg:w-2/4"
@@ -3594,33 +3744,18 @@ function Navbar() {
     placeholder: "Search"
   }), react_1["default"].createElement("button", {
     type: "button",
-    className: "px-4 py-2 inline-block text-white border border-transparent bg-blue-600 rounded-md hover:bg-blue-700"
+    className: "px-4 py-2 inline-block text-black border border-transparent"
   }, react_1["default"].createElement("i", {
-    className: "fa fa-search"
+    className: "pi pi-search"
   }))), react_1["default"].createElement("div", {
     className: "flex items-center space-x-2 ml-auto"
-  }, react_1["default"].createElement("a", {
-    className: "px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300",
-    href: "#"
+  }, react_1["default"].createElement("div", {
+    className: "dropdown dropdown-hover"
   }, react_1["default"].createElement("i", {
-    className: "text-gray-400 w-5 fa fa-user"
-  }), react_1["default"].createElement("span", {
-    className: "hidden lg:inline ml-1"
-  }, "Sign in")), react_1["default"].createElement("a", {
-    className: "px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300",
-    href: "#"
-  }, react_1["default"].createElement("i", {
-    className: "text-gray-400 w-5 fa fa-heart"
-  }), react_1["default"].createElement("span", {
-    className: "hidden lg:inline ml-1"
-  }, "Wishlist")), react_1["default"].createElement("a", {
-    className: "px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300",
-    href: "#"
-  }, react_1["default"].createElement("i", {
-    className: "text-gray-400 w-5 fa fa-shopping-cart"
-  }), react_1["default"].createElement("span", {
-    className: "hidden lg:inline ml-1"
-  }, "My cart"))), react_1["default"].createElement("div", {
+    className: "text-gray-400 pi pi-globe text-black"
+  }), react_1["default"].createElement("ul", {
+    className: "dropdown-content menu p-2 shadow bg-base-100 w-52"
+  }, react_1["default"].createElement("li", null, react_1["default"].createElement("a", null, "AR")), react_1["default"].createElement("li", null, react_1["default"].createElement("a", null, "EN"))))), react_1["default"].createElement("div", {
     className: "lg:hidden ml-2"
   }, react_1["default"].createElement("button", {
     type: "button",
@@ -3628,7 +3763,7 @@ function Navbar() {
   }, react_1["default"].createElement("span", {
     className: "sr-only"
   }, "Open menu"), react_1["default"].createElement("i", {
-    className: "fa fa-bars fa-lg"
+    className: "pi pi-bars fa-lg"
   }))))));
 }
 
@@ -4382,9 +4517,11 @@ var footer_1 = __importDefault(__webpack_require__(/*! ../components/client/incl
 
 var navbar_1 = __importDefault(__webpack_require__(/*! ../components/client/includes/navbar */ "./resources/js/components/client/includes/navbar.tsx"));
 
+var MobileNavigation_1 = __importDefault(__webpack_require__(/*! ../components/client/includes/MobileNavigation */ "./resources/js/components/client/includes/MobileNavigation.tsx"));
+
 function AppLayout(_ref) {
   var children = _ref.children;
-  return react_1["default"].createElement("div", null, react_1["default"].createElement(navbar_1["default"], null), children, react_1["default"].createElement(footer_1["default"], null));
+  return react_1["default"].createElement("div", null, react_1["default"].createElement(navbar_1["default"], null), children, react_1["default"].createElement(footer_1["default"], null), react_1["default"].createElement(MobileNavigation_1["default"], null));
 }
 
 exports["default"] = AppLayout;

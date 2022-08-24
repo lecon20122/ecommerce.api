@@ -7,10 +7,6 @@ function MobileNavigation() {
         <i className="text-gray-400 w-5 pi pi-home text-black"/>
         <span className="btm-nav-label">Home</span>
       </button>
-      <button>
-        <i className="text-gray-400 w-5 pi pi-user text-black"/>
-        <span className="btm-nav-label">Me</span>
-      </button>
       <button className="active">
         <i className="text-gray-400 w-5 pi pi-shopping-cart text-black"/>
         <span className="btm-nav-label">Cart</span>

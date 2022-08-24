@@ -1,10 +1,10 @@
-import { Inertia } from "@inertiajs/inertia";
+import {Inertia} from "@inertiajs/inertia";
 import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {SubmitHandler, useForm} from "react-hook-form";
 import route from 'ziggy-js';
 import * as yup from "yup";
-import { yupResolver } from '@hookform/resolvers/yup';
-import { usePage } from "@inertiajs/inertia-react";
+import {yupResolver} from '@hookform/resolvers/yup';
+import {usePage} from "@inertiajs/inertia-react";
 import Alert from "../../components/shards/alert";
 
 interface IFormProps {
@@ -18,7 +18,7 @@ export default function AdminLogin() {
     email: yup.string().required().email().max(200),
     password: yup.string().required(),
   });
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormProps>({
+  const {register, handleSubmit, formState: {errors}, reset} = useForm<IFormProps>({
     resolver: yupResolver(schema)
   })
 
@@ -28,7 +28,7 @@ export default function AdminLogin() {
   console.log('====================================');
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data, e) => {
     e?.preventDefault()
-    const resolveData = { ...data }
+    const resolveData = {...data}
     Inertia.post(route('admin.postLogin'), resolveData)
     reset()
   }
@@ -43,7 +43,7 @@ export default function AdminLogin() {
 
             <form onSubmit={handleSubmit(formAddSubmitHandler)}>
               <h2 className="mb-5 text-2xl font-semibold">Sign in</h2>
-              {serverSideErrors.email && <Alert text={serverSideErrors.email} type={"red"} />}
+              {serverSideErrors.email && <Alert text={serverSideErrors.email} type={"red"}/>}
               <div className="mb-4">
                 <label className="block mb-1"> Email </label>
                 <input
@@ -69,7 +69,8 @@ export default function AdminLogin() {
               <button
                 type="submit"
                 className="px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
-              >Login</button>
+              >Login
+              </button>
             </form>
           </div>
         </div>

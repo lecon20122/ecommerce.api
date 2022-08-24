@@ -9,11 +9,10 @@ interface IAppLayout {
 
 export default function AppLayout({ children }: IAppLayout) {
   return (
-    <div>
+    <div className={'overflow-hidden'}>
       <Navbar />
       {children}
       <Footer />
-      <MobileNavigation/>
     </div>
   )
 }

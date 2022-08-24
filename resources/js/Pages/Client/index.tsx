@@ -5,6 +5,7 @@ import PrimeCategoriesCarousel from "../../components/client/includes/PrimeCateg
 import {ProductWithThumbnail} from "../../types/products";
 import ProductsCarousel from "../../components/client/includes/ProductsCarousel";
 import {locale} from "primereact/api";
+import MobileNavigation from "../../components/client/includes/MobileNavigation";
 
 interface Props {
   categories: HomePageCategory[]
@@ -26,11 +27,12 @@ export default function HomePage(props: Props) {
         <AppLayout>
         <CategoriesNavigation/>
           <PrimeHero/>
-          <PrimeCategoriesCarousel {...props}/>
+          {/*<PrimeCategoriesCarousel {...props}/>*/}
           <ProductsCarousel products={props.products} locale={props.locale}/>
           {/*<Hero/>*/}
           {/*<HomePageCategories {...props}/>*/}
         </AppLayout>
+          <MobileNavigation/>
       </Suspense>
     </div>
   )

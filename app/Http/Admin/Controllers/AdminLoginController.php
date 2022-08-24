@@ -5,6 +5,7 @@ namespace App\Http\Admin\Controllers;
 use App\Http\Admin\Requests\AdminLoginRequest;
 use Application\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -12,10 +13,11 @@ class AdminLoginController extends BaseController
 {
     /**
      * @param AdminLoginRequest $request
-     * @return JsonResponse
+     * @return RedirectResponse
      */
     public function login(AdminLoginRequest $request)
     {
+//        dd($request->validated());
         try {
             if (Auth::guard('admin')->attempt($request->validated())) {
                 return redirect()->route('dashboard.index');
@@ -23,7 +25,7 @@ class AdminLoginController extends BaseController
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
             ])->onlyInput('email');
-            
+
         } catch (\Exception $exception) {
             return $this->webMessage($exception->getMessage());
         }

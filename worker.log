@@ -1,0 +1,392 @@
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli' (tried: /usr/lib/php/20210902/mysqli (/usr/lib/php/20210902/mysqli: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/mysqli.so (/usr/lib/php/20210902/mysqli.so: undefined symbol: mysqlnd_global_stats)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20210902/pdo_mysql (/usr/lib/php/20210902/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20210902/pdo_mysql.so (/usr/lib/php/20210902/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+PHP Warning:  Module "gd" is already loaded in Unknown on line 0
+
+   INFO  Processing jobs from the [default] queue.  
+
+
+   INFO  Processing jobs from the [default] queue.  
+

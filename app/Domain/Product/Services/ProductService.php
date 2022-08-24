@@ -14,6 +14,8 @@ use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Carbon;
 
 
 class ProductService
@@ -27,7 +29,9 @@ class ProductService
     {
         return new ProductResource(
             Product::query()
-                ->with('media')
+                ->with(['media', 'variations' => function ($query) {
+                    return $query->withTrashed()->with('media');
+                }])
                 ->whereIn('id', [$id])
                 ->select('id', 'title', 'price', 'slug', 'description')
                 ->latest()
@@ -107,5 +111,14 @@ class ProductService
     {
         $image = $product->media()->find($request->validated('id'));
         $image?->delete();
+    }
+
+    public function getNewProducts(): AnonymousResourceCollection
+    {
+        return ProductResource::collection(
+            Product::query()
+                ->where('created_at', '<', (Carbon::now())->subWeek())
+                ->get()
+        );
     }
 }

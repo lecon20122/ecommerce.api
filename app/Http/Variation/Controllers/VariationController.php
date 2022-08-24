@@ -9,7 +9,6 @@ use App\Http\Variation\Requests\UpdateVariationRequest;
 use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -70,11 +69,18 @@ class VariationController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return void
+     * @param VariationService $service
+     * @return RedirectResponse
      */
-    public function edit($id)
+    public function edit(int $id, VariationService $service): RedirectResponse
     {
-        //
+        try {
+            $service->getVariationById($id);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            return $this->webMessage('ops');
+        }
     }
 
     /**
@@ -105,7 +111,7 @@ class VariationController extends BaseController
      * @param Variation $variation
      * @return RedirectResponse
      */
-    public function destroy(VariationService $service,int $id): RedirectResponse
+    public function destroy(VariationService $service, int $id): RedirectResponse
     {
         DB::beginTransaction();
         try {
@@ -117,4 +123,31 @@ class VariationController extends BaseController
             return $this->webMessage('ops');
         }
     }
+
+    public function restore(VariationService $service, int $id): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $service->restore($id);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->webMessage('ops');
+        }
+    }
+
+    public function permanentDelete(VariationService $service, int $id): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $service->permanentDelete($id);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->webMessage('ops');
+        }
+    }
+
 }

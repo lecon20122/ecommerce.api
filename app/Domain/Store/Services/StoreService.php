@@ -40,7 +40,7 @@ class StoreService
                 ->with(['products' => function ($query) {
                     $query
                         ->withTrashed()
-                        ->with('media');
+                        ->with(['media', 'variations' => fn($query) => $query->withTrashed()]);
                 }])
                 ->whereIn('id', [$id])
                 ->first()

@@ -11,6 +11,7 @@ class MediaCollectionEnums
     const ZOOM_CONVENTION = 'zoom';
     const IMAGES = 'images';
     const PRODUCT = 'products';
+    const VARIATION = 'variations';
 
     const THUMB_CONVENTION = 'thumbnail';
     const IMAGES_CONVENTION = 'images';

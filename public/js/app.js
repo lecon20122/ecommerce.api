@@ -9,42 +9,44 @@
 "use strict";
 
 
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
 
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
   }
 
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
 
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
   });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
 };
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -57,51 +59,48 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
-var inertia_react_1 = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
 
 var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
 
+var yup = __importStar(__webpack_require__(/*! yup */ "./node_modules/yup/es/index.js"));
+
+var yup_1 = __webpack_require__(/*! @hookform/resolvers/yup */ "./node_modules/@hookform/resolvers/yup/dist/yup.js");
+
+var inertia_react_1 = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+
+var alert_1 = __importDefault(__webpack_require__(/*! ../../components/shards/alert */ "./resources/js/components/shards/alert.tsx"));
+
 function AdminLogin() {
-  var _this = this;
+  var _a, _b;
 
-  var _ref = (0, inertia_react_1.useForm)({
-    email: "",
-    password: ""
+  var schema = yup.object({
+    email: yup.string().required().email().max(200),
+    password: yup.string().required()
+  });
+
+  var _ref = (0, react_hook_form_1.useForm)({
+    resolver: (0, yup_1.yupResolver)(schema)
   }),
-      data = _ref.data,
-      setData = _ref.setData,
-      post = _ref.post;
+      register = _ref.register,
+      handleSubmit = _ref.handleSubmit,
+      errors = _ref.formState.errors,
+      reset = _ref.reset;
 
-  var handleChange = function handleChange(event) {
-    if (data) {
-      setData(Object.assign(Object.assign({}, data), _defineProperty({}, event.currentTarget.name, event.currentTarget.value)));
-    }
-  };
+  var serverSideErrors = (0, inertia_react_1.usePage)().props.errors;
+  console.log('====================================');
+  console.log(serverSideErrors);
+  console.log('====================================');
 
-  var handleSubmit = function handleSubmit(event) {
-    return __awaiter(_this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              event.preventDefault();
-              post((0, ziggy_js_1["default"])('admin.postLogin'), {
-                data: data
-              });
-              setData({
-                email: "",
-                password: ""
-              });
-
-            case 3:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }));
+  var formAddSubmitHandler = function formAddSubmitHandler(data, e) {
+    e === null || e === void 0 ? void 0 : e.preventDefault();
+    var resolveData = Object.assign({}, data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.postLogin'), resolveData);
+    reset();
   };
 
   return react_1["default"].createElement("div", null, react_1["default"].createElement("section", {
@@ -111,68 +110,34 @@ function AdminLogin() {
   }, react_1["default"].createElement("div", {
     className: "mt-10 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg max-w-[500px]"
   }, react_1["default"].createElement("form", {
-    onSubmit: handleSubmit
+    onSubmit: handleSubmit(formAddSubmitHandler)
   }, react_1["default"].createElement("h2", {
     className: "mb-5 text-2xl font-semibold"
-  }, "Sign in"), react_1["default"].createElement("div", {
+  }, "Sign in"), serverSideErrors.email && react_1["default"].createElement(alert_1["default"], {
+    text: serverSideErrors.email,
+    type: "red"
+  }), react_1["default"].createElement("div", {
     className: "mb-4"
   }, react_1["default"].createElement("label", {
     className: "block mb-1"
-  }, " Email "), react_1["default"].createElement("input", {
-    onChange: handleChange,
-    value: data.email,
+  }, " Email "), react_1["default"].createElement("input", Object.assign({}, register('email'), {
     name: "email",
     className: "appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full",
     type: "text",
     placeholder: "Type here"
-  })), react_1["default"].createElement("div", {
+  })), react_1["default"].createElement("span", null, (_a = errors.email) === null || _a === void 0 ? void 0 : _a.message)), react_1["default"].createElement("div", {
     className: "mb-4"
   }, react_1["default"].createElement("label", {
     className: "block mb-1"
-  }, " Password "), react_1["default"].createElement("input", {
-    onChange: handleChange,
-    value: data.password,
+  }, " Password "), react_1["default"].createElement("input", Object.assign({}, register('password'), {
     name: "password",
     className: "appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full",
     type: "password",
     placeholder: "Type here"
-  })), react_1["default"].createElement("label", {
-    className: "flex items-center w-max mb-5"
-  }, react_1["default"].createElement("input", {
-    name: "",
-    type: "checkbox",
-    className: "h-4 w-4"
-  }), react_1["default"].createElement("span", {
-    className: "ml-2 inline-block text-gray-500"
-  }, "Remember me")), react_1["default"].createElement("button", {
+  })), react_1["default"].createElement("span", null, (_b = errors.password) === null || _b === void 0 ? void 0 : _b.message)), react_1["default"].createElement("button", {
     type: "submit",
     className: "px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
-  }, "Sign in"), react_1["default"].createElement("div", {
-    className: "text-center border-b my-5 leading-[0.1rem]"
-  }, react_1["default"].createElement("span", {
-    className: "px-3 bg-white text-gray-400"
-  }, "or")), react_1["default"].createElement("a", {
-    href: "#",
-    className: "mb-2 px-4 py-2 w-full flex items-center justify-center text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"
-  }, react_1["default"].createElement("img", {
-    src: "images/icons/social/google.svg",
-    className: "mr-3",
-    width: "20",
-    height: "20"
-  }), "Continue with Google"), react_1["default"].createElement("a", {
-    href: "#",
-    className: "mb-2 px-4 py-2 w-full flex items-center justify-center text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"
-  }, react_1["default"].createElement("img", {
-    src: "images/icons/social/facebook.svg",
-    className: "mr-3",
-    width: "20",
-    height: "20"
-  }), "Continue with Facebook"), react_1["default"].createElement("p", {
-    className: "text-center mt-5"
-  }, "Don\u2019t have an account?", react_1["default"].createElement("a", {
-    className: "text-blue-500",
-    href: "#"
-  }, "Sign up")))))));
+  }, "Login"))))));
 }
 
 exports["default"] = AdminLogin;
@@ -387,13 +352,23 @@ var __importStar = this && this.__importStar || function (mod) {
   return result;
 };
 
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
-function HomePage() {
+var PrimeHero_1 = __importDefault(__webpack_require__(/*! ../../components/client/includes/PrimeHero */ "./resources/js/components/client/includes/PrimeHero.tsx"));
+
+var PrimeCategoriesCarousel_1 = __importDefault(__webpack_require__(/*! ../../components/client/includes/PrimeCategoriesCarousel */ "./resources/js/components/client/includes/PrimeCategoriesCarousel.tsx"));
+
+function HomePage(props) {
   var AppLayout = (0, react_1.lazy)(function () {
     return Promise.resolve().then(function () {
       return __importStar(__webpack_require__(/*! ../../layouts/client */ "./resources/js/layouts/client.tsx"));
@@ -414,14 +389,198 @@ function HomePage() {
       return __importStar(__webpack_require__(/*! ../../components/client/shards/homePageCategories */ "./resources/js/components/client/shards/homePageCategories.tsx"));
     });
   });
+  console.log(props);
   return react_1["default"].createElement("div", {
-    className: 'bg-[#EAEDED]'
+    className: 'bg-white'
   }, react_1["default"].createElement(react_1.Suspense, {
     fallback: react_1["default"].createElement("div", null, react_1["default"].createElement("h1", null, "loading..."))
-  }, react_1["default"].createElement(AppLayout, null, react_1["default"].createElement(Hero, null), react_1["default"].createElement(CategoriesNavigation, null), react_1["default"].createElement(HomePageCategories, null))));
+  }, react_1["default"].createElement(CategoriesNavigation, null), react_1["default"].createElement(AppLayout, null, react_1["default"].createElement(PrimeHero_1["default"], null), react_1["default"].createElement(PrimeCategoriesCarousel_1["default"], Object.assign({}, props)))));
 }
 
 exports["default"] = HomePage;
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Dashboard/categories/edit.tsx":
+/*!**********************************************************!*\
+  !*** ./resources/js/Pages/Dashboard/categories/edit.tsx ***!
+  \**********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var system_1 = __webpack_require__(/*! @mui/system */ "./node_modules/@mui/system/esm/index.js");
+
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var dashboard_1 = __importDefault(__webpack_require__(/*! ../../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
+
+var TextField_1 = __importDefault(__webpack_require__(/*! @mui/material/TextField */ "./node_modules/@mui/material/TextField/index.js"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
+
+var renderMediaListForForm_1 = __importDefault(__webpack_require__(/*! ../../../components/shards/renderMediaListForForm */ "./resources/js/components/shards/renderMediaListForForm.tsx"));
+
+function CategoryEdit(_ref) {
+  var currentCategory = _ref.currentCategory,
+      locale = _ref.locale,
+      categories = _ref.categories;
+
+  var _a;
+
+  console.log(currentCategory);
+  var form = (0, react_hook_form_1.useForm)({
+    mode: "onChange"
+  });
+  var register = form.register,
+      handleSubmit = form.handleSubmit,
+      _form$formState = form.formState,
+      errors = _form$formState.errors,
+      isDirty = _form$formState.isDirty,
+      isValid = _form$formState.isValid,
+      getValues = form.getValues,
+      reset = form.reset;
+
+  var _ref2 = (0, react_1.useState)(true),
+      _ref3 = _slicedToArray(_ref2, 2),
+      disabled = _ref3[0],
+      setDisabled = _ref3[1];
+
+  var selectParentMenuItems = categories.map(function (category) {
+    return react_1["default"].createElement(material_1.MenuItem, {
+      value: category.id,
+      key: category.id
+    }, category.title[locale]);
+  });
+
+  var handleUpdateCategory = function handleUpdateCategory(data) {
+    var resolveData = Object.assign({}, data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.categories.update', currentCategory), resolveData, {
+      preserveState: false
+    });
+    reset(getValues());
+  };
+
+  return react_1["default"].createElement(dashboard_1["default"], null, react_1["default"].createElement(system_1.Container, {
+    fixed: true
+  }, react_1["default"].createElement("div", {
+    className: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2"
+  }, react_1["default"].createElement(react_hook_form_1.FormProvider, Object.assign({}, form), react_1["default"].createElement("form", {
+    onSubmit: handleSubmit(handleUpdateCategory),
+    encType: 'multipart/form-data'
+  }, react_1["default"].createElement("div", {
+    className: "-mx-3 md:flex mb-6"
+  }, react_1["default"].createElement("div", {
+    className: "md:w-1/3 px-3 mb-6 md:mb-0"
+  }, react_1["default"].createElement(TextField_1["default"], Object.assign({}, register('ar'), {
+    name: 'ar',
+    fullWidth: true,
+    label: "Category Title AR",
+    defaultValue: currentCategory.title.ar
+  }))), react_1["default"].createElement("div", {
+    className: "md:w-1/3 px-3 mb-6 md:mb-0"
+  }, react_1["default"].createElement(TextField_1["default"], Object.assign({}, register('en'), {
+    name: 'en',
+    fullWidth: true,
+    label: "Category Title EN",
+    defaultValue: currentCategory.title.en,
+    placeholder: currentCategory.title.en
+  }))), react_1["default"].createElement("div", {
+    className: "md:w-1/3 px-3"
+  }, react_1["default"].createElement(material_1.Select, Object.assign({
+    margin: "dense"
+  }, register('parent_id'), {
+    name: 'parent_id',
+    fullWidth: true,
+    autoFocus: true,
+    onChange: function onChange(e) {
+      return setDisabled(true);
+    },
+    defaultValue: (_a = currentCategory.parent_id) !== null && _a !== void 0 ? _a : ''
+  }), selectParentMenuItems))), react_1["default"].createElement("div", {
+    className: "-mx-3 md:flex mb-6"
+  }, react_1["default"].createElement(renderMediaListForForm_1["default"], {
+    currentCategory: currentCategory
+  })), react_1["default"].createElement("div", {
+    className: 'flex gap-2'
+  }, react_1["default"].createElement(material_1.Button, {
+    disabled: !isDirty || !isValid,
+    type: 'submit',
+    color: "primary",
+    variant: 'contained'
+  }, "save changes")))))));
+}
+
+exports["default"] = CategoryEdit;
 
 /***/ }),
 
@@ -516,18 +675,17 @@ var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@i
 
 var free_regular_svg_icons_1 = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.js");
 
-function index(_ref) {
+var confimationDialog_1 = __importDefault(__webpack_require__(/*! ../../../components/shards/confimationDialog */ "./resources/js/components/shards/confimationDialog.tsx"));
+
+function CategoryIndex(_ref) {
   var categories = _ref.categories,
       locale = _ref.locale;
 
   var _ref2 = (0, react_hook_form_1.useForm)(),
       register = _ref2.register,
       handleSubmit = _ref2.handleSubmit,
-      watch = _ref2.watch,
       errors = _ref2.formState.errors,
-      reset = _ref2.reset,
-      setValue = _ref2.setValue,
-      control = _ref2.control;
+      reset = _ref2.reset;
 
   var _ref3 = (0, react_1.useState)(false),
       _ref4 = _slicedToArray(_ref3, 2),
@@ -536,42 +694,52 @@ function index(_ref) {
 
   var _ref5 = (0, react_1.useState)(false),
       _ref6 = _slicedToArray(_ref5, 2),
-      openUpdateDialog = _ref6[0],
-      setOpenUpdateDialog = _ref6[1];
+      openDeleteDialog = _ref6[0],
+      setOpenDeleteDialog = _ref6[1];
 
-  var _ref7 = (0, react_1.useState)(false),
+  var _ref7 = (0, react_1.useState)(0),
       _ref8 = _slicedToArray(_ref7, 2),
-      openDeleteDialog = _ref8[0],
-      setOpenDeleteDialog = _ref8[1];
-
-  var _ref9 = (0, react_1.useState)(),
-      _ref10 = _slicedToArray(_ref9, 2),
-      dataWillBeUpdated = _ref10[0],
-      setDataWillBeUpdated = _ref10[1];
+      currentCategoryId = _ref8[0],
+      setCurrentCategoryId = _ref8[1];
 
   var handleAddDialog = function handleAddDialog() {
     setOpenAddDialog(!openAddDialog);
   };
 
-  var handleUpdateDialog = function handleUpdateDialog(event, params) {
-    setOpenUpdateDialog(!openUpdateDialog);
-    setDataWillBeUpdated(Object.assign({}, params.data));
-    console.log('====================================');
-    console.log(params);
-    console.log(dataWillBeUpdated);
-    console.log('====================================');
+  var handleOnClickUpdateDialog = function handleOnClickUpdateDialog(event, _ref9) {
+    var data = _ref9.data;
+    inertia_1.Inertia.get((0, ziggy_js_1["default"])('admin.categories.edit', data.id));
   };
 
-  var handleDeleteDialog = function handleDeleteDialog() {
-    setOpenDeleteDialog(!openDeleteDialog);
+  var handleOnClickDelete = function handleOnClickDelete(event, _ref10) {
+    var data = _ref10.data;
+    setCurrentCategoryId(data.id);
+    setOpenDeleteDialog(true);
+  };
+
+  var handleDeleteClose = function handleDeleteClose(e) {
+    setOpenDeleteDialog(false);
+  };
+
+  var handleAgreeDelete = function handleAgreeDelete(e) {
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.categories.destroy', currentCategoryId), undefined, {
+      preserveState: false
+    });
+    setOpenDeleteDialog(false);
   };
 
   var columns = [{
     field: 'id',
     headerName: 'ID'
   }, {
-    field: "title.".concat(locale),
-    headerName: 'Title',
+    field: "title.ar",
+    headerName: 'Title AR',
+    floatingFilter: true,
+    flex: 1,
+    cellClass: 'font-bold'
+  }, {
+    field: "title.en",
+    headerName: 'Title EN',
     floatingFilter: true,
     flex: 1,
     cellClass: 'font-bold'
@@ -590,15 +758,22 @@ function index(_ref) {
     cellRenderer: function cellRenderer(params) {
       return react_1["default"].createElement("div", null, react_1["default"].createElement(material_1.Button, {
         onClick: function onClick(event) {
-          return handleUpdateDialog(event, params);
+          return handleOnClickUpdateDialog(event, params);
         }
-      }, "UPDATE"));
+      }, "UPDATE"), react_1["default"].createElement(material_1.Button, {
+        color: 'error',
+        onClick: function onClick(event) {
+          return handleOnClickDelete(event, params);
+        }
+      }, "delete"));
     }
   }];
 
-  var formSubmitHandler = function formSubmitHandler(data) {
+  var formAddSubmitHandler = function formAddSubmitHandler(data) {
     var resolveData = Object.assign({}, data);
-    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.categories.store'), resolveData);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.categories.store'), resolveData, {
+      preserveState: false
+    });
     reset();
   };
 
@@ -609,58 +784,6 @@ function index(_ref) {
     }, category.title.en);
   });
   return react_1["default"].createElement(dashboard_1["default"], null, react_1["default"].createElement("div", null, react_1["default"].createElement("div", {
-    id: 'update'
-  }, react_1["default"].createElement(formDialog_1["default"], {
-    btnLabel: 'Update Category',
-    header: 'Update Category',
-    handleClose: function handleClose() {
-      return setOpenUpdateDialog(!openUpdateDialog);
-    },
-    open: openUpdateDialog
-  }, react_1["default"].createElement("form", {
-    onSubmit: handleSubmit(formSubmitHandler)
-  }, react_1["default"].createElement(material_1.InputLabel, {
-    id: "demo-simple-select-standard-label",
-    margin: 'dense'
-  }, "Choose Parent ", react_1["default"].createElement("small", null, "optional")), react_1["default"].createElement(react_hook_form_1.Controller, {
-    control: control,
-    name: 'parent_id',
-    render: function render() {
-      return react_1["default"].createElement(material_1.Select, {
-        labelId: "demo-simple-select-standard-label",
-        id: "demo-simple-select-standard",
-        label: "Select Parent Category",
-        margin: "dense",
-        fullWidth: true,
-        defaultValue: '',
-        autoFocus: true
-      }, selectParentMenuItems);
-    }
-  }), react_1["default"].createElement(material_1.TextField, Object.assign({}, register('title'), {
-    autoFocus: true,
-    margin: "dense",
-    id: "title",
-    name: 'title',
-    label: "Category Title",
-    type: "text",
-    fullWidth: true,
-    variant: "outlined"
-  })), react_1["default"].createElement(material_1.Button, {
-    variant: "outlined",
-    component: "label"
-  }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
-    icon: free_regular_svg_icons_1.faFileImage
-  }), " ", react_1["default"].createElement("span", {
-    className: 'ml-2'
-  }, "add Image"), react_1["default"].createElement("input", Object.assign({}, register('images'), {
-    type: "file",
-    name: 'images',
-    hidden: true
-  }))), react_1["default"].createElement(material_1.DialogActions, null, react_1["default"].createElement(material_1.Button, {
-    type: 'submit',
-    color: "primary",
-    variant: 'contained'
-  }, "Submit"))))), react_1["default"].createElement("div", {
     id: 'add'
   }, react_1["default"].createElement(material_1.Button, {
     className: "absolute top-3 lg:left-24",
@@ -672,11 +795,11 @@ function index(_ref) {
     handleClose: handleAddDialog,
     open: openAddDialog
   }, react_1["default"].createElement("form", {
-    onSubmit: handleSubmit(formSubmitHandler)
+    onSubmit: handleSubmit(formAddSubmitHandler)
   }, react_1["default"].createElement(material_1.InputLabel, {
     id: "demo-simple-select-standard-label",
     margin: 'dense'
-  }, "Choose Parent ", react_1["default"].createElement("small", null, "optional")), react_1["default"].createElement(material_1.Select, Object.assign({}, register('parent_id'), {
+  }, "Choose Parent ", react_1["default"].createElement("small", null, "(optional)")), react_1["default"].createElement(material_1.Select, Object.assign({}, register('parent_id'), {
     labelId: "demo-simple-select-standard-label",
     id: "demo-simple-select-standard",
     label: "Select Parent Category",
@@ -686,12 +809,21 @@ function index(_ref) {
     autoFocus: true
   }), react_1["default"].createElement(material_1.MenuItem, {
     value: ''
-  }, "No Parent"), selectParentMenuItems), react_1["default"].createElement(material_1.TextField, Object.assign({}, register('title'), {
+  }, "No Parent"), selectParentMenuItems), react_1["default"].createElement(material_1.TextField, Object.assign({}, register("en"), {
     autoFocus: true,
     margin: "dense",
-    id: "title",
-    name: 'title',
-    label: "Category Title",
+    id: "en",
+    name: 'en',
+    label: "Category Title EN",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.TextField, Object.assign({}, register("ar"), {
+    autoFocus: true,
+    margin: "dense",
+    id: "ar",
+    name: 'ar',
+    label: "Category Title AR",
     type: "text",
     fullWidth: true,
     variant: "outlined"
@@ -704,13 +836,18 @@ function index(_ref) {
     className: 'ml-2'
   }, "add Image"), react_1["default"].createElement("input", Object.assign({}, register('images'), {
     type: "file",
+    multiple: true,
     name: 'images',
     hidden: true
   }))), react_1["default"].createElement(material_1.DialogActions, null, react_1["default"].createElement(material_1.Button, {
     type: 'submit',
     color: "primary",
     variant: 'contained'
-  }, "Submit"))))), react_1["default"].createElement(DataGrid_1["default"], {
+  }, "Submit"))))), react_1["default"].createElement(confimationDialog_1["default"], {
+    open: openDeleteDialog,
+    handleClose: handleDeleteClose,
+    handleAgree: handleAgreeDelete
+  }), react_1["default"].createElement(DataGrid_1["default"], {
     gridData: categories,
     colDef: columns,
     size: {
@@ -720,7 +857,7 @@ function index(_ref) {
   })));
 }
 
-exports["default"] = index;
+exports["default"] = CategoryIndex;
 
 /***/ }),
 
@@ -732,6 +869,18 @@ exports["default"] = index;
 
 "use strict";
 
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
   if (k2 === undefined) k2 = k;
@@ -773,50 +922,69 @@ var __importStar = this && this.__importStar || function (mod) {
   return result;
 };
 
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
+var DataGrid_1 = __importDefault(__webpack_require__(/*! ../../../components/DataTables/DataGrid */ "./resources/js/components/DataTables/DataGrid.tsx"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var create_1 = __importDefault(__webpack_require__(/*! ../stores/create */ "./resources/js/Pages/Dashboard/stores/create.tsx"));
+
+var dashboard_1 = __importDefault(__webpack_require__(/*! ../../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
+
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
 function index(_ref) {
   var users = _ref.users;
-  var DataGrid = (0, react_1.lazy)(function () {
-    return Promise.resolve().then(function () {
-      return __importStar(__webpack_require__(/*! ../../../components/DataTables/DataGrid */ "./resources/js/components/DataTables/DataGrid.tsx"));
-    });
-  });
-  var DashboardLayout = (0, react_1.lazy)(function () {
-    return Promise.resolve().then(function () {
-      return __importStar(__webpack_require__(/*! ../../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
-    });
-  });
-  var filterParams = {
-    // provide comparator function
-    comparator: function comparator(filterLocalDateAtMidnight, cellValue) {
-      var dateAsString = cellValue;
+  var form = (0, react_hook_form_1.useForm)();
+  var register = form.register,
+      handleSubmit = form.handleSubmit,
+      errors = form.formState.errors,
+      setValue = form.setValue,
+      reset = form.reset;
 
-      if (dateAsString == null) {
-        return 0;
-      } // In the example application, dates are stored as dd/mm/yyyy
-      // We create a Date object for comparison against the filter date
+  var _ref2 = (0, react_1.useState)(0),
+      _ref3 = _slicedToArray(_ref2, 2),
+      userId = _ref3[0],
+      setUserId = _ref3[1];
 
+  var _ref4 = (0, react_1.useState)(false),
+      _ref5 = _slicedToArray(_ref4, 2),
+      openAddDialog = _ref5[0],
+      setOpenAddDialog = _ref5[1];
 
-      var dateParts = dateAsString.split('/');
-      var year = Number(dateParts[2]);
-      var month = Number(dateParts[1]) - 1;
-      var day = Number(dateParts[0]);
-      var cellDate = new Date(year, month, day); // Now that both parameters are Date objects, we can compare
-
-      if (cellDate < filterLocalDateAtMidnight) {
-        return -1;
-      } else if (cellDate > filterLocalDateAtMidnight) {
-        return 1;
-      }
-
-      return 0;
-    }
+  var handleAddDialog = function handleAddDialog() {
+    setOpenAddDialog(!openAddDialog);
   };
+
+  var handleOnClickAddStoreDialog = function handleOnClickAddStoreDialog(event, _ref6) {
+    var data = _ref6.data;
+    setValue('user_id', data.id);
+    handleAddDialog();
+  };
+
+  var formAddSubmitHandler = function formAddSubmitHandler(data) {
+    var resolveData = Object.assign({}, data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.stores.store'), resolveData, {
+      preserveState: false
+    });
+    reset();
+  };
+
   var columns = [{
     field: 'id',
     headerName: 'ID'
@@ -824,21 +992,33 @@ function index(_ref) {
     field: 'name',
     headerName: 'Name',
     floatingFilter: true,
-    flex: 1,
-    cellClass: 'font-bold text-lg'
+    flex: 1
   }, {
     field: 'created_at',
-    headerName: 'Join Date',
-    filter: 'agDateColumnFilter',
-    floatingFilter: true,
-    filterParams: filterParams
+    headerName: 'Join Date'
   }, {
     field: 'status',
     headerName: 'Status'
+  }, {
+    headerName: 'Actions',
+    cellRenderer: function cellRenderer(params) {
+      return react_1["default"].createElement(material_1.Button, {
+        color: 'success',
+        variant: 'outlined',
+        onClick: function onClick(event) {
+          return handleOnClickAddStoreDialog(event, params);
+        }
+      }, "Add Store");
+    }
   }];
-  return react_1["default"].createElement(react_1.Suspense, {
-    fallback: react_1["default"].createElement("div", null, "Loading...")
-  }, react_1["default"].createElement(DashboardLayout, null, react_1["default"].createElement(DataGrid, {
+  return react_1["default"].createElement(dashboard_1["default"], null, react_1["default"].createElement("div", null, react_1["default"].createElement(react_hook_form_1.FormProvider, Object.assign({}, form), react_1["default"].createElement("input", Object.assign({}, register('user_id'), {
+    hidden: true
+  })), react_1["default"].createElement(create_1["default"], {
+    user_id: userId,
+    handleAddDialog: handleAddDialog,
+    openAddDialog: openAddDialog,
+    formAddSubmitHandler: formAddSubmitHandler
+  })), react_1["default"].createElement(DataGrid_1["default"], {
     gridData: users,
     colDef: columns,
     size: {
@@ -924,6 +1104,1395 @@ exports["default"] = index;
 
 /***/ }),
 
+/***/ "./resources/js/Pages/Dashboard/products/create.tsx":
+/*!**********************************************************!*\
+  !*** ./resources/js/Pages/Dashboard/products/create.tsx ***!
+  \**********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var formDialog_1 = __importDefault(__webpack_require__(/*! ../../shards/formDialog */ "./resources/js/Pages/shards/formDialog.tsx"));
+
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+var react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+
+var free_regular_svg_icons_1 = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.js");
+
+function CreateProduct(_ref) {
+  var handleAddDialog = _ref.handleAddDialog,
+      openAddDialog = _ref.openAddDialog,
+      watch = _ref.watch;
+
+  var _a;
+
+  var _ref2 = (0, react_1.useState)(['fashion']),
+      _ref3 = _slicedToArray(_ref2, 2),
+      tags = _ref3[0],
+      setTags = _ref3[1];
+
+  var _ref4 = (0, react_hook_form_1.useForm)(),
+      register = _ref4.register,
+      handleSubmit = _ref4.handleSubmit,
+      errors = _ref4.formState.errors,
+      reset = _ref4.reset,
+      setValue = _ref4.setValue;
+
+  var store_id = watch('store_id');
+
+  var formAddSubmitHandler = function formAddSubmitHandler(data) {
+    var resolveData = Object.assign({}, data);
+    console.log(data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.products.store'), resolveData, {
+      preserveState: false
+    });
+    reset();
+  };
+
+  return react_1["default"].createElement("div", {
+    id: 'add'
+  }, react_1["default"].createElement(formDialog_1["default"], {
+    btnLabel: 'Add Product',
+    header: 'Create New Product',
+    handleClose: handleAddDialog,
+    open: openAddDialog
+  }, react_1["default"].createElement("form", {
+    onSubmit: handleSubmit(formAddSubmitHandler)
+  }, react_1["default"].createElement("input", Object.assign({
+    hidden: true
+  }, register('store_id'), {
+    name: 'store_id',
+    value: store_id
+  })), react_1["default"].createElement(material_1.TextField, Object.assign({}, register("en"), {
+    autoFocus: true,
+    margin: "dense",
+    id: "en",
+    name: 'en',
+    label: "Product Name EN",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), " ", react_1["default"].createElement(material_1.TextField, Object.assign({}, register('ar'), {
+    autoFocus: true,
+    margin: "dense",
+    id: "ar",
+    name: 'ar',
+    label: "Product Name AR",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.TextField, Object.assign({}, register("description"), {
+    autoFocus: true,
+    margin: "dense",
+    id: "description",
+    name: 'description',
+    label: "Description",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.TextField, Object.assign({}, register("price", {
+    pattern: /^(?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/
+  }), {
+    autoFocus: true,
+    margin: "dense",
+    id: "description",
+    name: 'price',
+    label: "Price",
+    type: "number",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement("span", null, (_a = errors.price) === null || _a === void 0 ? void 0 : _a.message), react_1["default"].createElement(material_1.Button, {
+    variant: "outlined",
+    component: "label"
+  }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
+    icon: free_regular_svg_icons_1.faFileImage
+  }), " ", react_1["default"].createElement("span", {
+    className: 'ml-2'
+  }), react_1["default"].createElement("input", Object.assign({}, register('images'), {
+    type: "file",
+    multiple: true,
+    name: 'images'
+  }))), react_1["default"].createElement(material_1.DialogActions, null, react_1["default"].createElement(material_1.Button, {
+    type: 'submit',
+    color: "primary",
+    variant: 'contained'
+  }, "Submit")))));
+}
+
+exports["default"] = CreateProduct;
+;
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Dashboard/products/edit.tsx":
+/*!********************************************************!*\
+  !*** ./resources/js/Pages/Dashboard/products/edit.tsx ***!
+  \********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var dashboard_1 = __importDefault(__webpack_require__(/*! ../../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
+
+var TextField_1 = __importDefault(__webpack_require__(/*! @mui/material/TextField */ "./node_modules/@mui/material/TextField/index.js"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
+
+var inertia_react_1 = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+
+var alert_1 = __importDefault(__webpack_require__(/*! ../../../components/shards/alert */ "./resources/js/components/shards/alert.tsx"));
+
+var MediaProductCollection_1 = __importDefault(__webpack_require__(/*! ../../../components/Lists/MediaProductCollection */ "./resources/js/components/Lists/MediaProductCollection.tsx"));
+
+var variationList_1 = __importDefault(__webpack_require__(/*! ../variations/variationList */ "./resources/js/Pages/Dashboard/variations/variationList.tsx"));
+
+function ProductEdit(_ref) {
+  var currentProduct = _ref.currentProduct,
+      locale = _ref.locale;
+  console.log(currentProduct);
+  var form = (0, react_hook_form_1.useForm)({
+    mode: "onChange"
+  });
+  var register = form.register,
+      handleSubmit = form.handleSubmit,
+      _form$formState = form.formState,
+      errors = _form$formState.errors,
+      isDirty = _form$formState.isDirty,
+      isValid = _form$formState.isValid,
+      getValues = form.getValues,
+      reset = form.reset;
+
+  var _ref2 = (0, react_hook_form_1.useForm)(),
+      register2 = _ref2.register,
+      errors2 = _ref2.formState.errors,
+      handleSubmit2 = _ref2.handleSubmit;
+
+  var serverSideErrors = (0, inertia_react_1.usePage)().props.errors;
+
+  var handleUpdateProduct = function handleUpdateProduct(data) {
+    var resolveData = Object.assign({}, data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.products.update', currentProduct), resolveData, {
+      preserveState: false
+    });
+    reset(getValues());
+  };
+
+  var handleAddMediaToProduct = function handleAddMediaToProduct(data) {
+    var resolveData = Object.assign({}, data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.add.media.to.product', currentProduct), resolveData);
+    console.log(data);
+  };
+
+  return react_1["default"].createElement(dashboard_1["default"], null, react_1["default"].createElement("div", {
+    className: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2"
+  }, react_1["default"].createElement(react_hook_form_1.FormProvider, Object.assign({}, form), react_1["default"].createElement("form", {
+    onSubmit: handleSubmit(handleUpdateProduct),
+    encType: 'multipart/form-data',
+    className: 'mb-3'
+  }, react_1["default"].createElement("div", {
+    className: "-mx-3 md:flex mb-6"
+  }, react_1["default"].createElement("div", {
+    className: "md:w-1/4 px-3 mb-6 md:mb-0"
+  }, react_1["default"].createElement(TextField_1["default"], Object.assign({}, register('ar'), {
+    name: 'ar',
+    fullWidth: true,
+    label: "Product Title AR",
+    defaultValue: currentProduct.title.ar
+  })), serverSideErrors.title && react_1["default"].createElement(alert_1["default"], {
+    text: serverSideErrors.title,
+    type: "red"
+  })), react_1["default"].createElement("div", {
+    className: "md:w-1/4 px-3 mb-6 md:mb-0"
+  }, react_1["default"].createElement(TextField_1["default"], Object.assign({}, register('en'), {
+    name: 'en',
+    fullWidth: true,
+    label: "Product Title EN",
+    defaultValue: currentProduct.title.en,
+    placeholder: currentProduct.title.en
+  })), serverSideErrors.title && react_1["default"].createElement(alert_1["default"], {
+    text: serverSideErrors.title,
+    type: "red"
+  })), react_1["default"].createElement("div", {
+    className: "md:w-1/4 px-3"
+  }, react_1["default"].createElement(TextField_1["default"], Object.assign({
+    type: 'number'
+  }, register('price', {
+    valueAsNumber: true
+  }), {
+    name: 'price',
+    fullWidth: true,
+    label: "Price",
+    defaultValue: currentProduct.price,
+    placeholder: currentProduct.price
+  })), serverSideErrors.price && react_1["default"].createElement(alert_1["default"], {
+    text: serverSideErrors.price,
+    type: "red"
+  })), react_1["default"].createElement("div", {
+    className: "md:w-1/4 px-3"
+  }, react_1["default"].createElement(TextField_1["default"], Object.assign({}, register('description'), {
+    name: 'description',
+    fullWidth: true,
+    label: "Description",
+    defaultValue: currentProduct.description,
+    placeholder: currentProduct.description
+  })), serverSideErrors.description && react_1["default"].createElement(alert_1["default"], {
+    text: serverSideErrors.description,
+    type: "red"
+  }))), react_1["default"].createElement("div", {
+    className: 'flex gap-2'
+  }, react_1["default"].createElement(material_1.Button, {
+    disabled: !isDirty || !isValid,
+    type: 'submit',
+    color: "primary",
+    variant: 'contained'
+  }, "save changes")))), react_1["default"].createElement("form", {
+    onSubmit: handleSubmit2(handleAddMediaToProduct)
+  }, react_1["default"].createElement("input", Object.assign({
+    multiple: true,
+    type: 'file'
+  }, register2('images'))), react_1["default"].createElement(material_1.Button, {
+    type: 'submit',
+    color: "primary",
+    variant: 'contained'
+  }, "upload")), react_1["default"].createElement("div", {
+    className: "-mx-3 md:flex mb-6 py-3"
+  }, react_1["default"].createElement(MediaProductCollection_1["default"], {
+    product: currentProduct
+  })), react_1["default"].createElement(variationList_1["default"], {
+    variations: currentProduct.variations,
+    locale: locale,
+    productId: currentProduct.id
+  })));
+}
+
+exports["default"] = ProductEdit;
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Dashboard/products/index.tsx":
+/*!*********************************************************!*\
+  !*** ./resources/js/Pages/Dashboard/products/index.tsx ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var formDialog_1 = __importDefault(__webpack_require__(/*! ../../shards/formDialog */ "./resources/js/Pages/shards/formDialog.tsx"));
+
+var dashboard_1 = __importDefault(__webpack_require__(/*! ../../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
+
+var DataGrid_1 = __importDefault(__webpack_require__(/*! ../../../components/DataTables/DataGrid */ "./resources/js/components/DataTables/DataGrid.tsx"));
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+var react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var free_regular_svg_icons_1 = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.js");
+
+var confimationDialog_1 = __importDefault(__webpack_require__(/*! ../../../components/shards/confimationDialog */ "./resources/js/components/shards/confimationDialog.tsx"));
+
+function CategoryIndex(_ref) {
+  var products = _ref.products,
+      locale = _ref.locale;
+
+  var _ref2 = (0, react_hook_form_1.useForm)(),
+      register = _ref2.register,
+      handleSubmit = _ref2.handleSubmit,
+      errors = _ref2.formState.errors,
+      reset = _ref2.reset;
+
+  var _ref3 = (0, react_1.useState)(false),
+      _ref4 = _slicedToArray(_ref3, 2),
+      openAddDialog = _ref4[0],
+      setOpenAddDialog = _ref4[1];
+
+  var _ref5 = (0, react_1.useState)(false),
+      _ref6 = _slicedToArray(_ref5, 2),
+      openDeleteDialog = _ref6[0],
+      setOpenDeleteDialog = _ref6[1];
+
+  var _ref7 = (0, react_1.useState)(0),
+      _ref8 = _slicedToArray(_ref7, 2),
+      currentCategoryId = _ref8[0],
+      setCurrentCategoryId = _ref8[1];
+
+  var handleAddDialog = function handleAddDialog() {
+    setOpenAddDialog(!openAddDialog);
+  };
+
+  var handleOnClickUpdateDialog = function handleOnClickUpdateDialog(event, _ref9) {
+    var data = _ref9.data;
+    inertia_1.Inertia.get((0, ziggy_js_1["default"])('admin.products.edit', data.id));
+  };
+
+  var handleOnClickDelete = function handleOnClickDelete(event, _ref10) {
+    var data = _ref10.data;
+    setCurrentCategoryId(data.id);
+    setOpenDeleteDialog(true);
+  };
+
+  var handleDeleteClose = function handleDeleteClose(e) {
+    setOpenDeleteDialog(false);
+  };
+
+  var handleAgreeDelete = function handleAgreeDelete(e) {
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.products.destroy', currentCategoryId), {
+      preserveState: false
+    });
+    setOpenDeleteDialog(false);
+  };
+
+  var columns = [{
+    field: 'id',
+    headerName: 'ID'
+  }, {
+    field: "title.ar",
+    headerName: 'Title AR',
+    floatingFilter: true,
+    flex: 1,
+    cellClass: 'font-bold'
+  }, {
+    field: "title.en",
+    headerName: 'Title EN',
+    floatingFilter: true,
+    flex: 1,
+    cellClass: 'font-bold'
+  }, // {field: `parent.title.${locale}`, headerName: 'Parent', floatingFilter: true, cellClass: 'font-bold'},
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    filter: 'agDateColumnFilter',
+    floatingFilter: true
+  }, {
+    headerName: 'Actions',
+    cellRenderer: function cellRenderer(params) {
+      return react_1["default"].createElement("div", null, react_1["default"].createElement(material_1.Button, {
+        onClick: function onClick(event) {
+          return handleOnClickUpdateDialog(event, params);
+        }
+      }, "UPDATE"), react_1["default"].createElement(material_1.Button, {
+        color: 'error',
+        onClick: function onClick(event) {
+          return handleOnClickDelete(event, params);
+        }
+      }, "delete"));
+    }
+  }];
+
+  var formAddSubmitHandler = function formAddSubmitHandler(data) {
+    var resolveData = Object.assign({}, data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.products.store'), resolveData, {
+      preserveState: false
+    });
+    reset();
+  };
+
+  return react_1["default"].createElement(dashboard_1["default"], null, react_1["default"].createElement("div", null, react_1["default"].createElement("div", {
+    id: 'add'
+  }, react_1["default"].createElement(material_1.Button, {
+    className: "absolute top-3 lg:left-24",
+    variant: 'contained',
+    onClick: handleAddDialog
+  }, "Add Category"), react_1["default"].createElement(formDialog_1["default"], {
+    btnLabel: 'Add Category',
+    header: 'Create New Category',
+    handleClose: handleAddDialog,
+    open: openAddDialog
+  }, react_1["default"].createElement("form", {
+    onSubmit: handleSubmit(formAddSubmitHandler)
+  }, react_1["default"].createElement(material_1.TextField, Object.assign({}, register("en"), {
+    autoFocus: true,
+    margin: "dense",
+    id: "en",
+    name: 'en',
+    label: "Category Title EN",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.TextField, Object.assign({}, register("ar"), {
+    autoFocus: true,
+    margin: "dense",
+    id: "ar",
+    name: 'ar',
+    label: "Category Title AR",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.Button, {
+    variant: "outlined",
+    component: "label"
+  }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
+    icon: free_regular_svg_icons_1.faFileImage
+  }), " ", react_1["default"].createElement("span", {
+    className: 'ml-2'
+  }, "add Image"), react_1["default"].createElement("input", Object.assign({}, register('images'), {
+    type: "file",
+    multiple: true,
+    name: 'images',
+    hidden: true
+  }))), react_1["default"].createElement(material_1.DialogActions, null, react_1["default"].createElement(material_1.Button, {
+    type: 'submit',
+    color: "primary",
+    variant: 'contained'
+  }, "Submit"))))), react_1["default"].createElement(confimationDialog_1["default"], {
+    open: openDeleteDialog,
+    handleClose: handleDeleteClose,
+    handleAgree: handleAgreeDelete
+  }), react_1["default"].createElement(DataGrid_1["default"], {
+    gridData: products,
+    colDef: columns,
+    size: {
+      height: '90vh',
+      width: 'auto'
+    }
+  })));
+}
+
+exports["default"] = CategoryIndex;
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Dashboard/stores/create.tsx":
+/*!********************************************************!*\
+  !*** ./resources/js/Pages/Dashboard/stores/create.tsx ***!
+  \********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var formDialog_1 = __importDefault(__webpack_require__(/*! ../../shards/formDialog */ "./resources/js/Pages/shards/formDialog.tsx"));
+
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
+
+function CreateStore(_ref) {
+  var user_id = _ref.user_id,
+      handleAddDialog = _ref.handleAddDialog,
+      openAddDialog = _ref.openAddDialog,
+      formAddSubmitHandler = _ref.formAddSubmitHandler;
+
+  var _ref2 = (0, react_hook_form_1.useFormContext)(),
+      register = _ref2.register,
+      handleSubmit = _ref2.handleSubmit,
+      errors = _ref2.formState.errors;
+
+  return react_1["default"].createElement("div", {
+    id: 'add'
+  }, react_1["default"].createElement(formDialog_1["default"], {
+    btnLabel: 'Add Category',
+    header: 'Create New Category',
+    handleClose: handleAddDialog,
+    open: openAddDialog
+  }, react_1["default"].createElement("form", {
+    onSubmit: handleSubmit(formAddSubmitHandler)
+  }, react_1["default"].createElement(material_1.TextField, Object.assign({}, register("name"), {
+    autoFocus: true,
+    margin: "dense",
+    id: "name",
+    name: 'name',
+    label: "Store Name",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.TextField, Object.assign({}, register("description"), {
+    autoFocus: true,
+    margin: "dense",
+    id: "description",
+    name: 'description',
+    label: "Description",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.DialogActions, null, react_1["default"].createElement(material_1.Button, {
+    type: 'submit',
+    color: "primary",
+    variant: 'contained'
+  }, "Submit")))));
+}
+
+exports["default"] = CreateStore;
+;
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Dashboard/stores/edit.tsx":
+/*!******************************************************!*\
+  !*** ./resources/js/Pages/Dashboard/stores/edit.tsx ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var dashboard_1 = __importDefault(__webpack_require__(/*! ../../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
+
+var TextField_1 = __importDefault(__webpack_require__(/*! @mui/material/TextField */ "./node_modules/@mui/material/TextField/index.js"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
+
+var productList_1 = __importDefault(__webpack_require__(/*! ../../../components/Lists/productList */ "./resources/js/components/Lists/productList.tsx"));
+
+var create_1 = __importDefault(__webpack_require__(/*! ../products/create */ "./resources/js/Pages/Dashboard/products/create.tsx"));
+
+function StoreEdit(_ref) {
+  var currentStore = _ref.currentStore,
+      locale = _ref.locale;
+  var form = (0, react_hook_form_1.useForm)();
+  var register = form.register,
+      handleSubmit = form.handleSubmit,
+      errors = form.formState.errors,
+      reset = form.reset,
+      setValue = form.setValue,
+      watch = form.watch;
+
+  var _ref2 = (0, react_1.useState)(false),
+      _ref3 = _slicedToArray(_ref2, 2),
+      openAddDialog = _ref3[0],
+      setOpenAddDialog = _ref3[1];
+
+  var handleOnClickAddSProductDialog = function handleOnClickAddSProductDialog(event, _ref4) {
+    var data = _ref4.data;
+    setValue('store_id', currentStore.id);
+    handleAddDialog();
+  };
+
+  var handleUpdateStore = function handleUpdateStore(data) {
+    var resolveData = Object.assign({}, data);
+    console.log(data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.stores.update', currentStore), resolveData);
+  };
+
+  var handleAddDialog = function handleAddDialog() {
+    setOpenAddDialog(!openAddDialog);
+  };
+
+  var formAddSubmitHandler = function formAddSubmitHandler(data) {
+    var resolveData = Object.assign({}, data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.stores.store'), resolveData, {
+      preserveState: false
+    });
+    reset();
+  }; // @ts-ignore
+
+
+  return react_1["default"].createElement(dashboard_1["default"], null, react_1["default"].createElement("div", {
+    className: 'm-2'
+  }, react_1["default"].createElement("div", {
+    className: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2"
+  }, react_1["default"].createElement(react_hook_form_1.FormProvider, Object.assign({}, form), react_1["default"].createElement("form", {
+    onSubmit: handleSubmit(handleUpdateStore)
+  }, react_1["default"].createElement("input", Object.assign({
+    hidden: true
+  }, register('store_id'), {
+    name: 'store_id'
+  })), react_1["default"].createElement("div", {
+    className: "-mx-3 md:flex mb-6"
+  }, react_1["default"].createElement("div", {
+    className: "md:w-1/2 px-3 mb-6 md:mb-0"
+  }, react_1["default"].createElement(TextField_1["default"], Object.assign({}, register('name'), {
+    name: 'name',
+    fullWidth: true,
+    label: "Store Name",
+    defaultValue: currentStore.name
+  }))), react_1["default"].createElement("div", {
+    className: "md:w-1/2 px-3 mb-6 md:mb-0"
+  }, react_1["default"].createElement(TextField_1["default"], Object.assign({
+    multiline: true
+  }, register('description'), {
+    name: 'description',
+    fullWidth: true,
+    label: "Store Description",
+    defaultValue: currentStore.description,
+    placeholder: currentStore.description
+  })))), react_1["default"].createElement("div", {
+    className: "-mx-3 md:flex mb-6"
+  }), react_1["default"].createElement("div", {
+    className: 'flex gap-2'
+  }, react_1["default"].createElement(material_1.Button, {
+    type: 'submit',
+    color: "primary",
+    variant: 'contained'
+  }, "save changes"), react_1["default"].createElement(material_1.Button, {
+    color: "success",
+    variant: 'contained',
+    onClick: function onClick(e) {
+      return handleOnClickAddSProductDialog(e, currentStore.id);
+    }
+  }, "add product"))))), react_1["default"].createElement(productList_1["default"], {
+    products: currentStore.products,
+    locale: locale
+  }), react_1["default"].createElement(create_1["default"], {
+    handleAddDialog: handleAddDialog,
+    openAddDialog: openAddDialog,
+    watch: watch
+  })));
+}
+
+exports["default"] = StoreEdit;
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Dashboard/stores/index.tsx":
+/*!*******************************************************!*\
+  !*** ./resources/js/Pages/Dashboard/stores/index.tsx ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var dashboard_1 = __importDefault(__webpack_require__(/*! ../../../layouts/dashboard */ "./resources/js/layouts/dashboard.tsx"));
+
+var DataGrid_1 = __importDefault(__webpack_require__(/*! ../../../components/DataTables/DataGrid */ "./resources/js/components/DataTables/DataGrid.tsx"));
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var confimationDialog_1 = __importDefault(__webpack_require__(/*! ../../../components/shards/confimationDialog */ "./resources/js/components/shards/confimationDialog.tsx"));
+
+function CategoryIndex(_ref) {
+  var stores = _ref.stores,
+      locale = _ref.locale;
+
+  var _ref2 = (0, react_1.useState)(false),
+      _ref3 = _slicedToArray(_ref2, 2),
+      openDeleteDialog = _ref3[0],
+      setOpenDeleteDialog = _ref3[1];
+
+  var _ref4 = (0, react_1.useState)(0),
+      _ref5 = _slicedToArray(_ref4, 2),
+      currentStoreId = _ref5[0],
+      setCurrentStoreId = _ref5[1];
+
+  var handleOnClickUpdateDialog = function handleOnClickUpdateDialog(event, _ref6) {
+    var data = _ref6.data;
+    inertia_1.Inertia.get((0, ziggy_js_1["default"])('admin.stores.edit', data.id));
+  };
+
+  var handleOnClickDelete = function handleOnClickDelete(event, _ref7) {
+    var data = _ref7.data;
+    setCurrentStoreId(data.id);
+    console.log(data.id);
+    setOpenDeleteDialog(true);
+  };
+
+  var handleDeleteClose = function handleDeleteClose(e) {
+    setOpenDeleteDialog(false);
+  };
+
+  var handleAgreeDelete = function handleAgreeDelete(e) {
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.products.destroy', currentStoreId), {
+      preserveState: false
+    });
+    setOpenDeleteDialog(false);
+  };
+
+  var columns = [{
+    field: 'id',
+    headerName: 'ID'
+  }, {
+    field: "name",
+    headerName: 'Name',
+    floatingFilter: true,
+    flex: 1
+  }, {
+    field: "description",
+    headerName: 'Description'
+  }, {
+    field: "user.name",
+    headerName: 'Owner'
+  }, {
+    field: 'created_at',
+    headerName: 'Created At',
+    filter: 'agDateColumnFilter',
+    floatingFilter: true
+  }, {
+    headerName: 'Actions',
+    cellRenderer: function cellRenderer(params) {
+      return react_1["default"].createElement("div", null, react_1["default"].createElement(material_1.Button, {
+        onClick: function onClick(event) {
+          return handleOnClickUpdateDialog(event, params);
+        }
+      }, "UPDATE"), react_1["default"].createElement(material_1.Button, {
+        color: 'error',
+        onClick: function onClick(event) {
+          return handleOnClickDelete(event, params);
+        }
+      }, "delete"));
+    }
+  }];
+  return react_1["default"].createElement(dashboard_1["default"], null, react_1["default"].createElement("div", null, react_1["default"].createElement(confimationDialog_1["default"], {
+    open: openDeleteDialog,
+    handleClose: handleDeleteClose,
+    handleAgree: handleAgreeDelete
+  }), react_1["default"].createElement(DataGrid_1["default"], {
+    gridData: stores,
+    colDef: columns,
+    size: {
+      height: '90vh',
+      width: 'auto'
+    }
+  })));
+}
+
+exports["default"] = CategoryIndex;
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Dashboard/variations/create.tsx":
+/*!************************************************************!*\
+  !*** ./resources/js/Pages/Dashboard/variations/create.tsx ***!
+  \************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var formDialog_1 = __importDefault(__webpack_require__(/*! ../../shards/formDialog */ "./resources/js/Pages/shards/formDialog.tsx"));
+
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+var react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+
+var free_regular_svg_icons_1 = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.js");
+
+function CreateProductVariation(_ref) {
+  var handleAddDialog = _ref.handleAddDialog,
+      openAddDialog = _ref.openAddDialog,
+      productId = _ref.productId;
+
+  var _a;
+
+  var _ref2 = (0, react_hook_form_1.useForm)(),
+      register = _ref2.register,
+      handleSubmit = _ref2.handleSubmit,
+      errors = _ref2.formState.errors,
+      reset = _ref2.reset,
+      setValue = _ref2.setValue;
+
+  var formAddSubmitHandler = function formAddSubmitHandler(data) {
+    var resolveData = Object.assign({}, data);
+    console.log(data);
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.variations.store'), resolveData, {
+      preserveState: false
+    });
+    reset();
+  };
+
+  return react_1["default"].createElement("div", {
+    id: 'add'
+  }, react_1["default"].createElement(formDialog_1["default"], {
+    btnLabel: 'Add Product',
+    header: 'Create New Variation',
+    handleClose: handleAddDialog,
+    open: openAddDialog
+  }, react_1["default"].createElement("form", {
+    onSubmit: handleSubmit(formAddSubmitHandler)
+  }, react_1["default"].createElement("input", Object.assign({
+    hidden: true
+  }, register('product_id'), {
+    name: 'product_id',
+    value: productId
+  })), react_1["default"].createElement(material_1.TextField, Object.assign({}, register("en"), {
+    autoFocus: true,
+    margin: "dense",
+    id: "en",
+    name: 'en',
+    label: "Variation Name EN",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), " ", react_1["default"].createElement(material_1.TextField, Object.assign({}, register('ar'), {
+    autoFocus: true,
+    margin: "dense",
+    id: "ar",
+    name: 'ar',
+    label: "Variation Name AR",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.TextField, Object.assign({}, register("type"), {
+    autoFocus: true,
+    margin: "dense",
+    id: "type",
+    name: 'type',
+    label: "type",
+    type: "text",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement(material_1.TextField, Object.assign({}, register("price", {
+    pattern: /^(?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/
+  }), {
+    autoFocus: true,
+    margin: "dense",
+    id: "description",
+    name: 'price',
+    label: "Price",
+    type: "number",
+    fullWidth: true,
+    variant: "outlined"
+  })), react_1["default"].createElement("span", null, (_a = errors.price) === null || _a === void 0 ? void 0 : _a.message), react_1["default"].createElement(material_1.Button, {
+    variant: "outlined",
+    component: "label"
+  }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
+    icon: free_regular_svg_icons_1.faFileImage
+  }), " ", react_1["default"].createElement("span", {
+    className: 'ml-2'
+  }), react_1["default"].createElement("input", Object.assign({}, register('images'), {
+    type: "file",
+    multiple: true,
+    name: 'images'
+  }))), react_1["default"].createElement(material_1.DialogActions, null, react_1["default"].createElement(material_1.Button, {
+    type: 'submit',
+    color: "primary",
+    variant: 'contained'
+  }, "Submit")))));
+}
+
+exports["default"] = CreateProductVariation;
+;
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Dashboard/variations/variationList.tsx":
+/*!*******************************************************************!*\
+  !*** ./resources/js/Pages/Dashboard/variations/variationList.tsx ***!
+  \*******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+var DataGrid_1 = __importDefault(__webpack_require__(/*! ../../../components/DataTables/DataGrid */ "./resources/js/components/DataTables/DataGrid.tsx"));
+
+var create_1 = __importDefault(__webpack_require__(/*! ./create */ "./resources/js/Pages/Dashboard/variations/create.tsx"));
+
+function VariationList(_ref) {
+  var variations = _ref.variations,
+      locale = _ref.locale,
+      productId = _ref.productId;
+  console.log(variations);
+
+  var _ref2 = (0, react_1.useState)(false),
+      _ref3 = _slicedToArray(_ref2, 2),
+      openAddDialog = _ref3[0],
+      setOpenAddDialog = _ref3[1];
+
+  var ToggleRestoreDeleteButton = function ToggleRestoreDeleteButton(params) {
+    if (params.data.deleted_at) {
+      return react_1["default"].createElement(material_1.Button, {
+        color: 'success',
+        onClick: function onClick(event) {
+          return handleOnClickRestore(event, params);
+        }
+      }, "Restore");
+    } else {
+      return react_1["default"].createElement(material_1.Button, {
+        color: 'secondary',
+        onClick: function onClick(event) {
+          return handleOnClickDelete(event, params);
+        }
+      }, "Delete");
+    }
+  };
+
+  var handleOnClickUpdateDialog = function handleOnClickUpdateDialog(event, _ref4) {
+    var data = _ref4.data;
+    inertia_1.Inertia.get((0, ziggy_js_1["default"])('admin.variations.edit', data.id));
+  };
+
+  var handleOnClickDelete = function handleOnClickDelete(event, _ref5) {
+    var data = _ref5.data;
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.variations.destroy', data.id), undefined, {
+      preserveState: false
+    });
+  };
+
+  var handleOnClickRestore = function handleOnClickRestore(event, _ref6) {
+    var data = _ref6.data;
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.variations.restore', data.id), undefined, {
+      preserveState: false
+    });
+  };
+
+  var handleOnClickAddSProductDialog = function handleOnClickAddSProductDialog() {
+    setOpenAddDialog(!openAddDialog);
+  };
+
+  var columns = [{
+    field: 'thumbnail',
+    headerName: 'Image',
+    cellRenderer: function cellRenderer(params) {
+      return react_1["default"].createElement("img", {
+        className: 'mx-auto mt-[4px]',
+        src: params.data.thumbnail,
+        alt: params.data.name,
+        width: 50,
+        height: 50
+      });
+    }
+  }, {
+    field: 'id',
+    headerName: 'ID'
+  }, {
+    field: "title.en",
+    headerName: 'Title EN',
+    floatingFilter: true,
+    flex: 0.5,
+    cellClass: 'font-bold'
+  }, {
+    field: "title.ar",
+    headerName: 'Title AR',
+    floatingFilter: true,
+    flex: 0.5,
+    cellClass: 'font-bold'
+  }, {
+    field: "price",
+    headerName: 'Price'
+  }, {
+    field: "deleted_at",
+    headerName: 'Deleted at'
+  }, {
+    field: 'created_at',
+    headerName: 'Created At',
+    filter: 'agDateColumnFilter',
+    floatingFilter: true
+  }, {
+    headerName: 'Actions',
+    cellRenderer: function cellRenderer(params) {
+      return react_1["default"].createElement("div", null, ToggleRestoreDeleteButton(params), react_1["default"].createElement(material_1.Button, {
+        onClick: function onClick(event) {
+          return handleOnClickUpdateDialog(event, params);
+        }
+      }, "UPDATE"));
+    }
+  }];
+  return react_1["default"].createElement("main", {
+    className: "bg-white shadow-md"
+  }, react_1["default"].createElement(material_1.Button, {
+    color: "success",
+    variant: 'contained',
+    onClick: handleOnClickAddSProductDialog
+  }, "add variation"), react_1["default"].createElement(DataGrid_1["default"], {
+    gridData: variations,
+    colDef: columns,
+    size: {
+      height: '90vh',
+      width: 'auto'
+    },
+    rowHeight: 60
+  }), react_1["default"].createElement(create_1["default"], {
+    handleAddDialog: handleOnClickAddSProductDialog,
+    openAddDialog: openAddDialog,
+    productId: productId
+  }));
+}
+
+exports["default"] = VariationList;
+
+/***/ }),
+
 /***/ "./resources/js/Pages/shards/formDialog.tsx":
 /*!**************************************************!*\
   !*** ./resources/js/Pages/shards/formDialog.tsx ***!
@@ -957,8 +2526,6 @@ var DialogTitle_1 = __importDefault(__webpack_require__(/*! @mui/material/Dialog
 
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
-var progress_1 = __webpack_require__(/*! @inertiajs/progress */ "./node_modules/@inertiajs/progress/dist/index.js");
-
 function FormDialog(_ref) {
   var children = _ref.children,
       header = _ref.header,
@@ -966,10 +2533,6 @@ function FormDialog(_ref) {
       _ref$open = _ref.open,
       open = _ref$open === void 0 ? false : _ref$open,
       handleClose = _ref.handleClose;
-  progress_1.InertiaProgress.init({
-    showSpinner: true,
-    delay: 250
-  });
   return react_1["default"].createElement("div", {
     className: 'relative'
   }, react_1["default"].createElement(Dialog_1["default"], {
@@ -1016,7 +2579,8 @@ function DataGrid(_ref) {
       gridData = _ref.gridData,
       colDef = _ref.colDef,
       _ref$rowClickHandler = _ref.rowClickHandler,
-      rowClickHandler = _ref$rowClickHandler === void 0 ? undefined : _ref$rowClickHandler;
+      rowClickHandler = _ref$rowClickHandler === void 0 ? undefined : _ref$rowClickHandler,
+      rowHeight = _ref.rowHeight;
   var gridOptions = {
     rowData: gridData,
     columnDefs: colDef,
@@ -1024,7 +2588,7 @@ function DataGrid(_ref) {
 
   };
   return react_1["default"].createElement("div", {
-    className: 'container p-6 mx-auto ag-theme-material',
+    className: 'p-6 mx-auto ag-theme-material',
     style: size
   }, react_1["default"].createElement(ag_grid_react_1.AgGridReact, {
     rowSelection: 'multiple',
@@ -1036,11 +2600,709 @@ function DataGrid(_ref) {
     gridOptions: gridOptions,
     pagination: true,
     paginationAutoPageSize: true,
-    animateRows: true
+    animateRows: true,
+    rowHeight: rowHeight
   }));
 }
 
 exports["default"] = DataGrid;
+
+/***/ }),
+
+/***/ "./resources/js/components/DataTables/PrimeDataTable.tsx":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/DataTables/PrimeDataTable.tsx ***!
+  \***************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var datatable_1 = __webpack_require__(/*! primereact/datatable */ "./node_modules/primereact/datatable/datatable.esm.js");
+
+function PrimeDataTable(_ref) {
+  var rowExpansionTemplate = _ref.rowExpansionTemplate,
+      data = _ref.data,
+      expandedRows = _ref.expandedRows,
+      children = _ref.children,
+      header = _ref.header,
+      onRowToggle = _ref.onRowToggle;
+  return react_1["default"].createElement("div", {
+    className: "w-full"
+  }, react_1["default"].createElement(datatable_1.DataTable, {
+    value: data,
+    className: 'mx-auto',
+    expandedRows: expandedRows,
+    onRowToggle: onRowToggle,
+    responsiveLayout: "scroll",
+    paginator: true,
+    currentPageReportTemplate: "Showing {first} to {last} of {totalRecords}",
+    rows: 10,
+    rowsPerPageOptions: [10, 20, 50],
+    rowExpansionTemplate: rowExpansionTemplate,
+    dataKey: "id",
+    header: header
+  }, children));
+}
+
+exports["default"] = PrimeDataTable;
+
+/***/ }),
+
+/***/ "./resources/js/components/Forms/Buttons/ToggleDeleteRestoreButton.tsx":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/Forms/Buttons/ToggleDeleteRestoreButton.tsx ***!
+  \*****************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var button_1 = __webpack_require__(/*! primereact/button */ "./node_modules/primereact/button/button.esm.js");
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+function ToggleRestoreDeleteButton(_ref) {
+  var handleOnClickDelete = _ref.handleOnClickDelete,
+      handleOnClickRestore = _ref.handleOnClickRestore,
+      params = _ref.params;
+
+  if (params.deleted_at) {
+    return react_1["default"].createElement(button_1.Button, {
+      icon: "pi pi-undo",
+      className: "p-button p-button-info mr-2",
+      onClick: function onClick() {
+        return handleOnClickRestore(params);
+      }
+    });
+  } else {
+    return react_1["default"].createElement(button_1.Button, {
+      icon: "pi pi-trash",
+      className: "p-button p-button-danger mr-2",
+      onClick: function onClick() {
+        return handleOnClickDelete(params);
+      }
+    });
+  }
+}
+
+exports["default"] = ToggleRestoreDeleteButton;
+
+/***/ }),
+
+/***/ "./resources/js/components/Lists/MediaProductCollection.tsx":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/Lists/MediaProductCollection.tsx ***!
+  \******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var ImageList_1 = __importDefault(__webpack_require__(/*! @mui/material/ImageList */ "./node_modules/@mui/material/ImageList/index.js"));
+
+var ImageListItem_1 = __importDefault(__webpack_require__(/*! @mui/material/ImageListItem */ "./node_modules/@mui/material/ImageListItem/index.js"));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+function MediaProductCollection(_ref) {
+  var product = _ref.product;
+
+  var _a;
+
+  var _React$useState = React.useState(false),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      open = _React$useState2[0],
+      setOpen = _React$useState2[1];
+
+  var handleClose = function handleClose() {
+    setOpen(false);
+  };
+
+  var handleToggle = function handleToggle() {
+    setOpen(!open);
+  };
+
+  var handleMediaDelete = function handleMediaDelete(mediaId) {
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.delete.media.of.product', product), {
+      id: mediaId
+    });
+  };
+
+  return React.createElement(ImageList_1["default"], {
+    cols: 6,
+    className: 'mx-auto'
+  }, (_a = product.media) === null || _a === void 0 ? void 0 : _a.map(function (item, index) {
+    return React.createElement(ImageListItem_1["default"], {
+      key: item.id,
+      sx: {
+        height: '100% !important'
+      }
+    }, React.createElement("img", {
+      src: item.thumbnail,
+      alt: item.name,
+      loading: "lazy",
+      onClick: handleToggle
+    }), React.createElement(material_1.ImageListItemBar, {
+      actionIcon: React.createElement("div", null, React.createElement(material_1.Button, {
+        onClick: function onClick(e) {
+          return handleMediaDelete(item.id);
+        },
+        color: 'error'
+      }, "delete"))
+    }));
+  }));
+}
+
+exports["default"] = MediaProductCollection;
+
+/***/ }),
+
+/***/ "./resources/js/components/Lists/productList.tsx":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/Lists/productList.tsx ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+
+  if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+    desc = {
+      enumerable: true,
+      get: function get() {
+        return m[k];
+      }
+    };
+  }
+
+  Object.defineProperty(o, k2, desc);
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var inertia_1 = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
+var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+
+var PrimeDataTable_1 = __importDefault(__webpack_require__(/*! ../DataTables/PrimeDataTable */ "./resources/js/components/DataTables/PrimeDataTable.tsx"));
+
+var column_1 = __webpack_require__(/*! primereact/column */ "./node_modules/primereact/column/column.esm.js");
+
+var datatable_1 = __webpack_require__(/*! primereact/datatable */ "./node_modules/primereact/datatable/datatable.esm.js");
+
+var button_1 = __webpack_require__(/*! primereact/button */ "./node_modules/primereact/button/button.esm.js");
+
+var ToggleDeleteRestoreButton_1 = __importDefault(__webpack_require__(/*! ../Forms/Buttons/ToggleDeleteRestoreButton */ "./resources/js/components/Forms/Buttons/ToggleDeleteRestoreButton.tsx"));
+
+var create_1 = __importDefault(__webpack_require__(/*! ../../Pages/Dashboard/variations/create */ "./resources/js/Pages/Dashboard/variations/create.tsx"));
+
+function ProductList(_ref) {
+  var products = _ref.products,
+      locale = _ref.locale;
+
+  var _ref2 = (0, react_1.useState)([]),
+      _ref3 = _slicedToArray(_ref2, 2),
+      expandedRows = _ref3[0],
+      setExpandedRows = _ref3[1];
+
+  var _ref4 = (0, react_1.useState)(false),
+      _ref5 = _slicedToArray(_ref4, 2),
+      openAddDialog = _ref5[0],
+      setOpenAddDialog = _ref5[1];
+
+  var handleOnClickAddSProductDialog = function handleOnClickAddSProductDialog() {
+    setOpenAddDialog(!openAddDialog);
+  };
+
+  var newHandleUpdate = function newHandleUpdate(data) {
+    inertia_1.Inertia.get((0, ziggy_js_1["default"])('admin.products.edit', data.id));
+  };
+
+  var handleOnClickVariationDelete = function handleOnClickVariationDelete(data) {
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.variations.destroy', data.id), undefined, {
+      preserveState: false
+    });
+  };
+
+  var handleOnClickVariationRestore = function handleOnClickVariationRestore(data) {
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.variations.restore', data.id), undefined, {
+      preserveState: false
+    });
+  };
+
+  var handleOnClickDelete = function handleOnClickDelete(data) {
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.products.destroy', data.id), undefined, {
+      preserveState: false
+    });
+  };
+
+  var handleOnClickRestore = function handleOnClickRestore(data) {
+    inertia_1.Inertia.post((0, ziggy_js_1["default"])('admin.products.restore', data.id), undefined, {
+      preserveState: false
+    });
+  };
+
+  var imageBodyTemplate = function imageBodyTemplate(rowData) {
+    return react_1["default"].createElement("img", {
+      width: 50,
+      height: 50,
+      src: rowData.thumbnail
+    });
+  };
+
+  var rowExpansionTemplate = function rowExpansionTemplate(data) {
+    return react_1["default"].createElement("div", null, react_1["default"].createElement(datatable_1.DataTable, {
+      value: data.variations,
+      responsiveLayout: "scroll",
+      header: function header(options) {
+        return _header(data.id);
+      }
+    }, react_1["default"].createElement(column_1.Column, {
+      field: "id",
+      header: "ID",
+      sortable: true
+    }), react_1["default"].createElement(column_1.Column, {
+      header: "Image",
+      body: imageBodyTemplate
+    }), react_1["default"].createElement(column_1.Column, {
+      field: "title.en",
+      header: "Title EN",
+      sortable: true
+    }), react_1["default"].createElement(column_1.Column, {
+      field: "title.ar",
+      header: "Title AR",
+      sortable: true
+    }), react_1["default"].createElement(column_1.Column, {
+      field: "price",
+      header: "Price",
+      sortable: true
+    }), react_1["default"].createElement(column_1.Column, {
+      field: "type",
+      header: "type",
+      sortable: true
+    }), react_1["default"].createElement(column_1.Column, {
+      field: "order",
+      header: "Order",
+      sortable: true
+    }), react_1["default"].createElement(column_1.Column, {
+      field: "deleted_at",
+      header: "Deleted At",
+      sortable: true
+    }), react_1["default"].createElement(column_1.Column, {
+      body: actionVariationBodyTemplate,
+      exportable: false,
+      style: {
+        minWidth: '8rem'
+      }
+    })));
+  };
+
+  var _header = function _header(value) {
+    return react_1["default"].createElement("div", {
+      className: 'flex items-center'
+    }, react_1["default"].createElement(button_1.Button, {
+      className: 'p-button-link',
+      onClick: handleOnClickAddSProductDialog
+    }, "Add Variation"), react_1["default"].createElement("h1", {
+      className: 'font-bold ml-3 text-lg'
+    }, "Variations List"), react_1["default"].createElement(create_1["default"], {
+      handleAddDialog: handleOnClickAddSProductDialog,
+      openAddDialog: openAddDialog,
+      productId: value
+    }));
+  };
+
+  var actionBodyTemplate = function actionBodyTemplate(rowData) {
+    return react_1["default"].createElement(react_1["default"].Fragment, null, react_1["default"].createElement(ToggleDeleteRestoreButton_1["default"], {
+      handleOnClickRestore: handleOnClickRestore,
+      handleOnClickDelete: handleOnClickDelete,
+      params: rowData
+    }), react_1["default"].createElement(button_1.Button, {
+      icon: "pi pi-pencil",
+      className: "p-button p-button-success mr-2",
+      onClick: function onClick() {
+        return newHandleUpdate(rowData);
+      }
+    }));
+  };
+
+  var actionVariationBodyTemplate = function actionVariationBodyTemplate(rowData) {
+    return react_1["default"].createElement(react_1["default"].Fragment, null, react_1["default"].createElement(ToggleDeleteRestoreButton_1["default"], {
+      handleOnClickRestore: handleOnClickVariationRestore,
+      handleOnClickDelete: handleOnClickVariationDelete,
+      params: rowData
+    }), react_1["default"].createElement(button_1.Button, {
+      icon: "pi pi-pencil",
+      className: "p-button p-button-success mr-2",
+      onClick: function onClick() {
+        return newHandleUpdate(rowData);
+      }
+    }));
+  };
+
+  return react_1["default"].createElement("main", {
+    className: "bg-white shadow-md rounded"
+  }, react_1["default"].createElement(PrimeDataTable_1["default"], {
+    data: products,
+    rowExpansionTemplate: rowExpansionTemplate,
+    expandedRows: expandedRows,
+    onRowToggle: function onRowToggle(e) {
+      return setExpandedRows(e.data);
+    }
+  }, react_1["default"].createElement(column_1.Column, {
+    expander: true,
+    style: {
+      width: '3em'
+    }
+  }), react_1["default"].createElement(column_1.Column, {
+    field: "id",
+    header: "ID",
+    sortable: true
+  }), react_1["default"].createElement(column_1.Column, {
+    header: "Image",
+    body: imageBodyTemplate
+  }), react_1["default"].createElement(column_1.Column, {
+    field: "title.en",
+    header: "Title EN",
+    sortable: true
+  }), react_1["default"].createElement(column_1.Column, {
+    field: "title.ar",
+    header: "Title AR",
+    sortable: true
+  }), react_1["default"].createElement(column_1.Column, {
+    field: "price",
+    header: "Price",
+    sortable: true
+  }), react_1["default"].createElement(column_1.Column, {
+    field: "deleted_at",
+    header: "Deleted At",
+    sortable: true
+  }), react_1["default"].createElement(column_1.Column, {
+    body: actionBodyTemplate,
+    exportable: false,
+    style: {
+      minWidth: '8rem'
+    }
+  })));
+}
+
+exports["default"] = ProductList;
+
+/***/ }),
+
+/***/ "./resources/js/components/client/includes/CategoryCircle.tsx":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/client/includes/CategoryCircle.tsx ***!
+  \********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+function CategoryCircle(_ref) {
+  var category = _ref.category,
+      locale = _ref.locale;
+
+  var _a;
+
+  return react_1["default"].createElement("a", {
+    href: "#",
+    className: "group"
+  }, react_1["default"].createElement("div", {
+    style: {
+      backgroundImage: "url(".concat((_a = category.thumbnail) === null || _a === void 0 ? void 0 : _a.thumbnail, ")"),
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    },
+    className: "flex items-center justify-center w-16 h-16 md:w-[175px] md:h-[175px]  mx-auto mb-2 rounded-full bg-blue-100 group-hover:bg-blue-200"
+  }), react_1["default"].createElement("p", {
+    className: "text-center text-gray-600 group-hover:text-blue-600"
+  }, category.title[locale]));
+}
+
+exports["default"] = CategoryCircle;
+
+/***/ }),
+
+/***/ "./resources/js/components/client/includes/PrimeCategoriesCarousel.tsx":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/client/includes/PrimeCategoriesCarousel.tsx ***!
+  \*****************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var CategoryCircle_1 = __importDefault(__webpack_require__(/*! ./CategoryCircle */ "./resources/js/components/client/includes/CategoryCircle.tsx"));
+
+function PrimeCategoriesCarousel(_ref) {
+  var categories = _ref.categories,
+      locale = _ref.locale;
+  var responsiveOptions = [{
+    breakpoint: '1024px',
+    numVisible: 3,
+    numScroll: 3
+  }, {
+    breakpoint: '600px',
+    numVisible: 5,
+    numScroll: 2
+  }, {
+    breakpoint: '480px',
+    numVisible: 5,
+    numScroll: 2
+  }];
+  var categoriesItems = categories.map(function (category) {
+    return react_1["default"].createElement(CategoryCircle_1["default"], {
+      category: category,
+      locale: locale
+    });
+  });
+  return react_1["default"].createElement("section", {
+    className: "pt-10"
+  }, react_1["default"].createElement("div", {
+    className: "container max-w-screen-xl mx-auto px-4"
+  }, react_1["default"].createElement("h1", {
+    className: 'text-center uppercase text-3xl mb-[40px]'
+  }, "Shop by category"), react_1["default"].createElement("nav", {
+    className: "grid grid-cols-4 sm:grid-cols-5 md:grid-cols-5 gap-x-3 gap-y-6"
+  }, categoriesItems)));
+}
+
+exports["default"] = PrimeCategoriesCarousel;
+
+/***/ }),
+
+/***/ "./resources/js/components/client/includes/PrimeHero.tsx":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/client/includes/PrimeHero.tsx ***!
+  \***************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var carousel_1 = __webpack_require__(/*! primereact/carousel */ "./node_modules/primereact/carousel/carousel.esm.js");
+
+function PrimeHero() {
+  var responsiveOptions = [{
+    breakpoint: '1024px',
+    numVisible: 1,
+    numScroll: 1
+  }, {
+    breakpoint: '600px',
+    numVisible: 1,
+    numScroll: 1
+  }, {
+    breakpoint: '480px',
+    numVisible: 1,
+    numScroll: 1
+  }];
+  var images = [{
+    image: 'https://img.ltwebstatic.com/images3_ach/2022/08/19/1660897732282ad9c5a8e608526fd711f82e180162.webp'
+  }, {
+    image: 'https://img.ltwebstatic.com/images3_ach/2022/08/20/16609632771dbb082916844844a15cbcc6b58f736d.webp'
+  }, {
+    image: 'https://img.ltwebstatic.com/images3_ach/2022/08/18/166081500939a7633ebf6bbd00f0fcfb59bfb2d426.jpg'
+  }];
+
+  var productTemplate = function productTemplate(images) {
+    return react_1["default"].createElement("div", null, react_1["default"].createElement("img", {
+      className: '',
+      src: images.image,
+      alt: ""
+    }));
+  };
+
+  return react_1["default"].createElement(carousel_1.Carousel, {
+    value: images,
+    numVisible: 1,
+    numScroll: 1,
+    responsiveOptions: responsiveOptions,
+    itemTemplate: productTemplate,
+    autoplayInterval: 3000,
+    circular: true,
+    indicatorsContentClassName: 'hidden'
+  });
+}
+
+exports["default"] = PrimeHero;
 
 /***/ }),
 
@@ -1238,82 +3500,6 @@ exports["default"] = Footer;
 
 /***/ }),
 
-/***/ "./resources/js/components/client/includes/header.tsx":
-/*!************************************************************!*\
-  !*** ./resources/js/components/client/includes/navbar.tsx ***!
-  \************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-
-var react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-
-var free_solid_svg_icons_1 = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.js");
-
-var inertia_react_1 = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
-
-var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
-
-var NavBarLinks_1 = __importDefault(__webpack_require__(/*! ../shards/NavBarLinks */ "./resources/js/components/client/shards/NavBarLinks.tsx"));
-
-function Header() {
-  return react_1["default"].createElement("div", null, react_1["default"].createElement("header", {
-    className: "bg-white py-3"
-  }, react_1["default"].createElement("div", {
-    className: "px-4"
-  }, react_1["default"].createElement("div", {
-    className: "flex flex-wrap items-center"
-  }, react_1["default"].createElement("div", {
-    className: "flex-shrink-0 mr-auto ml-5"
-  }, react_1["default"].createElement(inertia_react_1.InertiaLink, {
-    href: (0, ziggy_js_1["default"])('home')
-  }, react_1["default"].createElement("img", {
-    src: "https://freepngclipart.com/download/clothing/13219-clothing-baby-clothes-2-image-png-image.png",
-    height: 38,
-    width: 38,
-    alt: "Brand"
-  }))), react_1["default"].createElement("div", {
-    className: "flex flex-nowrap items-center w-full order-last md:order-none mt-5 md:mt-0 md:w-2/4 lg:w-[60%]"
-  }, react_1["default"].createElement("input", {
-    className: "flex-grow appearance-none border border-gray-200 bg-gray-100 rounded-md mr-2 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400",
-    type: "text",
-    placeholder: "Search"
-  }), react_1["default"].createElement("button", {
-    type: "button",
-    className: "px-4 py-2 inline-block text-white border border-transparent bg-blue-600 rounded-md hover:bg-blue-700"
-  }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
-    icon: free_solid_svg_icons_1.faSearch
-  }))), react_1["default"].createElement("div", {
-    className: "flex items-start space-x-2 ml-auto xl:ml-11"
-  }, react_1["default"].createElement(NavBarLinks_1["default"], null)), react_1["default"].createElement("div", {
-    className: "lg:hidden ml-2"
-  }, react_1["default"].createElement("button", {
-    type: "button",
-    className: "bg-white p-3 inline-flex items-center rounded-md text-black hover:bg-gray-200 hover:text-gray-800 border border-transparent"
-  }, react_1["default"].createElement("span", {
-    className: "sr-only"
-  }, "Open menu"), react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
-    icon: free_solid_svg_icons_1.faBars
-  }))))), "  "));
-}
-
-exports["default"] = Header;
-
-/***/ }),
-
 /***/ "./resources/js/components/client/includes/hero.tsx":
 /*!**********************************************************!*\
   !*** ./resources/js/components/client/includes/hero.tsx ***!
@@ -1353,13 +3539,9 @@ function Hero() {
   }, react_1["default"].createElement("div", {
     className: "grid md:grid-cols-4 gap-5 mx-auto"
   }, react_1["default"].createElement(react_2.Swiper, {
-    navigation: true,
     pagination: true,
     modules: [swiper_1.Navigation, swiper_1.Pagination],
-    className: "md:col-span-4",
-    style: {
-      width: 1500
-    },
+    className: "md:col-span-4 w-[470px] sm:w-auto lg:w-[1500px]",
     loop: true
   }, react_1["default"].createElement(react_2.SwiperSlide, null, react_1["default"].createElement(heroCoursel_1["default"], null)), react_1["default"].createElement(react_2.SwiperSlide, null, react_1["default"].createElement(heroCoursel_1["default"], null)), react_1["default"].createElement(react_2.SwiperSlide, null, react_1["default"].createElement(heroCoursel_1["default"], null)))))));
 }
@@ -1368,10 +3550,10 @@ exports["default"] = Hero;
 
 /***/ }),
 
-/***/ "./resources/js/components/client/shards/NavBarLinks.tsx":
-/*!***************************************************************!*\
-  !*** ./resources/js/components/client/shards/NavBarLinks.tsx ***!
-  \***************************************************************/
+/***/ "./resources/js/components/client/includes/navbar.tsx":
+/*!************************************************************!*\
+  !*** ./resources/js/components/client/includes/navbar.tsx ***!
+  \************************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -1389,16 +3571,68 @@ Object.defineProperty(exports, "__esModule", ({
 
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
-var notLoggedIn_1 = __importDefault(__webpack_require__(/*! ./notLoggedIn */ "./resources/js/components/client/shards/notLoggedIn.tsx"));
-
-function NavBarLinks() {
-  // if (user !== null) {
-  //   return <LoggedInNav user={user} />
-  // }
-  return react_1["default"].createElement(notLoggedIn_1["default"], null);
+function Navbar() {
+  return react_1["default"].createElement("header", {
+    className: "bg-white py-3 border-b"
+  }, react_1["default"].createElement("div", {
+    className: "container max-w-screen-xl mx-auto px-4"
+  }, react_1["default"].createElement("div", {
+    className: "flex flex-wrap items-center"
+  }, react_1["default"].createElement("div", {
+    className: "flex-shrink-0 mr-5"
+  }, react_1["default"].createElement("a", {
+    href: "#"
+  }, " ", react_1["default"].createElement("img", {
+    src: "images/logo.svg",
+    height: "38",
+    alt: "Brand"
+  }), " ")), react_1["default"].createElement("div", {
+    className: "flex flex-nowrap items-center w-full order-last md:order-none mt-5 md:mt-0 md:w-2/4 lg:w-2/4"
+  }, react_1["default"].createElement("input", {
+    className: "flex-grow appearance-none border border-gray-200 bg-gray-100 rounded-md mr-2 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400",
+    type: "text",
+    placeholder: "Search"
+  }), react_1["default"].createElement("button", {
+    type: "button",
+    className: "px-4 py-2 inline-block text-white border border-transparent bg-blue-600 rounded-md hover:bg-blue-700"
+  }, react_1["default"].createElement("i", {
+    className: "fa fa-search"
+  }))), react_1["default"].createElement("div", {
+    className: "flex items-center space-x-2 ml-auto"
+  }, react_1["default"].createElement("a", {
+    className: "px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300",
+    href: "#"
+  }, react_1["default"].createElement("i", {
+    className: "text-gray-400 w-5 fa fa-user"
+  }), react_1["default"].createElement("span", {
+    className: "hidden lg:inline ml-1"
+  }, "Sign in")), react_1["default"].createElement("a", {
+    className: "px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300",
+    href: "#"
+  }, react_1["default"].createElement("i", {
+    className: "text-gray-400 w-5 fa fa-heart"
+  }), react_1["default"].createElement("span", {
+    className: "hidden lg:inline ml-1"
+  }, "Wishlist")), react_1["default"].createElement("a", {
+    className: "px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300",
+    href: "#"
+  }, react_1["default"].createElement("i", {
+    className: "text-gray-400 w-5 fa fa-shopping-cart"
+  }), react_1["default"].createElement("span", {
+    className: "hidden lg:inline ml-1"
+  }, "My cart"))), react_1["default"].createElement("div", {
+    className: "lg:hidden ml-2"
+  }, react_1["default"].createElement("button", {
+    type: "button",
+    className: "bg-white p-3 inline-flex items-center rounded-md text-black hover:bg-gray-200 hover:text-gray-800 border border-transparent"
+  }, react_1["default"].createElement("span", {
+    className: "sr-only"
+  }, "Open menu"), react_1["default"].createElement("i", {
+    className: "fa fa-bars fa-lg"
+  }))))));
 }
 
-exports["default"] = NavBarLinks;
+exports["default"] = Navbar;
 
 /***/ }),
 
@@ -1423,17 +3657,19 @@ Object.defineProperty(exports, "__esModule", ({
 
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
+var categoriesThumbnail_1 = __importDefault(__webpack_require__(/*! ../../shards/categoriesThumbnail */ "./resources/js/components/shards/categoriesThumbnail.tsx"));
+
 function CategoryCard(_ref) {
-  var imageUrl = _ref.imageUrl,
+  var media = _ref.media,
       header = _ref.header;
   return react_1["default"].createElement("div", {
-    className: "bg-white flex justify-center w-[350px] h-[385px] rounded-lg shadow-lg"
+    className: "bg-white flex justify-center  lg:w-[350px] lg:h-[385px]  rounded-lg shadow-lg"
   }, react_1["default"].createElement("div", {
     className: "block w-full text-center"
   }, react_1["default"].createElement("div", {
     className: "py-2 h-[10%] font-bold"
-  }, header), react_1["default"].createElement("div", {
-    className: ""
+  }, header === null || header === void 0 ? void 0 : header.toUpperCase()), react_1["default"].createElement(categoriesThumbnail_1["default"], {
+    thumbnail: media
   }), react_1["default"].createElement("a", {
     href: "",
     className: ''
@@ -1512,35 +3748,45 @@ var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/r
 
 var categoryCard_1 = __importDefault(__webpack_require__(/*! ./categoryCard */ "./resources/js/components/client/shards/categoryCard.tsx"));
 
-function HomePageCategories() {
+function HomePageCategories(_ref) {
+  var locale = _ref.locale,
+      categories = _ref.categories;
+  console.log(categories);
+  var categoriesItems = categories.map(function (category) {
+    return react_1["default"].createElement(categoryCard_1["default"], {
+      key: category.id,
+      header: category.title[locale],
+      media: category.thumbnail
+    });
+  }); // const CategoriesCircle = categories.map((category) => (
+  //   <Grid item xs={2} sm={3} md={2} key={category.id}>
+  //     <div className='lg:w-[175px] lg:h-[175px] h-[95px] w-[95px]'>
+  //       <a href="#" className="group">
+  //         <img className='rounded-full w-full h-full mx-auto' src={category.thumbnail.thumbnail}
+  //              alt={category.title[locale as keyof typeof category.title]}/>
+  //         <p className="text-center text-gray-600 group-hover:text-blue-600"> Interior items </p>
+  //       </a>
+  //     </div>
+  //   </Grid>
+  // ))
+
   return react_1["default"].createElement("section", {
-    className: "py-5 mx-auto",
-    style: {
-      width: 1480
-    }
+    className: "container py-5 mx-auto w-full"
   }, react_1["default"].createElement("div", {
     className: "px-4"
   }, react_1["default"].createElement("nav", {
     className: "grid grid-cols-3 sm:grid-cols-5 md:grid-cols-4 gap-x-3 gap-y-6"
-  }, react_1["default"].createElement(categoryCard_1["default"], {
-    header: 'WOMEN'
-  }), react_1["default"].createElement(categoryCard_1["default"], {
-    header: 'MEN'
-  }), react_1["default"].createElement(categoryCard_1["default"], {
-    header: 'KIDS'
-  }), react_1["default"].createElement(categoryCard_1["default"], {
-    header: 'SPORTS'
-  }))));
+  }, categoriesItems)));
 }
 
 exports["default"] = HomePageCategories;
 
 /***/ }),
 
-/***/ "./resources/js/components/client/shards/notLoggedIn.tsx":
-/*!***************************************************************!*\
-  !*** ./resources/js/components/client/shards/notLoggedIn.tsx ***!
-  \***************************************************************/
+/***/ "./resources/js/components/shards/alert.tsx":
+/*!**************************************************!*\
+  !*** ./resources/js/components/shards/alert.tsx ***!
+  \**************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -1558,43 +3804,212 @@ Object.defineProperty(exports, "__esModule", ({
 
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
-var react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+function Alert(_ref) {
+  var type = _ref.type,
+      boldText = _ref.boldText,
+      text = _ref.text;
+  return react_1["default"].createElement("div", {
+    className: "bg-".concat(type, "-100 border border-").concat(type, "-400 text-").concat(type, "-700 px-4 py-3 rounded relative my-4"),
+    role: "alert"
+  }, react_1["default"].createElement("strong", {
+    className: "font-bold"
+  }, boldText), react_1["default"].createElement("span", {
+    className: "block sm:inline text-center"
+  }, text), react_1["default"].createElement("span", {
+    className: "absolute top-0 bottom-0 right-0 px-4 py-3"
+  }));
+}
+
+exports["default"] = Alert;
+
+/***/ }),
+
+/***/ "./resources/js/components/shards/categoriesThumbnail.tsx":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/shards/categoriesThumbnail.tsx ***!
+  \****************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+function CategoriesThumbnail(_ref) {
+  var thumbnail = _ref.thumbnail;
+  return react_1["default"].createElement(material_1.ImageList, {
+    className: 'mx-auto',
+    cols: 1,
+    sx: {
+      height: 310,
+      width: 303
+    }
+  }, react_1["default"].createElement(material_1.ImageListItem, null, react_1["default"].createElement("img", {
+    className: 'w-full',
+    src: thumbnail === null || thumbnail === void 0 ? void 0 : thumbnail.thumbnail,
+    alt: thumbnail === null || thumbnail === void 0 ? void 0 : thumbnail.name,
+    loading: "lazy"
+  })));
+}
+
+exports["default"] = CategoriesThumbnail;
+
+/***/ }),
+
+/***/ "./resources/js/components/shards/confimationDialog.tsx":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/shards/confimationDialog.tsx ***!
+  \**************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var Button_1 = __importDefault(__webpack_require__(/*! @mui/material/Button */ "./node_modules/@mui/material/Button/index.js"));
+
+var Dialog_1 = __importDefault(__webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/index.js"));
+
+var DialogActions_1 = __importDefault(__webpack_require__(/*! @mui/material/DialogActions */ "./node_modules/@mui/material/DialogActions/index.js"));
+
+var DialogContent_1 = __importDefault(__webpack_require__(/*! @mui/material/DialogContent */ "./node_modules/@mui/material/DialogContent/index.js"));
+
+var DialogContentText_1 = __importDefault(__webpack_require__(/*! @mui/material/DialogContentText */ "./node_modules/@mui/material/DialogContentText/index.js"));
+
+var DialogTitle_1 = __importDefault(__webpack_require__(/*! @mui/material/DialogTitle */ "./node_modules/@mui/material/DialogTitle/index.js"));
+
+function ConfirmationAlertDialog(_ref) {
+  var open = _ref.open,
+      handleClose = _ref.handleClose,
+      handleAgree = _ref.handleAgree;
+  return react_1["default"].createElement(Dialog_1["default"], {
+    open: open,
+    onClose: handleClose,
+    "aria-labelledby": "alert-dialog-title",
+    "aria-describedby": "alert-dialog-description"
+  }, react_1["default"].createElement(DialogTitle_1["default"], {
+    id: "alert-dialog-title"
+  }, "Deleting Confirmation"), react_1["default"].createElement(DialogContent_1["default"], null, react_1["default"].createElement(DialogContentText_1["default"], {
+    id: "alert-dialog-description"
+  }, "Deleting this record might be risky are you Sure ?")), react_1["default"].createElement(DialogActions_1["default"], null, react_1["default"].createElement(Button_1["default"], {
+    color: 'error',
+    onClick: function onClick(e) {
+      return handleClose(e);
+    }
+  }, "Disagree"), react_1["default"].createElement(Button_1["default"], {
+    onClick: function onClick(e) {
+      return handleAgree(e);
+    },
+    autoFocus: true
+  }, "Agree")));
+}
+
+exports["default"] = ConfirmationAlertDialog;
+
+/***/ }),
+
+/***/ "./resources/js/components/shards/renderMediaListForForm.tsx":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/shards/renderMediaListForForm.tsx ***!
+  \*******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
 
 var free_solid_svg_icons_1 = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.js");
 
-var inertia_react_1 = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+var react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 
-var ziggy_js_1 = __importDefault(__webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/index.js"));
+var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
 
-function NotLoggedIn() {
-  return react_1["default"].createElement("div", null, react_1["default"].createElement(inertia_react_1.InertiaLink, {
-    href: (0, ziggy_js_1["default"])('client.login'),
-    className: "px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300"
-  }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
-    className: "text-gray-400 w-5",
-    icon: free_solid_svg_icons_1.faUser
-  }), react_1["default"].createElement("span", {
-    className: "hidden lg:inline ml-1"
-  }, "Sign in")), react_1["default"].createElement(inertia_react_1.InertiaLink, {
-    href: (0, ziggy_js_1["default"])('client.login'),
-    className: "px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300"
-  }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
-    className: "text-gray-400 w-5",
-    icon: free_solid_svg_icons_1.faUser
-  }), react_1["default"].createElement("span", {
-    className: "hidden lg:inline ml-1"
-  }, "Register")), react_1["default"].createElement(inertia_react_1.InertiaLink, {
-    href: (0, ziggy_js_1["default"])('client.login'),
-    className: "px-3 py-2 inline-block text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300"
-  }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
-    className: "text-gray-400 w-5",
-    icon: free_solid_svg_icons_1.faUser
-  }), react_1["default"].createElement("span", {
-    className: "hidden lg:inline ml-1"
-  }, "Sell with us")));
+var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var react_hook_form_1 = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.cjs.js");
+
+function RenderMediaListForForm(_ref) {
+  var currentCategory = _ref.currentCategory;
+
+  var _ref2 = (0, react_hook_form_1.useFormContext)(),
+      register = _ref2.register,
+      setValue = _ref2.setValue;
+
+  var handleImageClick = function handleImageClick(e, imageID) {
+    setValue('image_id', imageID);
+  };
+
+  if (currentCategory.thumbnail) {
+    return react_1["default"].createElement(material_1.ImageList, {
+      className: 'ml-5',
+      cols: 1
+    }, currentCategory.thumbnail && react_1["default"].createElement(material_1.ImageListItem, null, react_1["default"].createElement("img", {
+      src: currentCategory.thumbnail.thumbnail,
+      alt: currentCategory.thumbnail.name,
+      loading: "lazy"
+    }), react_1["default"].createElement(material_1.ImageListItemBar, {
+      title: currentCategory.thumbnail.name,
+      actionIcon: react_1["default"].createElement("div", null, react_1["default"].createElement(material_1.Button, {
+        variant: "contained",
+        size: 'small',
+        component: "label",
+        onClick: function onClick(e) {
+          return handleImageClick(e, currentCategory.thumbnail.id);
+        }
+      }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
+        icon: free_solid_svg_icons_1.faFileImage
+      }), " ", react_1["default"].createElement("span", {
+        className: 'ml-2'
+      }, "Change Image"), react_1["default"].createElement("input", Object.assign({}, register('images'), {
+        type: "file",
+        name: 'images',
+        hidden: true
+      }))))
+    })));
+  } else {
+    return react_1["default"].createElement(material_1.Button, {
+      variant: "contained",
+      component: "label"
+    }, react_1["default"].createElement("input", Object.assign({}, register('images'), {
+      type: "file",
+      name: 'images'
+    })));
+  }
 }
 
-exports["default"] = NotLoggedIn;
+exports["default"] = RenderMediaListForForm;
 
 /***/ }),
 
@@ -1639,7 +4054,7 @@ function Aside() {
 
   return react_1["default"].createElement("aside", {
     id: "sidebar",
-    className: "fixed -left-full top-0 bottom-0 md:static z-40 w-60 overflow-y-auto bg-blue-800 flex-shrink-0 h-[113vh]"
+    className: "fixed -left-full top-0 bottom-0 md:static z-40 w-60 overflow-y-auto bg-blue-800 flex-shrink-0 "
   }, react_1["default"].createElement("header", {
     className: "flex items-center h-14 px-4 py-2 mb-2 border-b border-blue-700"
   }, react_1["default"].createElement("a", {
@@ -1727,8 +4142,8 @@ function Aside() {
     className: "ml-3"
   }, "Categories"))), react_1["default"].createElement("li", {
     className: "hover:bg-blue-100 relative"
-  }, react_1["default"].createElement("a", {
-    href: "#",
+  }, react_1["default"].createElement(inertia_react_1.InertiaLink, {
+    href: (0, ziggy_js_1["default"])('admin.stores.index'),
     className: "flex px-5 py-3 items-center w-full text-white hover:text-white hover:bg-blue-700"
   }, react_1["default"].createElement("span", {
     "aria-hidden": "true"
@@ -1754,7 +4169,7 @@ function Aside() {
     d: "M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
   }))), react_1["default"].createElement("span", {
     className: "ml-3"
-  }, "Orders"))), react_1["default"].createElement("li", {
+  }, "Stores"))), react_1["default"].createElement("li", {
     className: "hover:bg-blue-100 relative"
   }, react_1["default"].createElement(inertia_react_1.InertiaLink, {
     href: (0, ziggy_js_1["default"])('admin.users'),
@@ -1931,7 +4346,7 @@ function Navbar() {
     className: "flex items-center flex-shrink-0 space-x-2"
   }, react_1["default"].createElement("li", null, react_1["default"].createElement(inertia_react_1.InertiaLink, {
     href: (0, ziggy_js_1["default"])('admin.logout'),
-    className: "w-10 h-10 flex items-center justify-center bg-gray-200 border border-transparent rounded-full hover:border-blue-400 overflow-hidden",
+    className: "w-10 h-10 flex items-center justify-center bg-gray-200 border border-transparent rounded-full hover:border-blue-400 overflow-hidden logout",
     "aria-label": "Button name"
   }, react_1["default"].createElement(react_fontawesome_1.FontAwesomeIcon, {
     icon: free_solid_svg_icons_1.faSignOutAlt
@@ -1965,11 +4380,11 @@ var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/r
 
 var footer_1 = __importDefault(__webpack_require__(/*! ../components/client/includes/footer */ "./resources/js/components/client/includes/footer.tsx"));
 
-var header_1 = __importDefault(__webpack_require__(/*! ../components/client/includes/header */ "./resources/js/components/client/includes/header.tsx"));
+var navbar_1 = __importDefault(__webpack_require__(/*! ../components/client/includes/navbar */ "./resources/js/components/client/includes/navbar.tsx"));
 
 function AppLayout(_ref) {
   var children = _ref.children;
-  return react_1["default"].createElement("div", null, react_1["default"].createElement(header_1["default"], null), children, react_1["default"].createElement(footer_1["default"], null));
+  return react_1["default"].createElement("div", null, react_1["default"].createElement(navbar_1["default"], null), children, react_1["default"].createElement(footer_1["default"], null));
 }
 
 exports["default"] = AppLayout;
@@ -1984,18 +4399,6 @@ exports["default"] = AppLayout;
 
 "use strict";
 
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
   if (k2 === undefined) k2 = k;
@@ -2049,25 +4452,31 @@ Object.defineProperty(exports, "__esModule", ({
 
 var inertia_react_1 = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
 
-var material_1 = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/index.js");
-
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
 var aside_1 = __importDefault(__webpack_require__(/*! ../includes/aside */ "./resources/js/includes/aside.tsx"));
 
 var navbar_1 = __importDefault(__webpack_require__(/*! ../includes/navbar */ "./resources/js/includes/navbar.tsx"));
 
+var toast_1 = __webpack_require__(/*! primereact/toast */ "./node_modules/primereact/toast/toast.esm.js");
+
 function DashboardLayout(_ref) {
   var children = _ref.children;
   var sidebar = document.getElementById("sidebar");
   var backdrop = document.getElementById("backdrop");
-
-  var _ref2 = (0, react_1.useState)(false),
-      _ref3 = _slicedToArray(_ref2, 2),
-      openFlashMessage = _ref3[0],
-      setOpenFlashMessage = _ref3[1];
-
+  var toastRef = (0, react_1.useRef)(null);
   var flash = (0, inertia_react_1.usePage)().props.flash;
+  (0, react_1.useEffect)(function () {
+    var _a;
+
+    if (flash.message) {
+      (_a = toastRef.current) === null || _a === void 0 ? void 0 : _a.show({
+        severity: 'success',
+        summary: flash.message,
+        life: 3000
+      });
+    }
+  }, [toastRef]);
 
   var hide_sidebar = function hide_sidebar() {
     sidebar === null || sidebar === void 0 ? void 0 : sidebar.classList.add("-left-full");
@@ -2086,21 +4495,9 @@ function DashboardLayout(_ref) {
     className: 'flex min-h-screen dark:bg-gray-900'
   }, react_1["default"].createElement(aside_1["default"], null), react_1["default"].createElement("main", {
     className: 'w-full'
-  }, react_1["default"].createElement(navbar_1["default"], null), flash.message && react_1["default"].createElement(material_1.Snackbar, {
-    open: true,
-    autoHideDuration: 6000,
-    onClose: function onClose() {
-      return setOpenFlashMessage(false);
-    }
-  }, react_1["default"].createElement(material_1.Alert, {
-    onClose: function onClose() {
-      return setOpenFlashMessage(false);
-    },
-    severity: flash.message,
-    sx: {
-      width: '100%'
-    }
-  }, flash.message)), children)));
+  }, react_1["default"].createElement(navbar_1["default"], null), react_1["default"].createElement(toast_1.Toast, {
+    ref: toastRef
+  }), children)));
 }
 
 exports["default"] = DashboardLayout;
@@ -2115,16 +4512,21 @@ exports["default"] = DashboardLayout;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
-/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var _inertiajs_progress__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/progress */ "./node_modules/@inertiajs/progress/dist/index.js");
+
+
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
 
-(0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.createInertiaApp)({
+
+(0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_3__.createInertiaApp)({
   resolve: function resolve(name) {
     return __webpack_require__("./resources/js/Pages sync recursive ^\\.\\/.*$")("./".concat(name));
   },
@@ -2132,9 +4534,10 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
     var el = _ref.el,
         App = _ref.App,
         props = _ref.props;
-    (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(el).render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(App, props));
+    (0,react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot)(el).render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(App, props));
   }
 });
+_inertiajs_progress__WEBPACK_IMPORTED_MODULE_4__.InertiaProgress.init();
 
 /***/ }),
 
@@ -2201,6 +4604,8 @@ var map = {
 	"./Dashboard/": "./resources/js/Pages/Dashboard/index.tsx",
 	"./Dashboard/categories": "./resources/js/Pages/Dashboard/categories/index.tsx",
 	"./Dashboard/categories/": "./resources/js/Pages/Dashboard/categories/index.tsx",
+	"./Dashboard/categories/edit": "./resources/js/Pages/Dashboard/categories/edit.tsx",
+	"./Dashboard/categories/edit.tsx": "./resources/js/Pages/Dashboard/categories/edit.tsx",
 	"./Dashboard/categories/index": "./resources/js/Pages/Dashboard/categories/index.tsx",
 	"./Dashboard/categories/index.tsx": "./resources/js/Pages/Dashboard/categories/index.tsx",
 	"./Dashboard/customers": "./resources/js/Pages/Dashboard/customers/index.tsx",
@@ -2209,6 +4614,26 @@ var map = {
 	"./Dashboard/customers/index.tsx": "./resources/js/Pages/Dashboard/customers/index.tsx",
 	"./Dashboard/index": "./resources/js/Pages/Dashboard/index.tsx",
 	"./Dashboard/index.tsx": "./resources/js/Pages/Dashboard/index.tsx",
+	"./Dashboard/products": "./resources/js/Pages/Dashboard/products/index.tsx",
+	"./Dashboard/products/": "./resources/js/Pages/Dashboard/products/index.tsx",
+	"./Dashboard/products/create": "./resources/js/Pages/Dashboard/products/create.tsx",
+	"./Dashboard/products/create.tsx": "./resources/js/Pages/Dashboard/products/create.tsx",
+	"./Dashboard/products/edit": "./resources/js/Pages/Dashboard/products/edit.tsx",
+	"./Dashboard/products/edit.tsx": "./resources/js/Pages/Dashboard/products/edit.tsx",
+	"./Dashboard/products/index": "./resources/js/Pages/Dashboard/products/index.tsx",
+	"./Dashboard/products/index.tsx": "./resources/js/Pages/Dashboard/products/index.tsx",
+	"./Dashboard/stores": "./resources/js/Pages/Dashboard/stores/index.tsx",
+	"./Dashboard/stores/": "./resources/js/Pages/Dashboard/stores/index.tsx",
+	"./Dashboard/stores/create": "./resources/js/Pages/Dashboard/stores/create.tsx",
+	"./Dashboard/stores/create.tsx": "./resources/js/Pages/Dashboard/stores/create.tsx",
+	"./Dashboard/stores/edit": "./resources/js/Pages/Dashboard/stores/edit.tsx",
+	"./Dashboard/stores/edit.tsx": "./resources/js/Pages/Dashboard/stores/edit.tsx",
+	"./Dashboard/stores/index": "./resources/js/Pages/Dashboard/stores/index.tsx",
+	"./Dashboard/stores/index.tsx": "./resources/js/Pages/Dashboard/stores/index.tsx",
+	"./Dashboard/variations/create": "./resources/js/Pages/Dashboard/variations/create.tsx",
+	"./Dashboard/variations/create.tsx": "./resources/js/Pages/Dashboard/variations/create.tsx",
+	"./Dashboard/variations/variationList": "./resources/js/Pages/Dashboard/variations/variationList.tsx",
+	"./Dashboard/variations/variationList.tsx": "./resources/js/Pages/Dashboard/variations/variationList.tsx",
 	"./shards/formDialog": "./resources/js/Pages/shards/formDialog.tsx",
 	"./shards/formDialog.tsx": "./resources/js/Pages/shards/formDialog.tsx"
 };

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ProductWithThumbnail} from "../../types/products";
-import {ColDef} from "ag-grid-community";
-import {Button} from "@mui/material";
-import DataGrid from "../DataTables/DataGrid";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
+import PrimeDataTable from "../DataTables/PrimeDataTable";
+import {Column} from "primereact/column";
+import {DataTable} from "primereact/datatable";
+import {Button as PrimeButton} from 'primereact/button';
+import ToggleRestoreDeleteButton from "../Forms/Buttons/ToggleDeleteRestoreButton";
+import CreateProductVariation from "../../Pages/Dashboard/variations/create";
 
 interface Props {
   products: ProductWithThumbnail[];
@@ -12,60 +15,111 @@ interface Props {
 }
 
 function ProductList({products, locale}: Props) {
-  console.log(products)
+  const [expandedRows, setExpandedRows] = useState([]);
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+  const handleOnClickAddSProductDialog = () => {
+    setOpenAddDialog(!openAddDialog);
+  };
 
-  const ToggleRestoreDeleteButton = (params: any) => {
-    if (params.data.deleted_at) {
-      return (
-        <Button color={'success'} onClick={event => handleOnClickRestore(event, params)}>Restore</Button>
-      )
-    } else {
-      return (
-        <Button color={'secondary'} onClick={event => handleOnClickDelete(event, params)}>Delete</Button>
-      )
-    }
-  }
-  const handleOnClickUpdateDialog = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
+  const newHandleUpdate = (data: any) => {
     Inertia.get(route('admin.products.edit', data.id))
 
   };
-  const handleOnClickDelete = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
+  const handleOnClickVariationDelete = (data: any) => {
+    Inertia.post(route('admin.variations.destroy', data.id), undefined, {
+      preserveState: false
+    })
+  };
+  const handleOnClickVariationRestore = (data: any) => {
+    Inertia.post(route('admin.variations.restore', data.id), undefined, {
+      preserveState: false
+    })
+  };
+
+
+  const handleOnClickDelete = (data: any) => {
     Inertia.post(route('admin.products.destroy', data.id), undefined, {
       preserveState: false
     })
   };
-  const handleOnClickRestore = (event: React.MouseEvent<HTMLElement>, {data}: any) => {
+  const handleOnClickRestore = (data: any) => {
     Inertia.post(route('admin.products.restore', data.id), undefined, {
       preserveState: false
     })
   };
 
-  const columns: ColDef[] = [
-    {
-      field: 'thumbnail',
-      headerName: 'Image', cellRenderer: (params: any) =>
-        <img className='mx-auto mt-[4px]' src={params.data.thumbnail} alt={params.data.name} width={50}
-             height={50}/>
-    },
-    {field: 'id', headerName: 'ID'},
-    {field: `title.en`, headerName: 'Title EN', floatingFilter: true, flex: 0.5, cellClass: 'font-bold'},
-    {field: `title.ar`, headerName: 'Title AR', floatingFilter: true, flex: 0.5, cellClass: 'font-bold'},
-    {field: `price`, headerName: 'Price'},
-    {field: `deleted_at`, headerName: 'Deleted at'},
-    {field: 'created_at', headerName: 'Created At', filter: 'agDateColumnFilter', floatingFilter: true},
-    {
-      headerName: 'Actions', cellRenderer: (params: any) =>
-        <div>
-          {ToggleRestoreDeleteButton(params)}
-          <Button onClick={event => handleOnClickUpdateDialog(event, params)}>UPDATE</Button>
-        </div>
-    }
-  ]
+  const imageBodyTemplate = (rowData: any) => {
+    return <img width={50}
+                height={50} src={rowData.thumbnail}/>
+  }
+
+  const rowExpansionTemplate = (data: any) => {
+    return (
+      <div>
+        <DataTable value={data.variations} responsiveLayout="scroll" header={options => header(data.id)}>
+          <Column field="id" header="ID" sortable/>
+          <Column header="Image" body={imageBodyTemplate}/>
+          <Column field="title.en" header="Title EN" sortable/>
+          <Column field="title.ar" header="Title AR" sortable/>
+          <Column field="price" header="Price" sortable/>
+          <Column field="type" header="type" sortable/>
+          <Column field="order" header="Order" sortable/>
+          <Column field="deleted_at" header="Deleted At" sortable/>
+          <Column body={actionVariationBodyTemplate} exportable={false} style={{minWidth: '8rem'}}/>
+        </DataTable>
+      </div>
+    );
+  }
+
+  const header = (value: any) => {
+    return (
+      <div className='flex items-center'>
+        <PrimeButton className='p-button-link' onClick={handleOnClickAddSProductDialog}>
+          Add Variation
+        </PrimeButton>
+        <h1 className='font-bold ml-3 text-lg'>Variations List</h1>
+        <CreateProductVariation handleAddDialog={handleOnClickAddSProductDialog} openAddDialog={openAddDialog}
+                                productId={value}/>
+      </div>
+    )
+  }
+
+
+  const actionBodyTemplate = (rowData: any) => {
+    return (
+      <React.Fragment>
+        <ToggleRestoreDeleteButton handleOnClickRestore={handleOnClickRestore} handleOnClickDelete={handleOnClickDelete}
+                                   params={rowData}/>
+        <PrimeButton icon="pi pi-pencil" className="p-button p-button-success mr-2"
+                     onClick={() => newHandleUpdate(rowData)}/>
+      </React.Fragment>
+    );
+  }
+  const actionVariationBodyTemplate = (rowData: any) => {
+    return (
+      <React.Fragment>
+        <ToggleRestoreDeleteButton handleOnClickRestore={handleOnClickVariationRestore}
+                                   handleOnClickDelete={handleOnClickVariationDelete}
+                                   params={rowData}/>
+        <PrimeButton icon="pi pi-pencil" className="p-button p-button-success mr-2"
+                     onClick={() => newHandleUpdate(rowData)}/>
+      </React.Fragment>
+    );
+  }
 
   return (
     <main className="bg-white shadow-md rounded">
-      <DataGrid<ProductWithThumbnail> gridData={products} colDef={columns} size={{height: '90vh', width: 'auto'}}
-                                      rowHeight={60}/>
+      <PrimeDataTable data={products} rowExpansionTemplate={rowExpansionTemplate} expandedRows={expandedRows}
+                      onRowToggle={(e) => setExpandedRows(e.data as any)}>
+        <Column expander style={{width: '3em'}}/>
+        <Column field="id" header="ID" sortable/>
+        <Column header="Image" body={imageBodyTemplate}/>
+        <Column field="title.en" header="Title EN" sortable/>
+        <Column field="title.ar" header="Title AR" sortable/>
+        <Column field="price" header="Price" sortable/>
+        <Column field="deleted_at" header="Deleted At" sortable/>
+        <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '8rem'}}/>
+      </PrimeDataTable>
     </main>
   );
 }

@@ -27,7 +27,7 @@ export default function HomePage(props: Props) {
         <AppLayout>
         <CategoriesNavigation/>
           <PrimeHero/>
-          {/*<PrimeCategoriesCarousel {...props}/>*/}
+          <PrimeCategoriesCarousel {...props}/>
           <ProductsCarousel products={props.products} locale={props.locale}/>
           {/*<Hero/>*/}
           {/*<HomePageCategories {...props}/>*/}

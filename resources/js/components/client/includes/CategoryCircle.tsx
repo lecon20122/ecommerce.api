@@ -1,5 +1,6 @@
 import {HomePageCategory} from "../../../types/CategoryType";
 import React from "react";
+import route from "ziggy-js";
 
 interface Props {
   category: HomePageCategory
@@ -8,7 +9,7 @@ interface Props {
 
 export default function CategoryCircle({category, locale}: Props) {
   return (
-    <a href="#" className="group">
+    <a href={route('shop.by.category',category)} className="group">
       <div
         style={{
           backgroundImage: `url(${category.thumbnail?.thumbnail})`,

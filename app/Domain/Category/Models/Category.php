@@ -89,4 +89,9 @@ class Category extends Model implements HasMedia
     {
         return $query->whereNull('parent_id');
     }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }

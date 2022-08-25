@@ -28,7 +28,7 @@ class MeiliSearchFilterableAttributesCommand extends Command
      */
     public function handle()
     {
-        $client = new Client('http://127.0.0.1:7700');
+        $client = new Client('http://127.0.0.1:7700' , config('scout.meilisearch.key'));
         $client->index('products')->updateFilterableAttributes(['category_ids']);
         return 0;
     }

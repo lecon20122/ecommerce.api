@@ -13,6 +13,7 @@ use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Carbon;
@@ -120,5 +121,10 @@ class ProductService
                 ->where('created_at', '<', (Carbon::now())->subWeek())
                 ->get()
         );
+    }
+
+    public function getProductsByCategory($id): AnonymousResourceCollection
+    {
+        return ProductResource::collection(Product::search()->where('category_ids', $id)->get());
     }
 }

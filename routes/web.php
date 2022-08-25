@@ -22,4 +22,5 @@ Route::group([], function () {
     Route::group([], base_path() . '/app/Http/Auth/Routes/web.php');
     Route::group([], base_path() . '/app/Http/Client/Home/Routes/web.php');
     Route::group([], base_path() . '/app/Http/Category/Routes/web.php');
+    Route::group([], base_path() . '/app/Http/Product/Routes/web.php');
 });

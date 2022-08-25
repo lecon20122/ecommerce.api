@@ -2,7 +2,7 @@ import React from 'react';
 
 function ProductsFilter() {
   return (
-    <aside className="md:w-1/3 lg:w-1/4 px-4">
+    <aside className="md:w-1/3 lg:w-1/5 px-4">
       <a
         className="md:hidden mb-5  w-full text-center px-4 py-2 inline-block text-lg text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"
         href="#">

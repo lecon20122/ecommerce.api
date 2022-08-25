@@ -3,6 +3,7 @@
 namespace App\Http\Category\Controllers;
 
 use App\Domain\Category\Models\Category;
+use App\Domain\Product\Models\Product;
 use App\Http\Category\Services\CategoryService;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
@@ -15,6 +16,9 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use MeiliSearch\Client;
+use MeiliSearch\Endpoints\Indexes;
+use MeiliSearch\MeiliSearch;
 
 class CategoryController extends BaseController
 {
@@ -130,6 +134,22 @@ class CategoryController extends BaseController
         try {
             $categoryService->delete($id);
             return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollback();
+            return $this->webMessage($exception->getMessage());
+        }
+    }
+
+    public function shopByCategory(Category $category, CategoryService $categoryService)
+    {
+        try {
+//            $client = new Client('http://127.0.0.1:7700');
+//            $client->index('products')->updateFilterableAttributes(['category_ids']);
+
+            $products = Product::search()->where('category_ids' , $category->id)->get();
+            return Inertia::render('Client/ShopByCategory' , [
+                'products' => $products,
+            ]);
         } catch (Exception $exception) {
             DB::rollback();
             return $this->webMessage($exception->getMessage());

@@ -2,6 +2,7 @@
 
 namespace App\Http\Product\Controllers;
 
+use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
 use App\Http\Media\Request\StoreMediaRequest;
@@ -189,6 +190,20 @@ class ProductController extends BaseController
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError();
+        }
+    }
+
+    public function getProductsByCategory(Category $category, ProductService $productService)
+    {
+        try {
+//            $client = new Client('http://127.0.0.1:7700');
+//            $client->index('products')->updateFilterableAttributes(['category_ids']);
+            return Inertia::render('Client/ShopByCategory', [
+                'products' => $productService->getProductsByCategory($category->id),
+            ]);
+        } catch (Exception $exception) {
+            DB::rollback();
+            return $this->webMessage($exception->getMessage());
         }
     }
 }

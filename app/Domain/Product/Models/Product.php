@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -20,7 +21,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory, CustomHasMedia, HasTranslations, SoftDeletes;
+    use HasFactory, CustomHasMedia, HasTranslations, SoftDeletes, Searchable;
 
     public $translatable = ['title'];
     protected $fillable = ['title', 'description', 'price', 'store_id'];
@@ -78,4 +79,15 @@ class Product extends Model implements HasMedia
         return $this->belongsToMany(Category::class);
     }
 
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'price' => $this->price,
+            'store_id' => $this->store_id,
+            'category_ids' => $this->load('categories')->categories->pluck('id')->toArray(),
+        ];
+    }
 }

@@ -135,4 +135,14 @@ class CategoryController extends BaseController
             return $this->webMessage($exception->getMessage());
         }
     }
+
+    public function shopByCategory(Category $category, CategoryService $categoryService)
+    {
+        try {
+            return Inertia::render('Client/ShopByCategory');
+        } catch (Exception $exception) {
+            DB::rollback();
+            return $this->webMessage($exception->getMessage());
+        }
+    }
 }

@@ -13,6 +13,7 @@ export default function AppLayout({ children }: IAppLayout) {
       <Navbar />
       {children}
       <Footer />
+      <MobileNavigation/>
     </div>
   )
 }

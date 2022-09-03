@@ -1,17 +1,20 @@
 import React, {useState} from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
 import TextField from '@mui/material/TextField';
-import {Button, Container} from '@mui/material';
+import {Button} from '@mui/material';
 import {Inertia} from '@inertiajs/inertia';
 import route from 'ziggy-js';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {StoreWithProducts} from "../../../types/globalTypes";
 import ProductList from "../../../components/Lists/productList";
 import CreateProduct from "../products/create";
+import {VariationTypes, VariationTypesValues} from "../../../types/VariationType";
 
 interface Props {
   currentStore: StoreWithProducts
   locale: string,
+  variationTypes: VariationTypes[]
+  variationTypesValues: VariationTypesValues[]
 }
 
 interface IFormProps {
@@ -21,7 +24,7 @@ interface IFormProps {
 }
 
 
-export default function StoreEdit({currentStore, locale}: Props) {
+export default function StoreEdit({currentStore, locale, variationTypesValues, variationTypes}: Props) {
   const form = useForm<IFormProps>()
   const {register, handleSubmit, formState: {errors}, reset, setValue, watch} = form
   const [openAddDialog, setOpenAddDialog] = useState(false);
@@ -34,7 +37,6 @@ export default function StoreEdit({currentStore, locale}: Props) {
 
   const handleUpdateStore: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
-    console.log(data)
     Inertia.post(route('admin.stores.update', currentStore), resolveData)
   }
 
@@ -45,8 +47,8 @@ export default function StoreEdit({currentStore, locale}: Props) {
 
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
-    Inertia.post(route('admin.stores.store'), resolveData , {
-      preserveState:false
+    Inertia.post(route('admin.stores.store'), resolveData, {
+      preserveState: false
     })
     reset()
   }
@@ -82,7 +84,8 @@ export default function StoreEdit({currentStore, locale}: Props) {
             </form>
           </FormProvider>
         </div>
-        <ProductList products={currentStore.products} locale={locale}/>
+        <ProductList products={currentStore.products} locale={locale} variationTypes={variationTypes}
+                     variationTypesValues={variationTypesValues}/>
         <CreateProduct handleAddDialog={handleAddDialog} openAddDialog={openAddDialog} watch={watch}/>
       </div>
     </DashboardLayout>

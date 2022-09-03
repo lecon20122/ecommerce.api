@@ -24,10 +24,9 @@ class StoreVariationRequest extends FormRequest
     public function rules()
     {
         return [
-            'ar' => 'required',
-            'en' => 'required',
             'price' => 'required',
-            'type' => 'required',
+            'variation_type_id' => 'required|integer',
+            'variation_type_value_id' => 'required|integer',
             'order' => 'nullable',
             'parent_id' => 'nullable',
             'product_id' => 'required',

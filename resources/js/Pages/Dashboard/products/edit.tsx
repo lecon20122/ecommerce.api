@@ -9,11 +9,14 @@ import {usePage} from "@inertiajs/inertia-react";
 import Alert from "../../../components/shards/alert";
 import MediaProductCollection from "../../../components/Lists/MediaProductCollection";
 import {Title} from "../../../types/CategoryType";
-import VariationList from "../variations/variationList";
-import {Variation} from "../../../types/VariationType";
+import {Variation, VariationTypes, VariationTypesValues} from "../../../types/VariationType";
+import VariationList from "../../../components/Lists/VariationList";
+import {NewMediaProps} from "../../../types/products";
 
 interface Props {
   currentProduct: Product
+  variationTypes: VariationTypes[]
+  variationTypesValues: VariationTypesValues[]
   locale: string,
 }
 
@@ -32,9 +35,10 @@ interface Product {
   price: string;
   slug: string;
   description: string;
-  media: Media[];
+  media: NewMediaProps[];
   variations: Variation[]
 }
+
 interface Media {
   id: number;
   name: string;
@@ -48,8 +52,7 @@ interface MediaForm {
   images: string
 }
 
-export default function ProductEdit({currentProduct, locale}: Props) {
-  console.log(currentProduct)
+export default function ProductEdit({currentProduct, locale, variationTypesValues, variationTypes}: Props) {
   const form = useForm<IFormProps>({mode: "onChange"})
   const {register, handleSubmit, formState: {errors, isDirty, isValid}, getValues, reset} = form
   const {
@@ -87,18 +90,18 @@ export default function ProductEdit({currentProduct, locale}: Props) {
               </div>
               <div className="md:w-1/4 px-3 mb-6 md:mb-0">
                 <TextField {...register('en')} name={'en'} fullWidth label="Product Title EN"
-                           defaultValue={currentProduct.title.en} placeholder={currentProduct.title.en}/>
+                           defaultValue={currentProduct.title.en}/>
                 {serverSideErrors.title && <Alert text={serverSideErrors.title} type={"red"}/>}
               </div>
               <div className="md:w-1/4 px-3">
                 <TextField type={'number'} {...register('price', {valueAsNumber: true})} name={'price'} fullWidth
                            label="Price"
-                           defaultValue={currentProduct.price} placeholder={currentProduct.price}/>
+                           defaultValue={currentProduct.price}/>
                 {serverSideErrors.price && <Alert text={serverSideErrors.price} type={"red"}/>}
               </div>
               <div className="md:w-1/4 px-3">
                 <TextField {...register('description')} name={'description'} fullWidth label="Description"
-                           defaultValue={currentProduct.description} placeholder={currentProduct.description}/>
+                           defaultValue={currentProduct.description}/>
                 {serverSideErrors.description && <Alert text={serverSideErrors.description} type="red"/>}
               </div>
             </div>
@@ -117,7 +120,8 @@ export default function ProductEdit({currentProduct, locale}: Props) {
         <div className="-mx-3 md:flex mb-6 py-3">
           <MediaProductCollection product={currentProduct}/>
         </div>
-        <VariationList variations={currentProduct.variations} locale={locale} productId={currentProduct.id}/>
+        <VariationList variations={currentProduct.variations} variationTypes={variationTypes}
+                       variationTypesValues={variationTypesValues} productId={currentProduct.id}/>
       </div>
     </DashboardLayout>
   )

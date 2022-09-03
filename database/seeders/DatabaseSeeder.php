@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Domain\Admin\Models\Admin;
+use App\Domain\Store\Models\Store;
 use Domain\User\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Testing\WithFaker;

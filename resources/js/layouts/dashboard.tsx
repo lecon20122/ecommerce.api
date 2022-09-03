@@ -1,7 +1,7 @@
 import {Page} from '@inertiajs/inertia';
 import {usePage} from '@inertiajs/inertia-react';
 import {AlertColor} from '@mui/material';
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 import Aside from '../includes/aside';
 import Navbar from '../includes/navbar';
 import {Toast} from "primereact/toast";
@@ -25,6 +25,7 @@ export default function DashboardLayout({children}: IDashboardLayout) {
 
   useEffect(() => {
     if (flash.message) {
+      console.log(flash.message)
       toastRef.current?.show({severity: 'success', summary: flash.message, life: 3000});
     }
   }, [toastRef])

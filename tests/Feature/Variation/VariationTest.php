@@ -5,6 +5,7 @@ namespace Tests\Feature\Variation;
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Models\Variation;
+use App\Domain\Variation\Models\VariationTypeValue;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -27,13 +28,17 @@ class VariationTest extends TestCase
     {
         $admin = Admin::factory()->create();
         Sanctum::actingAs($admin, [], 'admin');
+
         $product = Product::factory()->create();
+
+        $VariationTypeValue = VariationTypeValue::factory()->create();
+
         Storage::fake('public');
+
         $data = [
-            'en' => 'black',
-            'ar' => 'اسود',
             'price' => 150,
-            'type' => 'color',
+            'variation_type_id' => $VariationTypeValue->variation_types_id,
+            'variation_type_value_id' => $VariationTypeValue->id,
             'order' => 1,
             'product_id' => $product->id,
             'images' => [
@@ -44,7 +49,6 @@ class VariationTest extends TestCase
         $response = $this->post(route('admin.variations.store'), $data)->assertRedirect();
 //        dd($response);
         $response->assertSessionHas('message', 'success');
-        $this->assertEquals('black', Variation::first()->title);
         $this->assertCount(1, Variation::all());
         $this->assertCount(1,Media::all());
     }

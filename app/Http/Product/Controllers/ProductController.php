@@ -5,13 +5,16 @@ namespace App\Http\Product\Controllers;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
+use App\Domain\Product\Services\VariationService;
 use App\Http\Media\Request\StoreMediaRequest;
+use App\Http\Product\Requests\ProductFilterRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
+use http\Env\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -85,7 +88,9 @@ class ProductController extends BaseController
     {
         try {
             return Inertia::render('Dashboard/products/edit', [
-                'currentProduct' => (new ProductService())->getProductsById($id)
+                'currentProduct' => (new ProductService())->getProductsById($id),
+                'variationTypes' => (new VariationService())->getVariationTypes(),
+                'variationTypesValues' => (new VariationService())->getVariationTypeValues(),
             ]);
         } catch (Exception $exception) {
             return $this->redirectBackWithError();
@@ -193,13 +198,14 @@ class ProductController extends BaseController
         }
     }
 
-    public function getProductsByCategory(Category $category, ProductService $productService)
+    public function getProductsByCategory(Category $category, ProductService $productService , ProductFilterRequest $request)
     {
         try {
-//            $client = new Client('http://127.0.0.1:7700');
-//            $client->index('products')->updateFilterableAttributes(['category_ids']);
+            $products = $productService->getProductsByCategory($category , $request->validated());
             return Inertia::render('Client/ShopByCategory', [
-                'products' => $productService->getProductsByCategory($category->id),
+                'products' => $products['products'],
+                'filters' => $products['filters'],
+                'category' => $category
             ]);
         } catch (Exception $exception) {
             DB::rollback();

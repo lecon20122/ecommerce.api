@@ -13,7 +13,6 @@ use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Carbon;
@@ -31,7 +30,8 @@ class ProductService
         return new ProductResource(
             Product::query()
                 ->with(['media', 'variations' => function ($query) {
-                    return $query->withTrashed()->with('media');
+                    $query->withTrashed()
+                        ->with('variationType', 'media', 'variationTypeValue');
                 }])
                 ->whereIn('id', [$id])
                 ->select('id', 'title', 'price', 'slug', 'description')
@@ -123,8 +123,50 @@ class ProductService
         );
     }
 
-    public function getProductsByCategory($id): AnonymousResourceCollection
+    public function getProductsByCategory(Category $category, $filters = null)
     {
-        return ProductResource::collection(Product::search()->where('category_ids', $id)->get());
+        $variationsFilters = $this->recursiveFilterIteration($filters);
+
+        $finalFilterQuery = empty($variationsFilters) ? 'category_ids = ' . $category->id : 'category_ids = ' . $category->id . ' AND ' . $variationsFilters;
+
+        $meilisearch = Product::search('', function ($meilisearch, string $query, array $options) use ($category, $keys, $finalFilterQuery) {
+
+            $options['filter'] = $finalFilterQuery;
+
+            $options['facets'] = ['size', 'color'];
+            return $meilisearch->search($query, $options);
+        }
+        )->raw();
+
+        $products = $category->load('products')->products
+            ->find(collect($meilisearch['hits'])->pluck('id'));
+
+        return [
+            'products' => ProductResource::collection($products->load('media')),
+            'filters' => $this->getFacetDistribution(),
+            'category' => $category
+        ];
+    }
+
+    public function recursiveFilterIteration($filters)
+    {
+        return collect($filters)->filter(fn($filter) => !empty($filter))
+            ->recursive()
+            ->map(function ($value, $key) {
+                return $value->map(fn($value) => $key . ' = "' . $value . '"');
+            })
+            ->flatten()
+            ->join(' OR ');
+
+    }
+
+    public function getFacetDistribution()
+    {
+        $facetDistribution = Product::search('', function ($meilisearch, string $query, array $options) {
+            $options['facets'] = ['size', 'color'];
+            return $meilisearch->search($query, $options);
+        }
+        )->raw();
+        return $facetDistribution['facetDistribution'];
     }
 }

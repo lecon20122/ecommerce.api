@@ -4,6 +4,8 @@ namespace App\Domain\Product\Models;
 
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Inventory\Models\Stock;
+use App\Domain\Variation\Models\VariationType;
+use App\Domain\Variation\Models\VariationTypeValue;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Traits\CustomHasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,14 +16,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\Translatable\HasTranslations;
 
 class Variation extends Model implements HasMedia
 {
-    use HasFactory, HasTranslations, CustomHasMedia, SoftDeletes;
+    use HasFactory, CustomHasMedia, SoftDeletes;
 
-    public array $translatable = ['title'];
-    protected $fillable = ['title', 'price', 'type', 'order', 'product_id', 'parent_id'];
+    protected $fillable = ['title', 'price', 'type', 'order', 'product_id', 'parent_id', 'variation_type_value_id', 'variation_type_id'];
 
     /**
      * @throws InvalidManipulation
@@ -76,5 +76,15 @@ class Variation extends Model implements HasMedia
     public function children(): HasMany
     {
         return $this->hasMany(Variation::class, 'parent_id');
+    }
+
+    public function variationType(): BelongsTo
+    {
+        return $this->belongsTo(VariationType::class);
+    }
+
+    public function variationTypeValue(): BelongsTo
+    {
+        return $this->belongsTo(VariationTypeValue::class);
     }
 }

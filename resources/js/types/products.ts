@@ -38,6 +38,7 @@ export interface ProductWithThumbnail {
   small_thumbnail: string;
   deleted_at: string | null,
   variations?: Variation[]
+  media? : NewMediaProps[]
 }
 
 

@@ -12,15 +12,15 @@ class VariationResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return array
      */
     public function toArray($request): array
     {
         return [
             'id' => $this->id,
-            'type' => $this->type,
-            'title' => $this->getTranslations('title'),
+            'variation_type' => new VariationTypeResource($this->whenLoaded('variationType')),
+            'variation_type_value' => new VariationTypeValueResource($this->whenLoaded('variationTypeValue')),
             'price' => $this->price,
             'order' => $this->order,
             'deleted_at' => $this->deleted_at,

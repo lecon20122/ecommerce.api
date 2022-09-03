@@ -12,6 +12,7 @@ use App\Http\Product\Observers\ProductObserver;
 use App\Http\Store\Observers\StoreObserver;
 use App\Providers\TelescopeServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -41,5 +42,14 @@ class AppServiceProvider extends ServiceProvider
         Order::observe(OrderObserver::class);
         Store::observe(StoreObserver::class);
         Product::observe(ProductObserver::class);
+
+        Collection::macro('recursive', function () {
+            return $this->map(function ($value) {
+                if (is_array($value) || is_object($value)) {
+                    return collect($value)->recursive();
+                }
+                return $value;
+            });
+        });
     }
 }

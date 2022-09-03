@@ -50,7 +50,7 @@ class VariationController extends BaseController
             return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage('ops');
+            return $this->webMessage($exception->getMessage());
         }
     }
 

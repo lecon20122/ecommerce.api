@@ -37,8 +37,8 @@ export interface ProductWithThumbnail {
   thumbnail: string;
   small_thumbnail: string;
   deleted_at: string | null,
-  variations?: Variation[]
-  media? : NewMediaProps[]
+  variations: Variation[]
+  media: NewMediaProps[]
 }
 
 
@@ -98,4 +98,6 @@ export interface NewMediaProps {
   mime_type: string;
   thumbnail: string;
   big: string;
+  small: string;
+  original: string
 }

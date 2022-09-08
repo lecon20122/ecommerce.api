@@ -21,6 +21,7 @@ class MediaResource extends JsonResource
             'name' => $this->name,
             'file_name' => $this->file_name,
             'mime_type' => $this->mime_type,
+            'original' => $this->getFullUrl()
         ];
         if ($this->hasGeneratedConversion(MediaCollectionEnums::THUMB_CONVENTION)) {
             $data['thumbnail'] = $this->getFullUrl(MediaCollectionEnums::THUMB_CONVENTION);

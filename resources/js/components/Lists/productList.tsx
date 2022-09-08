@@ -36,10 +36,10 @@ function ProductList({products, locale, variationTypesValues, variationTypes}: P
   };
 
   const imageBodyTemplate = (rowData: any) => {
-    if (rowData.media.thumbnail) {
+    if (rowData.media) {
       return (
         <img width={50}
-             height={50} src={rowData.media[0 as keyof typeof rowData.media].thumbnail}/>
+             height={50} src={rowData.media[0 as keyof typeof rowData.media]?.thumbnail}/>
       )
     } else {
       return (
@@ -69,9 +69,7 @@ function ProductList({products, locale, variationTypesValues, variationTypes}: P
 
   return (
     <main className="bg-white shadow-md rounded">
-      <PrimeDataTable data={products} rowExpansionTemplate={rowExpansionTemplate} expandedRows={expandedRows}
-                      onRowToggle={(e) => setExpandedRows(e.data as any)}>
-        <Column expander style={{width: '3em'}}/>
+      <PrimeDataTable data={products}>
         <Column field="id" header="ID" sortable/>
         <Column header="Image" body={imageBodyTemplate}/>
         <Column field="title.en" header="Title EN" sortable/>

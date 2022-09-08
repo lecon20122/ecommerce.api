@@ -21,8 +21,8 @@ class VariationTypeFactory extends Factory
     {
         return [
             'type' => [
-                'en' => 'color',
-                'ar' => 'لون',
+                'en' => $this->faker->name,
+                'ar' => $this->faker->jobTitle,
             ],
             'is_mediable' => true,
         ];

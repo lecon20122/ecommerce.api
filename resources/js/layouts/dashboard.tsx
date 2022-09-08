@@ -1,10 +1,11 @@
 import {Page} from '@inertiajs/inertia';
 import {usePage} from '@inertiajs/inertia-react';
 import {AlertColor} from '@mui/material';
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Aside from '../includes/aside';
 import Navbar from '../includes/navbar';
 import {Toast} from "primereact/toast";
+import DashboardAsideBar from "../includes/new-aside";
 
 interface IDashboardLayout {
   children: JSX.Element,
@@ -22,6 +23,12 @@ export default function DashboardLayout({children}: IDashboardLayout) {
   const toastRef = useRef<any>(null);
 
   const {flash} = usePage<PageProps>().props
+
+  const [collapsed, setCollapsed] = useState(false);
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
 
   useEffect(() => {
     if (flash.message) {
@@ -41,6 +48,7 @@ export default function DashboardLayout({children}: IDashboardLayout) {
          className="fixed hidden md:hidden bg-black opacity-60 top-0 left-0 right-0 bottom-0 z-30"/>
       <div className='flex min-h-screen dark:bg-gray-900'>
         <Aside/>
+        {/*<DashboardAsideBar />*/}
         <main className='w-full'>
           <Navbar/>
           <Toast ref={toastRef}/>

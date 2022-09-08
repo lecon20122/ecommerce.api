@@ -16,8 +16,8 @@ export default function ToggleRestoreDeleteButton({handleOnClickDelete, handleOn
     )
   } else {
     return (
-      <PrimeButton icon="pi pi-trash"
-                   className="p-button p-button-danger mr-2"
+      <PrimeButton icon="pi pi-folder"
+                   className="p-button p-button-success mr-2"
                    onClick={() => handleOnClickDelete(params)}/>
     )
   }

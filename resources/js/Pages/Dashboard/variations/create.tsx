@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Button, DialogActions, MenuItem, Select, TextField} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Button, DialogActions, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import FormDialog from "../../shards/formDialog";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {Inertia} from "@inertiajs/inertia";
@@ -11,9 +11,10 @@ import {VariationTypes, VariationTypesValues} from "../../../types/VariationType
 
 interface Props {
   locale: string
-  handleAddDialog: () => void,
+  handleAddDialog: (data?: any) => void,
   openAddDialog: boolean
   productId: number
+  parentId?: number
   variationTypes: VariationTypes[]
   variationTypesValues: VariationTypesValues[]
 }
@@ -22,6 +23,7 @@ interface IFormProps {
   price: number
   images: string
   product_id: number
+  parent_id: number
   variation_type_id: number
   variation_type_value_id: number
 }
@@ -32,12 +34,21 @@ export default function CreateProductVariation({
                                                  productId,
                                                  variationTypesValues,
                                                  variationTypes,
-                                                 locale
+                                                 locale,
+                                                 parentId
                                                }: Props) {
   const {register, handleSubmit, formState: {errors}, reset, setValue} = useForm<IFormProps>()
 
   const [isMediable, setIsMediable] = useState(false)
-
+  const [variationTypeId, setVariationTypeId] = useState(0)
+  const [filteredVariationType, setFilteredVariationType] = useState<VariationTypesValues[]>([{
+    id: 0,
+    value: {
+      en: '',
+      ar: ''
+    },
+    variation_type_id: 0
+  }])
 
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
@@ -48,18 +59,37 @@ export default function CreateProductVariation({
     reset()
   }
 
+  const selectVariationTypeOnClick = (type: VariationTypes) => {
+    setIsMediable(type.is_mediable)
+    setVariationTypeId(type.id)
+  }
+
   const selectVariationTypeItems = variationTypes?.map((type) => {
     return (
-      <MenuItem onClick={(e) => setIsMediable(type.is_mediable)} value={type.id}
-                key={type.id}>{type.type[locale as keyof typeof type.type]}</MenuItem>
+      <MenuItem onClick={(e) => selectVariationTypeOnClick(type)} value={type.id}
+                key={type.id}>
+        {type.type[locale as keyof typeof type.type]}
+      </MenuItem>
     )
   })
 
-  const selectVariationTypeValueItems = variationTypesValues?.map((value) => {
+  useEffect(() => {
+    const data = variationTypesValues.filter(type => type.variation_type_id == variationTypeId)
+    setFilteredVariationType(data)
+  }, [variationTypeId])
+
+  const selectVariationTypeValueItems = filteredVariationType?.map((value) => {
     return (
-      <MenuItem value={value.id} key={value.id}>{value.value[locale as keyof typeof value.value]}</MenuItem>
+      <MenuItem value={value.id} key={value.id}>
+        <div className='flex flex-row content-center'>
+          <span style={{backgroundColor: `${value.value.en.toLowerCase()}`}}
+                className={`rounded w-[23px] h-[23px] inline-block mr-2 border border-3 border-black`}/>
+          <span>{value.value[locale as keyof typeof value.value]}</span>
+        </div>
+      </MenuItem>
     )
   })
+
 
   return (
     <div id='add'>
@@ -67,14 +97,18 @@ export default function CreateProductVariation({
                   open={openAddDialog}>
         <form onSubmit={handleSubmit(formAddSubmitHandler)}>
           <input hidden {...register('product_id')} name={'product_id'} value={productId}/>
+          <input hidden {...register('parent_id')} name={'parent_id'} value={parentId}/>
+          <InputLabel id="variation_type_id">Type (ex:color,size)</InputLabel>
           <Select margin="dense"
+                  className="my-2"
                   {...register('variation_type_id')}
-                  placeholder='type ex:color'
+                  labelId="variation_type_id"
                   defaultValue={''}
                   fullWidth
                   autoFocus>
             {selectVariationTypeItems}
           </Select>
+          <InputLabel id="variation_type_value_id">Value (ex :red,xl,xs)</InputLabel>
           <Select margin="dense"
                   className='mt-2'
                   {...register('variation_type_value_id')}

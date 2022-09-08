@@ -1,7 +1,7 @@
 import React from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
 import TextField from '@mui/material/TextField';
-import {Button} from '@mui/material';
+import {Button} from 'antd';
 import {Inertia} from '@inertiajs/inertia';
 import route from 'ziggy-js';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
@@ -37,15 +37,6 @@ interface Product {
   description: string;
   media: NewMediaProps[];
   variations: Variation[]
-}
-
-interface Media {
-  id: number;
-  name: string;
-  file_name: string;
-  mime_type: string;
-  thumbnail: string;
-  big: string;
 }
 
 interface MediaForm {
@@ -106,20 +97,17 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
               </div>
             </div>
             <div className='flex gap-2'>
-              <Button disabled={!isDirty || !isValid} type='submit' color="primary" variant='contained'>save
-                changes</Button>
+              <Button disabled={!isDirty || !isValid} htmlType="submit" type="primary">SAVE CHANGES</Button>
             </div>
           </form>
         </FormProvider>
         <form onSubmit={handleSubmit2(handleAddMediaToProduct)}>
           <input multiple type={'file'} {...register2('images')}/>
-          <Button type='submit' color="primary" variant='contained'>
+          <Button type="primary" htmlType="submit">
             upload
           </Button>
         </form>
-        <div className="-mx-3 md:flex mb-6 py-3">
-          <MediaProductCollection product={currentProduct}/>
-        </div>
+        <MediaProductCollection product={currentProduct} deleteURL={'admin.delete.media.of.product'}/>
         <VariationList variations={currentProduct.variations} variationTypes={variationTypes}
                        variationTypesValues={variationTypesValues} productId={currentProduct.id}/>
       </div>

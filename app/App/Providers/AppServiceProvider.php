@@ -5,11 +5,13 @@ namespace App\App\Providers;
 use App\Domain\Category\Models\Category;
 use App\Domain\Order\Models\Order;
 use App\Domain\Product\Models\Product;
+use App\Domain\Product\Models\Variation;
 use App\Domain\Store\Models\Store;
 use App\Http\Category\Observers\CategoryObserver;
 use App\Http\Order\Observers\OrderObserver;
 use App\Http\Product\Observers\ProductObserver;
 use App\Http\Store\Observers\StoreObserver;
+use App\Http\Variation\Observers\VariationObserver;
 use App\Providers\TelescopeServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
@@ -42,6 +44,8 @@ class AppServiceProvider extends ServiceProvider
         Order::observe(OrderObserver::class);
         Store::observe(StoreObserver::class);
         Product::observe(ProductObserver::class);
+        Variation::observe(VariationObserver::class);
+
 
         Collection::macro('recursive', function () {
             return $this->map(function ($value) {

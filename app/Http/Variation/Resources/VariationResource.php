@@ -19,9 +19,12 @@ class VariationResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'parent_id' => $this->parent_id,
             'variation_type' => new VariationTypeResource($this->whenLoaded('variationType')),
             'variation_type_value' => new VariationTypeValueResource($this->whenLoaded('variationTypeValue')),
             'price' => $this->price,
+            'type' => $this->type,
+            'title' => $this->title,
             'order' => $this->order,
             'deleted_at' => $this->deleted_at,
             'children' => VariationResource::collection($this->whenLoaded('children')),

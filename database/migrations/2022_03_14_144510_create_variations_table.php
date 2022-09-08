@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
             $table->id();
+            $table->json('title')->nullable();
+            $table->json('type')->nullable();
             $table->foreignId('product_id')->constrained();
             $table->foreignId('variation_type_value_id')->constrained();
             $table->decimal('price')->unsigned()->default(0);

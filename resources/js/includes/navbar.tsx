@@ -1,35 +1,25 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSignOutAlt} from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
-import { InertiaLink } from '@inertiajs/inertia-react';
+import {InertiaLink} from '@inertiajs/inertia-react';
 import route from 'ziggy-js';
+import {Button} from "antd";
+import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 
 export default function Navbar() {
-  const sidebar = document.getElementById('sidebar')
-  const backdrop = document.getElementById('backdrop')
-
-  const open_sidebar = () => {
-    sidebar?.classList.remove('-left-full');
-    backdrop?.classList.remove('hidden');
-  }
-
   return (
     <header className="h-14 z-10 py-3 bg-white shadow-sm border-b border-gray-200">
       <div className="container h-full flex items-center justify-between px-6 mx-auto">
+        <Button
+          type="primary"
+          // onClick={toggleCollapsed}
+          style={{
+            marginBottom: 16,
+          }}
+        >
+          {/*{collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}*/}
+        </Button>
 
-        {/* <!-- Mobile hamburger --> */}
-        <button onClick={() => open_sidebar()} className="p-1 mr-5  md:hidden focus:outline-none focus:shadow-outline-purple">
-          <svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="currentColor">
-            <path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
-          </svg>
-        </button>
-
-        {/* <!-- Search input --> */}
-        <form>
-          <div className="relative">
-            <input className="appearance-none border border-transparent bg-transparent rounded-md py-1 px-2 focus:outline-none focus:border-gray-400 w-full" type="text" placeholder="Search for " aria-label="Search" />
-          </div>
-        </form>
         <ul className="flex items-center flex-shrink-0 space-x-2">
           {/* <li>
             <button className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full hover:bg-blue-200" aria-label="Button name">
@@ -47,8 +37,10 @@ export default function Navbar() {
             </button>
           </li> */}
           <li>
-            <InertiaLink href={route('admin.logout')} className="w-10 h-10 flex items-center justify-center bg-gray-200 border border-transparent rounded-full hover:border-blue-400 overflow-hidden logout" aria-label="Button name">
-              <FontAwesomeIcon icon={faSignOutAlt} /></InertiaLink>
+            <InertiaLink href={route('admin.logout')}
+                         className="w-10 h-10 flex items-center justify-center bg-gray-200 border border-transparent rounded-full hover:border-blue-400 overflow-hidden logout"
+                         aria-label="Button name">
+              <FontAwesomeIcon icon={faSignOutAlt}/></InertiaLink>
           </li>
         </ul>
       </div>

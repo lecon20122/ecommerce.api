@@ -31,7 +31,10 @@ class ProductService
             Product::query()
                 ->with(['media', 'variations' => function ($query) {
                     $query->withTrashed()
-                        ->with('variationType', 'media', 'variationTypeValue');
+                        ->parent()
+                        ->with(['variationType', 'media', 'variationTypeValue', 'children' => function ($query) {
+                            $query->with(['variationTypeValue', 'variationType', 'media']);
+                        }]);
                 }])
                 ->whereIn('id', [$id])
                 ->select('id', 'title', 'price', 'slug', 'description')
@@ -126,10 +129,8 @@ class ProductService
     public function getProductsByCategory(Category $category, $filters = null)
     {
         $variationsFilters = $this->recursiveFilterIteration($filters);
-
         $finalFilterQuery = empty($variationsFilters) ? 'category_ids = ' . $category->id : 'category_ids = ' . $category->id . ' AND ' . $variationsFilters;
-
-        $meilisearch = Product::search('', function ($meilisearch, string $query, array $options) use ($category, $keys, $finalFilterQuery) {
+        $meilisearch = Product::search('', function ($meilisearch, string $query, array $options) use ($category, $finalFilterQuery) {
 
             $options['filter'] = $finalFilterQuery;
 
@@ -137,7 +138,6 @@ class ProductService
             return $meilisearch->search($query, $options);
         }
         )->raw();
-
         $products = $category->load('products')->products
             ->find(collect($meilisearch['hits'])->pluck('id'));
 
@@ -147,6 +147,7 @@ class ProductService
             'category' => $category
         ];
     }
+
 
     public function recursiveFilterIteration($filters)
     {
@@ -168,5 +169,15 @@ class ProductService
         }
         )->raw();
         return $facetDistribution['facetDistribution'];
+    }
+
+    public function showProductDetails(Product $product): ProductResource
+    {
+        return new ProductResource(
+            $product->load(['media', 'variations' => function ($query) {
+                $query->with('children','media')->parent();
+            }
+            ])
+        );
     }
 }

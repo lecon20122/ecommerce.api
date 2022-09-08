@@ -16,11 +16,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 
 class Variation extends Model implements HasMedia
 {
-    use HasFactory, CustomHasMedia, SoftDeletes;
+    use HasFactory, CustomHasMedia, SoftDeletes, HasTranslations;
 
+    public $translatable = ['title', 'type'];
     protected $fillable = ['title', 'price', 'type', 'order', 'product_id', 'parent_id', 'variation_type_value_id', 'variation_type_id'];
 
     /**
@@ -78,6 +80,11 @@ class Variation extends Model implements HasMedia
         return $this->hasMany(Variation::class, 'parent_id');
     }
 
+    public function scopeParent($query)
+    {
+        return $query->whereNull('parent_id');
+    }
+
     public function variationType(): BelongsTo
     {
         return $this->belongsTo(VariationType::class);
@@ -87,4 +94,6 @@ class Variation extends Model implements HasMedia
     {
         return $this->belongsTo(VariationTypeValue::class);
     }
+
+
 }

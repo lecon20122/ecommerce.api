@@ -24,12 +24,12 @@ class UpdateVariationRequest extends FormRequest
     public function rules()
     {
         return [
-            'ar' => 'nullable',
-            'en' => 'nullable',
             'price' => 'nullable',
-            'type' => 'nullable',
             'order' => 'nullable',
-            'product_id' => 'nullable',
+            'variation_type_id' => 'nullable',
+            'variation_type_value_id' => 'nullable',
+            'images' => 'nullable',
+            'images.*' => 'mimes:jpg,webp|max:1024',
         ];
     }
 }

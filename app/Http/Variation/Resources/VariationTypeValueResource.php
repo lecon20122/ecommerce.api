@@ -18,6 +18,7 @@ class VariationTypeValueResource extends JsonResource
         return [
             'id' => $this->id,
             'value' => $this->getTranslations('value'),
+            'variation_type_id' => $this->variation_type_id,
         ];
     }
 }

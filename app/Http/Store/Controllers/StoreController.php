@@ -2,9 +2,9 @@
 
 namespace App\Http\Store\Controllers;
 
-use App\Domain\Product\Services\VariationService;
 use App\Domain\Store\Models\Store;
 use App\Domain\Store\Services\StoreService;
+use App\Domain\Variation\Services\VariationService;
 use App\Http\Store\Requests\StoreCreateRequest;
 use App\Http\Store\Requests\StoreUpdateRequest;
 use App\Http\Store\Resources\StoreResource;
@@ -81,7 +81,6 @@ class StoreController extends BaseController
      */
     public function edit(int $id): \Inertia\Response
     {
-//        return response()->json((new StoreService())->getStoreById($id));
         try {
             return Inertia::render('Dashboard/stores/edit', [
                 'currentStore' => (new StoreService())->getStoreById($id),

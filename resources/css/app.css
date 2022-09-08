@@ -3,12 +3,19 @@
 @import "/node_modules/primeicons/primeicons.css";
 @import "/node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "/node_modules/ag-grid-community/dist/styles/ag-theme-material.css";
+@import "/node_modules/antd/dist/antd.min.css";
+
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
-.hide-navigator .p-button{
-    display : none;
+.hide-navigator .p-button {
+    display: none;
+}
+
+/*fixing preview image not in center*/
+img.ant-image-preview-img {
+    display: unset;
 }

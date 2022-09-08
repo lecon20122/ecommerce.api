@@ -5,6 +5,8 @@ namespace Database\Factories\Domain\Product\Models;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Models\Variation;
 use App\Domain\Store\Models\Store;
+use App\Domain\Variation\Models\VariationType;
+use App\Domain\Variation\Models\VariationTypeValue;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,11 +24,13 @@ class VariationFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->unique()->sentence,
+//            'title' => $this->faker->unique()->sentence,
             'price' => $this->faker->randomFloat(null , 99 , 500),
-            'type' => $this->faker->unique()->sentence,
+//            'type' => $this->faker->unique()->sentence,
             'order' => $this->faker->randomDigit(),
             'product_id' => Product::factory(),
+            'variation_type_value_id' => VariationTypeValue::factory(),
+            'variation_type_id' => VariationType::factory(),
         ];
     }
 }

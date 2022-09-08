@@ -2,6 +2,7 @@
 
 namespace App\Http\Variation\Resources;
 
+use App\Domain\Variation\Models\VariationTypeValue;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,6 +20,7 @@ class VariationTypeResource extends JsonResource
             'id' => $this->id,
             'type' => $this->getTranslations('type'),
             'is_mediable' => $this->is_mediable,
+            'variationTypeValues' => VariationTypeValueResource::collection($this->whenLoaded('variationTypeValues')),
         ];
     }
 }

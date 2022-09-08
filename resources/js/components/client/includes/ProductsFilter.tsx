@@ -15,6 +15,7 @@ interface IFormProps {
 }
 
 function ProductsFilter({filters, category}: Props) {
+  console.log(filters)
   const {register, handleSubmit, formState: {errors}, reset, setValue, watch} = useForm<IFormProps>()
   const [checked, setchecked] = useState<any>([])
 

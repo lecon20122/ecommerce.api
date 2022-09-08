@@ -5,7 +5,7 @@ namespace App\Http\Product\Controllers;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
-use App\Domain\Product\Services\VariationService;
+use App\Domain\Variation\Services\VariationService;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\ProductFilterRequest;
 use App\Http\Product\Requests\StoreProductRequest;
@@ -14,7 +14,6 @@ use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
-use http\Env\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -70,12 +69,18 @@ class ProductController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return Response
+     * @param Product $product
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function show(int $id): Response
+    public function show(Product $product, ProductService $service)
     {
-        return Product::query()->find($id)->with('media')->get();
+        try {
+            return Inertia::render('Client/ProductDetails', [
+                'product' => $service->showProductDetails($product)
+            ]);
+        } catch (Exception $exception) {
+            return $this->redirectBackWithError($exception->getMessage());
+        }
     }
 
     /**
@@ -87,7 +92,7 @@ class ProductController extends BaseController
     public function edit(int $id): \Inertia\Response|RedirectResponse
     {
         try {
-            return Inertia::render('Dashboard/products/edit', [
+            return Inertia::render('Dashboard/products/ProductEdit', [
                 'currentProduct' => (new ProductService())->getProductsById($id),
                 'variationTypes' => (new VariationService())->getVariationTypes(),
                 'variationTypesValues' => (new VariationService())->getVariationTypeValues(),
@@ -198,10 +203,10 @@ class ProductController extends BaseController
         }
     }
 
-    public function getProductsByCategory(Category $category, ProductService $productService , ProductFilterRequest $request)
+    public function getProductsByCategory(Category $category, ProductService $productService, ProductFilterRequest $request): \Inertia\Response|RedirectResponse
     {
         try {
-            $products = $productService->getProductsByCategory($category , $request->validated());
+            $products = $productService->getProductsByCategory($category, $request->validated());
             return Inertia::render('Client/ShopByCategory', [
                 'products' => $products['products'],
                 'filters' => $products['filters'],

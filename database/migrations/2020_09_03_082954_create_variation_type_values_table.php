@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('variation_type_id')->constrained();
             $table->json('value')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

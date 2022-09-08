@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Media\Request;
+namespace App\Http\Variation\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMediaRequest extends FormRequest
+class UpdateVariationTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,13 +19,14 @@ class StoreMediaRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {
         return [
-            'images' => 'required',
-            'images.*' => 'mimes:jpg,webp|max:1024',
+            'ar' => 'nullable|string|max:256',
+            'en' => 'nullable|string|max:256',
+            'is_mediable' => 'nullable|boolean'
         ];
     }
 }

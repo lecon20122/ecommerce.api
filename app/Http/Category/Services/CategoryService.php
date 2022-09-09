@@ -93,4 +93,13 @@ class CategoryService
             ->isParent()
             ->get();
     }
+
+    public function getCategories(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        return CategoryResource::collection(
+            Category::query()
+                ->select(['id', 'title'])
+                ->get()
+        );
+    }
 }

@@ -6,6 +6,7 @@ use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
 use App\Domain\Variation\Services\VariationService;
+use App\Http\Category\Services\CategoryService;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\ProductFilterRequest;
 use App\Http\Product\Requests\StoreProductRequest;
@@ -89,13 +90,14 @@ class ProductController extends BaseController
      * @param int $id
      * @return RedirectResponse|\Inertia\Response
      */
-    public function edit(int $id): \Inertia\Response|RedirectResponse
+    public function edit(mixed $id): \Inertia\Response|RedirectResponse
     {
         try {
             return Inertia::render('Dashboard/products/ProductEdit', [
                 'currentProduct' => (new ProductService())->getProductsById($id),
                 'variationTypes' => (new VariationService())->getVariationTypes(),
                 'variationTypesValues' => (new VariationService())->getVariationTypeValues(),
+                'categories' => (new CategoryService())->getCategories(),
             ]);
         } catch (Exception $exception) {
             return $this->redirectBackWithError();

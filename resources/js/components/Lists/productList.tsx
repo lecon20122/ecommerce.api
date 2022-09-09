@@ -21,7 +21,6 @@ function ProductList({products, locale, variationTypesValues, variationTypes}: P
 
   const newHandleUpdate = (data: any) => {
     Inertia.get(route('admin.products.edit', data.id))
-
   };
 
   const handleOnClickDelete = (data: any) => {

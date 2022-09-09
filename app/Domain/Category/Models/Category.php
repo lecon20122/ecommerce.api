@@ -2,6 +2,7 @@
 
 namespace App\Domain\Category\Models;
 
+use App\Domain\Product\Models\CategoryProduct;
 use App\Domain\Product\Models\Product;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Traits\CustomHasMedia;
@@ -65,7 +66,7 @@ class Category extends Model implements HasMedia
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->using(CategoryProduct::class);
     }
 
     /**

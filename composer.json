@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.7",
         "league/flysystem-aws-s3-v3": "3.0",
         "meilisearch/meilisearch-php": "^0.24.2",
+        "opcodesio/log-viewer": "^1.3",
         "spatie/image-optimizer": "^1.6",
         "spatie/laravel-medialibrary": "10.0.7",
         "spatie/laravel-translatable": "^6.0",

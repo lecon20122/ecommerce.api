@@ -25,11 +25,11 @@ class ProductService
      * @param int $id
      * @return Model|Builder|ProductResource|null
      */
-    public function getProductsById(int $id): Model|Builder|ProductResource|null
+    public function getProductsById(mixed $id): Model|Builder|ProductResource|null
     {
         return new ProductResource(
             Product::query()
-                ->with(['media', 'variations' => function ($query) {
+                ->with(['media', 'categories', 'variations' => function ($query) {
                     $query->withTrashed()
                         ->parent()
                         ->with(['variationType', 'media', 'variationTypeValue', 'children' => function ($query) {
@@ -175,7 +175,7 @@ class ProductService
     {
         return new ProductResource(
             $product->load(['media', 'variations' => function ($query) {
-                $query->with('children','media')->parent();
+                $query->with('children', 'media')->parent();
             }
             ])
         );

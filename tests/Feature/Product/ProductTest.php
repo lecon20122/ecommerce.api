@@ -10,6 +10,8 @@ use App\Support\Enums\HttpStatusEnums;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
@@ -121,6 +123,7 @@ class ProductTest extends TestCase
             'category_id' => 3,
             'product_id' => 1
         ];
+        $this->artisan('scout:import "App\Domain\Product\Models\Product"')->assertSuccessful();
         $this->assertDatabaseHas('category_product', $expectedData);
     }
 

@@ -4,11 +4,13 @@ namespace App\App\Providers;
 
 use App\Domain\Category\Models\Category;
 use App\Domain\Order\Models\Order;
+use App\Domain\Product\Models\CategoryProduct;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Models\Variation;
 use App\Domain\Store\Models\Store;
 use App\Http\Category\Observers\CategoryObserver;
 use App\Http\Order\Observers\OrderObserver;
+use App\Http\Product\Observers\CategoryProductObserver;
 use App\Http\Product\Observers\ProductObserver;
 use App\Http\Store\Observers\StoreObserver;
 use App\Http\Variation\Observers\VariationObserver;
@@ -45,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         Store::observe(StoreObserver::class);
         Product::observe(ProductObserver::class);
         Variation::observe(VariationObserver::class);
+        CategoryProduct::observe(CategoryProductObserver::class);
 
 
         Collection::macro('recursive', function () {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Product\Resources;
 
+use App\Http\Category\Resources\CategoryResource;
 use App\Http\Media\Resources\MediaResource;
 use App\Http\Variation\Resources\VariationResource;
 use App\Support\Enums\MediaCollectionEnums;
@@ -28,6 +29,7 @@ class ProductResource extends JsonResource
             'variations' => VariationResource::collection($this->whenLoaded('variations')),
 //            'thumbnail' => $this->getFirstMedia(MediaCollectionEnums::PRODUCT)?->getFullUrl(MediaCollectionEnums::THUMB_CONVENTION),
             'deleted_at' => $this->deleted_at,
+            'categories' => CategoryResource::collection($this->whenLoaded('categories')),
         ];
     }
 }

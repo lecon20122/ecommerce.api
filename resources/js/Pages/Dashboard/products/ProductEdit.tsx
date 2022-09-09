@@ -1,7 +1,7 @@
 import React from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
 import TextField from '@mui/material/TextField';
-import {Button} from 'antd';
+import {Button, Form, Select} from 'antd';
 import {Inertia} from '@inertiajs/inertia';
 import route from 'ziggy-js';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
@@ -11,13 +11,14 @@ import MediaProductCollection from "../../../components/Lists/MediaProductCollec
 import {Title} from "../../../types/CategoryType";
 import {Variation, VariationTypes, VariationTypesValues} from "../../../types/VariationType";
 import VariationList from "../../../components/Lists/VariationList";
-import {NewMediaProps} from "../../../types/products";
+import {Category, NewMediaProps} from "../../../types/products";
 
 interface Props {
   currentProduct: Product
   variationTypes: VariationTypes[]
   variationTypesValues: VariationTypesValues[]
   locale: string,
+  categories: Category[],
 }
 
 interface IFormProps {
@@ -36,14 +37,16 @@ interface Product {
   slug: string;
   description: string;
   media: NewMediaProps[];
-  variations: Variation[]
+  variations: Variation[],
+  categories: Category[],
 }
 
 interface MediaForm {
   images: string
 }
 
-export default function ProductEdit({currentProduct, locale, variationTypesValues, variationTypes}: Props) {
+export default function ProductEdit({currentProduct, locale, variationTypesValues, variationTypes, categories}: Props) {
+  console.log(currentProduct)
   const form = useForm<IFormProps>({mode: "onChange"})
   const {register, handleSubmit, formState: {errors, isDirty, isValid}, getValues, reset} = form
   const {
@@ -67,7 +70,12 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
     console.log(data)
   }
 
-
+  const onFinishAttachCategories = (values: any) => {
+    // console.log(values)
+    Inertia.post(route('admin.attach.category.to.product', currentProduct), values, {
+      preserveState: false
+    })
+  }
   return (
     <DashboardLayout>
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
@@ -101,12 +109,32 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
             </div>
           </form>
         </FormProvider>
-        <form onSubmit={handleSubmit2(handleAddMediaToProduct)}>
+        <form onSubmit={handleSubmit2(handleAddMediaToProduct)} className={'flex'}>
           <input multiple type={'file'} {...register2('images')}/>
           <Button type="primary" htmlType="submit">
             upload
           </Button>
         </form>
+        <Form className={'flex py-3'} onFinish={onFinishAttachCategories}>
+          <Form.Item name="id" label="Attach to Category" style={{width: '30%'}}>
+            <Select
+              mode="multiple"
+              placeholder="Select a category from above"
+              allowClear
+            >
+              {categories.map((category) => (
+                <Select.Option
+                  key={category.id}
+                  value={category.id}>{category.title[locale as keyof typeof category.title]}</Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item className={'ml-2'}>
+            <Button type="default" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
         <MediaProductCollection product={currentProduct} deleteURL={'admin.delete.media.of.product'}/>
         <VariationList variations={currentProduct.variations} variationTypes={variationTypes}
                        variationTypesValues={variationTypesValues} productId={currentProduct.id}/>

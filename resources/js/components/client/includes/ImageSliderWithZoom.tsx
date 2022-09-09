@@ -49,6 +49,7 @@ function ImageSliderWithZoom({media, currentMedia}: Props) {
           allowTouchMove
           ref={ref}
           className="lg:hidden"
+          indicator={() => null}
           // slideSize={80}
         >
           {swiperItems}

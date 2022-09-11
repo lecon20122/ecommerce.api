@@ -23,7 +23,7 @@ export default function HomePage(props: Props) {
         <AppLayout>
           <PrimeHero/>
           <PrimeCategoriesCarousel {...props}/>
-          <ProductsCarousel products={props.products} locale={props.locale}/>
+          {/*<ProductsCarousel products={props.products} locale={props.locale}/>*/}
         </AppLayout>
       </Suspense>
     </div>

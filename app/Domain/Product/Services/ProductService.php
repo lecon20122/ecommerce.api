@@ -121,7 +121,7 @@ class ProductService
     {
         return ProductResource::collection(
             Product::query()
-                ->where('created_at', '<', (Carbon::now())->subWeek())
+                ->where('created_at', '<', (Carbon::now())->subDay())
                 ->get()
         );
     }

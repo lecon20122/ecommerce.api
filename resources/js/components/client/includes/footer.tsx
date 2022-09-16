@@ -98,7 +98,7 @@ export default function Footer() {
         </div>
         {/* <!-- container .// --> */}
       </section>
-      <section className="bg-[#F6F6F6] text-black">
+      <section className="text-black">
         <div className="container max-w-screen-xl mx-auto px-4">
           <div className="lg:flex justify-between">
             <div className="mb-3">

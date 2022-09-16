@@ -6,7 +6,6 @@ use Application\Controllers\BaseController;
 use Domain\User\Models\User;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
@@ -16,21 +15,21 @@ class SocialiteController extends BaseController
 {
     public function oauthProviderRedirect(string $provider): \Symfony\Component\HttpFoundation\RedirectResponse|RedirectResponse
     {
+//        dd($provider);
         return Socialite::driver($provider)->redirect();
     }
 
     public function oauthProviderCallBack(string $provider)
     {
         try {
-            $providerUser = Socialite::driver($provider)->stateless()->user();
+//            dd('hello');
+            $providerUser = Socialite::driver('google')->user();
+//            dd($providerUser);
             DB::beginTransaction();
             $user = $this->createOrUpdateUser($providerUser);
             DB::commit();
             Auth::login($user);
-            return $this->ok([
-                'user' => $user,
-                'token' => $user->createToken($user->email, ['customer'])->plainTextToken,
-            ]);
+            return $this->redirectToWithMessage('home', 'success');
         } catch (Exception $exception) {
             DB::rollBack();
             $this->sendError($exception->getMessage());

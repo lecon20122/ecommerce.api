@@ -15,6 +15,7 @@ use App\Http\Variation\Resources\VariationTypeValueResource;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +25,7 @@ class VariationService
     public function getVariationById(int $id): VariationResource
     {
         return new VariationResource(
-            Variation::with(['children', 'media', 'variationType', 'variationTypeValue'])->find($id)
+            Variation::with(['children', 'getVariationColor', 'getVariationImages', 'variationType', 'variationTypeValue'])->find($id)
         );
     }
 
@@ -59,7 +60,6 @@ class VariationService
 
         $data['type'] = $variationType->getTranslations('type');
         $data['title'] = $variationTypeValue->getTranslations('value');
-//        dd($data);
 
         $product = Product::query()
             ->find($data['product_id']);
@@ -114,9 +114,25 @@ class VariationService
         }
     }
 
+    public function uploadVariationColorImage(Variation $variation, StoreMediaRequest $request, ImageService $imageService)
+    {
+        if ($request->hasFile('images')) {
+            $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION_COLOR, $variation->id);
+        }
+    }
+
     public function deleteVariationImage(Variation $variation, ModelIDsRequest $request)
     {
         $image = $variation->media()->find($request->validated('id'));
         $image?->delete();
+    }
+
+    public function getFacetsArray(): array
+    {
+        return VariationType::query()
+            ->select('type')
+            ->get()
+            ->pluck('type')
+            ->toArray();
     }
 }

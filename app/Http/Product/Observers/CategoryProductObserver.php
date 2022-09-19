@@ -3,6 +3,7 @@
 namespace App\Http\Product\Observers;
 
 use App\Domain\Product\Models\CategoryProduct;
+use App\Domain\Product\Models\Product;
 use Illuminate\Support\Facades\Artisan;
 
 class CategoryProductObserver
@@ -15,7 +16,7 @@ class CategoryProductObserver
      */
     public function created(CategoryProduct $categoryProduct)
     {
-//        Artisan::call('scout:import', ['model' => 'App\Domain\Product\Models\Product']);
+        $categoryProduct->product()->touch();
     }
 
     /**

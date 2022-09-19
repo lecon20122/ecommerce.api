@@ -1,6 +1,7 @@
 import React, {lazy, Suspense} from 'react'
 import {HomePageCategory} from "../../types/CategoryType";
 import {ProductWithThumbnail} from "../../types/products";
+import MobileNavigation from "../../components/client/includes/MobileNavigation";
 
 interface Props {
   categories: HomePageCategory[]
@@ -23,6 +24,7 @@ export default function HomePage(props: Props) {
           <PrimeHero/>
           <PrimeCategoriesCarousel {...props}/>
           {/*<ProductsCarousel products={props.products} locale={props.locale}/>*/}
+          <MobileNavigation/>
         </AppLayout>
       </Suspense>
     </div>

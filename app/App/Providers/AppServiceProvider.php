@@ -14,7 +14,6 @@ use App\Http\Product\Observers\CategoryProductObserver;
 use App\Http\Product\Observers\ProductObserver;
 use App\Http\Store\Observers\StoreObserver;
 use App\Http\Variation\Observers\VariationObserver;
-use App\Providers\TelescopeServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -28,10 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->environment('local')) {
-            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
-        }
     }
 
     /**

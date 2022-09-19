@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NewMediaProps, ProductWithThumbnail} from "../../types/products";
 import AppLayout from "../../layouts/client";
 import ImageSliderWithZoom from "../../components/client/includes/ImageSliderWithZoom";
 import {Variation} from "../../types/VariationType";
 import {Radio} from "antd";
+import ColoredCircleButton from "../../components/client/shards/ColoredCircleButton";
 
 interface Props {
   product: ProductWithThumbnail
@@ -14,7 +15,6 @@ function ProductDetails({product, locale}: Props) {
   const [currentMedia, setCurrentMedia] = useState<NewMediaProps[]>(product.media)
   const [currentVariation, setCurrentVariation] = useState<Variation>(product.variations[0])
   const [currentImage, setCurrentImage] = useState<NewMediaProps>({...product.variations[0].media[0]})
-  console.log(product)
 
   const handleClickVariationColors = (variation: Variation) => {
     setCurrentMedia(variation.media)
@@ -22,18 +22,29 @@ function ProductDetails({product, locale}: Props) {
     setCurrentVariation(variation)
   }
 
+  useEffect(() => {
+      if (Array.isArray(product.variations) && product.variations.length) {
+        setCurrentMedia(product.variations[0].media)
+      } else {
+        setCurrentMedia(product.media)
+      }
+    }, []
+  )
+
   const variationColorsList = product.variations.map((variation) => {
-    return (
-      <button
-        style={{backgroundColor: variation.title}}
-        onClick={() => handleClickVariationColors(variation)}
-        className={`border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none`}/>
-    )
+    if (variation.type === 'color') {
+      return (
+        <ColoredCircleButton onMouseOver={() => handleClickVariationColors(variation)} key={variation.id}
+                             backgroundColor={variation.title} backgroundImage={variation.color?.color}/>
+      )
+    }
   })
   const variationSizeList = currentVariation.children.map((variation) => {
-    return (
-      <Radio.Button key={variation.id} value={variation.id}>{variation.title}</Radio.Button>
-    )
+    if (variation.type === 'size') {
+      return (
+        <Radio.Button key={variation.id} value={variation.id}>{variation.title}</Radio.Button>
+      )
+    }
   })
 
   return (

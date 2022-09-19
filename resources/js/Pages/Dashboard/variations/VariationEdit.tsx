@@ -2,12 +2,9 @@ import React, {useEffect, useState} from 'react';
 import DashboardLayout from "../../../layouts/dashboard";
 import {Variation, VariationTypes, VariationTypesValues} from "../../../types/VariationType";
 import MediaProductCollection from "../../../components/Lists/MediaProductCollection";
-import {Button, Col, Form, Input, Row, Select, Statistic, Upload} from 'antd';
+import {Button, Col, Form, Input, Row, Select, Statistic} from 'antd';
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
-import {PlusOutlined} from '@ant-design/icons';
-import {UploadFile} from 'antd/es/upload/interface';
-import {SubmitHandler} from "react-hook-form";
 import ImageUploadManually from "../../../components/client/includes/ImageUploadManuallyComponent";
 
 interface Props {
@@ -21,6 +18,7 @@ interface MediaForm {
 }
 
 export default function VariationEdit({currentVariation, variationTypesValues, variationTypes}: Props) {
+  console.log(currentVariation)
   const [variationTypeId, setVariationTypeId] = useState(0)
   const [filteredVariationType, setFilteredVariationType] = useState<VariationTypesValues[]>([{
     id: 0,
@@ -107,7 +105,7 @@ export default function VariationEdit({currentVariation, variationTypesValues, v
             {() => (
               <Button
 
-                type="primary"
+                type="default"
                 size={'large'}
                 htmlType="submit"
                 // disabled={
@@ -120,6 +118,7 @@ export default function VariationEdit({currentVariation, variationTypesValues, v
           </Form.Item>
         </Form>
         <ImageUploadManually model={currentVariation} routeName={'admin.add.media.to.variation'} multiple/>
+        <ImageUploadManually model={currentVariation} routeName={'admin.add.color.image.to.variation'} multiple={false} buttonLabel={'Choose Variation Color'}/>
         <MediaProductCollection product={currentVariation} deleteURL={'admin.delete.media.of.variations'}/>
       </div>
     </DashboardLayout>

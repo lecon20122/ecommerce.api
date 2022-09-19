@@ -58,7 +58,7 @@ export default function login() {
             <span className="px-3 bg-white text-gray-400">or</span>
           </div>
 
-          <a href={route('client.social.login', 'google')}
+          <a href={route('client.social.login')}
                        className="mb-2 px-4 py-2 w-full flex items-center justify-center text-center text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600">
             <span className='mx-1'>Continue with</span><GoogleOutlined/>
           </a>

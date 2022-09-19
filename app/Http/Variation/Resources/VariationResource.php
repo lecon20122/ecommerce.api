@@ -6,6 +6,7 @@ use App\Http\Media\Resources\MediaResource;
 use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class VariationResource extends JsonResource
 {
@@ -28,8 +29,8 @@ class VariationResource extends JsonResource
             'order' => $this->order,
             'deleted_at' => $this->deleted_at,
             'children' => VariationResource::collection($this->whenLoaded('children')),
-            'media' => MediaResource::collection($this->whenLoaded('media')),
-            'thumbnail' => $this->getFirstMedia(MediaCollectionEnums::VARIATION)?->getFullUrl(MediaCollectionEnums::THUMB_CONVENTION),
+            'media' =>  MediaResource::collection($this->whenLoaded('getVariationImages')),
+            'color' => new MediaResource($this->whenLoaded('getVariationColor')),
         ];
     }
 }

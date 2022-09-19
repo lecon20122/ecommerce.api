@@ -5,6 +5,7 @@ namespace App\Domain\Product\Services;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
+use App\Domain\Variation\Services\VariationService;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
@@ -128,22 +129,29 @@ class ProductService
 
     public function getProductsByCategory(Category $category, $filters = null)
     {
+        $facets = (new VariationService)->getFacetsArray();
+
         $variationsFilters = $this->recursiveFilterIteration($filters);
+
         $finalFilterQuery = empty($variationsFilters) ? 'category_ids = ' . $category->id : 'category_ids = ' . $category->id . ' AND ' . $variationsFilters;
-        $meilisearch = Product::search('', function ($meilisearch, string $query, array $options) use ($category, $finalFilterQuery) {
+
+        $meilisearch = Product::search('', function ($meilisearch, string $query, array $options) use ($category, $finalFilterQuery, $facets) {
 
             $options['filter'] = $finalFilterQuery;
-
-            $options['facets'] = ['size', 'color'];
+            $options['facets'] = $facets;
             return $meilisearch->search($query, $options);
         }
         )->raw();
+
         $products = $category->load('products')->products
             ->find(collect($meilisearch['hits'])->pluck('id'));
 
         return [
-            'products' => ProductResource::collection($products->load('media')),
-            'filters' => $this->getFacetDistribution(),
+            'products' => ProductResource::collection($products->load(['media', 'variations' => function ($query) {
+                $query->with('getVariationImages', 'getVariationColor')->parent();
+            }
+            ])),
+            'filters' => $this->getFacetDistribution($facets, $category->id),
             'category' => $category
         ];
     }
@@ -151,6 +159,7 @@ class ProductService
 
     public function recursiveFilterIteration($filters)
     {
+        if (!$filters) return null;
         return collect($filters)->filter(fn($filter) => !empty($filter))
             ->recursive()
             ->map(function ($value, $key) {
@@ -161,10 +170,11 @@ class ProductService
 
     }
 
-    public function getFacetDistribution()
+    public function getFacetDistribution($facets, $categoryId)
     {
-        $facetDistribution = Product::search('', function ($meilisearch, string $query, array $options) {
-            $options['facets'] = ['size', 'color'];
+        $facetDistribution = Product::search('', function ($meilisearch, string $query, array $options) use ($facets, $categoryId) {
+            $options['facets'] = $facets;
+            $options['filter'] = 'category_ids = ' . $categoryId;
             return $meilisearch->search($query, $options);
         }
         )->raw();
@@ -175,7 +185,7 @@ class ProductService
     {
         return new ProductResource(
             $product->load(['media', 'variations' => function ($query) {
-                $query->with('children', 'media')->parent();
+                $query->with('children', 'getVariationImages', 'getVariationColor')->parent();
             }
             ])
         );

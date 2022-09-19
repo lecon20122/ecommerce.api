@@ -99,5 +99,6 @@ export interface NewMediaProps {
   thumbnail: string;
   big: string;
   small: string;
+  color: string;
   original: string
 }

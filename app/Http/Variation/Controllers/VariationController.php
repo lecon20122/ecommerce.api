@@ -169,6 +169,19 @@ class VariationController extends BaseController
         }
     }
 
+    public function uploadVariationColorImage(Variation $variation, StoreMediaRequest $request, ImageService $imageService, VariationService $variationService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $variationService->uploadVariationColorImage($variation, $request, $imageService);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError($exception->getMessage());
+        }
+    }
+
     public function deleteVariationImage(Variation $variation, ModelIDsRequest $request, VariationService $variationService): RedirectResponse
     {
         DB::beginTransaction();

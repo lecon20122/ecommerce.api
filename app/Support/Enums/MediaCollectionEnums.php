@@ -9,6 +9,8 @@ class MediaCollectionEnums
     const SMALL = 'small';
     const BIG_CONVENTION = 'big';
     const ZOOM_CONVENTION = 'zoom';
+    const VARIATION_COLOR_CONVENTION = 'variation_color_convention';
+
     const IMAGES = 'images';
     const PRODUCT = 'products';
     const VARIATION = 'variations';
@@ -16,4 +18,5 @@ class MediaCollectionEnums
     const THUMB_CONVENTION = 'thumbnail';
     const IMAGES_CONVENTION = 'images';
     const SMALL_CONVENTION = 'small';
+    const VARIATION_COLOR = 'variation_color';
 }

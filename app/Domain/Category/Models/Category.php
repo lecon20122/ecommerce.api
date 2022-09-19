@@ -66,7 +66,7 @@ class Category extends Model implements HasMedia
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class)->using(CategoryProduct::class);
+        return $this->belongsToMany(Product::class);
     }
 
     /**

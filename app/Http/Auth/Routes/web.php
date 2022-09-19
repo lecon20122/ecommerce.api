@@ -9,5 +9,5 @@ Route::get('login', [ClientLoginController::class, 'getLoginPage'])->name('clien
 Route::post('login', [ClientLoginController::class, 'login'])->name('client.postLogin');
 Route::get('logout', [ClientLoginController::class, 'logout'])->name('client.logout');
 
-Route::get('redirect/{provider}', [SocialiteController::class, 'oauthProviderRedirect'])->name('client.social.login');
-Route::get('callback/{provider}', [SocialiteController::class, 'oauthProviderCallBack'])->name('client.social.callback');
+Route::get('auth/redirect/google', [SocialiteController::class, 'oauthProviderRedirect'])->name('client.social.login');
+Route::get('auth/callback/google', [SocialiteController::class, 'oauthProviderCallBack'])->name('client.social.callback');

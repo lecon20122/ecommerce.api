@@ -11,9 +11,10 @@ interface Props {
   model: Product | Variation
   routeName: string
   multiple: boolean
+  buttonLabel?: string
 }
 
-export default function ImageUploadManually({model, routeName, multiple}: Props) {
+export default function ImageUploadManually({model, routeName, multiple, buttonLabel = 'Click to Upload'}: Props) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
 
@@ -47,7 +48,7 @@ export default function ImageUploadManually({model, routeName, multiple}: Props)
         onRemove={onRemove}
         multiple={multiple}
       >
-        {fileList.length < 6 &&  <Button icon={<UploadOutlined />}>Click to Upload</Button>}
+        {fileList.length < 6 && <Button icon={<UploadOutlined/>}>{buttonLabel}</Button>}
       </Upload>
       <Button
         className='flex'

@@ -25,7 +25,8 @@ class ProductFilterRequest extends FormRequest
     {
         return [
             'color' => 'nullable',
-            'size' => 'nullable'
+            'size' => 'nullable',
+            'style' => 'nullable',
         ];
     }
 }

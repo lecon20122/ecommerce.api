@@ -14,6 +14,7 @@ Route::post('variations/{id}/restore', [VariationController::class, 'restore'])-
 Route::post('variations/{id}/permanent-delete', [VariationController::class, 'permanentDelete'])->name('admin.variations.permanent.delete');
 
 Route::post('variations/{variation}/media', [VariationController::class, 'addMediaToVariation'])->name('admin.add.media.to.variation');
+Route::post('variations/{variation}/color-image', [VariationController::class, 'uploadVariationColorImage'])->name('admin.add.color.image.to.variation');
 Route::post('variations/{variation}/media/delete', [VariationController::class, 'deleteVariationImage'])->name('admin.delete.media.of.variations');
 
 

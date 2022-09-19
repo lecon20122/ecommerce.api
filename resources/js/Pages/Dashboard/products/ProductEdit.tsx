@@ -105,13 +105,13 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
               </div>
             </div>
             <div className='flex gap-2'>
-              <Button disabled={!isDirty || !isValid} htmlType="submit" type="primary">SAVE CHANGES</Button>
+              <Button disabled={!isDirty || !isValid} htmlType="submit" type="default">SAVE CHANGES</Button>
             </div>
           </form>
         </FormProvider>
         <form onSubmit={handleSubmit2(handleAddMediaToProduct)} className={'flex'}>
           <input multiple type={'file'} {...register2('images')}/>
-          <Button type="primary" htmlType="submit">
+          <Button type="default" htmlType="submit">
             upload
           </Button>
         </form>

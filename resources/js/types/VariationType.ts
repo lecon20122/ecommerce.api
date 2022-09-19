@@ -10,6 +10,7 @@ export interface Variation {
   title: string;
   children: Variation[];
   thumbnail?: string
+  color?: NewMediaProps
   media: NewMediaProps[],
   variation_type?: VariationTypes,
   variation_type_value?: VariationTypesValues

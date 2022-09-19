@@ -19,7 +19,7 @@ class CustomPathDirectory implements PathGenerator
 
     public function path($media): string
     {
-        return md5($media->id . config('app.key'));
+        return md5($media->id . config('app.key') . $media->name);
     }
 
     public function getPathForConversions(Media $media): string

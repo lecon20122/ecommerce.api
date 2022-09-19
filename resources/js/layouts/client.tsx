@@ -17,7 +17,6 @@ export default function AppLayout({children}: IAppLayout) {
       <CategoriesNavigation/>
       {children}
       <Footer/>
-      <MobileNavigation/>
     </div>
   )
 }

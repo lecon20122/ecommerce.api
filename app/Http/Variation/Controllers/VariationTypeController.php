@@ -2,26 +2,35 @@
 
 namespace App\Http\Variation\Controllers;
 
+use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Services\VariationTypeService;
 use App\Http\Variation\Requests\StoreVariationTypeRequest;
 use App\Http\Variation\Requests\UpdateVariationTypeRequest;
+use App\Http\Variation\Resources\VariationTypeResource;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class VariationTypeController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function index()
+    public function index(): \Inertia\Response|RedirectResponse
     {
-        //
+        try {
+            return Inertia::render('Dashboard/variations/VariationTypeIndex', [
+                'variationTypes' => VariationTypeResource::collection(VariationType::all())
+            ]);
+        } catch (Exception $exception) {
+            return $this->webMessage($exception->getMessage());
+        }
     }
 
     /**
@@ -69,11 +78,17 @@ class VariationTypeController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function edit($id)
+    public function edit($id): \Inertia\Response|RedirectResponse
     {
-        //
+        try {
+            return Inertia::render('Dashboard/variations/VariationTypeValueIndex', [
+                'currentVariationType' => new VariationTypeResource(VariationType::with('variationTypeValues')->find($id)),
+            ]);
+        } catch (Exception $exception) {
+            return $this->webMessage($exception->getMessage());
+        }
     }
 
     /**
@@ -129,6 +144,7 @@ class VariationTypeController extends BaseController
             return $this->webMessage('ops');
         }
     }
+
     public function permanentDelete(VariationTypeService $service, int $id): RedirectResponse
     {
         DB::beginTransaction();

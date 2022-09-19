@@ -78,7 +78,9 @@ class Product extends Model implements HasMedia
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class)->using(CategoryProduct::class);
+        return $this->belongsToMany(Category::class)
+            ->using(CategoryProduct::class)
+            ->withTimestamps();
     }
 
     public function toSearchableArray(): array

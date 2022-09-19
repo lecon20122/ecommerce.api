@@ -7,15 +7,18 @@ use App\Domain\Product\Models\Variation;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
+use App\Model;
+use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Model>
+ * @extends Factory
  */
 class VariationFactory extends Factory
 {
 
     protected $model = Variation::class;
+
     /**
      * Define the model's default state.
      *
@@ -23,14 +26,23 @@ class VariationFactory extends Factory
      */
     public function definition()
     {
+
         return [
-//            'title' => $this->faker->unique()->sentence,
-            'price' => $this->faker->randomFloat(null , 99 , 500),
-//            'type' => $this->faker->unique()->sentence,
+            'price' => $this->faker->randomFloat(null, 99, 500),
             'order' => $this->faker->randomDigit(),
             'product_id' => Product::factory(),
-            'variation_type_value_id' => VariationTypeValue::factory(),
-            'variation_type_id' => VariationType::factory(),
+            'variation_type_value_id' => rand(1, 4),
+            'variation_type_id' => 1,
         ];
+    }
+
+    public function configure(): VariationFactory
+    {
+        return $this->afterCreating(function (Variation $variation) {
+            $url = 'https://source.unsplash.com/random/1280x1919/?clothes';
+            $variation
+                ->addMediaFromUrl($url)
+                ->toMediaCollection(MediaCollectionEnums::VARIATION);
+        });
     }
 }

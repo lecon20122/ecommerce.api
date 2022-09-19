@@ -19,3 +19,32 @@
 img.ant-image-preview-img {
     display: unset;
 }
+
+.adm-list-item-content-main, .adm-list-item-content, .adm-list-default, .adm-list-body {
+    border: none !important;
+}
+
+@media only screen and (max-width: 768px) {
+    ::-webkit-scrollbar {
+        width: 0;
+    }
+}
+
+.checkbox-square {
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+
+
+.checkbox-square:checked {
+    border: 1px solid black;
+    padding: 5px;
+}
+

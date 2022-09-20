@@ -2,7 +2,7 @@
 
 namespace App\Http\Store\Resources;
 
-use App\Http\Product\Resources\ProductResource;
+use App\Http\Product\Resources\ProductPaginateResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class StoreResource extends JsonResource
@@ -19,7 +19,7 @@ class StoreResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'products' => ProductResource::collection($this->whenLoaded('products')),
+            'products' => ProductPaginateResource::collection($this->whenLoaded('products')),
         ];
     }
 }

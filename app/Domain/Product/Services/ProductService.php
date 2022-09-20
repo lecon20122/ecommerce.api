@@ -9,6 +9,7 @@ use App\Domain\Variation\Services\VariationService;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
+use App\Http\Product\Resources\ProductPaginateResource;
 use App\Http\Product\Resources\ProductResource;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
@@ -24,9 +25,9 @@ class ProductService
 
     /**
      * @param int $id
-     * @return Model|Builder|ProductResource|null
+     * @return ProductResource
      */
-    public function getProductsById(mixed $id): Model|Builder|ProductResource|null
+    public function getProductsById(mixed $id)
     {
         return new ProductResource(
             Product::query()
@@ -127,35 +128,37 @@ class ProductService
         );
     }
 
-    public function getProductsByCategory(Category $category, $filters = null)
+    public function getProductsByCategory(Category $category, $filters = null): array
     {
         $facets = (new VariationService)->getFacetsArray();
 
-        $variationsFilters = $this->recursiveFilterIteration($filters);
-
-        $finalFilterQuery = empty($variationsFilters) ? 'category_ids = ' . $category->id : 'category_ids = ' . $category->id . ' AND ' . $variationsFilters;
+        $finalFilterQuery = $this->filterFactory($filters, $category->id);
 
         $meilisearch = Product::search('', function ($meilisearch, string $query, array $options) use ($category, $finalFilterQuery, $facets) {
-
             $options['filter'] = $finalFilterQuery;
             $options['facets'] = $facets;
             return $meilisearch->search($query, $options);
         }
-        )->raw();
-
-        $products = $category->load('products')->products
-            ->find(collect($meilisearch['hits'])->pluck('id'));
-
-        return [
-            'products' => ProductResource::collection($products->load(['media', 'variations' => function ($query) {
+        )->query(function (Builder $builder) {
+            $builder->with(['media', 'variations' => function ($query) {
                 $query->with('getVariationImages', 'getVariationColor')->parent();
             }
-            ])),
+            ]);
+        })->paginate();
+
+        return [
+            'products' => ProductResource::collection($meilisearch),
             'filters' => $this->getFacetDistribution($facets, $category->id),
             'category' => $category
         ];
     }
 
+    public function filterFactory($filters, $categoryId): string
+    {
+        $variationsFilters = $this->recursiveFilterIteration($filters);
+
+        return empty($variationsFilters) ? 'category_ids = ' . $categoryId : 'category_ids = ' . $categoryId . ' AND ' . $variationsFilters;
+    }
 
     public function recursiveFilterIteration($filters)
     {

@@ -5,21 +5,6 @@ export interface ResponseMessage {
   setStatus?: string,
 }
 
-export interface PaginatedData {
-  current_page: number;
-  first_page_url: string;
-  from: number;
-  last_page: number;
-  last_page_url: string;
-  links: Link[];
-  next_page_url: null;
-  path: string;
-  per_page: number;
-  prev_page_url: null;
-  to: number;
-  total: number;
-}
-
 export interface ModelCommonData {
   id: number;
   created_at?: string;
@@ -27,7 +12,7 @@ export interface ModelCommonData {
 }
 
 export interface Link {
-  url: null | string;
+  url: string;
   label: string;
   active: boolean;
 }
@@ -57,4 +42,28 @@ export interface StoreWithProducts {
   user_id: number;
   user: User;
   products: ProductWithThumbnail[]
+}
+
+export interface PaginateDataType<T> {
+  data: T[];
+  links: Links;
+  meta: Meta;
+}
+
+export interface Links {
+  first: string;
+  last: string;
+  prev: string;
+  next: string;
+}
+
+export interface Meta {
+  current_page: number;
+  from: number;
+  last_page: number;
+  links: Link[];
+  path: string;
+  per_page: number;
+  to: number;
+  total: number;
 }

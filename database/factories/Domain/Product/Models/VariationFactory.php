@@ -31,7 +31,7 @@ class VariationFactory extends Factory
             'price' => $this->faker->randomFloat(null, 99, 500),
             'order' => $this->faker->randomDigit(),
             'product_id' => Product::factory(),
-            'variation_type_value_id' => rand(1, 4),
+            'variation_type_value_id' => rand(1, 5),
             'variation_type_id' => 1,
         ];
     }
@@ -39,7 +39,7 @@ class VariationFactory extends Factory
     public function configure(): VariationFactory
     {
         return $this->afterCreating(function (Variation $variation) {
-            $url = 'https://source.unsplash.com/random/1280x1919/?clothes';
+                $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
             $variation
                 ->addMediaFromUrl($url)
                 ->toMediaCollection(MediaCollectionEnums::VARIATION);

@@ -3,7 +3,9 @@ import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
 import {Title} from "../../types/CategoryType";
 import {Col, Image, Row} from "antd";
+
 import {Button as AntButton} from 'antd';
+import {Image as ImageMobile} from 'antd-mobile';
 import {NewMediaProps} from "../../types/products";
 import {Variation} from "../../types/VariationType";
 

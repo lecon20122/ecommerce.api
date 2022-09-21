@@ -32,7 +32,7 @@ class CategoryController extends BaseController
     {
         try {
             return Inertia::render(
-                'Dashboard/categories/index',
+                'Dashboard/categories/CategoryIndex',
                 [
                     'categories' => $categoryService->adminIndex()
                 ]

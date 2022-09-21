@@ -11,9 +11,9 @@ class StoreCategoryRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        return auth('admin')->check();
     }
 
     /**
@@ -28,7 +28,7 @@ class StoreCategoryRequest extends FormRequest
             'en' => 'required|unique:categories,title',
             'parent_id' => 'nullable',
             'images' => 'nullable',
-            'images.*' => 'mimes:jpg|max:1024',
+            'images.*' => 'mimes:jpg,webp|max:1024',
         ];
     }
 }

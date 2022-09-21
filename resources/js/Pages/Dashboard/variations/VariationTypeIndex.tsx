@@ -7,6 +7,7 @@ import ModalWithChildren from "./ModalWithChildren";
 import {EditOutlined, DeleteOutlined} from '@ant-design/icons'
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
+import AntDesignDataTable from "../../../components/DataTables/AntDesignDataTable";
 
 interface DataType extends VariationTypes {
   key?: string;
@@ -79,7 +80,7 @@ function VariationTypeIndex({variationTypes, locale}: Props) {
         <Button onClick={() => setOpenModal(true)}>create new record</Button>
         <Divider/>
         <ModalWithChildren openModal={openModal} onOk={() => setOpenModal(false)}
-                           onCancel={() => setOpenModal(false)}>
+                           onCancel={() => setOpenModal(false)} title={"Create New Variation"}>
           <Form
             name="basic"
             labelCol={{span: 8}}
@@ -122,7 +123,7 @@ function VariationTypeIndex({variationTypes, locale}: Props) {
             </Form.Item>
           </Form>
         </ModalWithChildren>
-        <Table rowKey="id" columns={columns} dataSource={variationTypes}/>
+        <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={variationTypes}/>
       </div>
     </DashboardLayout>
   );

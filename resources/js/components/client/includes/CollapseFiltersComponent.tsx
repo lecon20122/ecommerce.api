@@ -17,7 +17,7 @@ interface Props {
 
 function CollapseFilters({filters, category}: Props) {
   const [selectedFilters, setSelectedFilters] = useState<IFormProps>({color: [], size: [], style: []})
-
+  console.log(filters)
   useEffect(() => {
     Inertia.post(route('shop.by.category.post', category), selectedFilters)
   }, [selectedFilters])

@@ -3,7 +3,7 @@
 namespace App\Http\Category\Resources;
 
 use App\Http\Media\Resources\MediaResource;
-use App\Http\Product\Resources\ProductPaginateResource;
+use App\Http\Product\Resources\ProductResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,7 +24,7 @@ class CategoryResource extends JsonResource
             'slug' => $this->slug,
             'children' => CategoryResource::collection($this->whenLoaded('children')),
             'parent' => new CategoryResource($this->whenLoaded('parent')),
-            'products' => ProductPaginateResource::collection($this->whenLoaded('products')),
+            'products' => ProductResource::collection($this->whenLoaded('products')),
             'thumbnail' => new MediaResource($this->whenLoaded('thumbnail')),
         ];
     }

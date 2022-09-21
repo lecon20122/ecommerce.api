@@ -18,7 +18,7 @@ interface MediaForm {
 }
 
 export default function VariationEdit({currentVariation, variationTypesValues, variationTypes}: Props) {
-  console.log(currentVariation)
+
   const [variationTypeId, setVariationTypeId] = useState(0)
   const [filteredVariationType, setFilteredVariationType] = useState<VariationTypesValues[]>([{
     id: 0,
@@ -117,8 +117,9 @@ export default function VariationEdit({currentVariation, variationTypesValues, v
             )}
           </Form.Item>
         </Form>
-        <ImageUploadManually model={currentVariation} routeName={'admin.add.media.to.variation'} multiple/>
-        <ImageUploadManually model={currentVariation} routeName={'admin.add.color.image.to.variation'} multiple={false} buttonLabel={'Choose Variation Color'}/>
+        <ImageUploadManually param={currentVariation} routeName={'admin.add.media.to.variation'} multiple/>
+        <ImageUploadManually param={currentVariation} routeName={'admin.add.color.image.to.variation'} multiple={false}
+                             buttonLabel={'Choose Variation Color'}/>
         <MediaProductCollection product={currentVariation} deleteURL={'admin.delete.media.of.variations'}/>
       </div>
     </DashboardLayout>

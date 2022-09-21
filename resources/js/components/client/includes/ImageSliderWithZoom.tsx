@@ -20,42 +20,41 @@ function ImageSliderWithZoom({media, currentMedia}: Props) {
 
   const sliderList = media?.map((img) => {
     return (
-      <div key={img.id} className="p-1 hover:border-black hover:border hidden lg:flex">
-        <img className="w-14 h-14" src={img.small} alt="Product title" onMouseOver={() => handleOnMouseOver(img)}/>
+      <div key={img.id} className="mr-1 my-1 lg:my-0 flex">
+        <div className='hover:border-black hover:border'>
+          <img className='' src={img.small} alt="Product title" onMouseOver={() => handleOnMouseOver(img)}/>
+        </div>
       </div>
     )
   })
 
   const swiperItems = media.map((img, index) => (
     <Swiper.Item key={img.id}>
-      <Image className="" preview={{src: img.original}} src={img.big} alt="Product title"
+      <Image className="" preview={{src: img.original , visible : false}} src={img.big} alt="Product title"
              onMouseOver={() => handleOnMouseOver(img)}/>
     </Swiper.Item>
   ))
 
   return (
-    <Row>
-      <Col span={2}>
-        <div className="space-x-2 text-center whitespace-nowrap">
-          {sliderList}
-        </div>
-      </Col>
-      <Col span={24} lg={{span: 22}}>
-        {/*<div className="lg:px-2 hidden lg:flex">*/}
-        {/*  <Image preview={{src: currentImage?.original}} src={currentImage?.big}*/}
-        {/*         alt="Product title"/>*/}
-        {/*</div>*/}
+    <div className='flex md:flex-row flex-col basis-3/6'>
+      <div className='order-first lg:order-last'>
         <Swiper
           allowTouchMove
           ref={ref}
           className="lg:hidden"
           indicator={() => null}
-          // slideSize={80}
+          trackOffset={0}
+          slideSize={100}
         >
           {swiperItems}
         </Swiper>
-      </Col>
-    </Row>
+      </div>
+      <div className='basis-14 order-last lg:order-first hidden lg:flex'>
+        <div className="space-x-2 text-center whitespace-nowrap">
+          {sliderList}
+        </div>
+      </div>
+    </div>
   )
 
 }

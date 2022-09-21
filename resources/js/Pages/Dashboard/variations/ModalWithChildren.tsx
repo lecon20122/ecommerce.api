@@ -9,14 +9,17 @@ interface Props {
   onOk: () => void
   onCancel: () => void
   children: React.ReactNode
+  title?: string
 }
 
-function ModalWithChildren({openModal, onOk, onCancel, children}: Props) {
-
+function ModalWithChildren({openModal, onOk, onCancel, children, title}: Props) {
 
   return (
     <Modal
-      title="20px to Top"
+      okButtonProps={{
+        type : "default"
+      }}
+      title={title}
       centered
       onOk={onOk}
       onCancel={onCancel}

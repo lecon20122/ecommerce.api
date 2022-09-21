@@ -25,7 +25,7 @@ class StoreController extends BaseController
     public function index(): \Inertia\Response|RedirectResponse
     {
         try {
-            return Inertia::render('Dashboard/stores/index', [
+            return Inertia::render('Dashboard/stores/StoreIndex', [
                 'stores' => StoreResource::collection((new StoreService())->index())]);
         } catch (Exception $exception) {
             return $this->webMessage($exception->getMessage());

@@ -52,85 +52,84 @@ function ProductDetails({product, locale}: Props) {
       <div>
         <div className="bg-white lg:py-10">
           <div className="max-w-screen-xl lg:mx-auto px-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/*<div className="grid grid-cols-1 sm:grid-cols-2 gap-2"  > */}
+            <div className="flex md:flex-row flex-col">
               <ImageSliderWithZoom media={currentMedia} currentMedia={currentImage}/>
-              <main>
-                <h2 className="font-semibold text-2xl mb-4">
-                  {product.title[locale as keyof typeof product.title]}
-                </h2>
+              <main className='container basis-3/6'>
+                <div className='mx-auto'>
+                  <h2 className="font-semibold text-2xl mb-4">
+                    {product.title[locale as keyof typeof product.title]}
+                  </h2>
+                  <div className="flex flex-wrap items-center space-x-2 mb-2">
+                    <span className="text-yellow-500">9.3</span>
 
-                <div className="flex flex-wrap items-center space-x-2 mb-2">
+                    <svg width="6px" height="6px" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="3" cy="3" r="3" fill="#DBDBDB"/>
+                    </svg>
 
-                  {/*<img className="d-inline-block h-4" src="images/misc/stars-active.svg" alt="Rating"/>*/}
-
-                  <span className="text-yellow-500">9.3</span>
-
-                  <svg width="6px" height="6px" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="3" cy="3" r="3" fill="#DBDBDB"/>
-                  </svg>
-
-                  <span className="text-gray-400">
+                    <span className="text-gray-400">
 							<i className="fa fa-shopping-bag mr-2"/> 154 orders
 						</span>
 
-                  <svg width="6px" height="6px" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="3" cy="3" r="3" fill="#DBDBDB"/>
-                  </svg>
+                    <svg width="6px" height="6px" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="3" cy="3" r="3" fill="#DBDBDB"/>
+                    </svg>
 
-                  <span className="text-green-500">Verified</span>
+                    <span className="text-green-500">Verified</span>
 
-                </div>
-
-                <p className="mb-4 font-semibold text-2xl">EGP {product.price}
-
-                </p>
-
-                <p className="mb-4 text-gray-500">
-                  {product.description}
-                </p>
-                <ul className="mb-5">
-                  <li className="mb-1"><b className="font-medium w-36 inline-block">Model#:</b>
-                    <span className="text-gray-500">Odsy-1000</span>
-                  </li>
-                  <li className="mb-1"><b className="font-medium w-36 inline-block">Color:</b>
-                    <span className="text-gray-500">Brown</span>
-                  </li>
-                  <li className="mb-1"><b className="font-medium w-36 inline-block">Delivery:</b>
-                    <span className="text-gray-500">Russia, USA & Europe</span></li>
-                  <li className="mb-1"><b className="font-medium w-36 inline-block">Color:</b>
-                    <span className="text-gray-500">Brown</span>
-                  </li>
-                </ul>
-                <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
-                  <div className="flex">
-                    <span className="mr-3">Color</span>
-                    {variationColorsList}
                   </div>
-                  <div className="flex ml-6 items-center">
-                    <span className="mr-3">Size</span>
-                    <Radio.Group defaultValue="a" buttonStyle="solid">
-                      {variationSizeList}
-                    </Radio.Group>
+
+                  <p className="mb-4 font-semibold text-2xl">EGP {product.price}
+
+                  </p>
+
+                  <p className="mb-4 text-gray-500">
+                    {product.description}
+                  </p>
+                  <ul className="mb-5">
+                    <li className="mb-1"><b className="font-medium w-36 inline-block">Model#:</b>
+                      <span className="text-gray-500">Odsy-1000</span>
+                    </li>
+                    <li className="mb-1"><b className="font-medium w-36 inline-block">Color:</b>
+                      <span className="text-gray-500">Brown</span>
+                    </li>
+                    <li className="mb-1"><b className="font-medium w-36 inline-block">Delivery:</b>
+                      <span className="text-gray-500">Russia, USA & Europe</span></li>
+                    <li className="mb-1"><b className="font-medium w-36 inline-block">Color:</b>
+                      <span className="text-gray-500">Brown</span>
+                    </li>
+                  </ul>
+                  <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
+                    <div className="flex">
+                      <span className="mr-3">Color</span>
+                      {variationColorsList}
+                    </div>
+                    <div className="flex ml-6 items-center">
+                      <span className="mr-3">Size</span>
+                      <Radio.Group defaultValue="a" buttonStyle="solid">
+                        {variationSizeList}
+                      </Radio.Group>
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <a
-                    className="px-4 py-2 inline-block text-white bg-yellow-500 border border-transparent rounded-md hover:bg-yellow-600"
-                    href="#">
-                    Buy now
-                  </a>
-                  <a
-                    className="px-4 py-2 inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
-                    href="#">
-                    <i className="fa fa-shopping-cart mr-2"/>
-                    Add to cart
-                  </a>
-                  <a
-                    className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100"
-                    href="#">
-                    <i className="fa fa-heart mr-2"/>
-                    Save for later
-                  </a>
+                  <div className="flex flex-wrap gap-2">
+                    <a
+                      className="px-4 py-2 inline-block text-white bg-yellow-500 border border-transparent rounded-md hover:bg-yellow-600"
+                      href="#">
+                      Buy now
+                    </a>
+                    <a
+                      className="px-4 py-2 inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
+                      href="#">
+                      <i className="fa fa-shopping-cart mr-2"/>
+                      Add to cart
+                    </a>
+                    <a
+                      className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100"
+                      href="#">
+                      <i className="fa fa-heart mr-2"/>
+                      Save for later
+                    </a>
+                  </div>
                 </div>
               </main>
             </div>

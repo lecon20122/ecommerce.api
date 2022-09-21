@@ -11,7 +11,7 @@ const appName = window.document.getElementsByTagName('title')[0]?.innerText || '
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.tsx`, import.meta.glob('./Pages/**/*.tsx')),
+    resolve: async (name) => resolvePageComponent(`./Pages/${name}.tsx`, await import.meta.glob('./Pages/**/*.tsx')),
     setup({el, App, props}) {
         const container = document.getElementById('app');
         const root = createRoot(container);

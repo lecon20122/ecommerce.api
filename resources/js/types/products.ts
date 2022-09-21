@@ -14,6 +14,7 @@ export interface Category {
   children?: Category[];
   products?: Product[];
   thumbnail?: Thumbnail;
+  parent: Category
 }
 
 export interface Product {

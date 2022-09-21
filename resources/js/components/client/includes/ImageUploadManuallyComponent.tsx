@@ -3,18 +3,24 @@ import {Button, Form, message, Upload} from 'antd';
 import type {RcFile, UploadChangeParam, UploadFile, UploadProps} from 'antd/es/upload/interface';
 import React, {useState} from 'react';
 import {Inertia} from "@inertiajs/inertia";
-import route from "ziggy-js";
+import route, {RouteParam, RouteParamsWithQueryOverload} from "ziggy-js";
 import {Product} from "../../../types/products";
 import {Variation} from "../../../types/VariationType";
+import {Category} from "../../../types/CategoryType";
 
 interface Props {
-  model: Product | Variation
+  param: RouteParamsWithQueryOverload | RouteParam
   routeName: string
   multiple: boolean
   buttonLabel?: string
 }
 
-export default function ImageUploadManually({model, routeName, multiple, buttonLabel = 'Click to Upload'}: Props) {
+export default function ImageUploadManually({
+                                              param,
+                                              routeName,
+                                              multiple,
+                                              buttonLabel = 'Click to Upload'
+                                            }: Props) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
 
@@ -24,7 +30,7 @@ export default function ImageUploadManually({model, routeName, multiple, buttonL
       formData.append('images[]', file.originFileObj as RcFile);
     });
     setUploading(true);
-    Inertia.post(route(routeName, model), formData, {
+    Inertia.post(route(routeName, param), formData, {
       preserveState: false
     })
   };

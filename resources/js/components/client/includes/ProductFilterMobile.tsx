@@ -1,23 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Filters} from "../../../Pages/Client/ShopByCategory";
 import {Category} from "../../../types/CategoryType";
-import {Dropdown, Popup, Radio, Space, Collapse} from 'antd-mobile'
-import {FilterOutline, MinusOutline, CloseOutline} from 'antd-mobile-icons'
-
-import {ArrowDownCircleOutline, DownOutline, AddOutline} from 'antd-mobile-icons'
+import {Dropdown, Popup, Radio, Space,} from 'antd-mobile'
+import {FilterOutline, CloseOutline} from 'antd-mobile-icons'
 import {Button} from "antd";
-import {SubmitHandler, useForm} from "react-hook-form";
-import {Inertia} from "@inertiajs/inertia";
-import route from "ziggy-js";
 import CollapseFiltersComponent from "./CollapseFiltersComponent";
 
 interface Props {
   filters: Filters
   category: Category
-}
-
-interface IFormProps {
-  [key: string]: string[]
 }
 
 function ProductFilterMobile({filters, category}: Props) {

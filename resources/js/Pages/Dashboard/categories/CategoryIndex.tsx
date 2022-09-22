@@ -18,6 +18,7 @@ import {VariationTypes} from "../../../types/VariationType";
 import AntDesignDataTable from "../../../components/DataTables/AntDesignDataTable";
 import ModalWithChildren from "../variations/ModalWithChildren";
 import {RcFile, UploadChangeParam, UploadFile} from "antd/es/upload/interface";
+import Helpers from "../../../utils/Helpers";
 
 interface Props {
   categories: Array<Category>
@@ -28,16 +29,13 @@ interface DataType extends Category {
   key?: string;
 }
 
-interface Interface {
-
-}
 
 export default function CategoryIndex({categories, locale}: Props) {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [currentCategoryId, setCurrentCategoryId] = useState(0);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-
+  const helpers = new Helpers()
   const handleAddDialog = () => {
     setOpenAddDialog(!openAddDialog);
   };
@@ -125,11 +123,7 @@ export default function CategoryIndex({categories, locale}: Props) {
     if (!values.images) {
       storeCategoriesAction(values)
     } else {
-      let images: any = []
-      fileList.forEach(file => {
-        images.push(file.originFileObj as RcFile)
-      });
-      values.images = images
+      values.images = helpers.appendImageToFormData(fileList)
       storeCategoriesAction(values)
     }
   };

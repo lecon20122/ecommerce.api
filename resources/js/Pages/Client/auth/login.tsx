@@ -1,7 +1,6 @@
 import React from 'react'
 import Footer from "../../../components/client/includes/footer";
 import {GoogleOutlined} from '@ant-design/icons'
-import {InertiaLink} from "@inertiajs/inertia-react";
 import route from "ziggy-js";
 
 

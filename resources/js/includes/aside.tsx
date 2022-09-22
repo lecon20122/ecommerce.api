@@ -1,13 +1,13 @@
 import React from "react";
-import { usePage, InertiaLink } from '@inertiajs/inertia-react';
-import { User, LoginInfo } from '../types/auth';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignOutAlt, faUserAlt } from '@fortawesome/free-solid-svg-icons';
+import {usePage, InertiaLink} from '@inertiajs/inertia-react';
+import {User, LoginInfo} from '../types/auth';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSignOutAlt, faUserAlt} from '@fortawesome/free-solid-svg-icons';
 import route from 'ziggy-js';
 
 export default function Aside() {
 
-  const { auth }: any = usePage().props
+  const {auth}: any = usePage().props
 
   const sidebar = document.getElementById("sidebar");
   const backdrop = document.getElementById("backdrop");
@@ -15,6 +15,10 @@ export default function Aside() {
   const hide_sidebar = () => {
     sidebar?.classList.add("-left-full");
     backdrop?.classList.add("hidden");
+  };
+  const open_sidebar = () => {
+    sidebar?.classList.remove('-left-full');
+    backdrop?.classList.remove('hidden');
   };
 
   return (
@@ -30,7 +34,7 @@ export default function Aside() {
             className="max-h-9 hover:opacity-70"
           /> */}
         </a>
-        <h3 className="text-white text-left"> <FontAwesomeIcon icon={faUserAlt} /> {auth.name}</h3>
+        <h3 className="text-white text-left"><FontAwesomeIcon icon={faUserAlt}/> {auth.name}</h3>
         <button
           onClick={() => hide_sidebar()}
           className="md:hidden float-right appearance-none border border-transparent bg-transparent text-white"
@@ -70,8 +74,8 @@ export default function Aside() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
               </svg>
             </span>
             <span className="ml-3">Dashboard</span>
@@ -121,9 +125,9 @@ export default function Aside() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                <circle cx="9" cy="21" r="1"/>
+                <circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
               </svg>
             </span>
             <span className="ml-3">Stores</span>
@@ -175,7 +179,8 @@ export default function Aside() {
                 strokeLinejoin="round"
               >
                 <circle cx="12" cy="12" r="3"/>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
               </svg>
             </span>
             <span className="ml-3">Variations Settings</span>
@@ -214,7 +219,7 @@ export default function Aside() {
                 width="24"
               >
                 {" "}
-                <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
               </svg>
             </span>
           </a>
@@ -236,10 +241,11 @@ export default function Aside() {
 
       </ul>
 
-      <hr className="border-blue-600" />
+      <hr className="border-blue-600"/>
 
       <div className="px-5 my-6">
-        <button className="inline-block w-full text-left px-4 py-2 text-black bg-yellow-400 border border-transparent rounded-md hover:bg-yellow-500">
+        <button
+          className="inline-block w-full text-left px-4 py-2 text-black bg-yellow-400 border border-transparent rounded-md hover:bg-yellow-500">
           Create account
           <span className="float-right" aria-hidden="true">
             +

@@ -2,18 +2,22 @@ import React, {useState} from 'react';
 import {ProductWithThumbnail} from "../../types/products";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
-import PrimeDataTable from "../DataTables/PrimeDataTable";
-import {Column} from "primereact/column";
-import {Button as PrimeButton} from 'primereact/button';
 import ToggleRestoreDeleteButton from "../Forms/Buttons/ToggleDeleteRestoreButton";
 import {VariationTypes, VariationTypesValues} from "../../types/VariationType";
 import VariationList from "./VariationList";
+import AntDesignDataTable from "../DataTables/AntDesignDataTable";
+import {ColumnsType} from "antd/es/table";
+import {Button, Space} from "antd";
 
 interface Props {
   products: ProductWithThumbnail[];
   variationTypes: VariationTypes[]
   variationTypesValues: VariationTypesValues[]
   locale: string
+}
+
+interface DataType extends ProductWithThumbnail {
+  key?: string;
 }
 
 function ProductList({products, locale, variationTypesValues, variationTypes}: Props) {
@@ -57,26 +61,86 @@ function ProductList({products, locale, variationTypesValues, variationTypes}: P
 
   const actionBodyTemplate = (rowData: any) => {
     return (
-      <React.Fragment>
+      <>
         <ToggleRestoreDeleteButton handleOnClickRestore={handleOnClickRestore} handleOnClickDelete={handleOnClickDelete}
                                    params={rowData}/>
-        <PrimeButton icon="pi pi-pencil" className="p-button p-button-success mr-2"
-                     onClick={() => newHandleUpdate(rowData)}/>
-      </React.Fragment>
+        <Button
+          className={'mr-2'}
+          type={'default'}
+          onClick={() => newHandleUpdate(rowData)}>
+          UPDATE
+        </Button>
+      </>
     );
   }
 
+  const columns: ColumnsType<DataType> = [
+    {
+      key: 'id',
+      title: 'ID',
+      dataIndex: 'id',
+    },
+    {
+      key: 'media',
+      title: 'Image',
+      dataIndex: 'media',
+      render: (_, record) => (
+        imageBodyTemplate(record)
+      ),
+    },
+    {
+      key: 'title',
+      title: 'Title EN',
+      dataIndex: 'title',
+      render: (_, record) => (
+        <Space size="middle">
+          <span>{record.title.en}</span>
+        </Space>
+      ),
+    },
+    {
+      key: 'title',
+      title: 'Title AR',
+      dataIndex: 'title',
+      render: (_, record) => (
+        <Space size="middle">
+          <span>{record.title.ar}</span>
+        </Space>
+      ),
+    },
+    {
+      key: 'price',
+      title: 'Price',
+      dataIndex: 'price',
+      render: (_, record) => (
+        <Space size="middle">
+          <span>{record.price}</span>
+        </Space>
+      ),
+    },
+    {
+      key: 'deleted_at',
+      title: 'Deleted At',
+      dataIndex: 'deleted_at',
+      render: (_, record) => (
+        <Space size="middle">
+          <span>{record.deleted_at}</span>
+        </Space>
+      ),
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        actionBodyTemplate(record)
+      ),
+    },
+  ]
+
+
   return (
     <main className="bg-white shadow-md rounded">
-      <PrimeDataTable data={products}>
-        <Column field="id" header="ID" sortable/>
-        <Column header="Image" body={imageBodyTemplate}/>
-        <Column field="title.en" header="Title EN" sortable/>
-        <Column field="title.ar" header="Title AR" sortable/>
-        <Column field="price" header="Price" sortable/>
-        <Column field="deleted_at" header="Deleted At" sortable/>
-        <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '8rem'}}/>
-      </PrimeDataTable>
+      <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={products}/>
     </main>
   );
 }

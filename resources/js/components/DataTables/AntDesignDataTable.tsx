@@ -12,7 +12,7 @@ interface Props {
 
 function AntDesignDataTable({rowKey = "id", columns, dataSource}: Props) {
   return (
-    <Table rowKey={rowKey} columns={columns} dataSource={dataSource}/>
+    <Table rowKey={rowKey} columns={columns} dataSource={dataSource} scroll={{x: true}}/>
   );
 }
 

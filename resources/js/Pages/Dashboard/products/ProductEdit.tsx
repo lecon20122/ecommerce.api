@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
 import TextField from '@mui/material/TextField';
-import {Button, Form, Select} from 'antd';
+import {Button, Divider, Form, Input, InputNumber, Select, Upload} from 'antd';
 import {Inertia} from '@inertiajs/inertia';
 import route from 'ziggy-js';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
@@ -12,6 +12,10 @@ import {Title} from "../../../types/CategoryType";
 import {Variation, VariationTypes, VariationTypesValues} from "../../../types/VariationType";
 import VariationList from "../../../components/Lists/VariationList";
 import {Category, NewMediaProps} from "../../../types/products";
+import {PlusOutlined} from "@ant-design/icons";
+import {UploadChangeParam, UploadFile} from "antd/es/upload/interface";
+import Helpers from "../../../utils/Helpers";
+import UploadImageComponent from "../../../components/Forms/UploadImageComponent";
 
 interface Props {
   currentProduct: Product
@@ -48,6 +52,9 @@ interface MediaForm {
 export default function ProductEdit({currentProduct, locale, variationTypesValues, variationTypes, categories}: Props) {
   console.log(currentProduct)
   const form = useForm<IFormProps>({mode: "onChange"})
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const helpers = new Helpers()
+
   const {register, handleSubmit, formState: {errors, isDirty, isValid}, getValues, reset} = form
   const {
     register: register2,
@@ -64,59 +71,77 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
     })
     reset(getValues())
   }
-  const handleAddMediaToProduct: SubmitHandler<MediaForm> = (data) => {
-    const resolveData = {...data}
-    Inertia.post(route('admin.add.media.to.product', currentProduct), resolveData)
-    console.log(data)
-  }
 
   const onFinishAttachCategories = (values: any) => {
-    // console.log(values)
     Inertia.post(route('admin.attach.category.to.product', currentProduct), values, {
       preserveState: false
     })
   }
+
+  const onFinish = (values: any) => {
+    console.log(values)
+  };
+
   return (
     <DashboardLayout>
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
-        <FormProvider {...form}>
-          <form onSubmit={handleSubmit(handleUpdateProduct)} encType={'multipart/form-data'} className='mb-3'>
-            <div className="-mx-3 md:flex mb-6">
-              <div className="md:w-1/4 px-3 mb-6 md:mb-0">
-                <TextField {...register('ar')} name={'ar'} fullWidth label="Product Title AR"
-                           defaultValue={currentProduct.title.ar}/>
-                {serverSideErrors.title && <Alert text={serverSideErrors.title} type={"red"}/>}
-              </div>
-              <div className="md:w-1/4 px-3 mb-6 md:mb-0">
-                <TextField {...register('en')} name={'en'} fullWidth label="Product Title EN"
-                           defaultValue={currentProduct.title.en}/>
-                {serverSideErrors.title && <Alert text={serverSideErrors.title} type={"red"}/>}
-              </div>
-              <div className="md:w-1/4 px-3">
-                <TextField type={'number'} {...register('price', {valueAsNumber: true})} name={'price'} fullWidth
-                           label="Price"
-                           defaultValue={currentProduct.price}/>
-                {serverSideErrors.price && <Alert text={serverSideErrors.price} type={"red"}/>}
-              </div>
-              <div className="md:w-1/4 px-3">
-                <TextField {...register('description')} name={'description'} fullWidth label="Description"
-                           defaultValue={currentProduct.description}/>
-                {serverSideErrors.description && <Alert text={serverSideErrors.description} type="red"/>}
-              </div>
-            </div>
-            <div className='flex gap-2'>
-              <Button disabled={!isDirty || !isValid} htmlType="submit" type="default">SAVE CHANGES</Button>
-            </div>
-          </form>
-        </FormProvider>
-        <form onSubmit={handleSubmit2(handleAddMediaToProduct)} className={'flex'}>
-          <input multiple type={'file'} {...register2('images')}/>
-          <Button type="default" htmlType="submit">
-            upload
-          </Button>
-        </form>
-        <Form className={'flex py-3'} onFinish={onFinishAttachCategories}>
-          <Form.Item name="id" label="Attach to Category" style={{width: '30%'}}>
+        <Form
+          name="basic"
+          labelCol={{span: 2}}
+          wrapperCol={{span: 12}}
+          onFinish={onFinish}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Title EN"
+            initialValue={currentProduct.title.en}
+            name="en"
+            rules={[{required: true}]}
+          >
+            <Input/>
+          </Form.Item>
+
+
+          <Form.Item
+            label="Title AR"
+            name="ar"
+            initialValue={currentProduct.title.ar}
+            rules={[{required: true}]}
+          >
+            <Input/>
+          </Form.Item>
+          <Form.Item
+            label="Description"
+            initialValue={currentProduct.description}
+            name="description"
+            rules={[{required: true}]}
+          >
+            <Input/>
+          </Form.Item>
+          <Form.Item
+            label="Price"
+            initialValue={currentProduct.price}
+            name="price"
+            rules={[{required: true, type: "integer", min: 0, max: 100000}]}
+          >
+            <InputNumber/>
+          </Form.Item>
+          <Form.Item wrapperCol={{offset: 2, span: 1}}>
+            <Button type="default" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+        <Divider/>
+        <div>
+          <MediaProductCollection product={currentProduct} deleteURL={'admin.delete.media.of.product'}/>
+          <UploadImageComponent buttonLabel={'UPLOAD'} routeName={'admin.add.media.to.product'}
+                                params={currentProduct}/>
+        </div>
+        <Divider/>
+        <Form className='basis-1/4' onFinish={onFinishAttachCategories} labelCol={{span: 2}}
+              wrapperCol={{span: 12}}>
+          <Form.Item name="id" label="Attach to Category">
             <Select
               mode="multiple"
               placeholder="Select a category from above"
@@ -135,7 +160,7 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
             </Button>
           </Form.Item>
         </Form>
-        <MediaProductCollection product={currentProduct} deleteURL={'admin.delete.media.of.product'}/>
+
         <VariationList variations={currentProduct.variations} variationTypes={variationTypes}
                        variationTypesValues={variationTypesValues} productId={currentProduct.id}/>
       </div>

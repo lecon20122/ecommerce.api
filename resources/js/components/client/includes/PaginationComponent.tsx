@@ -10,7 +10,7 @@ interface Props {
 
 
 function PaginationComponent({meta, links}: Props) {
-  console.log(links)
+
   const isButtonDisabled = () => {
     if (links.prev === null) {
       return true

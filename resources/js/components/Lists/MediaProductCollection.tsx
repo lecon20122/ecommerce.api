@@ -38,17 +38,17 @@ export default function MediaProductCollection({product, deleteURL}: Props) {
   }
 
   return (
-    <Row gutter={{xs: 8, sm: 16, md: 24, lg: 8}} justify={'center'} className={'py-5'}>
+    <div className={'flex flex-wrap my-2'}>
       <Image.PreviewGroup>
         {product.media?.map((item, index) => (
-          <Col key={item.id} className="gutter-row" span={5}>
-            <Image width={300} src={item.thumbnail} className='px-1'/>
+          <div key={item.id} className='flex-[1_1_130px] my-1'>
+            <Image src={item.thumbnail} className='px-1'/>
             <AntButton type="dashed" danger className='flex' onClick={e => handleMediaDelete(item.id)}>
               Delete
             </AntButton>
-          </Col>
+          </div>
         ))}
       </Image.PreviewGroup>
-    </Row>
+    </div>
   )
 }

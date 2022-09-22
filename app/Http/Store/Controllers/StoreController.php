@@ -82,7 +82,7 @@ class StoreController extends BaseController
     public function edit(int $id): \Inertia\Response
     {
         try {
-            return Inertia::render('Dashboard/stores/edit', [
+            return Inertia::render('Dashboard/stores/StoreEdit', [
                 'currentStore' => (new StoreService())->getStoreById($id),
                 'variationTypes' => (new VariationService())->getVariationTypes(),
                 'variationTypesValues' => (new VariationService())->getVariationTypeValues(),

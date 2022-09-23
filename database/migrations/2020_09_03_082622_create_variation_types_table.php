@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('variation_types', function (Blueprint $table) {
             $table->id();
-            $table->json('type')->unique();
+            $table->json('type');
             $table->boolean('is_mediable')->unsigned();
             $table->timestamps();
             $table->softDeletes();

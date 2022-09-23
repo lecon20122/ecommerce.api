@@ -1,0 +1,1 @@
+import{d as i}from"./keys.229fae5c.js";var n=i,o=function(){try{var e=n(Object,"defineProperty");return e({},"",{}),e}catch{}}(),s=o,a=s;function u(e,r,t){r=="__proto__"&&a?a(e,r,{configurable:!0,enumerable:!0,value:t,writable:!0}):e[r]=t}var _=u;function f(e){return e}var d=f;export{_,s as a,d as i};

@@ -32,9 +32,6 @@ export default function PrimeHero() {
     {
       image: 'https://img.ltwebstatic.com/images3_ach/2022/08/20/16609632771dbb082916844844a15cbcc6b58f736d.webp',
     },
-    {
-      image: 'https://img.ltwebstatic.com/images3_ach/2022/08/18/166081500939a7633ebf6bbd00f0fcfb59bfb2d426.jpg',
-    },
   ]
 
 
@@ -47,7 +44,8 @@ export default function PrimeHero() {
   }
 
   return (
-    <Carousel value={images} containerClassName={'hide-navigator'} numVisible={2} numScroll={1} responsiveOptions={responsiveOptions}
+    <Carousel value={images} containerClassName={'hide-navigator'} numVisible={2} numScroll={1}
+              responsiveOptions={responsiveOptions}
               itemTemplate={productTemplate} circular indicatorsContentClassName='hidden' autoplayInterval={3000}/>
   );
 }

@@ -54,22 +54,6 @@ export default function ProductIndex({products, locale}: Props) {
     setOpenDeleteDialog(false);
   };
 
-
-  const columns: ColDef[] = [
-    {field: 'id', headerName: 'ID'},
-    {field: `title.ar`, headerName: 'Title AR', floatingFilter: true, flex: 1, cellClass: 'font-bold'},
-    {field: `title.en`, headerName: 'Title EN', floatingFilter: true, flex: 1, cellClass: 'font-bold'},
-    // {field: `parent.title.${locale}`, headerName: 'Parent', floatingFilter: true, cellClass: 'font-bold'},
-    {field: 'created_at', headerName: 'Created At', filter: 'agDateColumnFilter', floatingFilter: true},
-    {
-      headerName: 'Actions', cellRenderer: (params: any) =>
-        <div>
-          <Button onClick={event => handleOnClickUpdateDialog(event, params)}>UPDATE</Button>
-          <Button color='error' onClick={event => handleOnClickDelete(event, params)}>delete</Button>
-        </div>
-    }
-  ]
-
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
     Inertia.post(route('admin.products.store'), resolveData, {

@@ -1043,17 +1043,17 @@
       "resources/js/app.jsx"
     ]
   },
-  "resources/js/Pages/Client/index.css": {
-    "file": "assets/index.8ecbf6ab.css",
-    "src": "resources/js/Pages/Client/index.css"
+  "with-default-props.css": {
+    "file": "assets/with-default-props.fe49b11e.css",
+    "src": "with-default-props.css"
   },
   "resources/js/Pages/Client/ShopByCategory.css": {
     "file": "assets/ShopByCategory.54499462.css",
     "src": "resources/js/Pages/Client/ShopByCategory.css"
   },
-  "with-default-props.css": {
-    "file": "assets/with-default-props.fe49b11e.css",
-    "src": "with-default-props.css"
+  "resources/js/Pages/Client/index.css": {
+    "file": "assets/index.8ecbf6ab.css",
+    "src": "resources/js/Pages/Client/index.css"
   },
   "resources/js/Pages/Client/ProductDetails.css": {
     "file": "assets/ProductDetails.dc296978.css",

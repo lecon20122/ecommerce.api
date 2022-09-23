@@ -4,13 +4,13 @@ namespace App\Http\Store\Controllers;
 
 use App\Domain\Store\Models\Store;
 use App\Domain\Store\Services\StoreService;
+use App\Domain\Variation\Services\VariationService;
 use App\Http\Store\Requests\StoreCreateRequest;
 use App\Http\Store\Requests\StoreUpdateRequest;
 use App\Http\Store\Resources\StoreResource;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -25,7 +25,7 @@ class StoreController extends BaseController
     public function index(): \Inertia\Response|RedirectResponse
     {
         try {
-            return Inertia::render('Dashboard/stores/index', [
+            return Inertia::render('Dashboard/stores/StoreIndex', [
                 'stores' => StoreResource::collection((new StoreService())->index())]);
         } catch (Exception $exception) {
             return $this->webMessage($exception->getMessage());
@@ -55,7 +55,7 @@ class StoreController extends BaseController
         try {
             $storeService->store($request);
             DB::commit();
-            return $this->redirectToWithMessage('admin.stores.index' , 'success');
+            return $this->redirectToWithMessage('admin.stores.index', 'success');
         } catch (Exception $exception) {
             DB::rollback();
             return $this->webMessage($exception->getMessage());
@@ -77,14 +77,15 @@ class StoreController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return RedirectResponse|\Inertia\Response
+     * @return \Inertia\Response
      */
-    public function edit(int $id)
+    public function edit(int $id): \Inertia\Response
     {
-//        return \response()->json((new StoreService())->getStoreById($id));
         try {
-            return Inertia::render('Dashboard/stores/edit' , [
-                'currentStore' => (new StoreService())->getStoreById($id)
+            return Inertia::render('Dashboard/stores/StoreEdit', [
+                'currentStore' => (new StoreService())->getStoreById($id),
+                'variationTypes' => (new VariationService())->getVariationTypes(),
+                'variationTypesValues' => (new VariationService())->getVariationTypeValues(),
             ]);
         } catch (Exception $exception) {
 //            return $this->webMessage($exception->getMessage());
@@ -103,7 +104,7 @@ class StoreController extends BaseController
     public function update(StoreUpdateRequest $request, Store $store): RedirectResponse
     {
         try {
-            (new StoreService())->update($store , $request);
+            (new StoreService())->update($store, $request);
             return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollback();

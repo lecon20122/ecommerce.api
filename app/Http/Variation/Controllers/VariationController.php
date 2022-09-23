@@ -3,14 +3,18 @@
 namespace App\Http\Variation\Controllers;
 
 use App\Domain\Product\Models\Variation;
-use App\Domain\Product\Services\VariationService;
+use App\Domain\Variation\Services\VariationService;
+use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Variation\Requests\StoreVariationRequest;
 use App\Http\Variation\Requests\UpdateVariationRequest;
+use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class VariationController extends BaseController
 {
@@ -50,7 +54,7 @@ class VariationController extends BaseController
             return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage('ops');
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -70,14 +74,16 @@ class VariationController extends BaseController
      *
      * @param int $id
      * @param VariationService $service
-     * @return RedirectResponse
+     * @return RedirectResponse|Response
      */
-    public function edit(int $id, VariationService $service): RedirectResponse
+    public function edit(int $id, VariationService $service)
     {
         try {
-            $service->getVariationById($id);
-            DB::commit();
-            return $this->webMessage('success');
+            return Inertia::render('Dashboard/variations/VariationEdit', [
+                'currentVariation' => $service->getVariationById($id),
+                'variationTypes' => $service->getVariationTypes(),
+                'variationTypesValues' => $service->getVariationTypeValues(),
+            ]);
         } catch (Exception $exception) {
             return $this->webMessage('ops');
         }
@@ -91,16 +97,16 @@ class VariationController extends BaseController
      * @param Variation $variation
      * @return RedirectResponse
      */
-    public function update(VariationService $service, UpdateVariationRequest $request, Variation $variation): RedirectResponse
+    public function update(VariationService $service, UpdateVariationRequest $request, Variation $variation, ImageService $imageService): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $service->update($request, $variation);
+            $service->update($request->validated(), $variation, $imageService);
             DB::commit();
             return $this->webMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage('ops');
+            return $this->webMessage($exception->getMessage());
         }
     }
 
@@ -108,7 +114,7 @@ class VariationController extends BaseController
      * Remove the specified resource from storage.
      *
      * @param VariationService $service
-     * @param Variation $variation
+     * @param int $id
      * @return RedirectResponse
      */
     public function destroy(VariationService $service, int $id): RedirectResponse
@@ -147,6 +153,45 @@ class VariationController extends BaseController
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->webMessage('ops');
+        }
+    }
+
+    public function addMediaToVariation(Variation $variation, StoreMediaRequest $request, ImageService $imageService, VariationService $variationService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $variationService->addImagesToVariation($variation, $request, $imageService);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError();
+        }
+    }
+
+    public function uploadVariationColorImage(Variation $variation, StoreMediaRequest $request, ImageService $imageService, VariationService $variationService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $variationService->uploadVariationColorImage($variation, $request, $imageService);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError($exception->getMessage());
+        }
+    }
+
+    public function deleteVariationImage(Variation $variation, ModelIDsRequest $request, VariationService $variationService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $variationService->deleteVariationImage($variation, $request);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError();
         }
     }
 

@@ -105,8 +105,11 @@ class ProductTest extends TestCase
     public function test_as_a_admin_can_attach_categories_to_product()
     {
         $admin = Admin::factory()->create();
+
         $this->actingAs($admin, 'admin');
+
         $product = Product::factory()->create();
+
         Category::factory(3)->create();
 
         $ids = [
@@ -116,11 +119,14 @@ class ProductTest extends TestCase
         ];
 
         $response = $this->post(route('admin.attach.category.to.product', ['product' => $product]), $ids)->assertRedirect();
+
         $response->assertSessionHas('message', 'success');
+
         $expectedData = [
             'category_id' => 3,
             'product_id' => 1
         ];
+
         $this->assertDatabaseHas('category_product', $expectedData);
     }
 

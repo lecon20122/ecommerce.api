@@ -2,6 +2,7 @@
 
 namespace App\Domain\Category\Models;
 
+use App\Domain\Product\Models\CategoryProduct;
 use App\Domain\Product\Models\Product;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Traits\CustomHasMedia;

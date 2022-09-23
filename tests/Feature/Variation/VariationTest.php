@@ -5,6 +5,8 @@ namespace Tests\Feature\Variation;
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Models\Variation;
+use App\Domain\Variation\Models\VariationType;
+use App\Domain\Variation\Models\VariationTypeValue;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -27,13 +29,17 @@ class VariationTest extends TestCase
     {
         $admin = Admin::factory()->create();
         Sanctum::actingAs($admin, [], 'admin');
+
         $product = Product::factory()->create();
+
+        $VariationTypeValue = VariationTypeValue::factory()->create();
+
         Storage::fake('public');
+
         $data = [
-            'en' => 'black',
-            'ar' => 'اسود',
             'price' => 150,
-            'type' => 'color',
+            'variation_type_id' => $VariationTypeValue->variation_type_id,
+            'variation_type_value_id' => $VariationTypeValue->id,
             'order' => 1,
             'product_id' => $product->id,
             'images' => [
@@ -42,11 +48,10 @@ class VariationTest extends TestCase
         ];
 
         $response = $this->post(route('admin.variations.store'), $data)->assertRedirect();
-//        dd($response);
+
         $response->assertSessionHas('message', 'success');
-        $this->assertEquals('black', Variation::first()->title);
         $this->assertCount(1, Variation::all());
-        $this->assertCount(1,Media::all());
+        $this->assertCount(1, Media::all());
     }
 
     public function test_variation_can_be_updated_by_admin()
@@ -54,14 +59,17 @@ class VariationTest extends TestCase
         $admin = Admin::factory()->create();
         Sanctum::actingAs($admin, [], 'admin');
         $variation = Variation::factory()->create();
+        $VariationTypeValue = VariationTypeValue::factory()->create();
 
         $data = [
-            'en' => 'new black',
+            'variation_type_id' => $VariationTypeValue->variation_type_id,
+            'variation_type_value_id' => $VariationTypeValue->id,
         ];
 
-        $response = $this->post(route('admin.variations.update', ['variation' => $variation]),$data)->assertRedirect();
+        $response = $this->post(route('admin.variations.update', ['variation' => $variation]), $data)->assertRedirect();
         $response->assertSessionHas('message', 'success');
-        $this->assertEquals('new black', Variation::first()->title);
+        $this->assertEquals($VariationTypeValue->value, Variation::first()->title);
+        $this->assertEquals(VariationType::latest()->first()->type, Variation::first()->type);
     }
 
     public function test_variation_can_be_destroyed()
@@ -99,5 +107,24 @@ class VariationTest extends TestCase
         $response->assertSessionHas('message', 'success');
 
         $this->assertNull(Variation::first());
+    }
+
+    public function test_variation_can_add_images_by_admin()
+    {
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin, 'admin');
+
+        $variation = Variation::factory()->create();
+
+        Storage::fake('public');
+        $data = [
+            'images' => [
+                0 => UploadedFile::fake()->image("test.jpg", 1000, 1000),
+            ]
+        ];
+
+        $response = $this->post(route('admin.add.media.to.variation', ['variation' => $variation]), $data)->assertRedirect();
+        $response->assertSessionHas('message', 'success');
+        $this->assertCount(1, Media::all());
     }
 }

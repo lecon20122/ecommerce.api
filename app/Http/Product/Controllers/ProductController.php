@@ -5,7 +5,10 @@ namespace App\Http\Product\Controllers;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
+use App\Domain\Variation\Services\VariationService;
+use App\Http\Category\Services\CategoryService;
 use App\Http\Media\Request\StoreMediaRequest;
+use App\Http\Product\Requests\ProductFilterRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
 use App\Support\Requests\ModelIDsRequest;
@@ -67,12 +70,18 @@ class ProductController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return Response
+     * @param Product $product
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function show(int $id): Response
+    public function show(Product $product, ProductService $service)
     {
-        return Product::query()->find($id)->with('media')->get();
+        try {
+            return Inertia::render('Client/ProductDetails', [
+                'product' => $service->showProductDetails($product)
+            ]);
+        } catch (Exception $exception) {
+            return $this->redirectBackWithError($exception->getMessage());
+        }
     }
 
     /**
@@ -81,11 +90,14 @@ class ProductController extends BaseController
      * @param int $id
      * @return RedirectResponse|\Inertia\Response
      */
-    public function edit(int $id): \Inertia\Response|RedirectResponse
+    public function edit(mixed $id): \Inertia\Response|RedirectResponse
     {
         try {
-            return Inertia::render('Dashboard/products/edit', [
-                'currentProduct' => (new ProductService())->getProductsById($id)
+            return Inertia::render('Dashboard/products/ProductEdit', [
+                'currentProduct' => (new ProductService())->getProductsById($id),
+                'variationTypes' => (new VariationService())->getVariationTypes(),
+                'variationTypesValues' => (new VariationService())->getVariationTypeValues(),
+                'categories' => (new CategoryService())->getCategories(),
             ]);
         } catch (Exception $exception) {
             return $this->redirectBackWithError();
@@ -193,13 +205,16 @@ class ProductController extends BaseController
         }
     }
 
-    public function getProductsByCategory(Category $category, ProductService $productService)
+    public function getProductsByCategory(Category $category, ProductService $productService, ProductFilterRequest $request)
     {
         try {
-//            $client = new Client('http://127.0.0.1:7700');
-//            $client->index('products')->updateFilterableAttributes(['category_ids']);
+            $products = $productService->getProductsByCategory($category, $request->validated());
+//            return \response()->json($products['products']);
+
             return Inertia::render('Client/ShopByCategory', [
-                'products' => $productService->getProductsByCategory($category->id),
+                'products' => $products['products'],
+                'filters' => $products['filters'],
+                'category' => $category
             ]);
         } catch (Exception $exception) {
             DB::rollback();

@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
             $table->id();
+            $table->json('title')->nullable();
+            $table->json('type')->nullable();
             $table->foreignId('product_id')->constrained();
-            $table->json('title');
+            $table->foreignId('variation_type_value_id')->constrained();
             $table->decimal('price')->unsigned()->default(0);
-            $table->string('type');
+            $table->foreignId('variation_type_id')->constrained();
             $table->string('sku')->nullable();
             $table->integer('order')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();

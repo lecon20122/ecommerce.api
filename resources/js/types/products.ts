@@ -14,6 +14,7 @@ export interface Category {
   children?: Category[];
   products?: Product[];
   thumbnail?: Thumbnail;
+  parent: Category
 }
 
 export interface Product {
@@ -37,7 +38,8 @@ export interface ProductWithThumbnail {
   thumbnail: string;
   small_thumbnail: string;
   deleted_at: string | null,
-  variations?: Variation[]
+  variations: Variation[]
+  media: NewMediaProps[]
 }
 
 
@@ -97,4 +99,7 @@ export interface NewMediaProps {
   mime_type: string;
   thumbnail: string;
   big: string;
+  small: string;
+  color: string;
+  original: string
 }

@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Artisan;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
@@ -76,18 +78,24 @@ class Product extends Model implements HasMedia
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class)
+            ->using(CategoryProduct::class)
+            ->withTimestamps();
     }
 
-    public function toSearchableArray()
+    public function toSearchableArray(): array
     {
-        return [
+        return array_merge([
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
             'store_id' => $this->store_id,
             'category_ids' => $this->load('categories')->categories->pluck('id')->toArray(),
-        ];
+        ], $this->load('variations')->variations->groupBy('type')
+            ->mapWithKeys(fn($variations, $key) => [
+                $key => $variations->pluck('title')
+            ])->toArray()
+        );
     }
 }

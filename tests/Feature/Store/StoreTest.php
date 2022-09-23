@@ -10,7 +10,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class StoreTest extends TestCase
+class
+StoreTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
@@ -35,7 +36,7 @@ class StoreTest extends TestCase
 
         $response->assertSessionHas('message', 'success');
 
-        $this->assertEquals(Store::first()->name, 'JK');
+        $this->assertEquals('JK', Store::first()->name);
     }
 
     public function test_store_can_be_updated()
@@ -63,7 +64,6 @@ class StoreTest extends TestCase
 
     public function test_store_can_be_destroyed()
     {
-
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
 

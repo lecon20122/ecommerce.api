@@ -21,6 +21,7 @@ class MediaResource extends JsonResource
             'name' => $this->name,
             'file_name' => $this->file_name,
             'mime_type' => $this->mime_type,
+            'original' => $this->getFullUrl()
         ];
         if ($this->hasGeneratedConversion(MediaCollectionEnums::THUMB_CONVENTION)) {
             $data['thumbnail'] = $this->getFullUrl(MediaCollectionEnums::THUMB_CONVENTION);
@@ -30,6 +31,9 @@ class MediaResource extends JsonResource
         }
         if ($this->hasGeneratedConversion(MediaCollectionEnums::SMALL_CONVENTION)) {
             $data['small'] = $this->getFullUrl(MediaCollectionEnums::SMALL_CONVENTION);
+        }
+        if ($this->hasGeneratedConversion(MediaCollectionEnums::VARIATION_COLOR_CONVENTION)) {
+            $data['color'] = $this->getFullUrl(MediaCollectionEnums::VARIATION_COLOR_CONVENTION);
         }
         return $data;
     }

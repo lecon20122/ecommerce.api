@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.7",
         "league/flysystem-aws-s3-v3": "3.0",
         "meilisearch/meilisearch-php": "^0.24.2",
+        "opcodesio/log-viewer": "^1.3",
         "spatie/image-optimizer": "^1.6",
         "spatie/laravel-medialibrary": "10.0.7",
         "spatie/laravel-translatable": "^6.0",
@@ -27,7 +28,6 @@
         "barryvdh/laravel-debugbar": "^3.7",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
-        "laravel/telescope": "^4.9",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
@@ -67,7 +67,7 @@
     "extra": {
         "laravel": {
             "dont-discover": [
-                "laravel/telescope"
+                "TelescopeServiceProvider"
             ]
         }
     },

@@ -2,6 +2,8 @@
 
 namespace App\Http\Store\Resources;
 
+use App\Http\Auth\Resources\UserResource;
+use App\Http\Product\Resources\ProductPaginateResource;
 use App\Http\Product\Resources\ProductResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,6 +21,7 @@ class StoreResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'user' => new UserResource($this->whenLoaded('user')),
             'products' => ProductResource::collection($this->whenLoaded('products')),
         ];
     }

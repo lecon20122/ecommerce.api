@@ -1,34 +1,29 @@
-import * as React from 'react';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import {Backdrop, Button, ImageListItemBar} from "@mui/material";
+import React from 'react';
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
 import {Title} from "../../types/CategoryType";
+import {Col, Image, Row} from "antd";
+
+import {Button as AntButton} from 'antd';
+import {Image as ImageMobile} from 'antd-mobile';
+import {NewMediaProps} from "../../types/products";
+import {Variation} from "../../types/VariationType";
 
 interface Props {
-  product: Product
+  product: Product | Variation
+  deleteURL: string
 }
 
 interface Product {
   id: number;
-  title :Title
+  title: Title
   price: string;
   slug: string;
   description: string;
-  media: Media[];
+  media: NewMediaProps[];
 }
 
-interface Media {
-  id: number;
-  name: string;
-  file_name: string;
-  mime_type: string;
-  thumbnail: string;
-  big: string;
-}
-
-export default function MediaProductCollection({product}: Props) {
+export default function MediaProductCollection({product, deleteURL}: Props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {
@@ -39,36 +34,21 @@ export default function MediaProductCollection({product}: Props) {
   };
 
   const handleMediaDelete = (mediaId: number) => {
-    Inertia.post(route('admin.delete.media.of.product', product), {id: mediaId})
+    Inertia.post(route(deleteURL, product), {id: mediaId})
   }
 
   return (
-    <ImageList cols={6} className='mx-auto'>
-      {product.media?.map((item, index) => (
-        <ImageListItem key={item.id} sx={{height: '100% !important'}}>
-          <img
-            src={item.thumbnail}
-            alt={item.name}
-            loading="lazy"
-            onClick={handleToggle}
-          />
-          <ImageListItemBar
-            actionIcon={
-              <div>
-                <Button onClick={e => handleMediaDelete(item.id)} color={'error'}>delete</Button>
-              </div>
-            }
-          />
-          {/*<Backdrop*/}
-          {/*  sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}*/}
-          {/*  open={open}*/}
-          {/*  onClick={handleToggle}*/}
-          {/*>*/}
-          {/*  <img src={item.big} alt="" loading="lazy"/>*/}
-          {/*</Backdrop>*/}
-        </ImageListItem>
-      ))
-      }
-    </ImageList>
+    <div className={'flex flex-wrap my-2'}>
+      <Image.PreviewGroup>
+        {product.media?.map((item, index) => (
+          <div key={item.id} className='flex-[1_1_130px] my-1'>
+            <Image src={item.thumbnail} className='px-1'/>
+            <AntButton type="dashed" danger className='flex' onClick={e => handleMediaDelete(item.id)}>
+              Delete
+            </AntButton>
+          </div>
+        ))}
+      </Image.PreviewGroup>
+    </div>
   )
 }

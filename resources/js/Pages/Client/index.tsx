@@ -1,7 +1,7 @@
 import React, {lazy, Suspense} from 'react'
 import {HomePageCategory} from "../../types/CategoryType";
 import {ProductWithThumbnail} from "../../types/products";
-import {ProgressSpinner} from "primereact/progressspinner";
+import MobileNavigation from "../../components/client/includes/MobileNavigation";
 
 interface Props {
   categories: HomePageCategory[]
@@ -19,11 +19,12 @@ export default function HomePage(props: Props) {
   console.log(props)
   return (
     <div className='bg-white'>
-      <Suspense fallback={<ProgressSpinner className='grid content-center w-full h-full'/>}>
+      <Suspense fallback={<span>loading</span>}>
         <AppLayout>
           <PrimeHero/>
           <PrimeCategoriesCarousel {...props}/>
-          <ProductsCarousel products={props.products} locale={props.locale}/>
+          {/*<ProductsCarousel products={props.products} locale={props.locale}/>*/}
+          <MobileNavigation/>
         </AppLayout>
       </Suspense>
     </div>

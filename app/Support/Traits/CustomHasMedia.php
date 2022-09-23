@@ -25,4 +25,18 @@ trait CustomHasMedia
     {
         return $this->morphMany(config('media-library.media_model'), 'model')->orderBy('order_column');
     }
+
+    public function getManyMediaByCollectionName($collectionName): MorphMany
+    {
+        return $this->morphMany(config('media-library.media_model'), 'model')
+            ->where('collection_name', $collectionName)
+            ->orderBy('order_column');
+    }
+
+    public function getMediaByCollectionName($collectionName): MorphOne
+    {
+        return $this->morphOne(config('media-library.media_model'), 'model')
+            ->where('collection_name', $collectionName)
+            ->orderBy('order_column');
+    }
 }

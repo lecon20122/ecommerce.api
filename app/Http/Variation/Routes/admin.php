@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Variation\Controllers\VariationController;
+use App\Http\Variation\Controllers\VariationTypeController;
+use App\Http\Variation\Controllers\VariationTypeValueController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('variations', [VariationController::class, 'index'])->name('admin.variations.index');
@@ -11,5 +13,22 @@ Route::post('variations/{id}/delete', [VariationController::class, 'destroy'])->
 Route::post('variations/{id}/restore', [VariationController::class, 'restore'])->name('admin.variations.restore');
 Route::post('variations/{id}/permanent-delete', [VariationController::class, 'permanentDelete'])->name('admin.variations.permanent.delete');
 
-Route::post('variations/{product}/media', [VariationController::class, 'addMediaToProduct'])->name('admin.add.media.to.variation');
-Route::post('variations/{product}/media/delete', [VariationController::class, 'deleteProductImage'])->name('admin.delete.media.of.variations');
+Route::post('variations/{variation}/media', [VariationController::class, 'addMediaToVariation'])->name('admin.add.media.to.variation');
+Route::post('variations/{variation}/color-image', [VariationController::class, 'uploadVariationColorImage'])->name('admin.add.color.image.to.variation');
+Route::post('variations/{variation}/media/delete', [VariationController::class, 'deleteVariationImage'])->name('admin.delete.media.of.variations');
+
+
+Route::get('variation/type', [VariationTypeController::class, 'index'])->name('admin.variations.type.index');
+Route::post('variation/type', [VariationTypeController::class, 'store'])->name('admin.variations.type.store');
+Route::get('variation/type/{id}', [VariationTypeController::class, 'edit'])->name('admin.variations.type.edit');
+Route::post('variation/type/{id}', [VariationTypeController::class, 'update'])->name('admin.variations.type.update');
+Route::post('variation/type/{id}/delete', [VariationTypeController::class, 'destroy'])->name('admin.variations.type.destroy');
+Route::post('variation/type/{id}/restore', [VariationTypeController::class, 'restore'])->name('admin.variations.type.restore');
+
+
+Route::get('variation/type/value', [VariationTypeValueController::class, 'index'])->name('admin.variations.type.value.index');
+Route::post('variation/type/value/update', [VariationTypeValueController::class, 'store'])->name('admin.variations.type.value.store');
+Route::get('variation/type/value/{id}', [VariationTypeValueController::class, 'edit'])->name('admin.variations.type.value.edit');
+Route::post('variation/type/value/{id}', [VariationTypeValueController::class, 'update'])->name('admin.variations.type.value.update');
+Route::post('variation/type/value/{id}/delete', [VariationTypeValueController::class, 'destroy'])->name('admin.variations.type.value.destroy');
+Route::post('variation/type/value/{id}/restore', [VariationTypeValueController::class, 'restore'])->name('admin.variations.type.value.restore');

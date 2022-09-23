@@ -18,7 +18,6 @@ class StoreService
     {
         return Cache::remember(CacheKeyEnums::STORE, '3600',
             fn() => Store::query()
-                ->select('id', 'name', 'description', 'is_active', 'created_at', 'user_id')
                 ->with('user:id,name')
                 ->latest()
                 ->get()
@@ -40,7 +39,7 @@ class StoreService
                 ->with(['products' => function ($query) {
                     $query
                         ->withTrashed()
-                        ->with(['media', 'variations' => fn($query) => $query->withTrashed()]);
+                        ->with('media');
                 }])
                 ->whereIn('id', [$id])
                 ->first()

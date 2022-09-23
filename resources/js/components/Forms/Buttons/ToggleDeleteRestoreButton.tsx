@@ -1,5 +1,5 @@
-import {Button as PrimeButton} from "primereact/button";
 import React from "react";
+import {Button} from "antd";
 
 interface Props {
   handleOnClickRestore: (params: any) => void
@@ -10,15 +10,19 @@ interface Props {
 export default function ToggleRestoreDeleteButton({handleOnClickDelete, handleOnClickRestore, params}: Props) {
   if (params.deleted_at) {
     return (
-      <PrimeButton icon="pi pi-undo"
-                   className="p-button p-button-info mr-2"
-                   onClick={() => handleOnClickRestore(params)}/>
+      <Button
+        type={'default'}
+        onClick={() => handleOnClickRestore(params)}>
+        UNDO
+      </Button>
     )
   } else {
     return (
-      <PrimeButton icon="pi pi-trash"
-                   className="p-button p-button-danger mr-2"
-                   onClick={() => handleOnClickDelete(params)}/>
+      <Button
+        type={'default'}
+        onClick={() => handleOnClickDelete(params)}>
+        DELETE
+      </Button>
     )
   }
 }

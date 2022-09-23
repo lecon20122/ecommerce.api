@@ -1,8 +1,7 @@
-import React, {lazy, Suspense} from 'react'
+import React from 'react'
 import Footer from '../components/client/includes/footer'
 import Navbar from '../components/client/includes/navbar'
 import MobileNavigation from "../components/client/includes/MobileNavigation";
-import {ProgressSpinner} from "primereact/progressspinner";
 import CategoriesNavigation from "../components/client/includes/categoriesNavigation";
 
 // import CategoriesNavigation from "../components/client/includes/categoriesNavigation";
@@ -12,14 +11,12 @@ interface IAppLayout {
 }
 
 export default function AppLayout({children}: IAppLayout) {
-
   return (
-      <div className={'overflow-hidden'}>
-        <Navbar/>
-        <CategoriesNavigation/>
-        {children}
-        <Footer/>
-        <MobileNavigation/>
-      </div>
+    <div className={'overflow-hidden'}>
+      <Navbar/>
+      <CategoriesNavigation/>
+      {children}
+      <Footer/>
+    </div>
   )
 }

@@ -169,7 +169,7 @@ export default function CreateProductVariation({
             name="images"
             valuePropName='images'
           >
-            <Upload listType="picture-card" onRemove={onRemove} onChange={(e) => onChangeHandler(e)}>
+            <Upload multiple listType="picture-card" onRemove={onRemove} onChange={(e) => onChangeHandler(e)}>
               <div>
                 <PlusOutlined/>
                 <div style={{marginTop: 8}}>Upload</div>

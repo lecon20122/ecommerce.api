@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $user = new Domain\User\Models\User();
+//        $user = new Domain\User\Models\User();
 
 //        User::factory()->create();
 //        Admin::factory()->create();

@@ -30,10 +30,8 @@ class DatabaseSeeder extends Seeder
 //        Product::factory(25)->hasVariations(4)->create();
         // Category::factory(5)->create();
         $products = Product::query()->get();
-////
         foreach ($products as $product) {
             $product->categories()->attach([1]);
         }
-        $products->map(fn ($product) => $products->categories()->attach([1]) );
     }
 }

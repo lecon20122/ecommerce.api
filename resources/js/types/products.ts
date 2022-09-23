@@ -15,6 +15,7 @@ export interface Category {
   products?: Product[];
   thumbnail?: Thumbnail;
   parent: Category
+  media: NewMediaProps[]
 }
 
 export interface Product {

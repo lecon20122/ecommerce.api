@@ -120,7 +120,8 @@ export default function VariationEdit({currentVariation, variationTypesValues, v
         <ImageUploadManually param={currentVariation} routeName={'admin.add.media.to.variation'} multiple/>
         <ImageUploadManually param={currentVariation} routeName={'admin.add.color.image.to.variation'} multiple={false}
                              buttonLabel={'Choose Variation Color'}/>
-        <MediaProductCollection product={currentVariation} deleteURL={'admin.delete.media.of.variations'}/>
+        <MediaProductCollection params={currentVariation} media={currentVariation.media}
+                                deleteURL={'admin.delete.media.of.variations'}/>
       </div>
     </DashboardLayout>
   );

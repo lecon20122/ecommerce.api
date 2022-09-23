@@ -5,17 +5,19 @@ import {UploadChangeParam, UploadFile} from "antd/lib/upload/interface";
 import Helpers from "../../utils/Helpers";
 import {Inertia} from "@inertiajs/inertia";
 import route, {RouteParam, RouteParamsWithQueryOverload} from "ziggy-js";
+import {ColProps} from "antd/lib/grid/col";
 
 interface Props {
   formClassName?: string,
-  // onRemove: (file: UploadFile) => void
-  // onChangeHandler: (e: UploadChangeParam) => void
   buttonLabel?: string
   routeName: string
   params?: RouteParamsWithQueryOverload | RouteParam,
+  wrapperCol?: ColProps
+  buttonWrapperCol?: ColProps
+  labelCol?: ColProps
 }
 
-function UploadImageComponent({formClassName, buttonLabel, routeName, params}: Props) {
+function UploadImageComponent({formClassName, buttonLabel = 'UPLOAD', routeName, params, wrapperCol, labelCol , buttonWrapperCol}: Props) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const helpers = new Helpers()
 
@@ -46,7 +48,10 @@ function UploadImageComponent({formClassName, buttonLabel, routeName, params}: P
   }
 
   return (
-    <Form className={formClassName} onFinish={onFinish}>
+    <Form className={formClassName} onFinish={onFinish}
+          labelCol={labelCol}
+          wrapperCol={wrapperCol}
+    >
       <Form.Item name="images"
                  valuePropName='images'>
         <Upload listType="picture-card" onRemove={onRemove} onChange={(e) => onChangeHandler(e)}>
@@ -56,9 +61,11 @@ function UploadImageComponent({formClassName, buttonLabel, routeName, params}: P
           </div>
         </Upload>
       </Form.Item>
-      <Button type="default" htmlType="submit">
-        {buttonLabel}
-      </Button>
+      <Form.Item wrapperCol={buttonWrapperCol}>
+        <Button type="default" htmlType="submit">
+          {buttonLabel}
+        </Button>
+      </Form.Item>
     </Form>
   );
 }

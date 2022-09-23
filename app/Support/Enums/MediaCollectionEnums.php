@@ -13,6 +13,7 @@ class MediaCollectionEnums
 
     const IMAGES = 'images';
     const PRODUCT = 'products';
+    const CATEGORY = 'categories';
     const VARIATION = 'variations';
 
     const THUMB_CONVENTION = 'thumbnail';

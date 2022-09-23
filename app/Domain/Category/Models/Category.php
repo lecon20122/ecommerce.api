@@ -29,7 +29,7 @@ class Category extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection(MediaCollectionEnums::THUMBNAIL)
+        $this->addMediaCollection(MediaCollectionEnums::CATEGORY)
             ->useFallbackUrl('https://empowher.org/wp-content/uploads/2021/03/image-placeholder-350x350-1.png')
             ->singleFile();
     }
@@ -40,8 +40,9 @@ class Category extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion(MediaCollectionEnums::THUMB_CONVENTION)
-            ->crop(Manipulations::CROP_BOTTOM, 310, 303)
-            ->performOnCollections(MediaCollectionEnums::THUMBNAIL);
+            ->width(310)
+            ->height(303)
+            ->performOnCollections(MediaCollectionEnums::CATEGORY);
     }
 
     public function parent(): BelongsTo

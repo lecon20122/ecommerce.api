@@ -11,6 +11,7 @@ export default function ToggleRestoreDeleteButton({handleOnClickDelete, handleOn
   if (params.deleted_at) {
     return (
       <Button
+        className={'mr-2'}
         type={'default'}
         onClick={() => handleOnClickRestore(params)}>
         UNDO
@@ -19,6 +20,7 @@ export default function ToggleRestoreDeleteButton({handleOnClickDelete, handleOn
   } else {
     return (
       <Button
+        className={'mr-2'}
         type={'default'}
         onClick={() => handleOnClickDelete(params)}>
         DELETE

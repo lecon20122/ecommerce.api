@@ -1,23 +1,14 @@
 import React, {useState} from 'react'
-import {ColDef} from 'ag-grid-community';
 import {Category} from '../../../types/products';
-import {DialogActions, InputLabel, MenuItem, TextField} from '@mui/material';
-import FormDialog from '../../shards/formDialog';
 import DashboardLayout from '../../../layouts/dashboard';
-import DataGrid from '../../../components/DataTables/DataGrid';
 import route from 'ziggy-js';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {SubmitHandler, useForm,} from 'react-hook-form';
 import {Inertia,} from '@inertiajs/inertia';
-import {faFileImage} from '@fortawesome/free-regular-svg-icons';
-import ConfirmationAlertDialog from '../../../components/shards/confimationDialog';
 import {ColumnsType} from "antd/es/table";
 import {Button, Divider, Form, Input, Select, Space, Upload} from "antd";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
-import {VariationTypes} from "../../../types/VariationType";
 import AntDesignDataTable from "../../../components/DataTables/AntDesignDataTable";
 import ModalWithChildren from "../variations/ModalWithChildren";
-import {RcFile, UploadChangeParam, UploadFile} from "antd/es/upload/interface";
+import {UploadChangeParam, UploadFile} from "antd/es/upload/interface";
 import Helpers from "../../../utils/Helpers";
 
 interface Props {

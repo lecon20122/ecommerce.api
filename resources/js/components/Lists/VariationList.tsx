@@ -8,9 +8,10 @@ import {usePage} from "@inertiajs/inertia-react";
 import ToggleRestoreDeleteButton from "../Forms/Buttons/ToggleDeleteRestoreButton";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
-import {InputText} from "primereact/inputtext";
-import {InputNumber} from "primereact/inputnumber";
 import DeleteConfirmDialog from "../client/shards/DeleteConfirmDialog";
+import AntDesignDataTable from "../DataTables/AntDesignDataTable";
+import {ColumnsType} from "antd/es/table";
+import {Button, Table} from "antd";
 
 interface Props {
   variations: Variation[]
@@ -19,12 +20,15 @@ interface Props {
   productId: number
 }
 
+interface DataType extends Variation {
+  key?: string;
+}
 
 function VariationList({variations, variationTypesValues, variationTypes, productId}: Props) {
   const [expandedRows, setExpandedRows] = useState([]);
   const locale: string = usePage().props.locale as string
   const [openAddParentVariantDialog, setOpenAddParentVariantDialog] = useState(false);
-  const [openAddVariationDialog, setOpenAddVariationDialog] = useState(false);
+  const [openAddChildVariationDialog, setOpenAddChildVariationDialog] = useState(false);
   const [confirmDeleteItemDialog, setConfirmDeleteItemDialog] = useState(false);
   const [parentId, setParentId] = useState(0);
   const [variationId, setVariationId] = useState(0);
@@ -34,34 +38,14 @@ function VariationList({variations, variationTypesValues, variationTypes, produc
     setOpenAddParentVariantDialog(!openAddParentVariantDialog);
   };
 
-  const newHandleAdd = (data: any) => {
+  const AddChildVariationHandle = (data: any) => {
     setParentId(data.id)
-    setOpenAddVariationDialog(!openAddVariationDialog)
+    setOpenAddChildVariationDialog(!openAddChildVariationDialog)
   };
 
   const confirmDeleteProduct = (rawData: any) => {
     setConfirmDeleteItemDialog(true);
     setVariationId(rawData.id)
-  }
-
-  const header = (productId: any) => {
-    return (
-      <div className='flex items-center'>
-        <PrimeButton className='p-button-link' onClick={handleOnClickAddVariationDialog}>
-          Add Variation
-        </PrimeButton>
-        <h1 className='font-bold ml-3 text-lg'>Variations List</h1>
-        {/*create Parent*/}
-        <CreateProductVariation handleAddDialog={handleOnClickAddVariationDialog}
-                                openAddDialog={openAddParentVariantDialog}
-                                productId={productId} locale={locale} variationTypes={variationTypes}
-                                variationTypesValues={variationTypesValues}/>
-        {/* create Child notice  the parent_id */}
-        <CreateProductVariation handleAddDialog={newHandleAdd} openAddDialog={openAddVariationDialog}
-                                productId={productId} locale={locale} variationTypes={variationTypes}
-                                variationTypesValues={variationTypesValues} parentId={parentId}/>
-      </div>
-    )
   }
 
   const handleOnClickVariationRestore = (data: any) => {
@@ -83,7 +67,8 @@ function VariationList({variations, variationTypesValues, variationTypes, produc
     if (rowData.media) {
       return (
         <img width={50}
-             height={50} src={rowData.media[0 as keyof typeof rowData.media]?.thumbnail} alt={rowData.media[0 as keyof typeof rowData.media]?.name}/>
+             height={50} src={rowData.media[0 as keyof typeof rowData.media]?.thumbnail}
+             alt={rowData.media[0 as keyof typeof rowData.media]?.name}/>
       )
     } else {
       return (
@@ -110,40 +95,25 @@ function VariationList({variations, variationTypesValues, variationTypes, produc
                                    handleOnClickDelete={handleOnClickVariationDelete}
                                    params={rowData}/>
 
-        <PrimeButton icon="pi pi-plus" className="p-button p-button-success mr-2"
-                     onClick={() => newHandleAdd(rowData)}/>
+        <Button className="mr-2"
+                onClick={() => AddChildVariationHandle(rowData)}>NEW</Button>
 
-        <PrimeButton icon="pi pi-pencil" className="p-button p-button-info mr-2"
-                     onClick={() => handleOnClickVariationEdit(rowData)}/>
+        <Button className="mr-2"
+                onClick={() => handleOnClickVariationEdit(rowData)}>UPDATE</Button>
 
-        <PrimeButton icon="pi pi-times" className="p-button p-button-danger mr-2"
-                     onClick={() => confirmDeleteProduct(rowData)}/>
+        <Button className="mr-2"
+                onClick={() => confirmDeleteProduct(rowData)}>HARD DELETE</Button>
       </React.Fragment>
     );
   }
 
   const rowExpansionTemplate = (data: any) => {
     return (
-      <VariationList variations={data.children} variationTypes={variationTypes}
-                     variationTypesValues={variationTypesValues} productId={productId}/>
+      <Table columns={columns} rowKey={"id"} dataSource={data.children} pagination={false} scroll={{x : true}}/>
     );
   }
 
-  const textEditor = (options: any) => {
-    return <InputText type="text" value={options.value} onChange={(e) => options.editorCallback(e.target.value)}/>;
-  }
 
-  const cellEditor = (options: any) => {
-    if (options.field === 'price')
-      return priceEditor(options);
-    else
-      return textEditor(options);
-  }
-
-  const priceEditor = (options: any) => {
-    return <InputNumber value={options.value} onValueChange={(e) => options.editorCallback(e.value)} mode="currency"
-                        currency="EGP" locale="en-US"/>
-  }
 
   const onCellEditComplete = (e: any) => {
     let {originalEvent: event, columnProps, rowData, newValue, field} = e;
@@ -154,28 +124,62 @@ function VariationList({variations, variationTypesValues, variationTypes, produc
     }
   }
 
+  const columns: ColumnsType<DataType> = [
+    {title: 'ID', dataIndex: 'id', key: 'id'},
+    {title: 'Image', dataIndex: 'image', key: 'media', render: (_, record) => imageBodyTemplate(record)},
+    {
+      title: 'Variation Type Value',
+      dataIndex: 'variation_type_value',
+      key: 'variation_type_value',
+      render: (_, record) => <span>{record.variation_type_value?.value.en}</span>
+    },
+    {
+      title: 'Variation Type',
+      dataIndex: 'variation_type',
+      key: 'variation_type',
+      render: (_, record) => <span>{record.variation_type?.type.en}</span>
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+    },
+    {
+      title: 'Order',
+      dataIndex: 'order',
+      key: 'order',
+    },
+    {
+      title: 'Deleted at',
+      dataIndex: 'deleted_at',
+      key: 'deleted_at',
+    },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'x',
+      render: (_, record) => actionVariationBodyTemplate(record),
+    },
+  ];
+
   return (
-    <div className={'border border-x-sky-500 border-1'}>
-      <DeleteConfirmDialog deleteItem={deleteConfirmed} hideDeleteProductDialog={hideDeleteProductDialog}
-                           deleteItemDialog={confirmDeleteItemDialog}/>
-      <DataTable value={variations} responsiveLayout="scroll"
-                 editMode="cell"
-                 header={(options) => header(productId)}
-                 rowExpansionTemplate={rowExpansionTemplate} expandedRows={expandedRows}
-                 onRowToggle={(e) => setExpandedRows(e.data as any)}>
-        <Column expander style={{width: '3em'}}/>
-        <Column field="id" header="ID" sortable/>
-        <Column header="Image" body={imageBodyTemplate}/>
-        <Column field="variation_type.type.en" header="type" sortable/>
-        <Column field="variation_type_value.value.en" header="Title" sortable/>
-        <Column field="price" header="Price" sortable editor={(options) => cellEditor(options)}
-                onCellEditComplete={onCellEditComplete}/>
-        <Column field="order" header="Order" sortable editor={(options) => cellEditor(options)}/>
-        <Column field="deleted_at" header="Deleted At" sortable/>
-        <Column body={actionVariationBodyTemplate} exportable={false} style={{minWidth: '8rem'}}/>
-      </DataTable>
+    <div>
+      <Button onClick={handleOnClickAddVariationDialog}>ADD NEW VARIATION</Button>
+      <CreateProductVariation handleAddDialog={handleOnClickAddVariationDialog}
+                              openAddDialog={openAddParentVariantDialog}
+                              productId={productId} locale={locale} variationTypes={variationTypes}
+                              variationTypesValues={variationTypesValues}/>
+
+      <CreateProductVariation handleAddDialog={() => setOpenAddChildVariationDialog(false)}
+                              openAddDialog={openAddChildVariationDialog}
+                              parentId={parentId}
+                              productId={productId} locale={locale} variationTypes={variationTypes}
+                              variationTypesValues={variationTypesValues}/>
+      <Table columns={columns} rowKey={"id"} dataSource={variations}
+             expandable={{expandedRowRender: (record) => rowExpansionTemplate(record)}} scroll={{x : true}}/>
     </div>
-  );
+  )
+
 }
 
 export default VariationList;

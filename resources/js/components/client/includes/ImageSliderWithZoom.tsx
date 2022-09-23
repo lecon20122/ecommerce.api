@@ -10,10 +10,10 @@ interface Props {
 }
 
 function ImageSliderWithZoom({media, currentMedia}: Props) {
-  const [currentImage, setCurrentImage] = useState<NewMediaProps>({...currentMedia})
+
   const ref = useRef<SwiperRef>(null)
+
   const handleOnMouseOver = (image: NewMediaProps) => {
-    // setCurrentImage(image)
     const imageIndex = media.findIndex((img => img.id === image.id))
     ref.current?.swipeTo(imageIndex)
   }
@@ -22,7 +22,8 @@ function ImageSliderWithZoom({media, currentMedia}: Props) {
     return (
       <div key={img.id} className="mr-1 my-1 lg:my-0 flex">
         <div className='hover:border-black hover:border'>
-          <img className='' src={img.small} alt="Product title" onMouseOver={() => handleOnMouseOver(img)}/>
+          <img className='' src={img.small} alt="Product title" onClick={() => handleOnMouseOver(img)}
+               onMouseOver={() => handleOnMouseOver(img)}/>
         </div>
       </div>
     )
@@ -30,7 +31,7 @@ function ImageSliderWithZoom({media, currentMedia}: Props) {
 
   const swiperItems = media.map((img, index) => (
     <Swiper.Item key={img.id}>
-      <Image className="" preview={{src: img.original , visible : false}} src={img.big} alt="Product title"
+      <Image className="" preview={{src: img.original}} src={img.big} alt="Product title"
              onMouseOver={() => handleOnMouseOver(img)}/>
     </Swiper.Item>
   ))

@@ -34,10 +34,10 @@ function ProductWithVariationsList({product, locale}: Props) {
   const variationColorsList = product.variations.map((variation) => {
     if (variation.type === 'color') {
       return (
-        <div className='inline-flex mr-1' key={variation.id}>
+        <div className='inline-flex mr-1' key={variation.id} onClick={() => handleClickVariationColors(variation)}>
           <ColoredCircleButton key={variation.id} backgroundColor={variation.title}
                                backgroundImage={variation.color?.color}
-                               onMouseOver={() => handleClickVariationColors(variation)}/>
+                               onClick={() => handleClickVariationColors(variation)}/>
         </div>
       )
     }
@@ -49,6 +49,7 @@ function ProductWithVariationsList({product, locale}: Props) {
         {product.media &&
         <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
              className="aspect-[61/81]"
+             loading={"lazy"}
              alt={product.title[locale as keyof typeof product.title]}/>}
       </a>
 

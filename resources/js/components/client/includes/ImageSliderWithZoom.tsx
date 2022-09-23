@@ -31,7 +31,9 @@ function ImageSliderWithZoom({media, currentMedia}: Props) {
 
   const swiperItems = media.map((img, index) => (
     <Swiper.Item key={img.id}>
-      <Image className="" preview={{src: img.original}} src={img.big} alt="Product title"
+      <Image style={{aspectRatio: "533/799"}} preview={{src: img.original}} src={img.big}
+             alt="Product title"
+
              onMouseOver={() => handleOnMouseOver(img)}/>
     </Swiper.Item>
   ))

@@ -78,7 +78,18 @@ function ProductDetails({product, locale}: Props) {
                     <span className="text-green-500">Verified</span>
 
                   </div>
-
+                  <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
+                    <div className="flex">
+                      <span className="mr-3">Color</span>
+                      {variationColorsList}
+                    </div>
+                    <div className="flex ml-6 items-center">
+                      <span className="mr-3">Size</span>
+                      <Radio.Group defaultValue="a" buttonStyle="solid">
+                        {variationSizeList}
+                      </Radio.Group>
+                    </div>
+                  </div>
                   <p className="mb-4 font-semibold text-2xl">EGP {product.price}
 
                   </p>
@@ -99,18 +110,7 @@ function ProductDetails({product, locale}: Props) {
                       <span className="text-gray-500">Brown</span>
                     </li>
                   </ul>
-                  <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
-                    <div className="flex">
-                      <span className="mr-3">Color</span>
-                      {variationColorsList}
-                    </div>
-                    <div className="flex ml-6 items-center">
-                      <span className="mr-3">Size</span>
-                      <Radio.Group defaultValue="a" buttonStyle="solid">
-                        {variationSizeList}
-                      </Radio.Group>
-                    </div>
-                  </div>
+
                   <div className="flex flex-wrap gap-2">
                     <a
                       className="px-4 py-2 inline-block text-white bg-yellow-500 border border-transparent rounded-md hover:bg-yellow-600"

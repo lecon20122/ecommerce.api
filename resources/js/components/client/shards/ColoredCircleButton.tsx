@@ -5,7 +5,7 @@ interface Props {
   backgroundColor: string
   onClick?: () => void
   backgroundImage?: string
-  onMouseOver: () => void
+  onMouseOver?: () => void
 }
 
 function ColoredCircleButton({backgroundColor, onClick, backgroundImage, onMouseOver}: Props) {

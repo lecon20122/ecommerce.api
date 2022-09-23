@@ -5,8 +5,10 @@ namespace App\Http\Category\Controllers;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Http\Category\Services\CategoryService;
+use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
+use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
@@ -93,7 +95,7 @@ class CategoryController extends BaseController
     {
 
         try {
-            return Inertia::render('Dashboard/categories/edit', [
+            return Inertia::render('Dashboard/categories/CategoryEdit', [
                 'currentCategory' => $categoryService->edit($id),
                 'categories' => $categoryService->adminIndex()
             ]);
@@ -140,19 +142,31 @@ class CategoryController extends BaseController
         }
     }
 
-    public function shopByCategory(Category $category, CategoryService $categoryService)
-    {
-        try {
-//            $client = new Client('http://127.0.0.1:7700');
-//            $client->index('products')->updateFilterableAttributes(['category_ids']);
 
-            $products = Product::search()->where('category_ids' , $category->id)->get();
-            return Inertia::render('Client/ShopByCategory' , [
-                'products' => $products,
-            ]);
+    public function addMediaToCategory(Category $category, StoreMediaRequest $request, ImageService $imageService, CategoryService $categoryService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $categoryService->addImagesToCategory($category, $request, $imageService);
+            DB::commit();
+            return $this->webMessage('success');
         } catch (Exception $exception) {
-            DB::rollback();
-            return $this->webMessage($exception->getMessage());
+            DB::rollBack();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
+
+    public function deleteCategoryImage(Category $category, ModelIDsRequest $request, CategoryService $categoryService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $categoryService->deleteCategoryImage($category, $request);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError($exception->getMessage());
+        }
+    }
+
 }

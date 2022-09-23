@@ -134,7 +134,7 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
         </Form>
         <Divider/>
         <div>
-          <MediaProductCollection product={currentProduct} deleteURL={'admin.delete.media.of.product'}/>
+          <MediaProductCollection media={currentProduct.media} deleteURL={'admin.delete.media.of.product'} params={currentProduct}/>
           <UploadImageComponent buttonLabel={'UPLOAD'} routeName={'admin.add.media.to.product'}
                                 params={currentProduct}/>
         </div>
@@ -160,7 +160,7 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
             </Button>
           </Form.Item>
         </Form>
-
+        <Divider/>
         <VariationList variations={currentProduct.variations} variationTypes={variationTypes}
                        variationTypesValues={variationTypesValues} productId={currentProduct.id}/>
       </div>

@@ -8,6 +8,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use JetBrains\PhpStorm\NoReturn;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
@@ -28,7 +30,7 @@ class CategoryTest extends TestCase
             'en' => 'test category',
             'ar' => 'هيللو',
             'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 1000 , 1000)
+                0 => UploadedFile::fake()->image("test.jpg", 1000, 1000)
             ]
         ]);
         $category = Category::with('media')->first();
@@ -78,5 +80,24 @@ class CategoryTest extends TestCase
         $response->assertSessionHas('message', 'success');
 
         $this->assertNull(Category::first());
+    }
+
+    #[NoReturn] public function test_that_as_a_admin_can_add_a_single_image_to_category()
+    {
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin, 'admin');
+
+        $category = Category::factory()->create();
+
+        Storage::fake('public');
+        $data = [
+            'images' => [
+                0 => UploadedFile::fake()->image("test.jpg", 100, 100),
+            ]
+        ];
+        $response = $this->post(route('admin.add.media.to.category', ['category' => $category]), $data)->assertRedirect();
+        $response->assertSessionHas('message', 'success');
+
+        $this->assertCount(1, $category->media);
     }
 }

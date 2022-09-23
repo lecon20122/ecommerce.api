@@ -4,12 +4,15 @@ namespace App\Http\Category\Services;
 
 use App\Domain\Category\Models\Category;
 use App\Http\Category\Resources\CategoryResource;
+use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
 use App\Support\Enums\CacheKeyEnums;
 use App\Support\Enums\MediaCollectionEnums;
+use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -51,7 +54,7 @@ class CategoryService
 
     public function edit($id): CategoryResource
     {
-        return new CategoryResource(Category::with('thumbnail')->find($id));
+        return new CategoryResource(Category::with('media')->find($id));
     }
 
     public function update(UpdateCategoryRequest $request, ImageService $imageService, Category $category)
@@ -94,12 +97,25 @@ class CategoryService
             ->get();
     }
 
-    public function getCategories(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function getCategories(): AnonymousResourceCollection
     {
         return CategoryResource::collection(
             Category::query()
                 ->select(['id', 'title'])
                 ->get()
         );
+    }
+
+    public function addImagesToCategory(Category $category, StoreMediaRequest $request, ImageService $imageService)
+    {
+        if ($request->hasFile('images')) {
+            $imageService->imageUpload($category, 'images', MediaCollectionEnums::CATEGORY, $category->id);
+        }
+    }
+
+    public function deleteCategoryImage(Category $category, ModelIDsRequest $request)
+    {
+        $image = $category->media()->find($request->validated('id'));
+        $image?->delete();
     }
 }

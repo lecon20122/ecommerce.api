@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Button, DialogActions, InputLabel, MenuItem, Select, TextField} from "@mui/material";
-import FormDialog from "../../shards/formDialog";
-import {SubmitHandler, useForm} from "react-hook-form";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFileImage} from "@fortawesome/free-regular-svg-icons";
 import {VariationTypes, VariationTypesValues} from "../../../types/VariationType";
+import ModalWithChildren from "./ModalWithChildren";
+import {Button, Divider, Form, Input, InputNumber, Select, Upload} from "antd";
+import {PlusOutlined} from "@ant-design/icons";
+import {UploadChangeParam, UploadFile} from "antd/es/upload/interface";
+import Helpers from "../../../utils/Helpers";
 
 
 interface Props {
@@ -37,10 +37,9 @@ export default function CreateProductVariation({
                                                  locale,
                                                  parentId
                                                }: Props) {
-  const {register, handleSubmit, formState: {errors}, reset, setValue} = useForm<IFormProps>()
-
   const [isMediable, setIsMediable] = useState(false)
   const [variationTypeId, setVariationTypeId] = useState(0)
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [filteredVariationType, setFilteredVariationType] = useState<VariationTypesValues[]>([{
     id: 0,
     value: {
@@ -49,29 +48,22 @@ export default function CreateProductVariation({
     },
     variation_type_id: 0
   }])
+  const helpers = new Helpers()
 
-  const formAddSubmitHandler: SubmitHandler<IFormProps> = (data) => {
-    const resolveData = {...data}
-    console.log(data)
-    Inertia.post(route('admin.variations.store'), resolveData, {
-      preserveState: false
-    })
-    reset()
-  }
 
-  const selectVariationTypeOnClick = (type: VariationTypes) => {
+  const selectVariationTypeOnClick = (type: any) => {
     setIsMediable(type.is_mediable)
     setVariationTypeId(type.id)
   }
 
   const selectVariationTypeItems = variationTypes?.map((type) => {
     return (
-      <MenuItem onClick={(e) => selectVariationTypeOnClick(type)} value={type.id}
-                key={type.id}>
-        {type.type[locale as keyof typeof type.type]}
-      </MenuItem>
+      <Select.Option key={type.id} value={type.id}>
+        <div onClick={(e) => selectVariationTypeOnClick(type)}>{type.type[locale as keyof typeof type.type]}</div>
+      </Select.Option>
     )
   })
+
 
   useEffect(() => {
     const data = variationTypesValues.filter(type => type.variation_type_id == variationTypeId)
@@ -80,76 +72,117 @@ export default function CreateProductVariation({
 
   const selectVariationTypeValueItems = filteredVariationType?.map((value) => {
     return (
-      <MenuItem value={value.id} key={value.id}>
+      <Select.Option key={value.id} value={value.id}>
         <div className='flex flex-row content-center'>
-          <span style={{backgroundColor: `${value.value.en.toLowerCase()}`}}
-                className={`rounded w-[23px] h-[23px] inline-block mr-2 border border-3 border-black`}/>
+        <span style={{backgroundColor: `${value.value.en.toLowerCase()}`}}
+              className={`rounded w-[23px] h-[23px] inline-block mr-2 border border-3 border-black`}/>
           <span>{value.value[locale as keyof typeof value.value]}</span>
         </div>
-      </MenuItem>
+      </Select.Option>
     )
   })
 
+  const storeVariationAction = (values: any) => {
+    Inertia.post(route('admin.variations.store'), values, {
+      preserveState: false
+    })
+  }
+
+  const onFinish = (values: any) => {
+    if (!values.images) {
+      storeVariationAction(values)
+    } else {
+      values.images = helpers.appendImageToFormData(fileList)
+      storeVariationAction(values)
+    }
+  };
+
+  const onChangeHandler = (file: UploadChangeParam) => {
+    setFileList(file.fileList);
+  }
+
+  const onRemove = (file: any) => {
+    const index = fileList.indexOf(file);
+    const newFileList = fileList.slice();
+    newFileList.splice(index, 1);
+    setFileList(newFileList);
+  }
 
   return (
     <div id='add'>
-      <FormDialog btnLabel='Add Product' header='Create New Variation' handleClose={handleAddDialog}
-                  open={openAddDialog}>
-        <form onSubmit={handleSubmit(formAddSubmitHandler)}>
-          <input hidden {...register('product_id')} name={'product_id'} value={productId}/>
-          <input hidden {...register('parent_id')} name={'parent_id'} value={parentId}/>
-          <InputLabel id="variation_type_id">Type (ex:color,size)</InputLabel>
-          <Select margin="dense"
-                  className="my-2"
-                  {...register('variation_type_id')}
-                  labelId="variation_type_id"
-                  defaultValue={''}
-                  fullWidth
-                  autoFocus>
-            {selectVariationTypeItems}
-          </Select>
-          <InputLabel id="variation_type_value_id">Value (ex :red,xl,xs)</InputLabel>
-          <Select margin="dense"
-                  className='mt-2'
-                  {...register('variation_type_value_id')}
-                  fullWidth
-                  placeholder='value ex:red'
-                  defaultValue={''}
-                  autoFocus>
-            {selectVariationTypeValueItems}
-          </Select>
-          <TextField
-            {...register("price", {pattern: /^(?!0\.00)[1-9]\d{0,2}(,\d{3})*(\.\d\d)?$/})}
-            autoFocus
-            margin="dense"
-            id="description"
-            name='price'
-            label="Price"
-            type="number"
-            fullWidth
-            variant="outlined"
-          />
-          <span>{errors.price?.message}</span>
-          {isMediable
-          &&
-          <Button
-            variant="outlined"
-            component="label"
+      <Divider/>
+      <ModalWithChildren openModal={openAddDialog} onOk={handleAddDialog}
+                         onCancel={handleAddDialog} title={'CREATE NEW VARIATION'}>
+        <Form
+          name="basic"
+          labelCol={{span: 8}}
+          wrapperCol={{span: 16}}
+          onFinish={onFinish}
+          autoComplete="off"
+        >
+          <Form.Item
+            name="parent_id"
+            hidden
+            initialValue={parentId}
           >
-            <FontAwesomeIcon icon={faFileImage}/> <span className='ml-2'/>
-            <input
-              {...register('images')}
-              type="file"
-              multiple
-              name='images'
-            />
-          </Button>
-          }
-          <DialogActions>
-            <Button type='submit' color="primary" variant='contained'>Submit</Button>
-          </DialogActions>
-        </form>
-      </FormDialog>
+            <Input/>
+          </Form.Item>
+          <Form.Item
+            name="product_id"
+            hidden
+            initialValue={productId}
+          >
+            <Input/>
+          </Form.Item>
+          <Form.Item
+            label="Type (ex:color,size)"
+            name="variation_type_id"
+            rules={[{required: true, message: 'Please fill type in EN!'}]}
+          >
+            <Select>
+              {selectVariationTypeItems}
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Value (ex :red,xl,xs)"
+            name="variation_type_value_id"
+            rules={[{required: true, message: 'Please fill type in AR!'}]}
+          >
+            <Select
+              placeholder="this type will have image ?"
+              allowClear
+            >
+              {selectVariationTypeValueItems}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Price"
+            name="price"
+            rules={[{required: true, type: "integer", min: 0, max: 100000}]}
+          >
+            <InputNumber/>
+          </Form.Item>
+          <Form.Item
+            hidden={!isMediable}
+            label="Category Image"
+            name="images"
+            valuePropName='images'
+          >
+            <Upload listType="picture-card" onRemove={onRemove} onChange={(e) => onChangeHandler(e)}>
+              <div>
+                <PlusOutlined/>
+                <div style={{marginTop: 8}}>Upload</div>
+              </div>
+            </Upload>
+          </Form.Item>
+          <Form.Item wrapperCol={{offset: 8, span: 16}}>
+            <Button type="default" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </ModalWithChildren>
     </div>
   )
 

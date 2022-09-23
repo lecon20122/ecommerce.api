@@ -81,7 +81,7 @@ class ProductTest extends TestCase
         $this->assertNull(Product::first());
     }
 
-    public function that_as_a_admin_images_can_added_to_product()
+    public function test_that_as_a_admin_images_can_added_to_product()
     {
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
@@ -91,9 +91,9 @@ class ProductTest extends TestCase
         Storage::fake('public');
         $data = [
             'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 1000, 1000),
-                1 => UploadedFile::fake()->image("test.jpg", 1000, 1000),
-                2 => UploadedFile::fake()->image("test.jpg", 1000, 1000),
+                0 => UploadedFile::fake()->image("test.jpg", 100, 100),
+                1 => UploadedFile::fake()->image("test.jpg", 100, 100),
+                2 => UploadedFile::fake()->image("test.jpg", 100, 100),
             ]
         ];
 

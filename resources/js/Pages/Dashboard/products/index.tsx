@@ -1,10 +1,8 @@
 import React, {useState} from 'react'
-import {ColDef} from 'ag-grid-community';
 import {Product} from '../../../types/products';
 import {Button, DialogActions, TextField} from '@mui/material';
 import FormDialog from '../../shards/formDialog';
 import DashboardLayout from '../../../layouts/dashboard';
-import DataGrid from '../../../components/DataTables/DataGrid';
 import route from 'ziggy-js';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {SubmitHandler, useForm,} from 'react-hook-form';
@@ -26,7 +24,7 @@ interface IFormProps {
   images: string
 }
 
-export default function CategoryIndex({products, locale}: Props) {
+export default function ProductIndex({products, locale}: Props) {
   const {register, handleSubmit, formState: {errors}, reset} = useForm<IFormProps>()
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -132,11 +130,6 @@ export default function CategoryIndex({products, locale}: Props) {
         </div>
         < ConfirmationAlertDialog open={openDeleteDialog} handleClose={handleDeleteClose}
                                   handleAgree={handleAgreeDelete}/>
-        <DataGrid<Product>
-          gridData={products}
-          colDef={columns}
-          size={{height: '90vh', width: 'auto'}}
-        />
       </div>
     </DashboardLayout>
   )

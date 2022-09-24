@@ -21,12 +21,10 @@ function ImageSliderWithZoom({media, currentMedia}: Props) {
 
   const sliderList = media?.map((img) => {
     return (
-      <div key={img.id} className="">
-        <div className='hover:border-black hover:border min mr-[7px]' style={{minHeight: "66px", width: "60px"}}>
+        <div className='hover:border-black hover:border min mr-[7px]' style={{height: "66px", width: "60px"}}>
           <img className='' src={img.small} alt="Product title" onClick={() => handleOnMouseOver(img)}
                onMouseOver={() => handleOnMouseOver(img)}/>
         </div>
-      </div>
     )
   })
 
@@ -51,13 +49,12 @@ function ImageSliderWithZoom({media, currentMedia}: Props) {
           className="lg:hidden"
           indicator={() => null}
           trackOffset={10}
-          slideSize={100}
         >
           {swiperItems}
         </Swiper>
       </div>
       <div className='basis-1/8 order-last lg:order-first hidden lg:flex'>
-        <div className="space-x-2 text-center whitespace-nowrap">
+        <div className="whitespace-nowrap">
           {sliderList}
         </div>
       </div>

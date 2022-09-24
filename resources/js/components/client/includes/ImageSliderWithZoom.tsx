@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {NewMediaProps} from "../../../types/products";
-import {Col, Image, Row} from 'antd';
-import {Button, Space, Swiper, Toast} from 'antd-mobile'
+import {Image} from 'antd';
+import {Swiper} from 'antd-mobile'
 import {SwiperRef} from 'antd-mobile/es/components/swiper'
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
 function ImageSliderWithZoom({media, currentMedia}: Props) {
 
   const ref = useRef<SwiperRef>(null)
+  const [visible, setVisible] = useState(false)
 
   const handleOnMouseOver = (image: NewMediaProps) => {
     const imageIndex = media.findIndex((img => img.id === image.id))
@@ -20,8 +21,8 @@ function ImageSliderWithZoom({media, currentMedia}: Props) {
 
   const sliderList = media?.map((img) => {
     return (
-      <div key={img.id} className="mr-1 my-1 lg:my-0 flex">
-        <div className='hover:border-black hover:border'>
+      <div key={img.id} className="">
+        <div className='hover:border-black hover:border min mr-[7px]' style={{minHeight: "66px", width: "60px"}}>
           <img className='' src={img.small} alt="Product title" onClick={() => handleOnMouseOver(img)}
                onMouseOver={() => handleOnMouseOver(img)}/>
         </div>
@@ -30,30 +31,32 @@ function ImageSliderWithZoom({media, currentMedia}: Props) {
   })
 
   const swiperItems = media.map((img, index) => (
-    <Swiper.Item key={img.id}>
-      <Image style={{aspectRatio: "533/799", width: "533px", height: "auto"}} preview={{src: img.original}}
+    <Swiper.Item key={img.id} onClick={() => setVisible(true)}
+    >
+      <Image style={{aspectRatio: "670/892.2", width: "670px", height: "auto"}}
              src={img.big}
              alt="Product title"
-
-             onMouseOver={() => handleOnMouseOver(img)}/>
+             preview={false}
+             onMouseOver={() => handleOnMouseOver(img)}
+      />
     </Swiper.Item>
   ))
 
   return (
-    <div className='flex md:flex-row flex-col basis-3/6'>
-      <div className='order-first lg:order-last'>
+    <div className='flex md:flex-row flex-col basis-[60.83333333333333%]'>
+      <div className='order-first lg:order-last basis-7/8'>
         <Swiper
           allowTouchMove
           ref={ref}
           className="lg:hidden"
           indicator={() => null}
-          trackOffset={0}
+          trackOffset={10}
           slideSize={100}
         >
           {swiperItems}
         </Swiper>
       </div>
-      <div className='basis-14 order-last lg:order-first hidden lg:flex'>
+      <div className='basis-1/8 order-last lg:order-first hidden lg:flex'>
         <div className="space-x-2 text-center whitespace-nowrap">
           {sliderList}
         </div>

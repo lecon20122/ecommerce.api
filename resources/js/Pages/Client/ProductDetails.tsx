@@ -51,11 +51,11 @@ function ProductDetails({product, locale}: Props) {
     <AppLayout>
       <div>
         <div className="bg-white lg:py-10">
-          <div className="max-w-screen-xl lg:mx-auto px-4">
+          <div className="max-w-screen-xl lg:mx-auto px-[40px]">
             {/*<div className="grid grid-cols-1 sm:grid-cols-2 gap-2"  > */}
             <div className="flex md:flex-row flex-col">
               <ImageSliderWithZoom media={currentMedia} currentMedia={currentImage}/>
-              <main className='container basis-3/6'>
+              <main className='container md:ml-[50px] basis-[39.16666666666667%]'>
                 <div className='mx-auto'>
                   <h2 className="font-semibold text-2xl mb-4">
                     {product.title[locale as keyof typeof product.title]}
@@ -78,7 +78,7 @@ function ProductDetails({product, locale}: Props) {
                     <span className="text-green-500">Verified</span>
 
                   </div>
-                  <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
+                  <div className="flex">
                     <div className="flex">
                       <span className="mr-3">Color</span>
                       {variationColorsList}

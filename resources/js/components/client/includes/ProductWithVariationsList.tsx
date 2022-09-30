@@ -54,7 +54,7 @@ function ProductWithVariationsList({product, locale}: Props) {
       <a onClick={(() => handleClickOnProduct(product))}>
         {product.media &&
         <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
-             className="aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[227px] h-[302px]"
+             className="aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[187px] h-[248px]"
              // style={{width : "300px" , height :"400px"}}
              alt={product.title[locale as keyof typeof product.title]}/>}
       </a>

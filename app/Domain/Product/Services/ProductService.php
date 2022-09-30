@@ -141,7 +141,9 @@ class ProductService
         }
         )->query(function (Builder $builder) {
             $builder->with(['media', 'variations' => function ($query) {
-                $query->with('getVariationImages', 'getVariationColor')->parent();
+                $query->with('getVariationImages', 'getVariationColor')
+                    ->has('getVariationImages')
+                    ->parent();
             }
             ]);
         })->paginate();

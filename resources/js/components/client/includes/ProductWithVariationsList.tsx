@@ -15,7 +15,7 @@ interface Props {
 }
 
 function ProductWithVariationsList({product, locale}: Props) {
-
+  console.log(product.variations[0])
   const handleClickOnProduct = (product: ProductWithThumbnail) => {
     Inertia.get(route('shop.product.detail', product))
   }
@@ -24,7 +24,7 @@ function ProductWithVariationsList({product, locale}: Props) {
 
   useEffect(() => {
       if (Array.isArray(product.variations) && product.variations.length) {
-        setAvailableMedia(product.variations[0 as keyof typeof product.variations].media[0]?.thumbnail)
+        setAvailableMedia(product.variations[0 as keyof typeof product.variations]?.media[0]?.thumbnail)
       } else {
         setAvailableMedia(product.media[0 as keyof typeof product.media]?.thumbnail)
       }
@@ -37,7 +37,7 @@ function ProductWithVariationsList({product, locale}: Props) {
   }
 
   const variationColorsList = product.variations.map((variation, index) => {
-    if (variation.type === 'color') {
+    if (variation.type === 'color' && product.variations.length > 1) {
       return (
         <SwiperSlide key={variation.id} style={{width: "24px"}}>
           <div className='mr-6' onClick={() => handleClickVariationColors(variation)}>

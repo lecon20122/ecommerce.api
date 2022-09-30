@@ -190,7 +190,9 @@ class ProductService
     {
         return new ProductResource(
             $product->load(['media', 'variations' => function ($query) {
-                $query->with('children', 'getVariationImages', 'getVariationColor')->parent();
+                $query->with('children', 'getVariationImages', 'getVariationColor')
+                    ->has('getVariationImages')
+                    ->parent();
             }
             ])
         );

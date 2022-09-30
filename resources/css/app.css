@@ -68,3 +68,14 @@ img.ant-image-preview-img {
     background: #fff;
 }
 
+.customIndicator {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 4px 8px;
+    color: #ffffff;
+    border-radius: 4px;
+    user-select: none;
+}
+

@@ -21,6 +21,7 @@ function ProductWithVariationsList({product, locale}: Props) {
   }
   const [availableMedia, setAvailableMedia] = useState<string>()
   const [srcLoaded, setSrcLoaded] = useState(false)
+  const [currentVariationSelected, setCurrentVariationSelected] = useState(0)
 
   useEffect(() => {
       if (Array.isArray(product.variations) && product.variations.length) {
@@ -32,8 +33,13 @@ function ProductWithVariationsList({product, locale}: Props) {
   )
 
   const handleClickVariationColors = (variation: Variation) => {
+    setCurrentVariationSelected(variation.id)
     setSrcLoaded(false)
     setAvailableMedia(variation.media[0].thumbnail)
+  }
+
+  const isVariationButtonChecked = (variationID: any) => {
+    return variationID === currentVariationSelected;
   }
 
   const variationColorsList = product.variations.map((variation, index) => {
@@ -41,10 +47,11 @@ function ProductWithVariationsList({product, locale}: Props) {
       return (
         <SwiperSlide key={variation.id} style={{width: "24px"}}>
           <div className='mr-6' onClick={() => handleClickVariationColors(variation)}>
-            <ColoredCircleButton key={variation.id}
-                                 backgroundImage={variation.color?.color}
-                                 color={variation.title}
-                                 onClick={() => handleClickVariationColors(variation)}/>
+            <ColoredCircleButton
+              active={isVariationButtonChecked(variation.id)}
+              backgroundImage={variation.color?.color}
+              color={variation.title}
+            />
           </div>
         </SwiperSlide>
       )
@@ -57,7 +64,7 @@ function ProductWithVariationsList({product, locale}: Props) {
         {!srcLoaded &&
         <div
           className="flex items-center justify-center aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[187px] h-[248px] bg-grey-600">
-          <DotLoading style={{ fontSize: 24 }} />
+          <DotLoading style={{fontSize: 24}}/>
         </div>
         }
 

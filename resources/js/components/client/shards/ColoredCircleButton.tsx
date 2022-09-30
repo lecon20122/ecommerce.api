@@ -1,4 +1,5 @@
 import React from 'react';
+import {bool} from "yup";
 
 
 interface Props {
@@ -6,9 +7,10 @@ interface Props {
   onClick?: () => void
   backgroundImage?: string
   onMouseOver?: () => void
+  active?: boolean
 }
 
-function ColoredCircleButton({color, onClick, backgroundImage, onMouseOver}: Props) {
+function ColoredCircleButton({color, onClick, backgroundImage, onMouseOver, active}: Props) {
 
   const backgroundFactory = () => {
     if (backgroundImage) {
@@ -19,10 +21,10 @@ function ColoredCircleButton({color, onClick, backgroundImage, onMouseOver}: Pro
   }
   return (
     <button
-      onMouseOver={onMouseOver}
       style={backgroundFactory()}
-      // onClick={onClick}
-      className={`border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none`}/>
+      onClick={onClick}
+      disabled={active}
+      className={`border-2 rounded-full w-6 h-6 focus:outline-none ${active ? 'border-black' : 'border-gray-300'}`}/>
   );
 }
 

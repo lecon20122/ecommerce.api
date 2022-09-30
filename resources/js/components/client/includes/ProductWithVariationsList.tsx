@@ -7,6 +7,7 @@ import ColoredCircleButton from "../shards/ColoredCircleButton";
 import {Variation} from "../../../types/VariationType";
 import {SwiperSlide, Swiper} from "swiper/react";
 import {Navigation, Pagination} from "swiper";
+import {Head} from "@inertiajs/inertia-react";
 
 interface Props {
   product: ProductWithThumbnail
@@ -33,7 +34,7 @@ function ProductWithVariationsList({product, locale}: Props) {
     setAvailableMedia(variation.media[0].thumbnail)
   }
 
-  const variationColorsList = product.variations.map((variation) => {
+  const variationColorsList = product.variations.map((variation, index) => {
     if (variation.type === 'color') {
       return (
         <SwiperSlide key={variation.id} style={{width: "24px"}}>
@@ -53,8 +54,8 @@ function ProductWithVariationsList({product, locale}: Props) {
       <a onClick={(() => handleClickOnProduct(product))}>
         {product.media &&
         <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
-             className="aspect-[61/81]"
-             loading={"eager"}
+             className="aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[227px] h-[302px]"
+             // style={{width : "300px" , height :"400px"}}
              alt={product.title[locale as keyof typeof product.title]}/>}
       </a>
 

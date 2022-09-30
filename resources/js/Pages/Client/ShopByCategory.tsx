@@ -7,6 +7,7 @@ import ProductFilterMobile from "../../components/client/includes/ProductFilterM
 import ProductWithVariationsList from "../../components/client/includes/ProductWithVariationsList";
 import {PaginateDataType} from "../../types/globalTypes";
 import PaginationComponent from "../../components/client/includes/PaginationComponent";
+import {Head} from "@inertiajs/inertia-react";
 
 interface Props {
   products: PaginateDataType<ProductWithThumbnail>

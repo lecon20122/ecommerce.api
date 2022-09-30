@@ -5,7 +5,7 @@ import route from "ziggy-js";
 
 
 export default function Navbar() {
-  const user : any = usePage().props.auth
+  const user: any = usePage().props.auth
   const ICON_SIZE = '24'
 
   return (
@@ -13,9 +13,9 @@ export default function Navbar() {
       <div className="container max-w-screen-xl mx-auto px-4">
         <div className="flex flex-wrap items-center">
           <div className="flex-shrink-0 mr-5">
-            <a href="#"> <img
+            <InertiaLink href="/"> <img
               src="https://static.vecteezy.com/system/resources/thumbnails/007/967/852/small_2x/shopping-bags-colorful-paper-bags-for-shopping-mall-products-vector.jpg"
-              height="42" width="42" alt="Brand"/> </a>
+              height="42" width="42" alt="Brand"/> </InertiaLink>
           </div>
           <div className="flex items-center space-x-2 ml-auto">
             <div className="dropdown dropdown-hover">

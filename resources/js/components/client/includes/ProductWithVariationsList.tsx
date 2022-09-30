@@ -5,6 +5,8 @@ import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
 import ColoredCircleButton from "../shards/ColoredCircleButton";
 import {Variation} from "../../../types/VariationType";
+import {SwiperSlide, Swiper} from "swiper/react";
+import {Navigation, Pagination} from "swiper";
 
 interface Props {
   product: ProductWithThumbnail
@@ -34,11 +36,14 @@ function ProductWithVariationsList({product, locale}: Props) {
   const variationColorsList = product.variations.map((variation) => {
     if (variation.type === 'color') {
       return (
-        <div className='inline-flex mr-1' key={variation.id} onClick={() => handleClickVariationColors(variation)}>
-          <ColoredCircleButton key={variation.id} backgroundColor={variation.title}
-                               backgroundImage={variation.color?.color}
-                               onClick={() => handleClickVariationColors(variation)}/>
-        </div>
+        <SwiperSlide key={variation.id} style={{width: "24px"}}>
+          <div className='mr-6' onClick={() => handleClickVariationColors(variation)}>
+            <ColoredCircleButton key={variation.id}
+                                 backgroundImage={variation.color?.color}
+                                 color={variation.title}
+                                 onClick={() => handleClickVariationColors(variation)}/>
+          </div>
+        </SwiperSlide>
       )
     }
   })
@@ -67,7 +72,9 @@ function ProductWithVariationsList({product, locale}: Props) {
             </a>
           </div>
         </div>
-        {variationColorsList}
+        <Swiper className='flex' spaceBetween={6} slidesPerView={'auto'}>
+          {variationColorsList}
+        </Swiper>
       </div>
     </div>
   );

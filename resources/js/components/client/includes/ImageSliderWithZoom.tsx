@@ -1,8 +1,8 @@
 import React, {useRef, useState} from 'react';
 import {NewMediaProps} from "../../../types/products";
 import {Image} from 'antd';
-import {Swiper} from 'antd-mobile'
-import {SwiperRef} from 'antd-mobile/es/components/swiper'
+import {Swiper, SwiperSlide} from "swiper/react";
+import {Navigation, Pagination, SwiperOptions} from "swiper";
 
 interface Props {
   media: NewMediaProps[]
@@ -11,44 +11,46 @@ interface Props {
 
 function ImageSliderWithZoom({media, currentMedia}: Props) {
 
-  const ref = useRef<SwiperRef>(null)
+  const swiperRef = useRef(null)
   const [visible, setVisible] = useState(false)
+  const [swiper, setSwiper] = useState<any>();
 
   const handleOnMouseOver = (image: NewMediaProps) => {
     const imageIndex = media.findIndex((img => img.id === image.id))
-    ref.current?.swipeTo(imageIndex)
+    // swiperRef.current?.swipeTo(imageIndex)
+    swiper.slideTo(imageIndex)
   }
 
   const sliderList = media?.map((img) => {
     return (
-        <div className='hover:border-black hover:border min mr-[7px] mb-2' style={{height: "auto", width: "60px"}}>
-          <img className='' src={img.small} alt="Product title" onClick={() => handleOnMouseOver(img)}
-               onMouseOver={() => handleOnMouseOver(img)}/>
-        </div>
+      <div className='hover:border-black hover:border min mr-[7px] mb-2' style={{height: "auto", width: "60px"}}
+           key={img.id}>
+        <img className='' src={img.small} alt="Product title" onClick={() => handleOnMouseOver(img)}
+             onMouseOver={() => handleOnMouseOver(img)}/>
+      </div>
     )
   })
 
   const swiperItems = media.map((img, index) => (
-    <Swiper.Item key={img.id} onClick={() => setVisible(true)}
+    <SwiperSlide key={img.id} onClick={() => setVisible(true)}
     >
       <Image style={{aspectRatio: "670/892.2", width: "670px", height: "auto"}}
              src={img.big}
              alt="Product title"
-             preview={false}
-             onMouseOver={() => handleOnMouseOver(img)}
       />
-    </Swiper.Item>
+    </SwiperSlide>
   ))
 
   return (
     <div className='flex md:flex-row flex-col basis-[60.83333333333333%]'>
       <div className='order-first lg:order-last basis-7/8'>
         <Swiper
-          allowTouchMove
-          ref={ref}
-          className="lg:hidden"
-          indicator={() => null}
-          trackOffset={10}
+          onSwiper={(swiper) => setSwiper(swiper)}
+          width={670}
+          navigation
+          pagination={{type : 'fraction'}}
+          modules={[Navigation , Pagination]}
+          slidesPerView={'auto'}
         >
           {swiperItems}
         </Swiper>

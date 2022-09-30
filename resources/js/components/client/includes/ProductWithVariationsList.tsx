@@ -54,7 +54,7 @@ function ProductWithVariationsList({product, locale}: Props) {
         {product.media &&
         <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
              className="aspect-[61/81]"
-             loading={"lazy"}
+             loading={"eager"}
              alt={product.title[locale as keyof typeof product.title]}/>}
       </a>
 

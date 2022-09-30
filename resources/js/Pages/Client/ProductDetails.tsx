@@ -35,7 +35,7 @@ function ProductDetails({product, locale}: Props) {
     if (variation.type === 'color') {
       return (
         <ColoredCircleButton onMouseOver={() => handleClickVariationColors(variation)} key={variation.id}
-                             backgroundColor={variation.title} backgroundImage={variation.color?.color}/>
+                             color={variation.title} backgroundImage={variation.color?.color}/>
       )
     }
   })

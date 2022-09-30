@@ -20,6 +20,7 @@ function ProductWithVariationsList({product, locale}: Props) {
     Inertia.get(route('shop.product.detail', product))
   }
   const [availableMedia, setAvailableMedia] = useState<string>()
+  const [srcLoaded, setSrcLoaded] = useState(false)
 
   useEffect(() => {
       if (Array.isArray(product.variations) && product.variations.length) {
@@ -31,6 +32,7 @@ function ProductWithVariationsList({product, locale}: Props) {
   )
 
   const handleClickVariationColors = (variation: Variation) => {
+    setSrcLoaded(false)
     setAvailableMedia(variation.media[0].thumbnail)
   }
 
@@ -52,15 +54,21 @@ function ProductWithVariationsList({product, locale}: Props) {
   return (
     <div key={product.id}>
       <a onClick={(() => handleClickOnProduct(product))}>
+        {!srcLoaded &&
+        <div
+          className="flex items-center justify-center aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[187px] h-[248px] bg-grey-600">
+          <h3 className={'justify-self-center'}>loading...</h3>
+        </div>
+        }
+
         {product.media &&
         <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
-             className="aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[187px] h-[248px]"
-             // style={{width : "300px" , height :"400px"}}
+             className={`aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[187px] h-[248px] ${srcLoaded ? "block" : "hidden"} `}
+             onLoad={() => setSrcLoaded(true)}
              alt={product.title[locale as keyof typeof product.title]}/>}
       </a>
-
-      <div className="">
-        <a href="#" className="text-gray-600">
+      <div>
+        <a className="text-gray-600">
           {product.title[locale as keyof typeof product.title]}
         </a>
         <div className='grid grid-cols-5'>

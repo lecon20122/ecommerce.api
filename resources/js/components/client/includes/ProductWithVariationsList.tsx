@@ -8,6 +8,7 @@ import {Variation} from "../../../types/VariationType";
 import {SwiperSlide, Swiper} from "swiper/react";
 import {Navigation, Pagination} from "swiper";
 import {Head} from "@inertiajs/inertia-react";
+import {DotLoading} from "antd-mobile";
 
 interface Props {
   product: ProductWithThumbnail
@@ -15,7 +16,6 @@ interface Props {
 }
 
 function ProductWithVariationsList({product, locale}: Props) {
-  console.log(product.variations[0])
   const handleClickOnProduct = (product: ProductWithThumbnail) => {
     Inertia.get(route('shop.product.detail', product))
   }
@@ -57,7 +57,7 @@ function ProductWithVariationsList({product, locale}: Props) {
         {!srcLoaded &&
         <div
           className="flex items-center justify-center aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[187px] h-[248px] bg-grey-600">
-          <h3 className={'justify-self-center'}>loading...</h3>
+          <DotLoading style={{ fontSize: 24 }} />
         </div>
         }
 

@@ -47,18 +47,18 @@ function CollapseFilters({filters, category}: Props) {
     }
   }
 
-  const onClick = ({target}: React.MouseEvent<HTMLButtonElement>) => {
+  const onClick = (name: string, value: string) => {
 
-    if (selectedFilters[target.name].includes(target.value)) {
+    if (selectedFilters[name].includes(value)) {
       const newState = {
         ...selectedFilters,
-        [target.name]: selectedFilters[target.name].filter(prev => prev !== target.value)
+        [name]: selectedFilters[name].filter(prev => prev !== value)
       };
       setSelectedFilters(newState);
     } else {
       const newState = {
         ...selectedFilters,
-        [target.name]: [...selectedFilters[target.name], target.value]
+        [name]: [...selectedFilters[name], value]
       }
       setSelectedFilters(newState)
     }
@@ -67,13 +67,17 @@ function CollapseFilters({filters, category}: Props) {
   const filterFactory = (key: string) => {
     if (key === 'color') {
       return (
-        <div className='flex'>
+        <div>
           {Object.keys(filters[key]).map((item, value) => { // ['black' , '8']
             return (
               <button
-                className={`${selectedFilters[key].includes(item) ? 'w-[20px] h-[20px] rounded-full :p-2 border-black border' : 'w-[20px] h-[20px] rounded-full hover:p-2 hover:border-black border'}`}
-                style={{backgroundColor: item}} key={value} name={key} value={item}
-                onClick={(e) => onClick(e)}/>
+                className={`${selectedFilters[key].includes(item) ? 'w-[67px] h-[35px] border-black inline-flex items-center justify-center border p-1' : 'w-[67px] h-[35px] hover:border-black border inline-flex items-center justify-center p-1'}`}
+                key={value} name={key} value={item}
+                onClick={(e) => onClick(key, item)}>
+                <div className='w-[15px] h-[15px] rounded-full border-black border mr-1'
+                     style={{backgroundColor: item}} onClick={(e) => onClick(key, item)}/>
+                <span className='text-black' onClick={(e) => onClick(key, item)}>{item}</span>
+              </button>
             )
           })}
         </div>
@@ -104,7 +108,7 @@ function CollapseFilters({filters, category}: Props) {
 
   const SortableFiltersPanels = Object.keys(filters).map((key, index) => { // ['size' , 'color']
     return (
-      <Collapse.Panel key={key} title={key} className='capitalize my-2 text-bolder'>
+      <Collapse.Panel key={key} title={key} className='capitalize text-bolder flex flex-wrap flex-[1_1_21%]'>
         {filterFactory(key)}
       </Collapse.Panel>
     )

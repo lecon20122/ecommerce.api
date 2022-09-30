@@ -26,6 +26,7 @@ function ProductWithVariationsList({product, locale}: Props) {
   useEffect(() => {
       if (Array.isArray(product.variations) && product.variations.length) {
         setAvailableMedia(product.variations[0 as keyof typeof product.variations]?.media[0]?.thumbnail)
+        setCurrentVariationSelected(product.variations[0].id)
       } else {
         setAvailableMedia(product.media[0 as keyof typeof product.media]?.thumbnail)
       }

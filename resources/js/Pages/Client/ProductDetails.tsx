@@ -34,7 +34,7 @@ function ProductDetails({product, locale}: Props) {
   const variationColorsList = product.variations.map((variation) => {
     if (variation.type === 'color') {
       return (
-        <ColoredCircleButton onMouseOver={() => handleClickVariationColors(variation)} key={variation.id}
+        <ColoredCircleButton onClick={() => handleClickVariationColors(variation)} key={variation.id}
                              color={variation.title} backgroundImage={variation.color?.color}/>
       )
     }

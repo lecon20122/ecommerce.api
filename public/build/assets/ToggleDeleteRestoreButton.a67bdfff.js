@@ -1,0 +1,1 @@
+import{a as t}from"./app.57ea96d4.js";import{B as l}from"./button.83da31d2.js";function s({handleOnClickDelete:o,handleOnClickRestore:r,params:e}){return e.deleted_at?t(l,{className:"mr-2",type:"default",onClick:()=>r(e),children:"UNDO"}):t(l,{className:"mr-2",type:"default",onClick:()=>o(e),children:"DELETE"})}export{s as T};

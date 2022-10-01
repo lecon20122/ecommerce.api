@@ -8,6 +8,7 @@ use App\Http\Category\Services\CategoryService;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
+use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
@@ -161,6 +162,18 @@ class CategoryController extends BaseController
         DB::beginTransaction();
         try {
             $categoryService->deleteCategoryImage($category, $request);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError($exception->getMessage());
+        }
+    }
+    public function addBannerToCategory(Category $category, StoreMediaRequest $request, ImageService $imageService, CategoryService $categoryService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $categoryService->addBannerToCategory($category, $request, $imageService);
             DB::commit();
             return $this->webMessage('success');
         } catch (Exception $exception) {

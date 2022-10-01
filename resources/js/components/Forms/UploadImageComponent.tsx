@@ -15,14 +15,28 @@ interface Props {
   wrapperCol?: ColProps
   buttonWrapperCol?: ColProps
   labelCol?: ColProps
+  collectionName?: string
 }
 
-function UploadImageComponent({formClassName, buttonLabel = 'UPLOAD', routeName, params, wrapperCol, labelCol , buttonWrapperCol}: Props) {
+function UploadImageComponent({
+                                formClassName,
+                                buttonLabel = 'UPLOAD',
+                                routeName,
+                                params,
+                                wrapperCol,
+                                labelCol,
+                                buttonWrapperCol,
+                                collectionName
+                              }: Props) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const helpers = new Helpers()
 
   const uploadImageAction = (values: any) => {
-    Inertia.post(route(routeName, params), values, {
+    const data = {
+      ...values,
+      collection_name: collectionName
+    }
+    Inertia.post(route(routeName, params), data, {
       preserveState: false
     })
   }

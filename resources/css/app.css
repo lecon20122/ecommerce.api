@@ -42,7 +42,8 @@ img.ant-image-preview-img {
     outline: none;
     cursor: pointer;
 }
-.checkbox-square:hover{
+
+.checkbox-square:hover {
     border: 1px solid black;
     padding: 5px;
 }

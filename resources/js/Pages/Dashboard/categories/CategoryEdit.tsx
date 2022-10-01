@@ -9,6 +9,7 @@ import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import MediaProductCollection from "../../../components/Lists/MediaProductCollection";
 import {Button, Form, Input, Select} from "antd";
 import UploadImageComponent from "../../../components/Forms/UploadImageComponent";
+import {MediaConversionEnums} from "../../../Enums/MediaConversionEnums";
 
 interface Props {
   currentCategory: Category
@@ -60,6 +61,15 @@ export default function CategoryEdit({currentCategory, locale, categories}: Prop
         </Form>
         <UploadImageComponent routeName={'admin.add.media.to.category'} params={currentCategory}
                               buttonLabel={'UPLOAD'}/>
+
+        <UploadImageComponent routeName={'admin.add.banner.to.category'} params={currentCategory}
+                              buttonLabel={'UPLOAD BIG BANNER'}
+                              collectionName={MediaConversionEnums.CATEGORY_BIG_BANNER}/>
+
+        <UploadImageComponent routeName={'admin.add.banner.to.category'} params={currentCategory}
+                              buttonLabel={'UPLOAD MOBILE BANNER'}
+                              collectionName={MediaConversionEnums.CATEGORY_MOBILE_BANNER}/>
+
         <MediaProductCollection media={currentCategory.media} deleteURL={'admin.delete.media.of.category'}
                                 params={currentCategory}/>
       </div>

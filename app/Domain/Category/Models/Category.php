@@ -27,12 +27,6 @@ class Category extends Model implements HasMedia
     public $translatable = ['title'];
     protected $fillable = ['title', 'slug', 'parent_id'];
 
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection(MediaCollectionEnums::CATEGORY)
-            ->useFallbackUrl('https://empowher.org/wp-content/uploads/2021/03/image-placeholder-350x350-1.png')
-            ->singleFile();
-    }
 
     /**
      * @throws InvalidManipulation
@@ -40,10 +34,36 @@ class Category extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion(MediaCollectionEnums::THUMB_CONVENTION)
+            ->format(Manipulations::FORMAT_WEBP)
             ->width(310)
             ->height(303)
             ->performOnCollections(MediaCollectionEnums::CATEGORY);
+
+        $this->addMediaConversion(MediaCollectionEnums::CATEGORY_MOBILE_BANNER_CONVENTION)
+            ->format(Manipulations::FORMAT_WEBP)
+            ->width(412)
+            ->height(412)
+            ->performOnCollections(MediaCollectionEnums::CATEGORY_MOBILE_BANNER);
+
+        $this->addMediaConversion(MediaCollectionEnums::CATEGORY_BIG_BANNER_CONVENTION)
+            ->format(Manipulations::FORMAT_WEBP)
+            ->width(1200)
+            ->height(475)
+            ->performOnCollections(MediaCollectionEnums::CATEGORY_BIG_BANNER);
+
     }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollectionEnums::CATEGORY)
+            ->useFallbackUrl('https://empowher.org/wp-content/uploads/2021/03/image-placeholder-350x350-1.png')
+            ->singleFile();
+        $this->addMediaCollection(MediaCollectionEnums::CATEGORY_MOBILE_BANNER)
+            ->onlyKeepLatest(3);
+        $this->addMediaCollection(MediaCollectionEnums::CATEGORY_BIG_BANNER)
+            ->onlyKeepLatest(3);
+    }
+
 
     public function parent(): BelongsTo
     {

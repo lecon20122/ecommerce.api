@@ -91,8 +91,8 @@ class CategoryService
     public function getCategoriesChildrenAndThumb(): Collection|array
     {
         return Category::query()
-            ->with('thumbnail')
-            ->select('id', 'title', 'slug', 'parent_id')
+            ->with(['media', 'children'])
+            ->select('id', 'title', 'slug')
             ->isParent()
             ->get();
     }
@@ -117,5 +117,12 @@ class CategoryService
     {
         $image = $category->media()->find($request->validated('id'));
         $image?->delete();
+    }
+
+    public function addBannerToCategory(Category $category, StoreMediaRequest $request, ImageService $imageService)
+    {
+        if ($request->hasFile('images')) {
+            $imageService->imageUpload($category, 'images', $request->validated('collection_name'), $category->id);
+        }
     }
 }

@@ -35,6 +35,12 @@ class MediaResource extends JsonResource
         if ($this->hasGeneratedConversion(MediaCollectionEnums::VARIATION_COLOR_CONVENTION)) {
             $data['color'] = $this->getFullUrl(MediaCollectionEnums::VARIATION_COLOR_CONVENTION);
         }
+        if ($this->hasGeneratedConversion(MediaCollectionEnums::CATEGORY_BIG_BANNER_CONVENTION)) {
+            $data['big_banner'] = $this->getFullUrl(MediaCollectionEnums::CATEGORY_BIG_BANNER_CONVENTION);
+        }
+        if ($this->hasGeneratedConversion(MediaCollectionEnums::CATEGORY_MOBILE_BANNER_CONVENTION)) {
+            $data['mobile_banner'] = $this->getFullUrl(MediaCollectionEnums::CATEGORY_MOBILE_BANNER_CONVENTION);
+        }
         return $data;
     }
 }

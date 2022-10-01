@@ -5,6 +5,8 @@ namespace App\Support\Enums;
 class MediaCollectionEnums
 {
     const BANNER = 'banners';
+    const CATEGORY_BIG_BANNER = 'category_big_banner';
+    const CATEGORY_MOBILE_BANNER = 'category_mobile_banner';
     const THUMBNAIL = 'thumbnails';
     const SMALL = 'small';
     const BIG_CONVENTION = 'big';
@@ -20,4 +22,8 @@ class MediaCollectionEnums
     const IMAGES_CONVENTION = 'images';
     const SMALL_CONVENTION = 'small';
     const VARIATION_COLOR = 'variation_color';
+    const CATEGORY_MOBILE_BANNER_CONVENTION = 'category_mobile_banner_convention';
+    const CATEGORY_BIG_BANNER_CONVENTION = 'category_big_banner_convention';
+
+
 }

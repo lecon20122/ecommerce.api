@@ -44,7 +44,7 @@ export default function MediaProductCollection({deleteURL, media, params}: Props
       <Image.PreviewGroup>
         {media?.map((item, index) => (
           <div key={item.id} className='flex-[1_1_130px] my-1'>
-            <Image src={item.thumbnail} className='px-1'/>
+            <Image src={item.big_banner || item.mobile_banner || item.thumbnail} className='px-1'/>
             <AntButton type="dashed" danger className='flex' onClick={e => handleMediaDelete(item.id)}>
               Delete
             </AntButton>

@@ -103,4 +103,6 @@ export interface NewMediaProps {
   small: string;
   color: string;
   original: string
+  big_banner: string,
+  mobile_banner: string
 }

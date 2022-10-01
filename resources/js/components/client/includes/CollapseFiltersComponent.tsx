@@ -71,12 +71,13 @@ function CollapseFilters({filters, category}: Props) {
           {Object.keys(filters[key]).map((item, value) => { // ['black' , '8']
             return (
               <button
-                className={`${selectedFilters[key].includes(item) ? 'w-[67px] h-[35px] border-black inline-flex items-center justify-center border p-1' : 'w-[67px] h-[35px] hover:border-black border inline-flex items-center justify-center p-1'}`}
+                className={`${selectedFilters[key].includes(item) ? 'w-[30px] h-[30px] border-black rounded-full inline-flex items-center justify-center border'
+                  : 'w-[30px] h-[30px] rounded-full hover:border-black border inline-flex items-center justify-center'}`}
                 key={value} name={key} value={item}
                 onClick={(e) => onClick(key, item)}>
-                <div className='w-[15px] h-[15px] rounded-full border-black border mr-1'
+                <div className='w-[20px] h-[20px] rounded-full border-black border'
                      style={{backgroundColor: item}} onClick={(e) => onClick(key, item)}/>
-                <span className='text-black' onClick={(e) => onClick(key, item)}>{item}</span>
+                {/*<span className='text-black hidden xl:block' onClick={(e) => onClick(key, item)}>{item}</span>*/}
               </button>
             )
           })}

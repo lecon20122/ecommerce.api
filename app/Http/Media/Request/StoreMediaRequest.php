@@ -24,6 +24,7 @@ class StoreMediaRequest extends FormRequest
     public function rules()
     {
         return [
+            'collection_name' => 'string|nullable',
             'images' => 'required',
             'images.*' => 'mimes:jpg,webp|max:1024',
         ];

@@ -1,12 +1,13 @@
-import {Product} from "./products";
+import {NewMediaProps, Product} from "./products";
 
 export interface HomePageCategory {
   id: number;
   parent_id: number;
   title: Title;
   slug: string;
-  thumbnail: Thumbnail;
+  media: NewMediaProps[];
   parent?: Parent;
+  children: HomePageCategory[]
 }
 
 export interface Thumbnail {

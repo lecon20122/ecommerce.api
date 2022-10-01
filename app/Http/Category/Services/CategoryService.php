@@ -92,6 +92,7 @@ class CategoryService
     {
         return Category::query()
             ->with(['media', 'children'])
+            ->has('children')
             ->select('id', 'title', 'slug')
             ->isParent()
             ->get();

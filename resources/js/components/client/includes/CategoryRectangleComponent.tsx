@@ -21,7 +21,8 @@ export default function CategoryRectangleComponent({categories, locale, secondar
   const categoriesItems = categories.map((category) => (
     <div
       key={category.id}
-      className={`w-[110px] h-[44px] lg:w-[240px] lg:h-[88px] bg-[${secondaryColor}] m-1 lg:flex-[1_1_240px] flex-[1_1_28%] cursor-pointer`}
+      className={`w-[110px] h-[44px] lg:w-[240px] lg:h-[88px] m-1 lg:flex-[1_1_240px] flex-[1_1_28%] cursor-pointer`}
+      style={{backgroundColor: secondaryColor}}
       onClick={(e) => onClickHandle(category)}
     >
       <div className='flex items-center justify-center h-full'>
@@ -32,7 +33,8 @@ export default function CategoryRectangleComponent({categories, locale, secondar
 
 
   return (
-    <section className={`container max-w-[1280px] mx-auto bg-[${primaryColor}] p-1`}>
+    <section className={`container max-w-[1280px] mx-auto  p-1`}
+             style={{backgroundColor: primaryColor}}>
       <div className="flex flex-wrap mx-auto">
         {categoriesItems}
       </div>

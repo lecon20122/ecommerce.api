@@ -15,7 +15,6 @@ class HomeController extends BaseController
     {
         return Inertia::render('Client/index', [
             'categories' => CategoryResource::collection((new CategoryService)->getCategoriesChildrenAndThumb()),
-            'products' => (new ProductService())->getNewProducts(),
         ]);
     }
 }

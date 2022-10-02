@@ -22,6 +22,7 @@ class CategoryFactory extends Factory
     {
         return [
             'title' => $this->faker->unique()->streetName(),
+            'is_active' => false
         ];
     }
 }

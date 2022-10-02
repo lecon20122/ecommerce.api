@@ -4,9 +4,8 @@ import DashboardLayout from '../../../layouts/dashboard';
 import route from 'ziggy-js';
 import {Inertia,} from '@inertiajs/inertia';
 import {ColumnsType} from "antd/es/table";
-import {Button, Divider, Form, Input, Select, Space, Upload} from "antd";
-import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
-import AntDesignDataTable from "../../../components/DataTables/AntDesignDataTable";
+import {Button, Divider, Form, Input, Select, Space, Table, Upload} from "antd";
+import {SwapOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import ModalWithChildren from "../variations/ModalWithChildren";
 import {UploadChangeParam, UploadFile} from "antd/es/upload/interface";
 import Helpers from "../../../utils/Helpers";
@@ -27,6 +26,7 @@ export default function CategoryIndex({categories, locale}: Props) {
   const [currentCategoryId, setCurrentCategoryId] = useState(0);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const helpers = new Helpers()
+
   const handleAddDialog = () => {
     setOpenAddDialog(!openAddDialog);
   };
@@ -36,8 +36,9 @@ export default function CategoryIndex({categories, locale}: Props) {
   };
 
   const handleOnClickDelete = (categoryId: any) => {
-    setCurrentCategoryId(categoryId)
-    setOpenDeleteDialog(true)
+    Inertia.post(route('admin.toggle.category.status', categoryId), undefined, {
+      preserveState: false,
+    })
   };
 
   const handleDeleteClose = (e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
@@ -93,7 +94,7 @@ export default function CategoryIndex({categories, locale}: Props) {
       render: (_, record) => (
         <Space size="middle">
           <EditOutlined onClick={(e) => handleOnClickUpdateDialog(record.id)}/>
-          <DeleteOutlined onClick={(e) => handleOnClickDelete(record.id)}/>
+          <SwapOutlined onClick={(e) => handleOnClickDelete(record.id)}/>
         </Space>
       ),
     },
@@ -103,6 +104,14 @@ export default function CategoryIndex({categories, locale}: Props) {
   const selectParentMenuItems = categories.map((category) => (
     <Select.Option value={category.id} key={category.id}>{category.title.en}</Select.Option>
   ))
+
+  const rowClassName = (record: any, index: any) => {
+    if (record.is_active) {
+      return 'bg-lime-100'
+    } else {
+      return 'bg-red-100'
+    }
+  }
 
   const storeCategoriesAction = (values: any) => {
     Inertia.post(route('admin.categories.store'), values, {
@@ -192,7 +201,7 @@ export default function CategoryIndex({categories, locale}: Props) {
         <div className={'container mx-auto py-4'}>
           <Button onClick={() => setOpenAddDialog(true)}>create new record</Button>
           <Divider/>
-          <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={categories}/>
+          <Table columns={columns} rowKey={"id"} dataSource={categories} rowClassName={rowClassName}/>
         </div>
       </div>
     </DashboardLayout>

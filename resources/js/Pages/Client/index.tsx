@@ -1,11 +1,11 @@
 import React, {lazy, Suspense} from 'react'
 import {HomePageCategory} from "../../types/CategoryType";
-import {ProductWithThumbnail} from "../../types/products";
+import {Category, ProductWithThumbnail} from "../../types/products";
 import MobileNavigation from "../../components/client/includes/MobileNavigation";
 import HomePageTabsComponents from "../../components/client/includes/HomePageTabsComponents";
 
 interface Props {
-  categories: HomePageCategory[]
+  categories: Category[]
   products: ProductWithThumbnail[]
   locale: string
 }

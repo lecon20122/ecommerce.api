@@ -21,17 +21,11 @@ class CategoryService
 
     public function adminIndex()
     {
-        return Cache::remember(
-            CacheKeyEnums::CATEGORY,
-            3600,
-            fn() => CategoryResource::collection(
-                Category::query()
-                    ->select('id', 'title', 'parent_id', 'created_at')
-                    ->with('parent:title,id')
-                    ->get()
-            )
-
-        );
+        return CategoryResource::collection(
+            Category::query()
+                ->select('id', 'title', 'parent_id', 'created_at', 'is_active')
+                ->with('parent:title,id')
+                ->get());
     }
 
 
@@ -91,9 +85,11 @@ class CategoryService
     public function getCategoriesChildrenAndThumb(): Collection|array
     {
         return Category::query()
-            ->with(['media', 'children'])
+            ->with(['media', 'children' => function ($query) {
+                $query->has('products');
+            }])
             ->has('children')
-            ->select('id', 'title', 'slug')
+            ->isActive()
             ->isParent()
             ->get();
     }
@@ -125,5 +121,12 @@ class CategoryService
         if ($request->hasFile('images')) {
             $imageService->imageUpload($category, 'images', $request->validated('collection_name'), $category->id);
         }
+    }
+
+    public function toggleCategoryStatus($id)
+    {
+        $category = Category::query()->find($id);
+        $category->is_active = !$category->is_active;
+        $category->save();
     }
 }

@@ -100,4 +100,18 @@ class CategoryTest extends TestCase
 
         $this->assertCount(1, $category->media);
     }
+
+    #[NoReturn] public function test_that_as_a_admin_can_toggle_category_status()
+    {
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin, 'admin');
+
+        $category = Category::factory()->create();
+
+        $response = $this->post(route('admin.toggle.category.status', ['id' => $category->id]))->assertRedirect();
+
+        $response->assertSessionHas('message', 'success');
+
+        $this->assertTrue(Category::first()->is_active);
+    }
 }

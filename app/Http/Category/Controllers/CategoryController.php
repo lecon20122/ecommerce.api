@@ -169,11 +169,25 @@ class CategoryController extends BaseController
             return $this->redirectBackWithError($exception->getMessage());
         }
     }
+
     public function addBannerToCategory(Category $category, StoreMediaRequest $request, ImageService $imageService, CategoryService $categoryService): RedirectResponse
     {
         DB::beginTransaction();
         try {
             $categoryService->addBannerToCategory($category, $request, $imageService);
+            DB::commit();
+            return $this->webMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError($exception->getMessage());
+        }
+    }
+
+    public function toggleCategoryStatus($id, CategoryService $categoryService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $categoryService->toggleCategoryStatus($id);
             DB::commit();
             return $this->webMessage('success');
         } catch (Exception $exception) {

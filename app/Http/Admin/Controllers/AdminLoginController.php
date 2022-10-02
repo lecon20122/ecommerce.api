@@ -15,9 +15,8 @@ class AdminLoginController extends BaseController
      * @param AdminLoginRequest $request
      * @return RedirectResponse
      */
-    public function login(AdminLoginRequest $request)
+    public function login(AdminLoginRequest $request): RedirectResponse
     {
-//        dd($request->validated());
         try {
             if (Auth::guard('admin')->attempt($request->validated())) {
                 return redirect()->route('dashboard.index');

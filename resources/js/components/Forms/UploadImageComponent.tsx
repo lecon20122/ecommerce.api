@@ -76,7 +76,7 @@ function UploadImageComponent({
         </Upload>
       </Form.Item>
       <Form.Item wrapperCol={buttonWrapperCol}>
-        <Button type="default" htmlType="submit">
+        <Button type="default" className={'uppercase'} htmlType="submit">
           {buttonLabel}
         </Button>
       </Form.Item>

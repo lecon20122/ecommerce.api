@@ -3,33 +3,40 @@
 namespace App\Http\Auth\Controllers;
 
 use App\Http\Auth\Requests\LoginRequest;
-use App\Http\Auth\Resources\UserResource;
 use Application\Controllers\BaseController;
-use Domain\Auth\Traits\HasLogin;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
+use Exception;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class LoginController extends BaseController
 {
-    use HasLogin;
+
 
     /**
      * Display a listing of the resource.
      *
      * @param LoginRequest $request
-     * @return JsonResponse
+     * @return RedirectResponse
      */
-    public function __invoke(LoginRequest $request): JsonResponse
+    public function __invoke(LoginRequest $request): RedirectResponse
     {
         try {
-            return $this->mobileLogin($request);
-        } catch (\Exception $exception) {
-            return response()->json($exception->getMessage());
+            $request->authenticate();
+            $request->session()->regenerate();
+            return redirect()->intended()->with('message', 'success');
+
+        } catch (Exception $exception) {
+            return $this->webMessage($exception->getMessage());
         }
     }
 
-    public function user()
+    public function view(): Response|RedirectResponse
     {
-        return new UserResource(Auth::user());
+        try {
+            return Inertia::render('Client/auth/login');
+        } catch (Exception $exception) {
+            return redirect()->back()->with('errors', $exception->getMessage());
+        }
     }
 }

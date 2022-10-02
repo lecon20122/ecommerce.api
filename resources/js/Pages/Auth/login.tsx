@@ -23,9 +23,7 @@ export default function AdminLogin() {
   })
 
   const serverSideErrors = usePage().props.errors
-  console.log('====================================');
-  console.log(serverSideErrors);
-  console.log('====================================');
+
   const formAddSubmitHandler: SubmitHandler<IFormProps> = (data, e) => {
     e?.preventDefault()
     const resolveData = {...data}

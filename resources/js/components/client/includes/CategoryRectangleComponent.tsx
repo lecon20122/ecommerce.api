@@ -1,24 +1,27 @@
 import React from 'react';
-import {HomePageCategory} from "../../../types/CategoryType";
-import CategoryCircle from "./CategoryCircle";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
+import {Category} from "../../../types/products";
 
 interface Props {
-  categories: HomePageCategory[]
+  categories: Category[]
   locale: string
+  secondaryColor: string
+  primaryColor: string
+
 }
 
 
-export default function CategoryRectangleComponent({categories, locale}: Props) {
+export default function CategoryRectangleComponent({categories, locale, secondaryColor, primaryColor}: Props) {
 
-  const onClickHandle = (category: HomePageCategory) => {
+  const onClickHandle = (category: Category) => {
     Inertia.get(route('shop.by.category', category))
   }
 
   const categoriesItems = categories.map((category) => (
     <div
-      className='w-[110px] h-[44px] lg:w-[240px] lg:h-[88px] bg-[#F6E4E3] m-1 lg:flex-[1_1_240px] flex-[1_1_28%] cursor-pointer'
+      key={category.id}
+      className={`w-[110px] h-[44px] lg:w-[240px] lg:h-[88px] bg-[${secondaryColor}] m-1 lg:flex-[1_1_240px] flex-[1_1_28%] cursor-pointer`}
       onClick={(e) => onClickHandle(category)}
     >
       <div className='flex items-center justify-center h-full'>
@@ -29,7 +32,7 @@ export default function CategoryRectangleComponent({categories, locale}: Props) 
 
 
   return (
-    <section className="container max-w-[1280px] mx-auto bg-[#CD867D] p-1">
+    <section className={`container max-w-[1280px] mx-auto bg-[${primaryColor}] p-1`}>
       <div className="flex flex-wrap mx-auto">
         {categoriesItems}
       </div>

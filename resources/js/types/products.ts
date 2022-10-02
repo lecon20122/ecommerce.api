@@ -11,11 +11,14 @@ export interface Category {
   title: Title
   parent_id: number;
   slug: string;
-  children?: Category[];
+  children: Category[];
   products?: Product[];
   thumbnail?: Thumbnail;
   parent: Category
+  is_active: boolean
   media: NewMediaProps[]
+  primary_color: string
+  secondary_color: string
 }
 
 export interface Product {

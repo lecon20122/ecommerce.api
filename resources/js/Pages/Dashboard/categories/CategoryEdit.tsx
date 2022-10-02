@@ -1,11 +1,8 @@
-import {Container} from '@mui/system'
-import React, {useState} from 'react'
+import React from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
-import TextField from '@mui/material/TextField';
-import {Category, CategoryWithMedia, CategoryWithThumbnail} from '../../../types/products';
+import {Category} from '../../../types/products';
 import {Inertia} from '@inertiajs/inertia';
 import route from 'ziggy-js';
-import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import MediaProductCollection from "../../../components/Lists/MediaProductCollection";
 import {Button, Form, Input, Select} from "antd";
 import UploadImageComponent from "../../../components/Forms/UploadImageComponent";
@@ -47,8 +44,11 @@ export default function CategoryEdit({currentCategory, locale, categories}: Prop
           <Form.Item name={'en'} label='Title EN' initialValue={currentCategory.title.en}>
             <Input/>
           </Form.Item>
-          <Form.Item name={'ar'} label='Title AR' initialValue={currentCategory.title.ar}>
-            <Input/>
+          <Form.Item name={'primary_color'} label='Primary Color' initialValue={currentCategory.primary_color}>
+            <Input style={{backgroundColor: currentCategory.primary_color}}/>
+          </Form.Item>
+          <Form.Item name={'secondary_color'} label='Secondary Color' initialValue={currentCategory.secondary_color}>
+            <Input style={{backgroundColor: currentCategory.secondary_color}}/>
           </Form.Item>
           <Form.Item name={'parent_id'} label='Category Parents'>
             <Select placeholder={'Select A Parent'}>
@@ -59,16 +59,18 @@ export default function CategoryEdit({currentCategory, locale, categories}: Prop
             <Button type={'default'} htmlType={'submit'}>SUBMIT</Button>
           </Form.Item>
         </Form>
-        <UploadImageComponent routeName={'admin.add.media.to.category'} params={currentCategory}
-                              buttonLabel={'UPLOAD'}/>
+        <div className='flex justify-center gap-4 flex-wrap'>
+          <UploadImageComponent routeName={'admin.add.media.to.category'} params={currentCategory}
+                                buttonLabel={'UPLOAD Category Thumbnail'}/>
 
-        <UploadImageComponent routeName={'admin.add.banner.to.category'} params={currentCategory}
-                              buttonLabel={'UPLOAD BIG BANNER'}
-                              collectionName={MediaConversionEnums.CATEGORY_BIG_BANNER}/>
+          <UploadImageComponent routeName={'admin.add.banner.to.category'} params={currentCategory}
+                                buttonLabel={'UPLOAD BIG BANNER'}
+                                collectionName={MediaConversionEnums.CATEGORY_BIG_BANNER}/>
 
-        <UploadImageComponent routeName={'admin.add.banner.to.category'} params={currentCategory}
-                              buttonLabel={'UPLOAD MOBILE BANNER'}
-                              collectionName={MediaConversionEnums.CATEGORY_MOBILE_BANNER}/>
+          <UploadImageComponent routeName={'admin.add.banner.to.category'} params={currentCategory}
+                                buttonLabel={'UPLOAD MOBILE BANNER'}
+                                collectionName={MediaConversionEnums.CATEGORY_MOBILE_BANNER}/>
+        </div>
 
         <MediaProductCollection media={currentCategory.media} deleteURL={'admin.delete.media.of.category'}
                                 params={currentCategory}/>

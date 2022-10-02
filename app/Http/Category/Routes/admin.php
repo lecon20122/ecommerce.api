@@ -12,3 +12,5 @@ Route::post('categories/{id}/delete', [CategoryController::class, 'destroy'])->n
 Route::post('categories/{category}/media', [CategoryController::class, 'addMediaToCategory'])->name('admin.add.media.to.category');
 Route::post('categories/{category}/banner', [CategoryController::class, 'addBannerToCategory'])->name('admin.add.banner.to.category');
 Route::post('categories/{category}/media/delete', [CategoryController::class, 'deleteCategoryImage'])->name('admin.delete.media.of.category');
+
+Route::post('category/toggle-status/{id}', [CategoryController::class, 'toggleCategoryStatus'])->name('admin.toggle.category.status');

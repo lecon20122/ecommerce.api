@@ -1,15 +1,14 @@
 import React from 'react';
 import {Tabs} from "antd-mobile";
-import {HomePageCategory} from "../../../types/CategoryType";
 import CategoryRectangleComponent from "./CategoryRectangleComponent";
+import {Category} from "../../../types/products";
 
 interface Props {
-  categories: HomePageCategory[]
+  categories: Category[]
   locale: string
 }
 
 function HomePageTabsComponents({categories, locale}: Props) {
-
 
 
   const tabs = categories.map((category) => {
@@ -23,7 +22,8 @@ function HomePageTabsComponents({categories, locale}: Props) {
             </div>
           )
         })}
-        <CategoryRectangleComponent key={category.id} categories={category.children} locale={locale}/>
+        <CategoryRectangleComponent primaryColor={category.primary_color} secondaryColor={category.secondary_color}
+                                    key={category.id} categories={category.children} locale={locale}/>
       </div>
     </Tabs.Tab>
   })

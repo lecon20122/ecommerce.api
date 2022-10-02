@@ -25,8 +25,8 @@ class Category extends Model implements HasMedia
     use HasFactory, HasTranslations, SoftDeletes, CustomHasMedia;
 
     public $translatable = ['title'];
-    protected $fillable = ['title', 'slug', 'parent_id'];
-
+    protected $fillable = ['title', 'slug', 'parent_id', 'primary_color', 'secondary_color', 'is_active'];
+    protected $casts = ['is_active' => 'boolean'];
 
     /**
      * @throws InvalidManipulation
@@ -110,6 +110,11 @@ class Category extends Model implements HasMedia
     public function scopeIsParent($query)
     {
         return $query->whereNull('parent_id');
+    }
+
+    public function scopeIsActive($query)
+    {
+        return $query->where('is_active', true);
     }
 
     public function getRouteKeyName(): string

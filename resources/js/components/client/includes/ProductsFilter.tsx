@@ -19,8 +19,8 @@ interface IFormProps {
 function ProductsFilter({filters, category}: Props) {
 
   return (
-    <aside className="md:w-1/3 lg:w-1/5 px-4 hidden lg:block">
-      <div className="px-6 py-4 border border-gray-200 bg-white rounded shadow-sm">
+    <aside className="px-4 hidden lg:block basis-2/4">
+      <div className="px-6 py-4 border border-gray-200 bg-white rounded shadow-sm w-full">
         <h3 className="font-semibold mb-2">Category</h3>
         <ul className="text-gray-500 space-y-1">
           <li><a className="hover:text-blue-600 hover:underline" href="#">Electronics </a></li>

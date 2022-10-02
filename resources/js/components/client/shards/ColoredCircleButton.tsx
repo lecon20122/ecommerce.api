@@ -24,7 +24,7 @@ function ColoredCircleButton({color, onClick, backgroundImage, onMouseOver, acti
       style={backgroundFactory()}
       onClick={onClick}
       disabled={active}
-      className={`border-2 rounded-full w-6 h-6 focus:outline-none ${active ? 'border-black' : 'border-gray-300'}`}/>
+      className={`border-2 rounded-full w-[19px] h-[19px] focus:outline-none ${active ? 'border-black' : 'border-gray-300'}`}/>
   );
 }
 

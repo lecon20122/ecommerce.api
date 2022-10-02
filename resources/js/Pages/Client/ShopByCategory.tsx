@@ -7,7 +7,6 @@ import ProductFilterMobile from "../../components/client/includes/ProductFilterM
 import ProductWithVariationsList from "../../components/client/includes/ProductWithVariationsList";
 import {PaginateDataType} from "../../types/globalTypes";
 import PaginationComponent from "../../components/client/includes/PaginationComponent";
-import {Head} from "@inertiajs/inertia-react";
 
 interface Props {
   products: PaginateDataType<ProductWithThumbnail>
@@ -36,10 +35,13 @@ export default function ShopByCategory({products, locale, filters, category}: Pr
       </div>
       <section className="py-12">
         <div>
-          <div className="flex flex-col md:flex-row">
+          <div className="flex md:flex-row">
             <ProductsFilter filters={filters} category={category}/>
             <main className="mx-auto">
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-4">
+              {/*<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-4">*/}
+              {/*  {ProductList}*/}
+              {/*</div>*/}
+              <div className='flex flex-wrap gap-2 gap-y-6 justify-center basis-3/4'>
                 {ProductList}
               </div>
               <PaginationComponent links={products.links} meta={products.meta}/>

@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {NewMediaProps, ProductWithThumbnail} from "../../../types/products";
+import {ProductWithThumbnail} from "../../../types/products";
 import {HeartOutline} from "antd-mobile-icons";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
 import ColoredCircleButton from "../shards/ColoredCircleButton";
 import {Variation} from "../../../types/VariationType";
-import {SwiperSlide, Swiper} from "swiper/react";
-import {Navigation, Pagination} from "swiper";
-import {Head} from "@inertiajs/inertia-react";
+import {Swiper, SwiperSlide} from "swiper/react";
 import {DotLoading} from "antd-mobile";
 
 interface Props {
@@ -16,6 +14,7 @@ interface Props {
 }
 
 function ProductWithVariationsList({product, locale}: Props) {
+
   const handleClickOnProduct = (product: ProductWithThumbnail) => {
     Inertia.get(route('shop.product.detail', product))
   }
@@ -60,21 +59,20 @@ function ProductWithVariationsList({product, locale}: Props) {
   })
 
   return (
-    <div key={product.id}>
-      <a onClick={(() => handleClickOnProduct(product))}>
-        {!srcLoaded &&
-        <div
-          className="flex items-center justify-center aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[187px] h-[248px] bg-grey-600">
-          <DotLoading style={{fontSize: 24}}/>
-        </div>
-        }
+    <div key={product.id} className='lg:flex-[0_1_19%] flex-[0_1_45%] md:flex-[0_1_30%]'>
+      {!srcLoaded &&
+      <div
+        className="flex items-center justify-center aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[187px] h-[248px] bg-grey-600">
+        <DotLoading style={{fontSize: 24}}/>
+      </div>
+      }
 
-        {product.media &&
-        <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
-             className={`aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[187px] h-[248px] ${srcLoaded ? "block" : "hidden"} `}
-             onLoad={() => setSrcLoaded(true)}
-             alt={product.title[locale as keyof typeof product.title]}/>}
-      </a>
+      <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
+           className={`aspect-[61/81] w-[300px] h-[389] cursor-pointer ${srcLoaded ? "block" : "hidden"} `}
+           onLoad={() => setSrcLoaded(true)}
+           onClick={(() => handleClickOnProduct(product))}
+           alt={product.title[locale as keyof typeof product.title]}/>
+
       <div>
         <a className="text-gray-600">
           {product.title[locale as keyof typeof product.title]}

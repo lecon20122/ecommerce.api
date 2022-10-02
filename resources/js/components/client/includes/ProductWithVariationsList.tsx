@@ -62,7 +62,7 @@ function ProductWithVariationsList({product, locale}: Props) {
     <div key={product.id} className='lg:flex-[0_1_19%] flex-[0_1_45%] md:flex-[0_1_30%]'>
       {!srcLoaded &&
       <div
-        className="flex items-center justify-center aspect-[61/81] lg:w-[300px] xl:h-[398px] w-[187px] h-[248px] bg-grey-600">
+        className="flex items-center justify-center aspect-[61/81] w-[300px] h-[389] bg-grey-600">
         <DotLoading style={{fontSize: 24}}/>
       </div>
       }

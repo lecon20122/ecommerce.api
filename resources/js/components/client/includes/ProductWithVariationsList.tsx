@@ -60,18 +60,19 @@ function ProductWithVariationsList({product, locale}: Props) {
 
   return (
     <div key={product.id} className='lg:flex-[0_1_19%] flex-[0_1_45%] md:flex-[0_1_30%]'>
-      {!srcLoaded &&
-      <div
-        className="flex items-center justify-center aspect-[61/81] w-[300px] h-[389] bg-grey-600">
-        <DotLoading style={{fontSize: 24}}/>
+      <div>
+        <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
+             className={`aspect-[61/81] w-full h-full xl:w-[304.66] w-[404.53] cursor-pointer ${srcLoaded ? "block" : "hidden"} `}
+             onLoad={() => setSrcLoaded(true)}
+             onClick={(() => handleClickOnProduct(product))}
+             alt={product.title[locale as keyof typeof product.title]}/>
+        {!srcLoaded &&
+        <div
+          className="flex items-center justify-center aspect-[61/81] w-full h-full bg-grey-600">
+          <DotLoading style={{fontSize: 24}}/>
+        </div>
+        }
       </div>
-      }
-
-      <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
-           className={`aspect-[61/81] w-[300px] h-[389] cursor-pointer ${srcLoaded ? "block" : "hidden"} `}
-           onLoad={() => setSrcLoaded(true)}
-           onClick={(() => handleClickOnProduct(product))}
-           alt={product.title[locale as keyof typeof product.title]}/>
 
       <div>
         <a className="text-gray-600">

@@ -24,9 +24,15 @@ class ProductFilterRequest extends FormRequest
     public function rules()
     {
         return [
-            'color' => 'nullable',
-            'size' => 'nullable',
-            'style' => 'nullable',
+            'color' => 'nullable|array',
+            'color.*' => 'string',
+            'size' => 'nullable|array',
+            'size.*' => 'string',
+            'style' => 'nullable|array',
+            'style.*' => 'string',
+            'stores' => 'nullable|array',
+            'stores.*' => 'string',
+            'price' => 'nullable|integer'
         ];
     }
 }

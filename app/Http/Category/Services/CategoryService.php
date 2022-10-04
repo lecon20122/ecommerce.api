@@ -7,19 +7,17 @@ use App\Http\Category\Resources\CategoryResource;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
-use App\Support\Enums\CacheKeyEnums;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
 
-    public function adminIndex()
+    public function adminIndex(): AnonymousResourceCollection
     {
         return CategoryResource::collection(
             Category::query()
@@ -84,13 +82,14 @@ class CategoryService
 
     public function getCategoriesChildrenAndThumb(): Collection|array
     {
+        //TODO:Caching the results
         return Category::query()
+            ->active()
+            ->parent()
             ->with(['media', 'children' => function ($query) {
                 $query->has('products');
             }])
             ->has('children')
-            ->isActive()
-            ->isParent()
             ->get();
     }
 

@@ -2,10 +2,10 @@
 
 namespace App\Domain\Category\Models;
 
-use App\Domain\Product\Models\CategoryProduct;
 use App\Domain\Product\Models\Product;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Traits\CustomHasMedia;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -107,12 +107,12 @@ class Category extends Model implements HasMedia
         return $this->morphManyMedia()->where('collection_name', MediaCollectionEnums::THUMBNAIL);
     }
 
-    public function scopeIsParent($query)
+    public function scopeParent($query)
     {
         return $query->whereNull('parent_id');
     }
 
-    public function scopeIsActive($query)
+    public function scopeActive($query)
     {
         return $query->where('is_active', true);
     }
@@ -120,5 +120,12 @@ class Category extends Model implements HasMedia
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function resolveRouteBinding($value, $field = null): Model|Builder|null
+    {
+        return $this
+            ->with('children')
+            ->where('slug', $value)->firstOrFail();
     }
 }

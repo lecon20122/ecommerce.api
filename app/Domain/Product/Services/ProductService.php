@@ -6,6 +6,7 @@ use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Services\VariationService;
+use App\Http\Category\Resources\CategoryResource;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
@@ -15,9 +16,10 @@ use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use JetBrains\PhpStorm\ArrayShape;
 
 
 class ProductService
@@ -128,46 +130,63 @@ class ProductService
         );
     }
 
+    #[ArrayShape([
+        'products' => "\Illuminate\Http\Resources\Json\AnonymousResourceCollection",
+        'filters' => "mixed",
+        'category' => "\App\Http\Category\Resources\CategoryResource",
+        'maxPrice' => "mixed"
+    ])]
     public function getProductsByCategory(Category $category, $filters = null): array
     {
-        $facets = (new VariationService)->getFacetsArray();
+        $params['filter'] = $this->filterFactory($category->id, Arr::except($filters, 'price'), $filters['price'] ?? null);
 
-        $finalFilterQuery = $this->filterFactory($filters, $category->id);
+        $params['facets'] = [...(new VariationService)->getFacetsArray(), 'stores'];
 
-        $meilisearch = Product::search('', function ($meilisearch, string $query, array $options) use ($category, $finalFilterQuery, $facets) {
-            $options['filter'] = $finalFilterQuery;
-            $options['facets'] = $facets;
-            return $meilisearch->search($query, $options);
-        }
-        )->query(function (Builder $builder) {
-            $builder->with(['media', 'variations' => function ($query) {
+        $meilisearch = $this->searchIndexedProducts($params)->query(function (Builder $builder) {
+            $builder->with(['variations' => function ($query) {
                 $query->with('getVariationImages', 'getVariationColor')
                     ->has('getVariationImages')
                     ->parent();
             }
-            ]);
+            ])->has('variations');
         })->paginate();
+
+        $paramForPriceRange['filter'] = 'category_ids = ' . $category->id;
+        $maxPrice = $this->searchIndexedProducts($paramForPriceRange)->get()->max('price');
 
         return [
             'products' => ProductResource::collection($meilisearch),
-            'filters' => $this->getFacetDistribution($facets, $category->id),
-            'category' => $category
+            'filters' => $this->getFacetDistribution($params['facets'], $category->id),
+            'category' => new CategoryResource($category),
+            'maxPrice' => $maxPrice
         ];
     }
 
-    public function filterFactory($filters, $categoryId): string
+    public function filterFactory($categoryId, $filtersExceptPrice = null, $maxPrice = null): string
     {
-        $variationsFilters = $this->recursiveFilterIteration($filters);
+        $baseQuery = 'category_ids = ' . $categoryId;
 
-        return empty($variationsFilters) ? 'category_ids = ' . $categoryId : 'category_ids = ' . $categoryId . ' AND ' . $variationsFilters;
+        if ($filtersExceptPrice) {
+            $variationsFilters = $this->recursiveFilterIteration($filtersExceptPrice);
+        }
+
+        if ($maxPrice) {
+            $baseQuery = 'category_ids = ' . $categoryId . ' AND ' . 'price <= ' . $maxPrice;
+        }
+
+        return empty($variationsFilters)
+            ? $baseQuery
+            : $baseQuery . ' AND ' . $variationsFilters;
     }
 
     public function recursiveFilterIteration($filters)
     {
         if (!$filters) return null;
+
         return collect($filters)->filter(fn($filter) => !empty($filter))
             ->recursive()
             ->map(function ($value, $key) {
+                if (is_string($key)) return $key . ' = "' . $value . '"';
                 return $value->map(fn($value) => $key . ' = "' . $value . '"');
             })
             ->flatten()
@@ -175,14 +194,21 @@ class ProductService
 
     }
 
-    public function getFacetDistribution($facets, $categoryId)
+    public function searchIndexedProducts(array $params): \Laravel\Scout\Builder
     {
-        $facetDistribution = Product::search('', function ($meilisearch, string $query, array $options) use ($facets, $categoryId) {
-            $options['facets'] = $facets;
-            $options['filter'] = 'category_ids = ' . $categoryId;
+        return Product::search($params['q'] ?? '', function ($meilisearch, string $query, array $options) use ($params) {
+            $options['facets'] = $params['facets'] ?? null;
+            $options['filter'] = $params['filter'] ?? null;
             return $meilisearch->search($query, $options);
         }
-        )->raw();
+        );
+    }
+
+    public function getFacetDistribution($facets, $categoryId)
+    {
+        $params['filter'] = 'category_ids = ' . $categoryId;
+        $params['facets'] = $facets;
+        $facetDistribution = $this->searchIndexedProducts($params)->raw();
         return $facetDistribution['facetDistribution'];
     }
 

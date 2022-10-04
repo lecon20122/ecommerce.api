@@ -12,9 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Artisan;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
@@ -91,6 +89,7 @@ class Product extends Model implements HasMedia
             'description' => $this->description,
             'price' => $this->price,
             'store_id' => $this->store_id,
+            'stores' => $this->load('store')->store->name,
             'category_ids' => $this->load('categories')->categories->pluck('id')->toArray(),
         ], $this->load('variations')->variations->groupBy('type')
             ->mapWithKeys(fn($variations, $key) => [

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Collapse} from "antd-mobile";
 import {AddOutline, MinusOutline} from "antd-mobile-icons";
 import {Inertia} from "@inertiajs/inertia";
@@ -7,16 +7,17 @@ import {Filters} from "../../../Pages/Client/ShopByCategory";
 import {Category} from "../../../types/CategoryType";
 
 interface IFormProps {
-  [key: string]: string[]
+  [key: string]: string[] | string
 }
 
 interface Props {
   filters: Filters
   category: Category
+  maxPrice: number
 }
 
-function CollapseFilters({filters, category}: Props) {
-
+function CollapseFilters({filters, category, maxPrice}: Props) {
+  console.log(maxPrice)
   const formFilterKeys = () => {
     let keys: any = []
     Object.keys(filters).map((key) => {
@@ -107,6 +108,14 @@ function CollapseFilters({filters, category}: Props) {
     }
   }
 
+  const onMaxPriceClick = ({target}: any) => {
+    const newState = {
+      ...selectedFilters,
+      [target.name]: target.value
+    }
+    setSelectedFilters(newState)
+  }
+
   const SortableFiltersPanels = Object.keys(filters).map((key, index) => { // ['size' , 'color']
     return (
       <Collapse.Panel key={key} title={key} className='capitalize text-bolder flex flex-wrap flex-[1_1_21%]'>
@@ -116,14 +125,18 @@ function CollapseFilters({filters, category}: Props) {
   });
 
   return (
-    <Collapse
-      className='border-0'
-      defaultActiveKey={['color']}
-      arrow={active => (active ? <MinusOutline className='text-black text-bolder'/> :
-        <AddOutline className='text-black text-bolder'/>)}
-    >
-      {SortableFiltersPanels}
-    </Collapse>
+    <div>
+      <Collapse
+        className='border-0'
+        defaultActiveKey={['color']}
+        arrow={active => (active ? <MinusOutline className='text-black text-bolder'/> :
+          <AddOutline className='text-black text-bolder'/>)}
+      >
+        {SortableFiltersPanels}
+      </Collapse>
+
+      <input type={'range'} name={'price'} max={maxPrice} min={0} onClick={(e) => onMaxPriceClick(e)}/>
+    </div>
   );
 }
 

@@ -209,12 +209,12 @@ class ProductController extends BaseController
     {
         try {
             $products = $productService->getProductsByCategory($category, $request->validated());
-//            return \response()->json($products['products']);
 
             return Inertia::render('Client/ShopByCategory', [
                 'products' => $products['products'],
                 'filters' => $products['filters'],
-                'category' => $category
+                'category' => $category,
+                'maxPrice' => $products['maxPrice'],
             ]);
         } catch (Exception $exception) {
             DB::rollback();

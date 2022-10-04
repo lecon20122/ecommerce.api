@@ -8,16 +8,13 @@ use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Variation\Requests\StoreVariationRequest;
-use App\Http\Variation\Requests\UpdateVariationRequest;
 use App\Http\Variation\Resources\VariationResource;
 use App\Http\Variation\Resources\VariationTypeResource;
 use App\Http\Variation\Resources\VariationTypeValueResource;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\DB;
 
 class VariationService
 {
@@ -129,6 +126,7 @@ class VariationService
 
     public function getFacetsArray(): array
     {
+        //TODO: cache results here
         return VariationType::query()
             ->select('type')
             ->get()

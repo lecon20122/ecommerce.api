@@ -13,6 +13,7 @@ interface Props {
   locale: string
   filters: Filters
   category: Category
+  maxPrice: number
 }
 
 export interface Filters {
@@ -21,7 +22,8 @@ export interface Filters {
   }[],
 }
 
-export default function ShopByCategory({products, locale, filters, category}: Props) {
+export default function ShopByCategory({products, locale, filters, category, maxPrice}: Props) {
+  console.log()
   const ProductList = products.data.map((product) => {
     return (
       <ProductWithVariationsList product={product} locale={locale} key={product.id}/>
@@ -36,7 +38,7 @@ export default function ShopByCategory({products, locale, filters, category}: Pr
       <section className="py-12">
         <div>
           <div className="flex md:flex-row">
-            <ProductsFilter filters={filters} category={category}/>
+            <ProductsFilter filters={filters} category={category} maxPrice={maxPrice}/>
             <main className="mx-auto">
               {/*<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-4">*/}
               {/*  {ProductList}*/}

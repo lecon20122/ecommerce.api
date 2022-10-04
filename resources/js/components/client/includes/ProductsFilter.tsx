@@ -1,22 +1,19 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Filters} from "../../../Pages/Client/ShopByCategory";
-import {SubmitHandler, useForm} from "react-hook-form";
-import {Inertia} from "@inertiajs/inertia";
-import route from "ziggy-js";
 import {Category} from "../../../types/CategoryType";
-import { Selector } from 'antd-mobile'
 import CollapseFiltersComponent from "./CollapseFiltersComponent";
 
 interface Props {
   filters: Filters
   category: Category
+  maxPrice: number
 }
 
 interface IFormProps {
   [key: string]: string[]
 }
 
-function ProductsFilter({filters, category}: Props) {
+function ProductsFilter({filters, category, maxPrice}: Props) {
 
   return (
     <aside className="px-4 hidden lg:block basis-2/4">
@@ -41,7 +38,7 @@ function ProductsFilter({filters, category}: Props) {
           </li>
         </ul>
         <hr className="my-4"/>
-        <CollapseFiltersComponent filters={filters} category={category}/>
+        <CollapseFiltersComponent filters={filters} category={category} maxPrice={maxPrice}/>
       </div>
     </aside>
   );

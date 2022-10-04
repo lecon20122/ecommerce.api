@@ -18,6 +18,26 @@ class ProductTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
+
+    public function test_product_model_has_valid_searchable_array()
+    {
+        $productModel = Product::factory()->create();
+        $this->assertTrue([
+                'id',
+                'title',
+                'description',
+                'price',
+                'store_id',
+                'stores',
+                'category_ids',
+            ] === array_keys($productModel->toSearchableArray()));
+    }
+
+    public function test_that_product_model_uses_scout()
+    {
+        $this->assertTrue(in_array('Laravel\Scout\Searchable', class_uses(Product::class)));
+    }
+
     /**
      * A basic feature test example.
      *

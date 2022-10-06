@@ -58,6 +58,12 @@ function ProductWithVariationsList({product, locale}: Props) {
     }
   })
 
+  const saveForLaterHandle = () => {
+    Inertia.post(route('add.product.to.user.favorites'), {product_id: product.id}, {
+      preserveState: false
+    })
+  }
+
   return (
     <div key={product.id} className='lg:flex-[0_1_19%] flex-[0_1_45%] md:flex-[0_1_30%]'>
       <div>
@@ -84,7 +90,7 @@ function ProductWithVariationsList({product, locale}: Props) {
             <a
               className="text-blue-600 col-end-1"
               href="#">
-              <HeartOutline className="text-black text-lg"/>
+              <HeartOutline className="text-black text-lg" onClick={() => saveForLaterHandle()}/>
             </a>
           </div>
         </div>

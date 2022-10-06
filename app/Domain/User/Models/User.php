@@ -5,10 +5,14 @@ namespace Domain\User\Models;
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Location\Models\Address;
 use App\Domain\Order\Models\Order;
+use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Http\Auth\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -70,22 +74,27 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($url, $this));
     }
 
-    public function addresses()
+    public function addresses(): MorphMany
     {
         return $this->morphMany(Address::class, 'addressable');
     }
 
-    public function stores()
+    public function stores(): HasMany
     {
         return $this->hasMany(Store::class);
     }
 
-    public function carts()
+    public function carts(): HasMany
     {
         return $this->hasMany(Cart::class);
     }
-    public function orders()
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function favorites(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class , 'favorites');
     }
 }

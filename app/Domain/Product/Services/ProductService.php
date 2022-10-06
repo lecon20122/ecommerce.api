@@ -15,6 +15,8 @@ use App\Http\Product\Resources\ProductResource;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
+use App\Support\Services\SearchService;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
@@ -29,7 +31,7 @@ class ProductService
      * @param int $id
      * @return ProductResource
      */
-    public function getProductsById(mixed $id)
+    public function getProductsById(mixed $id): ProductResource
     {
         return new ProductResource(
             Product::query()
@@ -130,6 +132,9 @@ class ProductService
         );
     }
 
+    /**
+     * @throws Exception
+     */
     #[ArrayShape([
         'products' => "\Illuminate\Http\Resources\Json\AnonymousResourceCollection",
         'filters' => "mixed",
@@ -138,11 +143,14 @@ class ProductService
     ])]
     public function getProductsByCategory(Category $category, $filters = null): array
     {
-        $params['filter'] = $this->filterFactory($category->id, Arr::except($filters, 'price'), $filters['price'] ?? null);
+        $searchService = new SearchService();
+        $productModel = new Product();
 
+        $params['filter'] = $searchService->filterFactory($category->id, Arr::except($filters, 'price'), $filters['price'] ?? null);
+        $params['sort'] = $searchService->sortFactory($filters['sort']);
         $params['facets'] = [...(new VariationService)->getFacetsArray(), 'stores'];
 
-        $meilisearch = $this->searchIndexedProducts($params)->query(function (Builder $builder) {
+        $meilisearch = $searchService->searchIndexedModel($params, $productModel)->query(function (Builder $builder) {
             $builder->with(['variations' => function ($query) {
                 $query->with('getVariationImages', 'getVariationColor')
                     ->has('getVariationImages')
@@ -152,64 +160,14 @@ class ProductService
         })->paginate();
 
         $paramForPriceRange['filter'] = 'category_ids = ' . $category->id;
-        $maxPrice = $this->searchIndexedProducts($paramForPriceRange)->get()->max('price');
+        $maxPrice = $searchService->searchIndexedModel($paramForPriceRange, $productModel)->get()->max('price');
 
         return [
             'products' => ProductResource::collection($meilisearch),
-            'filters' => $this->getFacetDistribution($params['facets'], $category->id),
+            'filters' => $searchService->getFacetDistribution($params['facets'], $category->id, $productModel),
             'category' => new CategoryResource($category),
             'maxPrice' => $maxPrice
         ];
-    }
-
-    public function filterFactory($categoryId, $filtersExceptPrice = null, $maxPrice = null): string
-    {
-        $baseQuery = 'category_ids = ' . $categoryId;
-
-        if ($filtersExceptPrice) {
-            $variationsFilters = $this->recursiveFilterIteration($filtersExceptPrice);
-        }
-
-        if ($maxPrice) {
-            $baseQuery = 'category_ids = ' . $categoryId . ' AND ' . 'price <= ' . $maxPrice;
-        }
-
-        return empty($variationsFilters)
-            ? $baseQuery
-            : $baseQuery . ' AND ' . $variationsFilters;
-    }
-
-    public function recursiveFilterIteration($filters)
-    {
-        if (!$filters) return null;
-
-        return collect($filters)->filter(fn($filter) => !empty($filter))
-            ->recursive()
-            ->map(function ($value, $key) {
-                if (is_string($key)) return $key . ' = "' . $value . '"';
-                return $value->map(fn($value) => $key . ' = "' . $value . '"');
-            })
-            ->flatten()
-            ->join(' OR ');
-
-    }
-
-    public function searchIndexedProducts(array $params): \Laravel\Scout\Builder
-    {
-        return Product::search($params['q'] ?? '', function ($meilisearch, string $query, array $options) use ($params) {
-            $options['facets'] = $params['facets'] ?? null;
-            $options['filter'] = $params['filter'] ?? null;
-            return $meilisearch->search($query, $options);
-        }
-        );
-    }
-
-    public function getFacetDistribution($facets, $categoryId)
-    {
-        $params['filter'] = 'category_ids = ' . $categoryId;
-        $params['facets'] = $facets;
-        $facetDistribution = $this->searchIndexedProducts($params)->raw();
-        return $facetDistribution['facetDistribution'];
     }
 
     public function showProductDetails(Product $product): ProductResource

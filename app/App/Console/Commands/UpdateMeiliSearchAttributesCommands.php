@@ -7,7 +7,7 @@ use Exception;
 use Illuminate\Console\Command;
 use MeiliSearch\Client;
 
-class MeiliSearchFilterableAttributesCommand extends Command
+class UpdateMeiliSearchAttributesCommands extends Command
 {
     /**
      * The name and signature of the console command.
@@ -31,8 +31,11 @@ class MeiliSearchFilterableAttributesCommand extends Command
     public function handle(): int
     {
         try {
-            $client = new Client('http://127.0.0.1:7700', config('scout.meilisearch.key'));
-            $client->index('products')->updateFilterableAttributes(['category_ids', 'stores', 'price', ...(new VariationService)->getFacetsArray()]);
+            $client = new Client('http://127.0.0.1:7700', config('scout.meilisearch.key' ));
+            $client->index('products')
+                ->updateFilterableAttributes(['category_ids', 'stores', 'price', ...(new VariationService)->getFacetsArray()]);
+            $client->index('products')
+                ->updateSortableAttributes(['price', 'created_at']);
             return 0;
         } catch (Exception $exception) {
             logger()->error($exception->getMessage());

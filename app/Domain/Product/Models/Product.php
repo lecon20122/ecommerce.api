@@ -4,8 +4,10 @@ namespace App\Domain\Product\Models;
 
 use App\Domain\Category\Models\Category;
 use App\Domain\Store\Models\Store;
+use App\Domain\User\Models\Favorite;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Traits\CustomHasMedia;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -81,6 +83,13 @@ class Product extends Model implements HasMedia
             ->withTimestamps();
     }
 
+    public function favorites(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(User::class, 'favorites')
+            ->using(Favorite::class);
+    }
+
     public function toSearchableArray(): array
     {
         return array_merge([
@@ -91,6 +100,7 @@ class Product extends Model implements HasMedia
             'store_id' => $this->store_id,
             'stores' => $this->load('store')->store->name,
             'category_ids' => $this->load('categories')->categories->pluck('id')->toArray(),
+            'created_at' => $this->created_at,
         ], $this->load('variations')->variations->groupBy('type')
             ->mapWithKeys(fn($variations, $key) => [
                 $key => $variations->pluck('title')

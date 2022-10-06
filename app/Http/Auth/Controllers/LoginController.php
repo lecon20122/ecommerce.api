@@ -24,8 +24,7 @@ class LoginController extends BaseController
         try {
             $request->authenticate();
             $request->session()->regenerate();
-            return redirect()->intended()->with('message', 'success');
-
+            return redirect()->intended()->withInput();
         } catch (Exception $exception) {
             return $this->webMessage($exception->getMessage());
         }

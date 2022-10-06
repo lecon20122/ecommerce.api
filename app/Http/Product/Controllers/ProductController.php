@@ -5,6 +5,7 @@ namespace App\Http\Product\Controllers;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
+use App\Domain\User\Services\UserFavoriteService;
 use App\Domain\Variation\Services\VariationService;
 use App\Http\Category\Services\CategoryService;
 use App\Http\Media\Request\StoreMediaRequest;
@@ -205,9 +206,14 @@ class ProductController extends BaseController
         }
     }
 
-    public function getProductsByCategory(Category $category, ProductService $productService, ProductFilterRequest $request)
+    public function getProductsByCategory(Category $category, ProductService $productService, ProductFilterRequest $request): \Inertia\Response|RedirectResponse
     {
+
         try {
+            if ($request->session()->get('previous_inputs')) {
+                (new UserFavoriteService)->storeAfterAuthenticated($request->session()->get('previous_inputs'));
+            }
+
             $products = $productService->getProductsByCategory($category, $request->validated());
 
             return Inertia::render('Client/ShopByCategory', [

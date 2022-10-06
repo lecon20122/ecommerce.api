@@ -26,13 +26,20 @@ class ProductFilterRequest extends FormRequest
         return [
             'color' => 'nullable|array',
             'color.*' => 'string',
+
             'size' => 'nullable|array',
             'size.*' => 'string',
+
             'style' => 'nullable|array',
             'style.*' => 'string',
+
             'stores' => 'nullable|array',
             'stores.*' => 'string',
-            'price' => 'nullable|integer'
+
+            'price' => 'nullable|integer',
+
+            'sort' => 'array|nullable',
+            'sort.*' => 'boolean'
         ];
     }
 }

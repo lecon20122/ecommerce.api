@@ -62,7 +62,7 @@ class BaseController extends Controller
         return response()->json($response, 200);
     }
 
-    public function webMessage($message): RedirectResponse
+    public function redirectBackWithMessage($message): RedirectResponse
     {
         return back()->with('message', $message);
     }

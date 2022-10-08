@@ -14,7 +14,7 @@ class DashboardController extends BaseController
         try {
             return Inertia::render('Dashboard/index');
         } catch (\Exception $e) {
-            return $this->webMessage($e->getMessage());
+            return $this->redirectBackWithMessage($e->getMessage());
         }
     }
 }

@@ -29,7 +29,7 @@ class VariationTypeController extends BaseController
                 'variationTypes' => VariationTypeResource::collection(VariationType::all())
             ]);
         } catch (Exception $exception) {
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -56,10 +56,10 @@ class VariationTypeController extends BaseController
         try {
             $service->store($request->validated());
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -87,7 +87,7 @@ class VariationTypeController extends BaseController
                 'currentVariationType' => new VariationTypeResource(VariationType::with('variationTypeValues')->find($id)),
             ]);
         } catch (Exception $exception) {
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -105,10 +105,10 @@ class VariationTypeController extends BaseController
         try {
             $service->update($id, $request->validated());
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -125,10 +125,10 @@ class VariationTypeController extends BaseController
         try {
             $service->destroy($id);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -138,10 +138,10 @@ class VariationTypeController extends BaseController
         try {
             $service->restore($id);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage('ops');
+            return $this->redirectBackWithMessage('ops');
         }
     }
 
@@ -151,10 +151,10 @@ class VariationTypeController extends BaseController
         try {
             $service->permanentDelete($id);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage('ops');
+            return $this->redirectBackWithMessage('ops');
         }
     }
 }

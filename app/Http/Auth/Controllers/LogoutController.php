@@ -28,7 +28,7 @@ class LogoutController extends BaseController
             Auth::logout();
             return redirect()->back();
         } catch (Exception $exception) {
-            $this->webMessage($exception->getMessage());
+            $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 }

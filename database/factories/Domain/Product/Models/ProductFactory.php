@@ -26,7 +26,6 @@ class ProductFactory extends Factory
                 'en' => $this->faker->name,
                 'ar' => 'منتج',
             ],
-            'description' => $this->faker->text,
             'price' => $this->faker->randomFloat(null, 99, 500),
             'live_at' => now(),
             'store_id' => Store::factory(),

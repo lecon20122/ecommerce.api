@@ -35,7 +35,7 @@ class RegisterController extends BaseController
             }
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
 
 

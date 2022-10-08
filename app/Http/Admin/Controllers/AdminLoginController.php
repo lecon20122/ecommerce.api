@@ -26,7 +26,7 @@ class AdminLoginController extends BaseController
             ])->onlyInput('email');
 
         } catch (\Exception $exception) {
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 

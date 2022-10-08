@@ -21,7 +21,7 @@ class ForgetPasswordController extends BaseController
         $status = Password::sendResetLink($request->only('email'));
 
         if ($status == Password::RESET_LINK_SENT) {
-            return $this->webMessage('Password reset link has been sent!');
+            return $this->redirectBackWithMessage('Password reset link has been sent!');
         }
 
         throw ValidationException::withMessages([

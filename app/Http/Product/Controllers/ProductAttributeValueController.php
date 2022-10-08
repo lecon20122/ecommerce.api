@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\User\Controllers;
+namespace App\Http\Product\Controllers;
 
-use App\Domain\User\Services\UserFavoriteService;
-use App\Http\Controllers\Controller;
-use App\Http\User\Requests\StoreUserFavoriteRequest;
+use App\Domain\Product\Services\ProductAttributeService;
+use App\Http\Product\Requests\StoreProductAttributeValueRequest;
+use App\Http\Product\Requests\UpdateProductAttributeValueRequest;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class UserFavoriteController extends BaseController
+class ProductAttributeValueController extends BaseController
 {
-    public function __construct(protected UserFavoriteService $service)
+    public function __construct(protected ProductAttributeService $service)
     {
     }
 
@@ -41,17 +41,19 @@ class UserFavoriteController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreProductAttributeValueRequest $request
      * @return RedirectResponse
      */
-    public function store(StoreUserFavoriteRequest $request)
+    public function store(StoreProductAttributeValueRequest $request): RedirectResponse
     {
+        DB::beginTransaction();
         try {
-            $this->service->store($request->validated());
+            $this->service->storeProductAttributeValue($request->validated());
+            DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
-            DB::rollback();
-            return $this->redirectBackWithMessage($exception->getMessage());
+            DB::rollBack();
+            return $this->redirectBackWithError();
         }
     }
 
@@ -82,11 +84,19 @@ class UserFavoriteController extends BaseController
      *
      * @param Request $request
      * @param int $id
-     * @return Response
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductAttributeValueRequest $request, $id): RedirectResponse
     {
-        //
+        DB::beginTransaction();
+        try {
+            $this->service->updateProductAttributeValue($request->validated(), $id);
+            DB::commit();
+            return $this->redirectBackWithMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError();
+        }
     }
 
     /**

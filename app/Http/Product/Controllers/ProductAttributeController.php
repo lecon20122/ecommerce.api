@@ -1,18 +1,27 @@
 <?php
 
-namespace App\Http\Variation\Controllers;
+namespace App\Http\Product\Controllers;
 
-use App\Domain\Variation\Services\VariationTypeValueService;
-use App\Http\Variation\Requests\StoreVariationTypeValueRequest;
-use App\Http\Variation\Requests\UpdateVariationTypeValueRequest;
+use App\Domain\Product\Models\ProductAttribute;
+use App\Domain\Product\Services\ProductAttributeService;
+use App\Http\Controllers\Controller;
+use App\Http\Product\Requests\AttachProductAttributeRequest;
+use App\Http\Product\Requests\DetachProductAttributeRequest;
+use App\Http\Product\Requests\StoreProductAttributeRequest;
+use App\Http\Product\Requests\UpdateProductAttributeRequest;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class VariationTypeValueController extends BaseController
+class ProductAttributeController extends BaseController
 {
+    public function __construct(protected ProductAttributeService $service)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,20 +45,19 @@ class VariationTypeValueController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreVariationTypeValueRequest $request
-     * @param VariationTypeValueService $service
+     * @param StoreProductAttributeRequest $request
      * @return RedirectResponse
      */
-    public function store(StoreVariationTypeValueRequest $request, VariationTypeValueService $service): RedirectResponse
+    public function store(StoreProductAttributeRequest $request): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $service->store($request->validated());
+            $this->service->storeProductAttribute($request->validated());
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithMessage($exception->getMessage());
+            return $this->redirectBackWithError();
         }
     }
 
@@ -78,67 +86,57 @@ class VariationTypeValueController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateVariationTypeValueRequest $request
-     * @param VariationTypeValueService $service
+     * @param Request $request
      * @param int $id
      * @return RedirectResponse
      */
-    public function update(UpdateVariationTypeValueRequest $request, VariationTypeValueService $service, int $id): RedirectResponse
+    public function update(UpdateProductAttributeRequest $request, $id): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $service->update($id, $request->validated());
+            $this->service->updateProductAttribute($request->validated(), $id);
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithMessage($exception->getMessage());
+            return $this->redirectBackWithError();
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param VariationTypeValueService $service
      * @param int $id
-     * @return RedirectResponse
+     * @return Response
      */
-    public function destroy(VariationTypeValueService $service, int $id): RedirectResponse
+    public function destroy($id)
+    {
+        //
+    }
+
+    public function attachAttributeToProduct(ProductAttribute $attribute , AttachProductAttributeRequest $request): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $service->destroy($id);
+            $this->service->attachAttributeToProduct($attribute , $request->validated());
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithMessage($exception->getMessage());
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 
-    public function restore(VariationTypeValueService $service, int $id): RedirectResponse
+    public function detachAttributeFromProduct(ProductAttribute $attribute , DetachProductAttributeRequest $request): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $service->restore($id);
+            $this->service->detachAttributeFromProduct($attribute , $request->validated());
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithMessage('ops');
-        }
-    }
-
-    public function permanentDelete(VariationTypeValueService $service, int $id): RedirectResponse
-    {
-        DB::beginTransaction();
-        try {
-            $service->permanentDelete($id);
-            DB::commit();
-            return $this->redirectBackWithMessage('success');
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->redirectBackWithMessage('ops');
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 }

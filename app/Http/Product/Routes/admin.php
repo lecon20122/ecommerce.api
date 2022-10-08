@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Product\Controllers\ProductAttributeController;
+use App\Http\Product\Controllers\ProductAttributeValueController;
 use App\Http\Product\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,3 +15,13 @@ Route::post('products/{id}/restore', [ProductController::class, 'restore'])->nam
 Route::post('products/{product}/media', [ProductController::class, 'addMediaToProduct'])->name('admin.add.media.to.product');
 Route::post('products/{product}/attach', [ProductController::class, 'attachCategoriesToProduct'])->name('admin.attach.category.to.product');
 Route::post('products/{product}/media/delete', [ProductController::class, 'deleteProductImage'])->name('admin.delete.media.of.product');
+
+Route::post('product/attribute/add', [ProductAttributeController::class, 'store'])->name('admin.add.attribute');
+Route::post('product/attribute/{attribute}/update', [ProductAttributeController::class, 'update'])->name('admin.update.attribute');
+
+Route::post('product/attribute-value/add', [ProductAttributeValueController::class, 'store'])->name('admin.add.attribute.value');
+Route::post('product/attribute-value/{attributeValue}/update', [ProductAttributeValueController::class, 'update'])->name('admin.update.attribute.value');
+
+Route::post('product/attribute/{attribute}/attach', [ProductAttributeController::class, 'attachAttributeToProduct'])->name('admin.attach.attribute.to.product');
+Route::post('product/attribute/{attribute}/detach', [ProductAttributeController::class, 'detachAttributeFromProduct'])->name('admin.detach.attribute.from.product');
+

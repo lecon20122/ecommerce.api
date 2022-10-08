@@ -82,6 +82,12 @@ class Product extends Model implements HasMedia
             ->using(CategoryProduct::class)
             ->withTimestamps();
     }
+    public function attributes(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductAttribute::class , 'product_description')
+            ->withPivot('product_attribute_value_id')
+            ->using(ProductDescription::class);
+    }
 
     public function favorites(): BelongsToMany
     {

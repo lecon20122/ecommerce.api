@@ -51,10 +51,10 @@ class VariationController extends BaseController
         try {
             $variationService->store($request, $imageService);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ class VariationController extends BaseController
                 'variationTypesValues' => $service->getVariationTypeValues(),
             ]);
         } catch (Exception $exception) {
-            return $this->webMessage('ops');
+            return $this->redirectBackWithMessage('ops');
         }
     }
 
@@ -103,10 +103,10 @@ class VariationController extends BaseController
         try {
             $service->update($request->validated(), $variation, $imageService);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -123,10 +123,10 @@ class VariationController extends BaseController
         try {
             $service->destroy($id);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage('ops');
+            return $this->redirectBackWithMessage('ops');
         }
     }
 
@@ -136,10 +136,10 @@ class VariationController extends BaseController
         try {
             $service->restore($id);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage('ops');
+            return $this->redirectBackWithMessage('ops');
         }
     }
 
@@ -149,10 +149,10 @@ class VariationController extends BaseController
         try {
             $service->permanentDelete($id);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage('ops');
+            return $this->redirectBackWithMessage('ops');
         }
     }
 
@@ -162,7 +162,7 @@ class VariationController extends BaseController
         try {
             $variationService->addImagesToVariation($variation, $request, $imageService);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError();
@@ -175,7 +175,7 @@ class VariationController extends BaseController
         try {
             $variationService->uploadVariationColorImage($variation, $request, $imageService);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError($exception->getMessage());
@@ -188,7 +188,7 @@ class VariationController extends BaseController
         try {
             $variationService->deleteVariationImage($variation, $request);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError();

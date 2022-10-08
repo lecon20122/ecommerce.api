@@ -28,7 +28,7 @@ class StoreController extends BaseController
             return Inertia::render('Dashboard/stores/StoreIndex', [
                 'stores' => StoreResource::collection((new StoreService())->index())]);
         } catch (Exception $exception) {
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -58,7 +58,7 @@ class StoreController extends BaseController
             return $this->redirectToWithMessage('admin.stores.index', 'success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -105,10 +105,10 @@ class StoreController extends BaseController
     {
         try {
             (new StoreService())->update($store, $request);
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -124,10 +124,10 @@ class StoreController extends BaseController
         try {
             (new StoreService())->delete($id);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 }

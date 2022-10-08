@@ -41,7 +41,7 @@ class CategoryController extends BaseController
                 ]
             );
         } catch (Exception $exception) {
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -67,10 +67,10 @@ class CategoryController extends BaseController
     {
         try {
             $categoryService->store($request, $imageService);
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -101,7 +101,7 @@ class CategoryController extends BaseController
                 'categories' => $categoryService->adminIndex()
             ]);
         } catch (Exception $exception) {
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -118,10 +118,10 @@ class CategoryController extends BaseController
     {
         try {
             $categoryService->update($request, $imageService, $category);
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -136,10 +136,10 @@ class CategoryController extends BaseController
     {
         try {
             $categoryService->delete($id);
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -150,7 +150,7 @@ class CategoryController extends BaseController
         try {
             $categoryService->addImagesToCategory($category, $request, $imageService);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError($exception->getMessage());
@@ -163,7 +163,7 @@ class CategoryController extends BaseController
         try {
             $categoryService->deleteCategoryImage($category, $request);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError($exception->getMessage());
@@ -176,7 +176,7 @@ class CategoryController extends BaseController
         try {
             $categoryService->addBannerToCategory($category, $request, $imageService);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError($exception->getMessage());
@@ -189,7 +189,7 @@ class CategoryController extends BaseController
         try {
             $categoryService->toggleCategoryStatus($id);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError($exception->getMessage());

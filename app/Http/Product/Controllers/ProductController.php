@@ -33,7 +33,7 @@ class ProductController extends BaseController
         try {
             return Inertia::render('Dashboard/products/index');
         } catch (Exception $exception) {
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -61,10 +61,10 @@ class ProductController extends BaseController
         try {
             $service->store($request, $imageService);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -120,10 +120,10 @@ class ProductController extends BaseController
         try {
             $service->update($request, $product, $imageService);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -140,7 +140,7 @@ class ProductController extends BaseController
         try {
             $service->destroy($id);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError();
@@ -160,7 +160,7 @@ class ProductController extends BaseController
         try {
             $service->restore($id);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError();
@@ -173,7 +173,7 @@ class ProductController extends BaseController
         try {
             $productService->addImagesToProduct($product, $request, $imageService);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError();
@@ -186,7 +186,7 @@ class ProductController extends BaseController
         try {
             $productService->attachCategoryToProduct($product, $request);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError();
@@ -199,7 +199,7 @@ class ProductController extends BaseController
         try {
             $productService->deleteProductImage($product, $request);
             DB::commit();
-            return $this->webMessage('success');
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError();
@@ -224,7 +224,7 @@ class ProductController extends BaseController
             ]);
         } catch (Exception $exception) {
             DB::rollback();
-            return $this->webMessage($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 }

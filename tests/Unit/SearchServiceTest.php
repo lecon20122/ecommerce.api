@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Support\Services\SearchService;
+use App\Domain\Cart\Models\Support\Services\SearchService;
 use PHPUnit\Framework\TestCase;
 
 class SearchServiceTest extends TestCase

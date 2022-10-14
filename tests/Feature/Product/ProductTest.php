@@ -6,7 +6,6 @@ use App\Domain\Admin\Models\Admin;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
-use App\Support\Enums\HttpStatusEnums;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -25,11 +24,11 @@ class ProductTest extends TestCase
         $this->assertTrue([
                 'id',
                 'title',
-                'description',
                 'price',
                 'store_id',
                 'stores',
                 'category_ids',
+                'created_at',
             ] === array_keys($productModel->toSearchableArray()));
     }
 
@@ -54,12 +53,11 @@ class ProductTest extends TestCase
         $data = [
             'en' => 'new product',
             'ar' => 'منتج جديد',
-            'description' => $this->faker->text,
-            'price' => $this->faker->randomFloat(00, 50, 300),
+            'price' => 325,
             'live_at' => now(),
             'store_id' => $store->id,
             'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 1000, 1000)
+                0 => UploadedFile::fake()->image("test.jpg", 100, 100)
             ]
         ];
 

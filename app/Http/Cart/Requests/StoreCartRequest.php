@@ -24,9 +24,9 @@ class StoreCartRequest extends FormRequest
     public function rules()
     {
         return [
-            'notes' => 'nullable',
-            'qty' => 'required',
             'variation_id' => 'required',
+            'price' => 'required|numeric|between:1,999999',
+            'quantity' => 'required|integer',
         ];
     }
 }

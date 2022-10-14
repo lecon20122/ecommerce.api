@@ -2,7 +2,7 @@
 
 namespace App\App\Console\Commands;
 
-use App\Domain\Variation\Services\VariationService;
+use App\Domain\Cart\Models\Domain\Variation\Services\VariationService;
 use Exception;
 use Illuminate\Console\Command;
 use MeiliSearch\Client;

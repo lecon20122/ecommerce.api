@@ -5,13 +5,9 @@ namespace Domain\Auth\Traits;
 use App\Http\Auth\Requests\LoginRequest;
 use App\Http\Auth\Resources\UserResource;
 use Domain\User\Models\User;
-use Exception;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Auth;
 
 trait HasLogin
 {

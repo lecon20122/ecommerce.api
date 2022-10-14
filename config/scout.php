@@ -1,7 +1,5 @@
 <?php
 
-use App\Domain\Variation\Services\VariationService;
-
 return [
 
     /*

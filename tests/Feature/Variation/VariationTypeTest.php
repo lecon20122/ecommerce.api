@@ -4,9 +4,7 @@ namespace Tests\Feature\Variation;
 
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Variation\Models\VariationType;
-use App\Domain\Variation\Models\VariationTypeValue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class VariationTypeTest extends TestCase

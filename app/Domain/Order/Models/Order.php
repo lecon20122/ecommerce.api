@@ -2,7 +2,7 @@
 
 namespace App\Domain\Order\Models;
 
-use App\Domain\Product\Models\Variation;
+use App\Domain\Variation\Models\Variation;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

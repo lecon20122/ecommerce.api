@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\AddHeaders;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -39,6 +38,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
+//            \App\Http\Middleware\CartMiddleware::class,
         ],
 
         'api' => [

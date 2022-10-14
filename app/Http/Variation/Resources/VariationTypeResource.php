@@ -2,7 +2,6 @@
 
 namespace App\Http\Variation\Resources;
 
-use App\Domain\Variation\Models\VariationTypeValue;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

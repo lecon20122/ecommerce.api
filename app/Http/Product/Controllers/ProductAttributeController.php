@@ -2,8 +2,8 @@
 
 namespace App\Http\Product\Controllers;
 
+use App\Domain\Cart\Models\Domain\Product\Services\ProductAttributeService;
 use App\Domain\Product\Models\ProductAttribute;
-use App\Domain\Product\Services\ProductAttributeService;
 use App\Http\Controllers\Controller;
 use App\Http\Product\Requests\AttachProductAttributeRequest;
 use App\Http\Product\Requests\DetachProductAttributeRequest;

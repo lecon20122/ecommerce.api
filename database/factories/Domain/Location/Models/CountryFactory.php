@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Domain\Location\Models;
 
-use App\Domain\Location\Enums\LocationEnums;
 use App\Domain\Location\Models\Country;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

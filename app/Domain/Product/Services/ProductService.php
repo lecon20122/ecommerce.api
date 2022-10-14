@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Domain\Product\Services;
+namespace App\Domain\Cart\Models\Domain\Product\Services;
 
+use App\Domain\Cart\Models\Domain\Variation\Services\VariationService;
+use App\Domain\Cart\Models\Support\Requests\ModelIDsRequest;
+use App\Domain\Cart\Models\Support\Services\Media\ImageService;
+use App\Domain\Cart\Models\Support\Services\SearchService;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
-use App\Domain\Variation\Services\VariationService;
 use App\Http\Category\Resources\CategoryResource;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreProductRequest;
@@ -13,9 +16,6 @@ use App\Http\Product\Requests\UpdateProductRequest;
 use App\Http\Product\Resources\ProductPaginateResource;
 use App\Http\Product\Resources\ProductResource;
 use App\Support\Enums\MediaCollectionEnums;
-use App\Support\Requests\ModelIDsRequest;
-use App\Support\Services\Media\ImageService;
-use App\Support\Services\SearchService;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

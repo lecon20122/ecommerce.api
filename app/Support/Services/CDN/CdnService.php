@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Services\CDN;
+namespace App\Domain\Cart\Models\Support\Services\CDN;
 
 interface CdnService
 {

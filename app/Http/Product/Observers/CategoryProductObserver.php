@@ -3,8 +3,6 @@
 namespace App\Http\Product\Observers;
 
 use App\Domain\Product\Models\CategoryProduct;
-use App\Domain\Product\Models\Product;
-use Illuminate\Support\Facades\Artisan;
 
 class CategoryProductObserver
 {

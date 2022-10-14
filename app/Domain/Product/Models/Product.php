@@ -5,6 +5,7 @@ namespace App\Domain\Product\Models;
 use App\Domain\Category\Models\Category;
 use App\Domain\Store\Models\Store;
 use App\Domain\User\Models\Favorite;
+use App\Domain\Variation\Models\Variation;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Traits\CustomHasMedia;
 use Domain\User\Models\User;
@@ -82,9 +83,10 @@ class Product extends Model implements HasMedia
             ->using(CategoryProduct::class)
             ->withTimestamps();
     }
+
     public function attributes(): BelongsToMany
     {
-        return $this->belongsToMany(ProductAttribute::class , 'product_description')
+        return $this->belongsToMany(ProductAttribute::class, 'product_description')
             ->withPivot('product_attribute_value_id')
             ->using(ProductDescription::class);
     }
@@ -98,6 +100,7 @@ class Product extends Model implements HasMedia
 
     public function toSearchableArray(): array
     {
+        $this->load(['variations' => fn($query) => $query->with(['variationType', 'variationTypeValue'])]);
         return array_merge([
             'id' => $this->id,
             'title' => $this->title,
@@ -107,10 +110,15 @@ class Product extends Model implements HasMedia
             'stores' => $this->load('store')->store->name,
             'category_ids' => $this->load('categories')->categories->pluck('id')->toArray(),
             'created_at' => $this->created_at,
-        ], $this->load('variations')->variations->groupBy('type')
-            ->mapWithKeys(fn($variations, $key) => [
-                $key => $variations->pluck('title')
-            ])->toArray()
-        );
+        ], $this->variationsArray($this->variations));
+    }
+
+    public function variationsArray($variations): array
+    {
+        $result = [];
+        foreach ($variations as $variation) {
+            $result[$variation->variationType?->type][] = $variation->variationTypeValue?->value;
+        }
+        return $result;
     }
 }

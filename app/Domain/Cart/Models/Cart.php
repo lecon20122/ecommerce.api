@@ -2,24 +2,27 @@
 
 namespace App\Domain\Cart\Models;
 
-use App\Domain\Product\Models\Variation;
+
+use App\Domain\Variation\Models\Variation;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Cart extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id' , 'variation_id' , 'notes' , 'qty'];
+    protected $fillable = ['user_id', 'uuid'];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function variation()
+    public function variations(): BelongsToMany
     {
-        return $this->belongsTo(Variation::class);
+        return $this->belongsToMany(Variation::class)->withPivot(['quantity', 'price']);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Product\Controllers;
 
-use App\Domain\Product\Services\ProductAttributeService;
+use App\Domain\Cart\Models\Domain\Product\Services\ProductAttributeService;
 use App\Http\Product\Requests\StoreProductAttributeValueRequest;
 use App\Http\Product\Requests\UpdateProductAttributeValueRequest;
 use Application\Controllers\BaseController;

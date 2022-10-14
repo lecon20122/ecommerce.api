@@ -9,5 +9,5 @@ class City extends Model
 {
     use HasFactory;
 
-    
+
 }

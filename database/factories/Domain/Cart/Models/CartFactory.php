@@ -3,7 +3,7 @@
 namespace Database\Factories\Domain\Cart\Models;
 
 use App\Domain\Cart\Models\Cart;
-use App\Domain\Product\Models\Variation;
+use App\Domain\Variation\Models\Variation;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,9 +22,6 @@ class CartFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'variation_id' => Variation::factory(),
-            'notes' => $this->faker->sentence,
-            'qty' => $this->faker->randomDigit(),
         ];
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\App\Providers;
 
+use App\Domain\Cart\Models\Policies\ProductPolicy;
+use App\Domain\Cart\Models\Policies\StorePolicy;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
-use App\Policies\ProductPolicy;
-use App\Policies\StorePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {

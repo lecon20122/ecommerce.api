@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Policies;
+namespace App\Domain\Cart\Models\Policies;
 
+use App\Domain\Cart\Models\Support\Policies\BasePolicy;
 use App\Domain\Store\Models\Store;
-use App\Support\Policies\BasePolicy;
 use Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

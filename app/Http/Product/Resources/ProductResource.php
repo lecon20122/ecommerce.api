@@ -5,7 +5,6 @@ namespace App\Http\Product\Resources;
 use App\Http\Category\Resources\CategoryResource;
 use App\Http\Media\Resources\MediaResource;
 use App\Http\Variation\Resources\VariationResource;
-use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

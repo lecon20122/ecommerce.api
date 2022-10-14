@@ -2,12 +2,10 @@
 
 namespace Tests\Feature\Cart;
 
-use App\Domain\Cart\Models\Cart;
-use App\Domain\Product\Models\Variation;
-use Domain\User\Models\User;
+use App\Domain\Inventory\Models\Stock;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\NoReturn;
 use Tests\TestCase;
 
 class CartTest extends TestCase
@@ -20,81 +18,56 @@ class CartTest extends TestCase
      *
      * @return void
      */
-    public function test_authenticated_user_can_add_item_to_cart()
+    #[NoReturn] public function testNonAuthenticatedUserCanAddItemsToCart()
     {
-        $user = User::factory()->create();
-        $tokenHeader = $this->generateBearerTokenHeader($user);
+        $stock = Stock::factory()->create(); // stock 1 here
 
-        $variation = Variation::factory()->create();
+        Stock::create([
+            'variation_id' => $stock->variation_id,
+            'amount' => 3,
+        ]);
 
         $data = [
-            'notes' => $this->faker->sentence,
-            'qty' => $this->faker->randomDigit(),
-            'variation_id' => $variation->id,
+            'quantity' => 2,
+            'price' => 241.2,
+            'variation_id' => $stock->variation_id,
         ];
 
-        $response = $this->post(route('cart.store'), $data, $tokenHeader)->assertCreated();
-
-        $this->assertEquals(1, Cart::first()->count());
+        $this->post(route('client.add.to.cart'), $data)->assertRedirect();
+        $this->assertDatabaseHas('cart_variation', [
+            'quantity' => 2,
+            'price' => 241.2,
+            'variation_id' => $stock->variation_id,
+            'cart_id' => 1,
+        ]);
     }
 
-    /**
-     * @param $user
-     * @return string[]
-     */
-    #[ArrayShape(['Authorization' => "string"])]
-    public function generateBearerTokenHeader($user): array
+    #[NoReturn] public function testNonAuthenticatedUserCanUpdateAExistingCartItems()
     {
-        return ['Authorization' => 'Bearer ' . $user->createToken($user->email, ['customer'])->plainTextToken];
-    }
+        $stock = Stock::factory()->create(); // stock 1 here
 
-    public function test_authenticated_user_can_update_item_to_cart()
-    {
-        $user = User::factory()->create();
-        $tokenHeader = $this->generateBearerTokenHeader($user);
-
-        $variation = Variation::factory()->create();
+        Stock::create([
+            'variation_id' => $stock->variation_id,
+            'amount' => 3,
+        ]);
 
         $data = [
-            'notes' => $this->faker->sentence,
-            'qty' => 3,
-            'variation_id' => $variation->id,
+            'quantity' => 2,
+            'price' => 241.2,
+            'variation_id' => $stock->variation_id,
         ];
-
-        $cart = $user->carts()->create($data);
-
-        $this->put(
-            route('cart.update', ['cart' => $cart]),
-            ['qty' => 1],
-            $tokenHeader
-        )
-            ->assertOk();
-
-        $this->assertEquals(1, Cart::first()->qty);
-    }
-
-    public function test_authenticated_user_can_remove_item_to_cart()
-    {
-        $user = User::factory()->create();
-        $tokenHeader = $this->generateBearerTokenHeader($user);
-
-        $variation = Variation::factory()->create();
-
-        $data = [
-            'notes' => $this->faker->sentence,
-            'qty' => 3,
-            'variation_id' => $variation->id,
+        $data2 = [
+            'quantity' => 1,
+            'price' => 241.5,
+            'variation_id' => $stock->variation_id,
         ];
-
-        $cart = $user->carts()->create($data);
-
-        $this->delete(
-            route('cart.destroy', ['cart' => $cart]),
-            [],
-            $tokenHeader
-        )
-            ->assertOk();
-
-        $this->assertNull(Cart::first());
+        $this->post(route('client.add.to.cart'), $data)->assertRedirect();
+        $this->post(route('client.add.to.cart'), $data2)->assertRedirect();
+        $this->assertDatabaseHas('cart_variation', [
+            'quantity' => 3,
+            'price' => 241.5,
+            'variation_id' => $stock->variation_id,
+            'cart_id' => 1,
+        ]);
     }
 }

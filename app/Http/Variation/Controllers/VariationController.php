@@ -2,13 +2,13 @@
 
 namespace App\Http\Variation\Controllers;
 
-use App\Domain\Product\Models\Variation;
-use App\Domain\Variation\Services\VariationService;
+use App\Domain\Cart\Models\Domain\Variation\Services\VariationService;
+use App\Domain\Cart\Models\Support\Requests\ModelIDsRequest;
+use App\Domain\Cart\Models\Support\Services\Media\ImageService;
+use App\Domain\Variation\Models\Variation;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Variation\Requests\StoreVariationRequest;
 use App\Http\Variation\Requests\UpdateVariationRequest;
-use App\Support\Requests\ModelIDsRequest;
-use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;

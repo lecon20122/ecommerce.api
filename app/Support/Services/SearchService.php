@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Services;
+namespace App\Domain\Cart\Models\Support\Services;
 
 use Exception;
 use Laravel\Scout\Builder;

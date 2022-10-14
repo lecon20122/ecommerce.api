@@ -3,8 +3,6 @@
 namespace Tests\Feature\Dashboard;
 
 use App\Domain\Admin\Models\Admin;
-use Database\Factories\Domain\Admin\Models\AdminFactory;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\AssertableInertia;

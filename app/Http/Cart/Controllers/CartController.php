@@ -2,6 +2,7 @@
 
 namespace App\Http\Cart\Controllers;
 
+use App\Domain\Cart\Contracts\CartInterface;
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Cart\Services\CartService;
 use App\Http\Cart\Requests\StoreCartRequest;
@@ -10,10 +11,12 @@ use App\Http\Cart\Resources\CartResource;
 use App\Http\Controllers\Controller;
 use Application\Controllers\BaseController;
 use Exception;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class CartController extends BaseController
 {
@@ -42,18 +45,18 @@ class CartController extends BaseController
      *
      * @param StoreCartRequest $request
      * @param CartService $service
-     * @return JsonResponse | CartResource
+     * @return RedirectResponse
      */
-    public function store(StoreCartRequest $request, CartService $service)
+    public function store(StoreCartRequest $request, CartInterface $service): RedirectResponse
     {
         try {
             DB::beginTransaction();
-            $cart = $service->store($request);
+            $service->addItem($request->validated('variation_id'), $request->validated('price'), $request->validated('quantity'));
             DB::commit();
-            return new CartResource($cart);
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 

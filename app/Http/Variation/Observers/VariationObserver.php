@@ -2,11 +2,9 @@
 
 namespace App\Http\Variation\Observers;
 
-use App\Domain\Product\Models\Product;
-use App\Domain\Product\Models\Variation;
+use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
-use Illuminate\Support\Str;
 
 class VariationObserver
 {

@@ -1,18 +1,22 @@
 <?php
 
-namespace App\Domain\Product\Models;
+namespace App\Domain\Variation\Models;
 
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Inventory\Models\Stock;
-use App\Domain\Variation\Models\VariationType;
-use App\Domain\Variation\Models\VariationTypeValue;
+use App\Domain\Product\Models\Product;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Traits\CustomHasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
@@ -23,7 +27,7 @@ class Variation extends Model implements HasMedia
 {
     use HasFactory, CustomHasMedia, SoftDeletes, HasTranslations;
 
-    public $translatable = ['title', 'type'];
+    public array $translatable = ['title', 'type'];
     protected $touches = ['product'];
     protected $fillable = ['title', 'price', 'type', 'order', 'product_id', 'parent_id', 'variation_type_value_id', 'variation_type_id'];
 
@@ -81,9 +85,9 @@ class Variation extends Model implements HasMedia
         return $this->hasMany(Stock::class);
     }
 
-    public function carts(): HasMany
+    public function carts(): BelongsToMany
     {
-        return $this->hasMany(Cart::class);
+        return $this->belongsToMany(Cart::class)->withPivot(['quantity', 'price']);
     }
 
     public function childrenRecursive(): HasMany
@@ -106,18 +110,31 @@ class Variation extends Model implements HasMedia
         return $this->belongsTo(VariationType::class);
     }
 
+    public function sizeDescriptionValues(): HasMany
+    {
+        return $this->hasMany(SizeDescriptionValue::class);
+    }
+
     public function variationTypeValue(): BelongsTo
     {
         return $this->belongsTo(VariationTypeValue::class);
     }
 
-    public function getVariationColor(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    public function getVariationColor(): MorphOne
     {
         return $this->getMediaByCollectionName(MediaCollectionEnums::VARIATION_COLOR);
     }
 
-    public function getVariationImages(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function getVariationImages(): MorphMany
     {
         return $this->getManyMediaByCollectionName(MediaCollectionEnums::VARIATION);
+    }
+
+    public function StockCount()
+    {
+        return DB::table('stocks')
+            ->selectRaw('sum(amount) as count')
+            ->where('variation_id', '=', $this->id)
+            ->first();
     }
 }

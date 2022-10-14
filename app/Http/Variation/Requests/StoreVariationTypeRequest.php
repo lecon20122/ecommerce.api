@@ -3,7 +3,6 @@
 namespace App\Http\Variation\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 class StoreVariationTypeRequest extends FormRequest
 {

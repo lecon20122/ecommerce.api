@@ -6,7 +6,6 @@ use App\Domain\Category\Models\Category;
 use App\Domain\Store\Models\Store;
 use App\Support\Enums\CacheKeyEnums;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 
 class StoreObserver
 {

@@ -2,29 +2,131 @@
 
 namespace App\Domain\Cart\Services;
 
+use App\Domain\Cart\Contracts\CartInterface;
 use App\Domain\Cart\Models\Cart;
-use App\Http\Cart\Requests\StoreCartRequest;
-use App\Http\Cart\Requests\UpdateCartRequest;
-use App\Http\Product\Requests\StoreCategoryRequest;
+use App\Domain\Variation\Models\Variation;
+use Domain\User\Models\User;
+use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Session\SessionManager;
+use Illuminate\Support\Collection;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-class CartService
+class CartService implements CartInterface
 {
+    protected const CONFIG_SESSION_KEY = 'cart.session.key';
+
+    protected mixed $sessionKey;
+    protected Model $cartInstance;
+
     /**
-     * @param StoreCartRequest $request
-     * @return mixed
+     * @throws Exception
      */
-    public function store(StoreCartRequest $request): mixed
+    public function __construct(protected SessionManager $sessionManager)
     {
-        return auth()->user()->carts()->create($request->validated());
+        $this->sessionKey = config(self::CONFIG_SESSION_KEY);
+
+        if (empty($this->sessionKey)) {
+            throw new Exception(
+                sprintf(
+                    'Cart session key (`%s`) is empty. Please provide a valid value.',
+                    self::CONFIG_SESSION_KEY
+                )
+            );
+        }
     }
 
-    public function update(array $request, Cart $cart)
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function itemsCount(): int
     {
-        $cart->update($request);
+        return $this->items()->count();
     }
 
-    public function delete(Cart $cart)
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function items(): Collection
     {
-        $cart->delete();
+        return $this->cartInstance()->variations;
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function cartInstance(): Model|null
+    {
+        if ($this->cartInstance) {
+            echo 'second time';
+            return $this->cartInstance;
+        }
+        echo 'first time';
+
+        return $this->cartInstance = Cart::query()
+            ->with('variations')
+            ->where('uuid', '=', session()->get($this->sessionKey))
+            ->first();
+    }
+
+    /**
+     */
+    public function addItem($variation_id, $price, $quantity = 0)
+    {
+        $variation = Variation::query()->find($variation_id);
+
+        $this->findOrCreateCartInstance();
+//        echo $this->cartItemExists($variation);
+        if ($existingVariation = $this->cartItemExists($variation)) {
+            $quantity += $existingVariation->pivot->quantity;
+        }
+
+        $this->cartInstance->variations()->syncWithoutDetaching([
+            $variation->id => [
+                'quantity' => min($quantity, $variation->StockCount()->count),
+                'price' => $price,
+            ]
+        ]);
+        $this->cartInstance->save();
+    }
+
+    /**
+     */
+    protected function findOrCreateCartInstance()
+    {
+        if (!$this->exists()) {
+            $this->create();
+        }
+    }
+
+    public function exists()
+    {
+        return $this->sessionManager->get($this->sessionKey);
+    }
+
+    /**
+     */
+    public function create(?User $user = null)
+    {
+        $this->cartInstance = Cart::with('variations')->make();
+
+        if ($user) {
+            $this->cartInstance->user()->associate($user);
+        }
+
+        $this->cartInstance->save();
+
+        $this->sessionManager->put($this->sessionKey, $this->cartInstance->uuid);
+    }
+
+    /**
+     */
+    protected function cartItemExists(Variation $variation)
+    {
+        return $this->cartInstance->variations()->find($variation->id);
     }
 }

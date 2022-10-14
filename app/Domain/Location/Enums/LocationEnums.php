@@ -5,10 +5,10 @@ namespace App\Domain\Location\Enums;
 class LocationEnums
 {
     // countries
-    CONST EGYPT = 'egypt';
+    const EGYPT = 'egypt';
 
 
     //address types
-    CONST ADDRESS_TYPE_HOME = 'home';
+    const ADDRESS_TYPE_HOME = 'home';
 
 }

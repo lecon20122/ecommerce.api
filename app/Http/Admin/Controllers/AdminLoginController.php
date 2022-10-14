@@ -4,7 +4,6 @@ namespace App\Http\Admin\Controllers;
 
 use App\Http\Admin\Requests\AdminLoginRequest;
 use Application\Controllers\BaseController;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;

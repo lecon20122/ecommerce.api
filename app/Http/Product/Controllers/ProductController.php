@@ -2,18 +2,18 @@
 
 namespace App\Http\Product\Controllers;
 
+use App\Domain\Cart\Models\Domain\Product\Services\ProductService;
+use App\Domain\Cart\Models\Domain\User\Services\UserFavoriteService;
+use App\Domain\Cart\Models\Domain\Variation\Services\VariationService;
+use App\Domain\Cart\Models\Support\Requests\ModelIDsRequest;
+use App\Domain\Cart\Models\Support\Services\Media\ImageService;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
-use App\Domain\Product\Services\ProductService;
-use App\Domain\User\Services\UserFavoriteService;
-use App\Domain\Variation\Services\VariationService;
 use App\Http\Category\Services\CategoryService;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\ProductFilterRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
-use App\Support\Requests\ModelIDsRequest;
-use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;

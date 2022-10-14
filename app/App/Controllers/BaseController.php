@@ -2,7 +2,6 @@
 
 namespace Application\Controllers;
 
-use App\Http\User\Requests\RegisterRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;

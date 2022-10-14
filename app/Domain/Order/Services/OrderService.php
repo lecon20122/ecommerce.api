@@ -2,15 +2,8 @@
 
 namespace App\Domain\Order\Services;
 
-use App\Domain\Cart\Models\Cart;
-use App\Domain\Product\Models\Variation;
-use App\Domain\Shipping\Models\ShippingType;
+
 use App\Domain\Store\Models\Store;
-use App\Http\Cart\Requests\StoreCartRequest;
-use App\Http\Cart\Requests\UpdateCartRequest;
-use App\Http\Order\Requests\StoreOrderRequest;
-use App\Http\variation\Requests\StoreCategoryRequest;
-use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
@@ -56,7 +49,7 @@ class OrderService
         }
 
         $total = $subtotal + $delivery_fees;
-        $commission =  0.1 * $subtotal;
+        $commission = 0.1 * $subtotal;
         $net = $total - ($commission + $delivery_fees);
         // updating the rest of the calculations
         $order->update([

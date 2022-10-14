@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Policies;
+namespace App\Domain\Cart\Models\Support\Policies;
 
 
 use Domain\User\Models\User;

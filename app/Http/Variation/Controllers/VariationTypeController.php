@@ -2,15 +2,14 @@
 
 namespace App\Http\Variation\Controllers;
 
+use App\Domain\Cart\Models\Domain\Variation\Services\VariationTypeService;
 use App\Domain\Variation\Models\VariationType;
-use App\Domain\Variation\Services\VariationTypeService;
 use App\Http\Variation\Requests\StoreVariationTypeRequest;
 use App\Http\Variation\Requests\UpdateVariationTypeRequest;
 use App\Http\Variation\Resources\VariationTypeResource;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;

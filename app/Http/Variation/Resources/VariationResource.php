@@ -3,10 +3,8 @@
 namespace App\Http\Variation\Resources;
 
 use App\Http\Media\Resources\MediaResource;
-use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class VariationResource extends JsonResource
 {

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Domain\Variation\Services;
+namespace App\Domain\Cart\Models\Domain\Variation\Services;
 
+use App\Domain\Cart\Models\Support\Requests\ModelIDsRequest;
+use App\Domain\Cart\Models\Support\Services\Media\ImageService;
 use App\Domain\Product\Models\Product;
-use App\Domain\Product\Models\Variation;
+use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
 use App\Http\Media\Request\StoreMediaRequest;
@@ -12,8 +14,6 @@ use App\Http\Variation\Resources\VariationResource;
 use App\Http\Variation\Resources\VariationTypeResource;
 use App\Http\Variation\Resources\VariationTypeValueResource;
 use App\Support\Enums\MediaCollectionEnums;
-use App\Support\Requests\ModelIDsRequest;
-use App\Support\Services\Media\ImageService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class VariationService

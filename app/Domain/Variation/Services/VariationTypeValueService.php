@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Variation\Services;
+namespace App\Domain\Cart\Models\Domain\Variation\Services;
 
 use App\Domain\Variation\Models\VariationTypeValue;
 use App\Http\Variation\Resources\VariationTypeValueResource;

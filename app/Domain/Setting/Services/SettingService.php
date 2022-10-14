@@ -8,6 +8,6 @@ class SettingService
 {
     public function getSettingValue(string $setting)
     {
-        return Setting::where($setting, 'key')->first()->value ?? null;
+        return Setting::query()->where($setting, '=', 'key')->first()->value ?? null;
     }
 }

@@ -4,10 +4,9 @@ namespace Tests\Feature\Variation;
 
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Product\Models\Product;
-use App\Domain\Product\Models\Variation;
+use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
-use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -43,7 +42,7 @@ class VariationTest extends TestCase
             'order' => 1,
             'product_id' => $product->id,
             'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 1000, 1000)
+                0 => UploadedFile::fake()->image("test.jpg", 100, 100)
             ]
         ];
 
@@ -58,6 +57,7 @@ class VariationTest extends TestCase
     {
         $admin = Admin::factory()->create();
         Sanctum::actingAs($admin, [], 'admin');
+
         $variation = Variation::factory()->create();
         $VariationTypeValue = VariationTypeValue::factory()->create();
 
@@ -67,9 +67,12 @@ class VariationTest extends TestCase
         ];
 
         $response = $this->post(route('admin.variations.update', ['variation' => $variation]), $data)->assertRedirect();
+
         $response->assertSessionHas('message', 'success');
+
         $this->assertEquals($VariationTypeValue->value, Variation::first()->title);
-        $this->assertEquals(VariationType::latest()->first()->type, Variation::first()->type);
+
+        $this->assertEquals(VariationType::find(2)->type, Variation::first()->type);
     }
 
     public function test_variation_can_be_destroyed()
@@ -119,7 +122,7 @@ class VariationTest extends TestCase
         Storage::fake('public');
         $data = [
             'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 1000, 1000),
+                0 => UploadedFile::fake()->image("test.jpg", 100, 100),
             ]
         ];
 

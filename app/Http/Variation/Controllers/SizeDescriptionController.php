@@ -2,7 +2,7 @@
 
 namespace App\Http\Variation\Controllers;
 
-use App\Domain\Cart\Models\Domain\Variation\Services\SizeDescriptionService;
+use App\Domain\Variation\Services\SizeDescriptionService;
 use App\Http\Controllers\Controller;
 use App\Http\Variation\Requests\StoreSizeDescriptionRequest;
 use App\Http\Variation\Requests\UpdateSizeDescriptionRequest;

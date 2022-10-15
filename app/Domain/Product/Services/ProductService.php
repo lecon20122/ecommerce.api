@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Domain\Cart\Models\Domain\Product\Services;
+namespace App\Domain\Product\Services;
 
-use App\Domain\Cart\Models\Domain\Variation\Services\VariationService;
-use App\Domain\Cart\Models\Support\Requests\ModelIDsRequest;
-use App\Domain\Cart\Models\Support\Services\Media\ImageService;
-use App\Domain\Cart\Models\Support\Services\SearchService;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
+use App\Domain\Variation\Services\VariationService;
 use App\Http\Category\Resources\CategoryResource;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
-use App\Http\Product\Resources\ProductPaginateResource;
 use App\Http\Product\Resources\ProductResource;
 use App\Support\Enums\MediaCollectionEnums;
+use App\Support\Requests\ModelIDsRequest;
+use App\Support\Services\Media\ImageService;
+use App\Support\Services\SearchService;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -147,13 +146,13 @@ class ProductService
         $productModel = new Product();
 
         $params['filter'] = $searchService->filterFactory($category->id, Arr::except($filters, 'price'), $filters['price'] ?? null);
-        $params['sort'] = $searchService->sortFactory($filters['sort']);
+        $params['sort'] = $searchService->sortFactory($filters['sort'] ?? null);
         $params['facets'] = [...(new VariationService)->getFacetsArray(), 'stores'];
 
         $meilisearch = $searchService->searchIndexedModel($params, $productModel)->query(function (Builder $builder) {
             $builder->with(['variations' => function ($query) {
-                $query->with('getVariationImages', 'getVariationColor')
-                    ->has('getVariationImages')
+                $query->with('VariationImages', 'VariationColor')
+                    ->has('VariationImages')
                     ->parent();
             }
             ])->has('variations');
@@ -174,8 +173,8 @@ class ProductService
     {
         return new ProductResource(
             $product->load(['media', 'variations' => function ($query) {
-                $query->with('children', 'getVariationImages', 'getVariationColor')
-                    ->has('getVariationImages')
+                $query->with('children', 'VariationImages', 'VariationColor')
+                    ->has('VariationImages')
                     ->parent();
             }
             ])

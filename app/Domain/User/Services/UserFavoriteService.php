@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Cart\Models\Domain\User\Services;
+namespace App\Domain\User\Services;
 
 class UserFavoriteService
 {

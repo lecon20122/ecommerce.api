@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Cart\Models\Domain\Store\Services;
+namespace App\Domain\Store\Services;
 
 use App\Domain\Store\Models\Store;
 use App\Http\Store\Requests\StoreCreateRequest;

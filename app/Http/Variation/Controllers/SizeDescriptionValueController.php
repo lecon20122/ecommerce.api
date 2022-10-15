@@ -3,7 +3,7 @@
 namespace App\Http\Variation\Controllers;
 
 
-use App\Domain\Cart\Models\Domain\Variation\Services\SizeDescriptionValueService;
+use App\Domain\Variation\Services\SizeDescriptionValueService;
 use App\Http\Variation\Requests\StoreSizeDescriptionValueRequest;
 use App\Http\Variation\Requests\UpdateSizeDescriptionValueRequest;
 use Application\Controllers\BaseController;

@@ -8,6 +8,7 @@ use App\Domain\Variation\Models\Variation;
 use Domain\User\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Collection;
 use Psr\Container\ContainerExceptionInterface;
@@ -59,7 +60,7 @@ class CartService implements CartInterface
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function cartInstance(): Model|null
+    public function cartInstance(): Model|null
     {
         if ($this->cartInstance) {
             echo 'second time';
@@ -80,30 +81,36 @@ class CartService implements CartInterface
         $variation = Variation::query()->find($variation_id);
 
         $this->findOrCreateCartInstance();
-//        echo $this->cartItemExists($variation);
-        if ($existingVariation = $this->cartItemExists($variation)) {
+
+        if ($existingVariation = $this->cartItemExists($variation->id)) {
             $quantity += $existingVariation->pivot->quantity;
         }
 
         $this->cartInstance->variations()->syncWithoutDetaching([
             $variation->id => [
-                'quantity' => min($quantity, $variation->StockCount()->count),
-                'price' => $price,
+                'quantity' => min($quantity, $variation->StockCount()),
+                'price' => $existingVariation->pivot->price ?? $price,
             ]
         ]);
-        $this->cartInstance->save();
     }
 
     /**
      */
-    protected function findOrCreateCartInstance()
+    public function findOrCreateCartInstance()
     {
         if (!$this->exists()) {
             $this->create();
         }
     }
 
-    public function exists()
+    /**
+     */
+    public function exists(): bool
+    {
+        return $this->cartId() && $this->cartInstance;
+    }
+
+    public function cartId()
     {
         return $this->sessionManager->get($this->sessionKey);
     }
@@ -115,7 +122,7 @@ class CartService implements CartInterface
         $this->cartInstance = Cart::with('variations')->make();
 
         if ($user) {
-            $this->cartInstance->user()->associate($user);
+            $this->associateUser($user);
         }
 
         $this->cartInstance->save();
@@ -123,10 +130,24 @@ class CartService implements CartInterface
         $this->sessionManager->put($this->sessionKey, $this->cartInstance->uuid);
     }
 
+    public function associateUser(User $user)
+    {
+        $this->cartInstance->user()->associate($user);
+    }
+
     /**
      */
-    protected function cartItemExists(Variation $variation)
+    public function cartItemExists($variation_id)
     {
-        return $this->cartInstance->variations()->find($variation->id);
+        return $this->cartInstance->variations()->find($variation_id);
+    }
+
+    public function getUser(): Builder|Collection|Model|null
+    {
+        if ($this->exists() && $this->cartInstance->user_id) {
+            return User::query()->find($this->cartInstance->user_id);
+        }
+
+        return null;
     }
 }

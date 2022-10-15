@@ -8,16 +8,16 @@ use App\Domain\Cart\Services\CartService;
 use App\Http\Cart\Requests\StoreCartRequest;
 use App\Http\Cart\Requests\UpdateCartRequest;
 use App\Http\Cart\Resources\CartResource;
-use App\Http\Controllers\Controller;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ *
+ */
 class CartController extends BaseController
 {
     /**
@@ -44,14 +44,14 @@ class CartController extends BaseController
      * Store a newly created resource in storage.
      *
      * @param StoreCartRequest $request
-     * @param CartService $service
+     * @param CartInterface $cartService
      * @return RedirectResponse
      */
-    public function store(StoreCartRequest $request, CartInterface $service): RedirectResponse
+    public function store(StoreCartRequest $request, CartInterface $cartService): RedirectResponse
     {
         try {
             DB::beginTransaction();
-            $service->addItem($request->validated('variation_id'), $request->validated('price'), $request->validated('quantity'));
+            $cartService->addItem($request->validated('variation_id'), $request->validated('price'), $request->validated('quantity'));
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {

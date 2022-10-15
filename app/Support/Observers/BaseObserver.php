@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Cart\Models\Support\Observers;
+namespace App\Support\Observers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;

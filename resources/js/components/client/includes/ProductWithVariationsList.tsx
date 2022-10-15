@@ -14,7 +14,6 @@ interface Props {
 }
 
 function ProductWithVariationsList({product, locale}: Props) {
-
   const handleClickOnProduct = (product: ProductWithThumbnail) => {
     Inertia.get(route('shop.product.detail', product))
   }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Variation\Controllers;
 
-use App\Domain\Cart\Models\Domain\Variation\Services\VariationTypeValueService;
+use App\Domain\Variation\Services\VariationTypeValueService;
 use App\Http\Variation\Requests\StoreVariationTypeValueRequest;
 use App\Http\Variation\Requests\UpdateVariationTypeValueRequest;
 use Application\Controllers\BaseController;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Domain\Cart\Models\Support\Services\Media;
+namespace App\Support\Services\Media;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;

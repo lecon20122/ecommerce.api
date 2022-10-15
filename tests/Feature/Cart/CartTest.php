@@ -42,7 +42,7 @@ class CartTest extends TestCase
         ]);
     }
 
-    #[NoReturn] public function testNonAuthenticatedUserCanUpdateAExistingCartItems()
+    #[NoReturn] public function testNotLoggedInUserCanUpdateAExistingCartItems()
     {
         $stock = Stock::factory()->create(); // stock 1 here
 
@@ -56,16 +56,17 @@ class CartTest extends TestCase
             'price' => 241.2,
             'variation_id' => $stock->variation_id,
         ];
+        $this->post(route('client.add.to.cart'), $data)->assertRedirect();
         $data2 = [
             'quantity' => 1,
             'price' => 241.5,
             'variation_id' => $stock->variation_id,
         ];
-        $this->post(route('client.add.to.cart'), $data)->assertRedirect();
         $this->post(route('client.add.to.cart'), $data2)->assertRedirect();
+
         $this->assertDatabaseHas('cart_variation', [
             'quantity' => 3,
-            'price' => 241.5,
+            'price' => 241.2,
             'variation_id' => $stock->variation_id,
             'cart_id' => 1,
         ]);

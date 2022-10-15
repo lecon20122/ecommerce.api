@@ -2,13 +2,13 @@
 
 namespace App\Http\Category\Controllers;
 
-use App\Domain\Cart\Models\Support\Requests\ModelIDsRequest;
-use App\Domain\Cart\Models\Support\Services\Media\ImageService;
 use App\Domain\Category\Models\Category;
 use App\Http\Category\Services\CategoryService;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
+use App\Support\Requests\ModelIDsRequest;
+use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;

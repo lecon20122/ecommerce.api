@@ -9,7 +9,7 @@ interface Props {
 }
 
 function HomePageTabsComponents({categories, locale}: Props) {
-
+  console.log(categories)
 
   const tabs = categories.map((category) => {
     return <Tabs.Tab key={category.id} title={category.title.en}>

@@ -15,7 +15,7 @@ function ProductDetails({product, locale}: Props) {
   const [currentMedia, setCurrentMedia] = useState<NewMediaProps[]>(product.media)
   const [currentVariation, setCurrentVariation] = useState<Variation>(product.variations[0])
   const [currentImage, setCurrentImage] = useState<NewMediaProps>({...product.variations[0].media[0]})
-
+  console.log(product)
   const handleClickVariationColors = (variation: Variation) => {
     setCurrentMedia(variation.media)
     setCurrentImage({...variation.media[0]})

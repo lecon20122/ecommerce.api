@@ -63,7 +63,7 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
   } = useForm<MediaForm>();
 
   const serverSideErrors = usePage().props.errors
-
+  console.log(serverSideErrors)
   const handleUpdateProduct: SubmitHandler<IFormProps> = (data) => {
     const resolveData = {...data}
     Inertia.post(route('admin.products.update', currentProduct), resolveData, {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Cart\Models\Domain\Product\Services;
+namespace App\Domain\Product\Services;
 
 use App\Domain\Product\Models\ProductAttribute;
 use App\Domain\Product\Models\ProductAttributeValue;

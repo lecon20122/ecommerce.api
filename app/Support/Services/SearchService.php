@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Domain\Cart\Models\Support\Services;
+namespace App\Support\Services;
 
 use Exception;
+use Illuminate\Support\Collection;
 use Laravel\Scout\Builder;
 use Laravel\Scout\Searchable;
 use MeiliSearch\Endpoints\Indexes;
@@ -40,16 +41,23 @@ class SearchService
     public function recursiveFilterIteration($filters)
     {
         if (!$filters) return null;
-
-        return collect($filters)->filter(fn($filter) => !empty($filter))
-            ->recursive()
+        return $this->collectChildren(collect($filters)->filter(fn($filter) => !empty($filter)))
             ->map(function ($value, $key) {
-                if (is_string($key)) return $key . ' = "' . $value . '"';
+                if (is_string($value)) return $key . ' = "' . $value . '"';
                 return $value->map(fn($value) => $key . ' = "' . $value . '"');
             })
             ->flatten()
-            ->join(' OR ');
+            ->join(' AND ');
+    }
 
+    public function collectChildren(Collection $collection): Collection
+    {
+        return $collection->map(function ($value) {
+            if (is_array($value) || is_object($value)) {
+                return $this->collectChildren(collect($value));
+            }
+            return $value;
+        });
     }
 
     /**
@@ -79,8 +87,10 @@ class SearchService
         );
     }
 
-    public function sortFactory(array $sortables): array
+    public function sortFactory(array|null $sortables): array|null
     {
+        if (!$sortables) return null;
+
         foreach ($sortables as $sortable => $value) {
             $result[] = $sortable . ':' . ($value ? 'asc' : 'desc');
         }

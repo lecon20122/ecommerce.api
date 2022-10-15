@@ -15,11 +15,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 
@@ -120,12 +120,12 @@ class Variation extends Model implements HasMedia
         return $this->belongsTo(VariationTypeValue::class);
     }
 
-    public function getVariationColor(): MorphOne
+    public function VariationColor(): MorphOne
     {
         return $this->getMediaByCollectionName(MediaCollectionEnums::VARIATION_COLOR);
     }
 
-    public function getVariationImages(): MorphMany
+    public function VariationImages(): MorphMany
     {
         return $this->getManyMediaByCollectionName(MediaCollectionEnums::VARIATION);
     }
@@ -135,6 +135,7 @@ class Variation extends Model implements HasMedia
         return DB::table('stocks')
             ->selectRaw('sum(amount) as count')
             ->where('variation_id', '=', $this->id)
-            ->first();
+            ->first()
+            ->count;
     }
 }

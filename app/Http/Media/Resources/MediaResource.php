@@ -2,6 +2,7 @@
 
 namespace App\Http\Media\Resources;
 
+
 use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

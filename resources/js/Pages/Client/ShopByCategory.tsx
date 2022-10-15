@@ -23,7 +23,7 @@ export interface Filters {
 }
 
 export default function ShopByCategory({products, locale, filters, category, maxPrice}: Props) {
-  console.log()
+  console.log(products)
   const ProductList = products.data.map((product) => {
     return (
       <ProductWithVariationsList product={product} locale={locale} key={product.id}/>

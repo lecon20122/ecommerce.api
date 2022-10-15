@@ -6,6 +6,7 @@ use App\Http\Auth\Requests\RegisterRequest;
 use Application\Controllers\BaseController;
 use Domain\User\Models\User;
 use Exception;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,7 @@ class RegisterController extends BaseController
             DB::commit();
             if ($user) {
                 Auth::login($user);
+                event(new Registered($user));
                 return redirect()->intended()->with('message', 'success');
             } else {
                 return back()->withErrors('something went wrong, dont worry we working on it');

@@ -2,9 +2,9 @@
 
 namespace App\Http\Store\Controllers;
 
-use App\Domain\Cart\Models\Domain\Store\Services\StoreService;
-use App\Domain\Cart\Models\Domain\Variation\Services\VariationService;
 use App\Domain\Store\Models\Store;
+use App\Domain\Store\Services\StoreService;
+use App\Domain\Variation\Services\VariationService;
 use App\Http\Store\Requests\StoreCreateRequest;
 use App\Http\Store\Requests\StoreUpdateRequest;
 use App\Http\Store\Resources\StoreResource;

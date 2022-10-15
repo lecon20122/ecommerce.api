@@ -11,7 +11,6 @@ interface Props {
 }
 
 export default function HomePage({categories, locale}: Props) {
-
   const AppLayout = lazy(() => import('../../layouts/client'));
 
   return (

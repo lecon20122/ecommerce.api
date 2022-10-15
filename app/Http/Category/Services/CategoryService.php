@@ -2,14 +2,14 @@
 
 namespace App\Http\Category\Services;
 
-use App\Domain\Cart\Models\Support\Requests\ModelIDsRequest;
-use App\Domain\Cart\Models\Support\Services\Media\ImageService;
 use App\Domain\Category\Models\Category;
 use App\Http\Category\Resources\CategoryResource;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
 use App\Support\Enums\MediaCollectionEnums;
+use App\Support\Requests\ModelIDsRequest;
+use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
@@ -87,7 +87,9 @@ class CategoryService
             ->active()
             ->parent()
             ->with(['media', 'children' => function ($query) {
-                $query->has('products');
+                $query
+                    ->with('media')
+                    ->has('products');
             }])
             ->has('children')
             ->get();

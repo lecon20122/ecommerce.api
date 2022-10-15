@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Cart\Models\Support\Enums;
+namespace App\Support\Enums;
 
 class MediaCollectionEnums
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Cart\Models\Support\Services\CDN;
+namespace App\Support\Services\CDN;
 
 use Illuminate\Support\Facades\Http;
 

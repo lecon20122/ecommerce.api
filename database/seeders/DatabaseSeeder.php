@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Domain\Admin\Models\Admin;
 use App\Domain\Product\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -26,9 +27,9 @@ class DatabaseSeeder extends Seeder
         // seeding Products with Me
 //        Product::factory(25)->hasVariations(4)->create();
         // Category::factory(5)->create();
-        $products = Product::query()->get();
-        foreach ($products as $product) {
-            $product->categories()->attach([1]);
-        }
+//        $products = Product::query()->get();
+//        foreach ($products as $product) {
+//            $product->categories()->attach([1]);
+//        }
     }
 }

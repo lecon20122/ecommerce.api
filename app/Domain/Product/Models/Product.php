@@ -68,8 +68,7 @@ class Product extends Model implements HasMedia
 
     public function variations(): HasMany
     {
-        return $this->hasMany(Variation::class)
-            ->orderBy('order', 'asc');
+        return $this->hasMany(Variation::class);
     }
 
     public function store(): BelongsTo

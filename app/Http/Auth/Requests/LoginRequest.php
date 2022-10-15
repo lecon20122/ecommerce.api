@@ -4,6 +4,7 @@ namespace App\Http\Auth\Requests;
 
 use Domain\User\Models\User;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -57,6 +58,7 @@ class LoginRequest extends FormRequest
         }
 
         Auth::login($user, $this->boolean('remember'));
+        event(new Login('web', $user, $this->boolean('remember')));
         RateLimiter::clear($this->throttleKey());
     }
 

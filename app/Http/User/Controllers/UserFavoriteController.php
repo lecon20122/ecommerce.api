@@ -2,7 +2,7 @@
 
 namespace App\Http\User\Controllers;
 
-use App\Domain\Cart\Models\Domain\User\Services\UserFavoriteService;
+use App\Domain\User\Services\UserFavoriteService;
 use App\Http\Controllers\Controller;
 use App\Http\User\Requests\StoreUserFavoriteRequest;
 use Application\Controllers\BaseController;

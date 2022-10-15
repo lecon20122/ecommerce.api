@@ -27,8 +27,8 @@ class VariationResource extends JsonResource
             'order' => $this->order,
             'deleted_at' => $this->deleted_at,
             'children' => VariationResource::collection($this->whenLoaded('children')),
-            'media' =>  MediaResource::collection($this->whenLoaded('getVariationImages')),
-            'color' => new MediaResource($this->whenLoaded('getVariationColor')),
+            'media' =>  MediaResource::collection($this->whenLoaded('VariationImages')),
+            'color' => new MediaResource($this->whenLoaded('VariationColor')),
         ];
     }
 }

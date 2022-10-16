@@ -13,16 +13,5 @@ class VariationObserver
         if (is_null($variation->order)) {
             $variation->order = 99;
         }
-        $variationType = VariationType::find($variation->variation_type_id);
-        $variationTypeValue = VariationTypeValue::find($variation->variation_type_value_id);
-
-        $variation->type = $variationType->getTranslations('type');
-        $variation->title = $variationTypeValue->getTranslations('value');
     }
-
-    public function created(Variation $variation)
-    {
-
-    }
-
 }

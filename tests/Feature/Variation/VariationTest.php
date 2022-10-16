@@ -5,7 +5,6 @@ namespace Tests\Feature\Variation;
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Product\Models\Product;
 use App\Domain\Variation\Models\Variation;
-use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -59,20 +58,22 @@ class VariationTest extends TestCase
         Sanctum::actingAs($admin, [], 'admin');
 
         $variation = Variation::factory()->create();
+//       dd($variation);
         $VariationTypeValue = VariationTypeValue::factory()->create();
 
         $data = [
+            'title' => 'Black man',
             'variation_type_id' => $VariationTypeValue->variation_type_id,
             'variation_type_value_id' => $VariationTypeValue->id,
         ];
-
         $response = $this->post(route('admin.variations.update', ['variation' => $variation]), $data)->assertRedirect();
 
         $response->assertSessionHas('message', 'success');
 
-        $this->assertEquals($VariationTypeValue->value, Variation::first()->title);
+        $this->assertEquals($VariationTypeValue->id, Variation::first()->variation_type_value_id);
+        $this->assertEquals($VariationTypeValue->variation_type_id, Variation::first()->variation_type_id);
+        $this->assertEquals('Black man', Variation::first()->title);
 
-        $this->assertEquals(VariationType::find(2)->type, Variation::first()->type);
     }
 
     public function test_variation_can_be_destroyed()

@@ -23,8 +23,8 @@ class VariationFactory extends Factory
      */
     public function definition()
     {
-
         return [
+            'title' => $this->faker->title,
             'price' => $this->faker->randomFloat(null, 99, 500),
             'order' => $this->faker->randomDigit(),
             'product_id' => Product::factory(),

@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 
 interface CartInterface
 {
-    public function create(?User $user = null);
+    public function create();
 
     public function exists(): bool;
 
@@ -29,5 +29,7 @@ interface CartInterface
     public function getUser();
 
     public function associateUser(User $user);
+
+    public function model();
 
 }

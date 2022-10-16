@@ -24,6 +24,7 @@ class UpdateVariationRequest extends FormRequest
     public function rules()
     {
         return [
+            'title' => 'nullable|string',
             'price' => 'nullable',
             'order' => 'nullable',
             'variation_type_id' => 'nullable',

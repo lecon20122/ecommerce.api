@@ -18,8 +18,8 @@ class CartService implements CartInterface
 {
     protected const CONFIG_SESSION_KEY = 'cart.session.key';
 
+    protected $cartInstance;
     protected mixed $sessionKey;
-    protected Model $cartInstance;
 
     /**
      * @throws Exception
@@ -107,7 +107,7 @@ class CartService implements CartInterface
      */
     public function exists(): bool
     {
-        return $this->cartId() && $this->cartInstance;
+        return $this->cartId() && $this->model();
     }
 
     public function cartId()
@@ -115,13 +115,26 @@ class CartService implements CartInterface
         return $this->sessionManager->get($this->sessionKey);
     }
 
+    public function model(): Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
+    {
+        $uuid = $this->cartId();
+
+        if ($uuid && isset($this->cartInstance)) {
+            return $this->cartInstance;
+        } elseif ($uuid) {
+            $this->cartInstance = Cart::query()->where('uuid', $uuid)->first();
+            return $this->cartInstance;
+        }
+        return null;
+    }
+
     /**
      */
-    public function create(?User $user = null)
+    public function create()
     {
         $this->cartInstance = Cart::with('variations')->make();
 
-        if ($user) {
+        if ($user = auth()->user()) {
             $this->associateUser($user);
         }
 
@@ -130,9 +143,10 @@ class CartService implements CartInterface
         $this->sessionManager->put($this->sessionKey, $this->cartInstance->uuid);
     }
 
-    public function associateUser(User $user)
+    public function associateUser($user)
     {
         $this->cartInstance->user()->associate($user);
+        $this->cartInstance->save();
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Domain\Cart\Contracts\CartInterface;
+use App\Domain\Cart\Models\Cart;
 use App\Domain\Cart\Services\CartService;
 use Exception;
 
@@ -24,6 +25,7 @@ class AssignUserToCart
             if ($this->cartService->getUser() && $this->cartService->getUser()->id == $event->user->id) {
                 return; //  Don't associate to the same user again
             }
+
             $this->cartService->associateUser($event->user);
         }
     }

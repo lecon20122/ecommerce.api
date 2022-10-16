@@ -103,7 +103,6 @@ class Product extends Model implements HasMedia
         return array_merge([
             'id' => $this->id,
             'title' => $this->title,
-            'description' => $this->description,
             'price' => $this->price,
             'store_id' => $this->store_id,
             'stores' => $this->load('store')->store->name,

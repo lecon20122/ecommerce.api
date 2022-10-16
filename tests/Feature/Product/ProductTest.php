@@ -21,6 +21,7 @@ class ProductTest extends TestCase
     public function test_product_model_has_valid_searchable_array()
     {
         $productModel = Product::factory()->create();
+//        dd(array_keys($productModel->toSearchableArray()));
         $this->assertTrue([
                 'id',
                 'title',
@@ -77,7 +78,7 @@ class ProductTest extends TestCase
         $data = [
             'en' => 'hello',
             'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 1000, 1000)
+                0 => UploadedFile::fake()->image("test.jpg", 100, 100)
             ]
         ];
 

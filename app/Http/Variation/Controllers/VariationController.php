@@ -95,6 +95,7 @@ class VariationController extends BaseController
      * @param VariationService $service
      * @param UpdateVariationRequest $request
      * @param Variation $variation
+     * @param ImageService $imageService
      * @return RedirectResponse
      */
     public function update(VariationService $service, UpdateVariationRequest $request, Variation $variation, ImageService $imageService): RedirectResponse

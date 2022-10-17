@@ -4,6 +4,7 @@ namespace Database\Factories\Domain\Location\Models;
 
 use App\Domain\Location\Models\City;
 use App\Domain\Location\Models\Country;
+use App\Domain\Location\Models\Governorate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ class CityFactory extends Factory
     {
         return [
             'name' => $this->faker->city,
-            'country_id' =>  Country::factory(),
+            'governorate_id' =>  Governorate::factory(),
         ];
     }
 }

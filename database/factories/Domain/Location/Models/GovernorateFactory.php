@@ -2,15 +2,15 @@
 
 namespace Database\Factories\Domain\Location\Models;
 
-use App\Domain\Location\Models\Country;
+use App\Domain\Location\Models\Governorate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Location\Models\Country>
+ * @extends Factory
  */
-class CountryFactory extends Factory
+class GovernorateFactory extends Factory
 {
-    protected $model = Country::class;
+    protected $model = Governorate::class;
     /**
      * Define the model's default state.
      *
@@ -19,7 +19,7 @@ class CountryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->country,
+            'name' => $this->faker->city
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Variation\Requests;
 
+use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreVariationRequest extends FormRequest
@@ -24,14 +25,15 @@ class StoreVariationRequest extends FormRequest
     public function rules()
     {
         return [
-            'price' => 'required',
-            'variation_type_id' => 'required|integer',
-            'variation_type_value_id' => 'required|integer',
-            'order' => 'nullable',
-            'parent_id' => 'nullable',
-            'product_id' => 'required',
+            'price' => ValidationRuleEnums::REQUIRED_NUMERIC->value,
+            'variation_type_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
+            'variation_type_value_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
+            'product_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
+            'store_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
+            'parent_id' => ValidationRuleEnums::NULLABLE_INTEGER->value,
+            'order' => ValidationRuleEnums::NULLABLE_INTEGER->value,
             'images' => 'nullable',
-            'images.*' => 'mimes:jpg|max:1024',
+            'images.*' => 'mimes:jpg,webp|max:1024',
         ];
     }
 }

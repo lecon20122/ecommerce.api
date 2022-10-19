@@ -14,6 +14,7 @@ interface Props {
 }
 
 function ProductWithVariationsList({product, locale}: Props) {
+
   const handleClickOnProduct = (product: ProductWithThumbnail) => {
     Inertia.get(route('shop.product.detail', product))
   }
@@ -67,7 +68,7 @@ function ProductWithVariationsList({product, locale}: Props) {
     <div key={product.id} className='lg:flex-[0_1_19%] flex-[0_1_45%] md:flex-[0_1_30%]'>
       <div>
         <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
-             className={`aspect-[61/81] w-full h-full xl:w-[304.66] w-[404.53] cursor-pointer ${srcLoaded ? "block" : "hidden"} `}
+             className={`aspect-[61/81] w-full h-full xl:w-[304.66] cursor-pointer ${srcLoaded ? "block" : "hidden"} `}
              onLoad={() => setSrcLoaded(true)}
              onClick={(() => handleClickOnProduct(product))}
              alt={product.title[locale as keyof typeof product.title]}/>

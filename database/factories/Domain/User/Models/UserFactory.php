@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Cart\Models\Models\User>
+ * @extends Factory
  */
 class UserFactory extends Factory
 {
     protected $model = User::class;
+
     /**
      * Define the model's default state.
      *

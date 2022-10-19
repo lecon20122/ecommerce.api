@@ -21,7 +21,6 @@ class CategoryService
     {
         return CategoryResource::collection(
             Category::query()
-                ->select('id', 'title', 'parent_id', 'created_at', 'is_active')
                 ->with('parent:title,id')
                 ->get());
     }

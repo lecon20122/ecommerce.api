@@ -72,9 +72,10 @@ class ProductController extends BaseController
      * Display the specified resource.
      *
      * @param Product $product
+     * @param ProductService $service
      * @return RedirectResponse|\Inertia\Response
      */
-    public function show(Product $product, ProductService $service)
+    public function show(Product $product, ProductService $service): \Inertia\Response|RedirectResponse
     {
         try {
             return Inertia::render('Client/ProductDetails', [
@@ -101,7 +102,7 @@ class ProductController extends BaseController
                 'categories' => (new CategoryService())->getCategories(),
             ]);
         } catch (Exception $exception) {
-            return $this->redirectBackWithError();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 

@@ -22,7 +22,7 @@ class VariationService
     public function getVariationById(int $id): VariationResource
     {
         return new VariationResource(
-            Variation::with(['children', 'getVariationColor', 'getVariationImages', 'variationType', 'variationTypeValue'])->find($id)
+            Variation::with(['children', 'VariationColor', 'VariationImages', 'variationType', 'variationTypeValue'])->find($id)
         );
     }
 
@@ -72,12 +72,6 @@ class VariationService
     public function update(array $data, Variation $variation, ImageService $imageService)
     {
         $variationType = VariationType::with('variationTypeValues')->find($variation->variation_type_id);
-//        if (array_key_exists('variation_type_value_id', $data) && array_key_exists('variation_type_id', $data)) {
-//            $variationTypeValue = $variationType->variationTypeValues->find($data['variation_type_value_id']);
-//
-//            $data['type'] = $variationType->getTranslations('type');
-//            $data['title'] = $variationTypeValue->getTranslations('value');
-//        }
         $variation->update($data);
 
         if (array_key_exists('images', $data) && $variationType->is_mediable) {

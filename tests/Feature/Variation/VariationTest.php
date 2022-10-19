@@ -40,6 +40,7 @@ class VariationTest extends TestCase
             'variation_type_value_id' => $VariationTypeValue->id,
             'order' => 1,
             'product_id' => $product->id,
+            'store_id' => $product->store_id,
             'images' => [
                 0 => UploadedFile::fake()->image("test.jpg", 100, 100)
             ]

@@ -3,8 +3,12 @@ import {NewMediaProps, ProductWithThumbnail} from "../../types/products";
 import AppLayout from "../../layouts/client";
 import ImageSliderWithZoom from "../../components/client/includes/ImageSliderWithZoom";
 import {Variation} from "../../types/VariationType";
-import {Radio} from "antd";
-import ColoredCircleButton from "../../components/client/shards/ColoredCircleButton";
+import {InputNumber, Radio} from "antd";
+import SquaredColorButton from "../../components/client/shards/SquaredColorButton";
+import {Inertia} from "@inertiajs/inertia";
+import route from "ziggy-js";
+import SizeRadioButtonComponent from "../../components/client/shards/SizeRadioButtonComponent/SizeRadioButtonComponent";
+import laravel from "laravel-vite-plugin";
 
 interface Props {
   product: ProductWithThumbnail
@@ -14,14 +18,23 @@ interface Props {
 function ProductDetails({product, locale}: Props) {
   const [currentMedia, setCurrentMedia] = useState<NewMediaProps[]>(product.media)
   const [currentVariation, setCurrentVariation] = useState<Variation>(product.variations[0])
+  const [currentSizeVariationId, setCurrentSizeVariationId] = useState<0>()
+  const [currentMaxStockCount, setCurrentMaxStockCount] = useState<number>(1)
+  const [currentQuantity, setCurrentQuantity] = useState<number>(1)
+  const [toggleSizeCheck, setToggleSizeCheck] = useState<boolean>(false)
+  const [toggleVariationQuantity, setToggleVariationQuantity] = useState<boolean>(true)
   const [currentImage, setCurrentImage] = useState<NewMediaProps>({...product.variations[0].media[0]})
-  console.log(product)
+
   const handleClickVariationColors = (variation: Variation) => {
     setCurrentMedia(variation.media)
     setCurrentImage({...variation.media[0]})
     setCurrentVariation(variation)
+    setCurrentSizeVariationId(0)
   }
 
+  const handleClickAddToCart = () => {
+
+  }
   useEffect(() => {
       if (Array.isArray(product.variations) && product.variations.length) {
         setCurrentMedia(product.variations[0].media)
@@ -32,26 +45,74 @@ function ProductDetails({product, locale}: Props) {
   )
 
   const variationColorsList = product.variations.map((variation) => {
-    if (variation.type === 'color') {
+    if (variation.variation_type?.type.en === 'color') {
       return (
-        <ColoredCircleButton onClick={() => handleClickVariationColors(variation)} key={variation.id}
-                             color={variation.title} backgroundImage={variation.color?.color}/>
+        <SquaredColorButton onClick={() => handleClickVariationColors(variation)} key={variation.id}
+                            color={variation.title} backgroundImage={variation.color?.color}/>
       )
     }
   })
+
   const variationSizeList = currentVariation.children.map((variation) => {
-    if (variation.type === 'size') {
+    if (variation.variation_type?.type.en === 'size') {
       return (
-        <Radio.Button key={variation.id} value={variation.id}>{variation.title}</Radio.Button>
+        // <Radio.Button disabled={variation.stock_count <= 1}
+        //               checked={toggleSizeCheck}
+        //               onClick={event => setCurrentMaxStockCount(variation.stock_count)}
+        //               key={variation.id}
+        //               value={variation.id}>{variation.title}</Radio.Button>
+        <SizeRadioButtonComponent disabled={variation.stock_count <= 1} variation={variation} key={variation.id}
+                                  setCurrentSizeVariationId={setCurrentSizeVariationId}
+                                  setToggleVariationQuantity={setToggleVariationQuantity}/>
       )
     }
   })
+
+  const addToCart = () => {
+    if (currentSizeVariationId) {
+      const currentSelectedVariation = currentVariation.children.find((child) => child.id === currentSizeVariationId)
+      console.log({
+        variation_id: currentSizeVariationId,
+        price: currentSelectedVariation?.price as string,
+        quantity: currentQuantity
+      })
+      Inertia.post(route('client.add.to.cart'), {
+        variation_id: currentSizeVariationId,
+        price: currentSelectedVariation?.price as string,
+        quantity: currentQuantity
+      })
+    }
+  }
+
+
+  const addToCartButton = () => {
+    if (currentSizeVariationId) {
+      return (
+        <button
+          className="px-4 py-2 text-white text-xl bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 basis-5/6"
+          onClick={event => addToCart()}>
+          Add to Cart
+        </button>
+      )
+    } else {
+      return (
+        <button
+          className="px-4 py-2 text-white text-xl bg-black border border-transparent rounded-md basis-5/6">
+          Select Size
+        </button>
+      )
+    }
+  }
+
+  const handleSelectSize = () => {
+    setToggleVariationQuantity(false)
+  }
 
   return (
     <AppLayout>
       <div>
         <div className="bg-white lg:py-10">
-          <div className="max-w-screen-xl lg:mx-auto px-[40px]">
+          <div className="max-w-screen-xl lg:mx-auto px-[12px]  md:px-[40px]">
             {/*<div className="grid grid-cols-1 sm:grid-cols-2 gap-2"  > */}
             <div className="flex md:flex-row flex-col">
               <ImageSliderWithZoom media={currentMedia} currentMedia={currentImage}/>
@@ -70,7 +131,6 @@ function ProductDetails({product, locale}: Props) {
                     <span className="text-gray-400">
 							<i className="fa fa-shopping-bag mr-2"/> 154 orders
 						</span>
-
                     <svg width="6px" height="6px" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="3" cy="3" r="3" fill="#DBDBDB"/>
                     </svg>
@@ -78,21 +138,33 @@ function ProductDetails({product, locale}: Props) {
                     <span className="text-green-500">Verified</span>
 
                   </div>
-                  <div className="flex">
-                    <div className="flex">
+                  <p className="mb-4 font-semibold text-2xl">EGP {currentVariation.price}
+
+                  </p>
+                  <div className="flex space-x-2 flex-col space-y-3">
+                    <div className="flex items-center">
                       <span className="mr-3">Color</span>
                       {variationColorsList}
                     </div>
-                    <div className="flex ml-6 items-center">
+                    <div className="flex items-center">
                       <span className="mr-3">Size</span>
-                      <Radio.Group defaultValue="a" buttonStyle="solid">
-                        {variationSizeList}
-                      </Radio.Group>
+                      {/*<Radio.Group defaultValue="a"*/}
+                      {/*             buttonStyle="solid"*/}
+                      {/*             onChange={e => handleSelectSize(e)}>*/}
+                      {/*  {variationSizeList}*/}
+                      {/*</Radio.Group>*/}
+                      <div className="flex items-center justify-center">
+                        <form className="grid grid-cols-3 gap-2 w-full max-w-screen-sm">
+                          {variationSizeList}
+                        </form>
+                      </div>
                     </div>
+                    {!toggleVariationQuantity &&
+                    <div className={'flex items-center'}>
+                      <span className="mr-3">Quantity</span>
+                      <InputNumber disabled={toggleVariationQuantity} min={1} max={currentMaxStockCount}
+                                   onChange={value => setCurrentQuantity(value)}/></div>}
                   </div>
-                  <p className="mb-4 font-semibold text-2xl">EGP {product.price}
-
-                  </p>
 
                   <p className="mb-4 text-gray-500">
                     {product.description}
@@ -110,25 +182,18 @@ function ProductDetails({product, locale}: Props) {
                       <span className="text-gray-500">Brown</span>
                     </li>
                   </ul>
+                  <div className="flex gap-2 h-[56px]">
+                    {addToCartButton()}
+                    <button
+                      className=" px-4 py-2 text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100 basis-1/6">
 
-                  <div className="flex flex-wrap gap-2">
-                    <a
-                      className="px-4 py-2 inline-block text-white bg-yellow-500 border border-transparent rounded-md hover:bg-yellow-600"
-                      href="#">
-                      Buy now
-                    </a>
-                    <a
-                      className="px-4 py-2 inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
-                      href="#">
-                      <i className="fa fa-shopping-cart mr-2"/>
-                      Add to cart
-                    </a>
-                    <a
-                      className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100"
-                      href="#">
-                      <i className="fa fa-heart mr-2"/>
-                      Save for later
-                    </a>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <g fill='#000000'>
+                          <polygon points="18,22 12,16 6,22 6,2 18,2 "/>
+                        </g>
+                      </svg>
+
+                    </button>
                   </div>
                 </div>
               </main>
@@ -138,10 +203,8 @@ function ProductDetails({product, locale}: Props) {
 
         <section className="bg-white py-10">
           <div className="container max-w-screen-xl mx-auto px-4">
-
             <div className="flex flex-wrap -mx-2">
               <div className="lg:w-3/4 px-2">
-
                 <article className="border border-gray-200 shadow-sm rounded bg-white">
                   <nav className="border-b px-4">
                     <a href="#"

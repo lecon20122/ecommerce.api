@@ -2,13 +2,16 @@
 
 namespace App\Http\Order\Controllers;
 
+use App\Domain\Cart\Contracts\CartInterface;
+use App\Domain\Location\Services\AddressService;
 use App\Domain\Order\Services\OrderService;
 use App\Http\Controllers\Controller;
 use App\Http\Order\Requests\StoreOrderRequest;
-use App\Http\Order\Resources\OrderResource;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends BaseController
@@ -16,7 +19,7 @@ class OrderController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -26,7 +29,7 @@ class OrderController extends BaseController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -34,29 +37,30 @@ class OrderController extends BaseController
     }
 
     /**
-     * Store a newly created resource in storage.
+     * proceed to checkout.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param OrderService $service
+     * @param StoreOrderRequest $request
+     * @return RedirectResponse
      */
-    public function store(OrderService $service, StoreOrderRequest $request)
+    public function checkout(OrderService $service, StoreOrderRequest $request): RedirectResponse
     {
         try {
             DB::beginTransaction();
-            $order = $service->store($request->validated());
+            $service->checkout($request->validated());
             DB::commit();
-            return new OrderResource($order);
+            return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function show($id)
     {
@@ -66,8 +70,8 @@ class OrderController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function edit($id)
     {
@@ -77,9 +81,9 @@ class OrderController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -89,8 +93,8 @@ class OrderController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function destroy($id)
     {

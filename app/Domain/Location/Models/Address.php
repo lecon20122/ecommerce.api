@@ -19,7 +19,6 @@ class Address extends Model
         'nearby_landmark',
         'addressable_type',
         'addressable_id',
-        'user_id'
     ];
 
     public function addressable()

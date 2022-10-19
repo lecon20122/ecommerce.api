@@ -3,6 +3,7 @@
 namespace App\Domain\Store\Services;
 
 use App\Domain\Store\Models\Store;
+use App\Domain\Variation\Models\Variation;
 use App\Http\Store\Requests\StoreCreateRequest;
 use App\Http\Store\Requests\StoreUpdateRequest;
 use App\Http\Store\Resources\StoreResource;
@@ -61,5 +62,13 @@ class StoreService
         if ($store->delete()) {
             DB::commit();
         }
+    }
+
+    public function checkAndReturnStore(Variation $variation, $store_id)
+    {
+        if ($variation->store_id == $store_id) {
+            return $store_id;
+        }
+
     }
 }

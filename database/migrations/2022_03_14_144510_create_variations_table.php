@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -18,6 +17,7 @@ return new class extends Migration
             $table->json('title')->nullable();
             $table->json('type')->nullable();
             $table->foreignId('product_id')->constrained();
+            $table->foreignId('store_id')->nullable()->constrained(); // instead of doing query every variation
             $table->foreignId('variation_type_value_id')->constrained();
             $table->decimal('price')->unsigned()->default(0);
             $table->foreignId('variation_type_id')->constrained();

@@ -16,7 +16,7 @@ interface IFormProps {
 function ProductsFilter({filters, category, maxPrice}: Props) {
 
   return (
-    <aside className="px-4 hidden lg:block basis-2/4">
+    <aside className="px-4 hidden lg:block col-span-1">
       <div className="px-6 py-4 border border-gray-200 bg-white rounded shadow-sm w-full">
         <h3 className="font-semibold mb-2">Category</h3>
         <ul className="text-gray-500 space-y-1">

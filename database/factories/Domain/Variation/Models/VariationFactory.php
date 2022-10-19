@@ -6,6 +6,7 @@ use App\Domain\Product\Models\Product;
 use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
+use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,20 +24,25 @@ class VariationFactory extends Factory
      */
     public function definition()
     {
+        $product = Product::factory()->create();
+
         return [
             'title' => $this->faker->title,
             'price' => $this->faker->randomFloat(null, 99, 500),
             'order' => $this->faker->randomDigit(),
-            'product_id' => Product::factory(),
+            'product_id' => $product->id,
+            'store_id' => $product->store_id,
             'variation_type_value_id' => VariationTypeValue::factory(),
             'variation_type_id' => VariationType::factory(),
+//            'variation_type_value_id' => rand(1, 5),
+//            'variation_type_id' => 1,
         ];
     }
 
 //    public function configure(): VariationFactory
 //    {
 //        return $this->afterCreating(function (Variation $variation) {
-//                $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
+//            $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
 //            $variation
 //                ->addMediaFromUrl($url)
 //                ->toMediaCollection(MediaCollectionEnums::VARIATION);

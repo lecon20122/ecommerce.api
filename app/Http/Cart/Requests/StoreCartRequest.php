@@ -2,6 +2,7 @@
 
 namespace App\Http\Cart\Requests;
 
+use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCartRequest extends FormRequest
@@ -24,9 +25,9 @@ class StoreCartRequest extends FormRequest
     public function rules()
     {
         return [
-            'variation_id' => 'required',
+            'variation_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
+            'quantity' => ValidationRuleEnums::REQUIRED_INTEGER->value,
             'price' => 'required|numeric|between:1,999999',
-            'quantity' => 'required|integer',
         ];
     }
 }

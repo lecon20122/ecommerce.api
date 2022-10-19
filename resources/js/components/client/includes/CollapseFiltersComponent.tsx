@@ -17,7 +17,7 @@ interface Props {
 }
 
 function CollapseFilters({filters, category, maxPrice}: Props) {
-  console.log(maxPrice)
+
   const formFilterKeys = () => {
     let keys: any = []
     Object.keys(filters).map((key) => {
@@ -86,7 +86,7 @@ function CollapseFilters({filters, category, maxPrice}: Props) {
       )
     } else {
       return (
-        <ul className="space-x-2 flex items-center flex-row" onChange={handleSelectedFilterChange}>
+        <ul className="flex flex-col items-start " onChange={handleSelectedFilterChange}>
           {Object.keys(filters[key]).map((item, value) => { // ['black' , '8']
             return (
               <li key={value}>

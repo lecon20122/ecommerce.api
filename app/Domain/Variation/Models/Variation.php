@@ -4,7 +4,9 @@ namespace App\Domain\Variation\Models;
 
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Inventory\Models\Stock;
+use App\Domain\Order\Models\Order;
 use App\Domain\Product\Models\Product;
+use App\Domain\Store\Models\Store;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Traits\CustomHasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +30,7 @@ class Variation extends Model implements HasMedia
 
     public array $translatable = ['title', 'type'];
     protected $touches = ['product'];
-    protected $fillable = ['title', 'price', 'type', 'order', 'product_id', 'parent_id', 'variation_type_value_id', 'variation_type_id'];
+    protected $fillable = ['title', 'price', 'store_id', 'type', 'order', 'product_id', 'parent_id', 'variation_type_value_id', 'variation_type_id'];
 
     /**
      * @throws InvalidManipulation
@@ -136,5 +138,17 @@ class Variation extends Model implements HasMedia
             ->where('variation_id', '=', $this->id)
             ->first()
             ->count;
+    }
+
+    public function orders(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(Order::class, 'order_variation')
+            ->withPivot('quantity', 'price', 'store_id', 'pickup_address_id');
+    }
+
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
     }
 }

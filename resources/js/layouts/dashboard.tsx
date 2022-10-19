@@ -24,7 +24,7 @@ export default function DashboardLayout({children}: IDashboardLayout) {
   const toastRef = useRef<any>(null);
 
   const {flash} = usePage<PageProps>().props
-
+  console.log(flash)
   const [collapsed, setCollapsed] = useState(false);
 
   const toggleCollapsed = () => {

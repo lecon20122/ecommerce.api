@@ -3,6 +3,7 @@
 namespace App\Http\Location\Requests;
 
 use App\Domain\Location\Enums\AddressTypeEnums;
+use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 

@@ -6,6 +6,7 @@ use App\Domain\Variation\Models\Variation;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
@@ -36,8 +37,10 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function variations()
+    public function variations(): BelongsToMany
     {
-        return $this->belongsToMany(Variation::class, 'order_variation')->withPivot('qty', 'notes', 'price');
+        return $this
+            ->belongsToMany(Variation::class, 'order_variation')
+            ->withPivot('quantity', 'price', 'store_id', 'pickup_address_id');
     }
 }

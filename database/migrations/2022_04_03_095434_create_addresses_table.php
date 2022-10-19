@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->id();
             $table->string('type');
             $table->foreignId('district_id')->constrained();
-            $table->foreignId('user_id')->constrained();
             $table->string('street');
             $table->string('building');
             $table->string('floor');

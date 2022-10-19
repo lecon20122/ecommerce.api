@@ -43,6 +43,7 @@ class VariationController extends BaseController
      *
      * @param VariationService $variationService
      * @param StoreVariationRequest $request
+     * @param ImageService $imageService
      * @return RedirectResponse
      */
     public function store(VariationService $variationService, StoreVariationRequest $request, ImageService $imageService): RedirectResponse
@@ -85,7 +86,7 @@ class VariationController extends BaseController
                 'variationTypesValues' => $service->getVariationTypeValues(),
             ]);
         } catch (Exception $exception) {
-            return $this->redirectBackWithMessage('ops');
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 

@@ -17,6 +17,7 @@ use App\Support\Services\Media\ImageService;
 use App\Support\Services\SearchService;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -42,7 +43,7 @@ class ProductService
                         }]);
                 }])
                 ->whereIn('id', [$id])
-                ->select('id', 'title', 'price', 'slug', 'description')
+                ->select('id', 'title', 'price', 'slug', 'store_id')
                 ->latest()
                 ->first()
         );
@@ -173,7 +174,9 @@ class ProductService
     {
         return new ProductResource(
             $product->load(['media', 'variations' => function ($query) {
-                $query->with('children', 'VariationImages', 'VariationColor')
+                $query->with(['children' => function (HasMany $query) {
+                    $query->with(['variationType', 'variationTypeValue',]);
+                }, 'VariationImages', 'VariationColor', 'variationType', 'variationTypeValue'])
                     ->has('VariationImages')
                     ->parent();
             }

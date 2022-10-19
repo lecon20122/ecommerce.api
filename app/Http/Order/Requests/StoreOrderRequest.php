@@ -2,6 +2,7 @@
 
 namespace App\Http\Order\Requests;
 
+use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreOrderRequest extends FormRequest
@@ -24,11 +25,9 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'store_id' => 'required',
-            'notes' => 'required',
-            'shipping_address_id' => 'required',
-            'pickup_address_id' => 'required',
-            'shipping_type_id' => 'required',
+            'notes' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
+            'shipping_address_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
+            'shipping_type_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
         ];
     }
 }

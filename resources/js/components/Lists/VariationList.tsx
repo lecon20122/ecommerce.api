@@ -1,15 +1,10 @@
 import React, {useState} from 'react';
-import {DataTable} from "primereact/datatable";
-import {Column} from "primereact/column";
 import {Variation, VariationTypes, VariationTypesValues} from "../../types/VariationType";
-import {Button as PrimeButton} from "primereact/button";
 import CreateProductVariation from "../../Pages/Dashboard/variations/create";
 import {usePage} from "@inertiajs/inertia-react";
 import ToggleRestoreDeleteButton from "../Forms/Buttons/ToggleDeleteRestoreButton";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
-import DeleteConfirmDialog from "../client/shards/DeleteConfirmDialog";
-import AntDesignDataTable from "../DataTables/AntDesignDataTable";
 import {ColumnsType} from "antd/es/table";
 import {Button, Table} from "antd";
 
@@ -18,13 +13,14 @@ interface Props {
   variationTypes: VariationTypes[]
   variationTypesValues: VariationTypesValues[]
   productId: number
+  storeId: number
 }
 
 interface DataType extends Variation {
   key?: string;
 }
 
-function VariationList({variations, variationTypesValues, variationTypes, productId}: Props) {
+function VariationList({variations, variationTypesValues, variationTypes, productId, storeId}: Props) {
   const [expandedRows, setExpandedRows] = useState([]);
   const locale: string = usePage().props.locale as string
   const [openAddParentVariantDialog, setOpenAddParentVariantDialog] = useState(false);
@@ -109,10 +105,9 @@ function VariationList({variations, variationTypesValues, variationTypes, produc
 
   const rowExpansionTemplate = (data: any) => {
     return (
-      <Table columns={columns} rowKey={"id"} dataSource={data.children} pagination={false} scroll={{x : true}}/>
+      <Table columns={columns} rowKey={"id"} dataSource={data.children} pagination={false} scroll={{x: true}}/>
     );
   }
-
 
 
   const onCellEditComplete = (e: any) => {
@@ -168,15 +163,15 @@ function VariationList({variations, variationTypesValues, variationTypes, produc
       <CreateProductVariation handleAddDialog={handleOnClickAddVariationDialog}
                               openAddDialog={openAddParentVariantDialog}
                               productId={productId} locale={locale} variationTypes={variationTypes}
-                              variationTypesValues={variationTypesValues}/>
+                              variationTypesValues={variationTypesValues} store_id={storeId}/>
 
       <CreateProductVariation handleAddDialog={() => setOpenAddChildVariationDialog(false)}
                               openAddDialog={openAddChildVariationDialog}
                               parentId={parentId}
                               productId={productId} locale={locale} variationTypes={variationTypes}
-                              variationTypesValues={variationTypesValues}/>
+                              variationTypesValues={variationTypesValues} store_id={storeId}/>
       <Table columns={columns} rowKey={"id"} dataSource={variations}
-             expandable={{expandedRowRender: (record) => rowExpansionTemplate(record)}} scroll={{x : true}}/>
+             expandable={{expandedRowRender: (record) => rowExpansionTemplate(record)}} scroll={{x: true}}/>
     </div>
   )
 

@@ -30,7 +30,6 @@ class AddressFactory extends Factory
             'district_id' => District::factory(),
             'type' => LocationEnums::ADDRESS_TYPE_HOME,
             'nearby_landmark' => $this->faker->streetName,
-            'user_id' => User::factory(),
             'addressable_id' => User::factory(),
             'addressable_type' => User::class,
 

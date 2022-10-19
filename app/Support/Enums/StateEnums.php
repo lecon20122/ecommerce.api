@@ -2,12 +2,11 @@
 
 namespace App\Support\Enums;
 
-
-class StateEnums
+enum StateEnums: string
 {
-    const PENDING = 'Pending';
-    const PROCESSING = 'Processing';
-    const COMPLETED = 'Completed';
-    const SUCCESS = 'success';
-    const ERROR = 'error';
+    case PENDING = 'Pending';
+    case PROCESSING = 'Processing';
+    case COMPLETED = 'Completed';
+    case SUCCESS = 'success';
+    case ERROR = 'error';
 }

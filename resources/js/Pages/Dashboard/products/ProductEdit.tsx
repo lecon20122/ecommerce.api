@@ -1,19 +1,16 @@
 import React, {useState} from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
-import TextField from '@mui/material/TextField';
-import {Button, Divider, Form, Input, InputNumber, Select, Upload} from 'antd';
+import {Button, Divider, Form, Input, InputNumber, Select} from 'antd';
 import {Inertia} from '@inertiajs/inertia';
 import route from 'ziggy-js';
-import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
+import {SubmitHandler, useForm} from 'react-hook-form';
 import {usePage} from "@inertiajs/inertia-react";
-import Alert from "../../../components/shards/alert";
 import MediaProductCollection from "../../../components/Lists/MediaProductCollection";
 import {Title} from "../../../types/CategoryType";
 import {Variation, VariationTypes, VariationTypesValues} from "../../../types/VariationType";
 import VariationList from "../../../components/Lists/VariationList";
 import {Category, NewMediaProps} from "../../../types/products";
-import {PlusOutlined} from "@ant-design/icons";
-import {UploadChangeParam, UploadFile} from "antd/es/upload/interface";
+import {UploadFile} from "antd/es/upload/interface";
 import Helpers from "../../../utils/Helpers";
 import UploadImageComponent from "../../../components/Forms/UploadImageComponent";
 
@@ -43,6 +40,7 @@ interface Product {
   media: NewMediaProps[];
   variations: Variation[],
   categories: Category[],
+  store_id: number
 }
 
 interface MediaForm {
@@ -134,7 +132,8 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
         </Form>
         <Divider/>
         <div>
-          <MediaProductCollection media={currentProduct.media} deleteURL={'admin.delete.media.of.product'} params={currentProduct}/>
+          <MediaProductCollection media={currentProduct.media} deleteURL={'admin.delete.media.of.product'}
+                                  params={currentProduct}/>
           <UploadImageComponent buttonLabel={'UPLOAD'} routeName={'admin.add.media.to.product'}
                                 params={currentProduct}/>
         </div>
@@ -161,7 +160,8 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
           </Form.Item>
         </Form>
         <Divider/>
-        <VariationList variations={currentProduct.variations} variationTypes={variationTypes}
+        <VariationList variations={currentProduct.variations} storeId={currentProduct.store_id}
+                       variationTypes={variationTypes}
                        variationTypesValues={variationTypesValues} productId={currentProduct.id}/>
       </div>
     </DashboardLayout>

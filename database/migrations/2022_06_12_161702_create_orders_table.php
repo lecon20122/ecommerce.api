@@ -17,20 +17,17 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->string('state')->default(StateEnums::PROCESSING);
-            $table->string('notes')->nullable();
+            $table->string('state')->default(StateEnums::PROCESSING->value);
+            $table->string('notes')->nullable(); // done
             $table->decimal('total')->default(0)->nullable();
-            $table->decimal('subtotal')->default(0)->nullable();
-            $table->decimal('delivery_fees')->default(0)->nullable();
-            $table->decimal('commission')->default(0)->nullable();
-            $table->decimal('net')->default(0)->nullable();
+            $table->decimal('subtotal')->default(0)->nullable(); // done
+            $table->decimal('delivery_fees')->default(0)->nullable(); // after calc
+            $table->decimal('commission')->default(0)->nullable(); // after calc
+            $table->decimal('net')->default(0)->nullable(); // after calc
 
-            $table->foreignId('store_id')->constrained();
-            $table->foreignId('user_id')->nullable()->constrained();
-            $table->foreignId('shipping_address_id')->constrained('addresses');
-            $table->foreignId('pickup_address_id')->constrained('addresses');
-            $table->foreignId('shipping_type_id')->constrained();
-            $table->timestamp('placed_at')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained(); // done
+            $table->foreignId('shipping_address_id')->nullable()->constrained('addresses'); // done
+            $table->foreignId('shipping_type_id')->nullable()->constrained(); // done
             $table->timestamp('packaged_at')->nullable();
             $table->timestamp('shipped_at')->nullable();
             $table->timestamps();

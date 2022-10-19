@@ -22,7 +22,7 @@ class StockFactory extends Factory
     {
         return [
             'variation_id' => Variation::factory(),
-            'amount' => 5,
+            'amount' => 15,
         ];
     }
 }

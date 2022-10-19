@@ -16,7 +16,7 @@ interface CartInterface
 
     public function items(): Collection;
 
-    public function cartInstance(): Model|null;
+    public function cartInstance();
 
     public function addItem($variation_id, $price, $quantity = 0);
 
@@ -31,5 +31,7 @@ interface CartInterface
     public function associateUser(User $user);
 
     public function model();
+
+    public function cartSubTotal(): float|int;
 
 }

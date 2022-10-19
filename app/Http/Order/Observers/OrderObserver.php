@@ -68,7 +68,6 @@ class OrderObserver
      */
     public function creating(Order $order)
     {
-        $order->uuid = Str::uuid();
-        $order->placed_at = now();
+        $order->uuid = (string)Str::uuid();
     }
 }

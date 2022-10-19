@@ -15,17 +15,9 @@ interface Props {
   openAddDialog: boolean
   productId: number
   parentId?: number
+  store_id: number,
   variationTypes: VariationTypes[]
   variationTypesValues: VariationTypesValues[]
-}
-
-interface IFormProps {
-  price: number
-  images: string
-  product_id: number
-  parent_id: number
-  variation_type_id: number
-  variation_type_value_id: number
 }
 
 export default function CreateProductVariation({
@@ -35,7 +27,8 @@ export default function CreateProductVariation({
                                                  variationTypesValues,
                                                  variationTypes,
                                                  locale,
-                                                 parentId
+                                                 parentId,
+                                                 store_id
                                                }: Props) {
   const [isMediable, setIsMediable] = useState(false)
   const [variationTypeId, setVariationTypeId] = useState(0)
@@ -89,6 +82,7 @@ export default function CreateProductVariation({
   }
 
   const onFinish = (values: any) => {
+    console.log(values)
     if (!values.images) {
       storeVariationAction(values)
     } else {
@@ -131,6 +125,13 @@ export default function CreateProductVariation({
             name="product_id"
             hidden
             initialValue={productId}
+          >
+            <Input/>
+          </Form.Item>
+          <Form.Item
+            name="store_id"
+            hidden
+            initialValue={store_id}
           >
             <Input/>
           </Form.Item>

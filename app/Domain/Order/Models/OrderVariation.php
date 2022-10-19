@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderVariation extends Model
 {
+    protected $table = 'order_variation';
     use HasFactory;
 }

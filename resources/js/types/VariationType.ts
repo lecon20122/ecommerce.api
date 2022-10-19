@@ -11,6 +11,7 @@ export interface Variation {
   children: Variation[];
   thumbnail?: string
   color?: NewMediaProps
+  stock_count : number,
   media: NewMediaProps[],
   variation_type?: VariationTypes,
   variation_type_value?: VariationTypesValues

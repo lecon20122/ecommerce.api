@@ -7,13 +7,12 @@ use App\Domain\Cart\Models\Cart;
 use App\Domain\Cart\Services\CartService;
 use App\Http\Cart\Requests\StoreCartRequest;
 use App\Http\Cart\Requests\UpdateCartRequest;
-use App\Http\Cart\Resources\CartResource;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 /**
  *
@@ -23,11 +22,16 @@ class CartController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function index()
+    public function index(): \Inertia\Response|RedirectResponse
     {
-        //
+        try {
+
+            return Inertia::render('Client/Cart');
+        } catch (Exception $exception) {
+            return $this->redirectBackWithMessage($exception->getMessage());
+        }
     }
 
     /**
@@ -53,7 +57,7 @@ class CartController extends BaseController
             DB::beginTransaction();
             $cartService->addItem($request->validated('variation_id'), $request->validated('price'), $request->validated('quantity'));
             DB::commit();
-            return $this->redirectBackWithMessage('success');
+            return $this->redirectBackWithMessage('item added to cart successfully');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithMessage($exception->getMessage());
@@ -85,21 +89,14 @@ class CartController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int $id
-     * @return Response
+     * @param UpdateCartRequest $request
+     * @param Cart $cart
+     * @param CartService $service
+     * @return void
      */
     public function update(UpdateCartRequest $request, Cart $cart, CartService $service)
     {
-        try {
-            DB::beginTransaction();
-            $service->update($request->validated(), $cart);
-            DB::commit();
-            return new CartResource($cart->refresh());
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->sendError($exception->getMessage(), 400);
-        }
+        //
     }
 
     /**

@@ -21,13 +21,10 @@ interface PageProps extends Page<PageProps> {
 export default function AppLayout({children}: IAppLayout) {
 
   const {flash} = usePage<PageProps>().props
-  console.log(flash)
+
   useEffect(() => {
-    if (flash.message === 'success') {
+    if (flash.message) {
       message.success(flash.message)
-    }
-    if (flash.message === 'error') {
-      message.error(flash.message)
     }
   }, [flash.message])
 

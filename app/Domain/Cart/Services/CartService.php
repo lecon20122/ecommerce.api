@@ -18,7 +18,7 @@ class CartService implements CartInterface
 {
     protected const CONFIG_SESSION_KEY = 'cart.session.key';
 
-    protected $cartInstance;
+    protected mixed $cartInstance;
     protected mixed $sessionKey;
 
     /**
@@ -47,29 +47,34 @@ class CartService implements CartInterface
         return $this->items()->count();
     }
 
+//    public function showCart()
+//    {
+//        if ($user = auth('web')->user()) {
+//
+//        }
+//    }
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function items(): Collection
+    public function items(string|array $cartEagerLoadingRelations = 'variations'): Collection
     {
-        return $this->cartInstance()->variations;
+        return $this->cartInstance($cartEagerLoadingRelations)->variations;
     }
 
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function cartInstance(): Model|null
+    public function cartInstance($relations = 'variations'): Model|null
     {
         if ($this->cartInstance) {
-            echo 'second time';
             return $this->cartInstance;
         }
-        echo 'first time';
 
         return $this->cartInstance = Cart::query()
-            ->with('variations')
+            ->with($relations)
             ->where('uuid', '=', session()->get($this->sessionKey))
             ->first();
     }
@@ -163,5 +168,23 @@ class CartService implements CartInterface
         }
 
         return null;
+    }
+
+    public function cartSubTotal(): float|int
+    {
+        $this->findOrCreateCartInstance();
+
+        $subtotal = 0;
+
+        foreach ($this->items() as $item) {
+            $subtotal += $this->calculateCartItemPrice($item->pivot->quantity, $item->pivot->price);
+        }
+
+        return $subtotal;
+    }
+
+    public function calculateCartItemPrice($quantity, $price): float|int
+    {
+        return ($quantity * $price);
     }
 }

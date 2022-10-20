@@ -14,6 +14,7 @@ Route::post('products/{id}/restore', [ProductController::class, 'restore'])->nam
 
 Route::post('products/{product}/media', [ProductController::class, 'addMediaToProduct'])->name('admin.add.media.to.product');
 Route::post('products/{product}/attach', [ProductController::class, 'attachCategoriesToProduct'])->name('admin.attach.category.to.product');
+Route::post('products/{product}/detach', [ProductController::class, 'detachCategoryFromProduct'])->name('admin.detach.category.from.product');
 Route::post('products/{product}/media/delete', [ProductController::class, 'deleteProductImage'])->name('admin.delete.media.of.product');
 
 Route::post('product/attribute/add', [ProductAttributeController::class, 'store'])->name('admin.add.attribute');

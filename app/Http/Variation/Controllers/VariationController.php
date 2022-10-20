@@ -197,4 +197,17 @@ class VariationController extends BaseController
         }
     }
 
+    public function setVariationImageToPrimary(Variation $variation, ModelIDsRequest $request, ImageService $imageService, VariationService $variationService): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $variationService->setVariationImageAsPrimary($imageService, $variation, $request->validated());
+            DB::commit();
+            return $this->redirectBackWithMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithError();
+        }
+    }
+
 }

@@ -77,9 +77,9 @@ class StoreController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Inertia\Response
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function edit(int $id): \Inertia\Response
+    public function edit(int $id): \Inertia\Response|RedirectResponse
     {
         try {
             return Inertia::render('Dashboard/stores/StoreEdit', [
@@ -88,8 +88,7 @@ class StoreController extends BaseController
                 'variationTypesValues' => (new VariationService())->getVariationTypeValues(),
             ]);
         } catch (Exception $exception) {
-//            return $this->webMessage($exception->getMessage());
-            dd($exception->getMessage());
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
 
     }

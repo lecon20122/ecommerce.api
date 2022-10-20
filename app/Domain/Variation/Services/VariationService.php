@@ -65,7 +65,7 @@ class VariationService
             ->create($data);
 
         if ($request->hasFile('images') && $variationType->is_mediable && $variation) {
-            $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
+            $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id, ['primary' => false]);
         }
     }
 
@@ -126,4 +126,19 @@ class VariationService
             ->pluck('type')
             ->toArray();
     }
+
+    public function setVariationImageAsPrimary(ImageService $imageService, Variation $variation, $imageId)
+    {
+        $this->forgetCurrentPrimaryImage($variation, $imageService);
+        $imageService->setCustomProperty($imageId['id'], 'primary', true);
+    }
+
+    public function forgetCurrentPrimaryImage($variation, ImageService $imageService)
+    {
+        if ($currentPrimaryMedia = $variation->media()->where('custom_properties->primary', true)->first()) {
+            $imageService->forgetCustomProperty($currentPrimaryMedia, 'primary');
+        }
+    }
+
+
 }

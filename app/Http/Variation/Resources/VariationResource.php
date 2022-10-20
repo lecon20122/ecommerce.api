@@ -16,11 +16,10 @@ class VariationResource extends JsonResource
      */
     public function toArray($request): array
     {
-        $variationType = new VariationTypeResource($this->whenLoaded('variationType'));
         return [
             'id' => $this->id,
             'parent_id' => $this->parent_id,
-            'variation_type' => $variationType,
+            'variation_type' => new VariationTypeResource($this->whenLoaded('variationType')),
             'variation_type_value' => new VariationTypeValueResource($this->whenLoaded('variationTypeValue')),
             'price' => $this->price,
             'type' => $this->type,
@@ -30,7 +29,8 @@ class VariationResource extends JsonResource
             'children' => VariationResource::collection($this->whenLoaded('children')),
             'media' => MediaResource::collection($this->whenLoaded('VariationImages')),
             'color' => new MediaResource($this->whenLoaded('VariationColor')),
-            'stock_count' => (int)$this->stocks()->sum('amount'),
+//            'stock_count' => (int)$this->stocks()->sum('amount'),
+//            'parent' => new MediaResource($this->whenLoaded('parent')),
         ];
     }
 }

@@ -26,7 +26,6 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class ProductService
 {
-
     /**
      * @param int $id
      * @return ProductResource
@@ -35,7 +34,7 @@ class ProductService
     {
         return new ProductResource(
             Product::query()
-                ->with(['media', 'categories', 'variations' => function ($query) {
+                ->with(['categories', 'variations' => function ($query) {
                     $query->withTrashed()
                         ->parent()
                         ->with(['variationType', 'media', 'variationTypeValue', 'children' => function ($query) {
@@ -68,9 +67,6 @@ class ProductService
                 ];
             }
             $product = $store->products()->create($data);
-            if ($product && $request->hasFile('images')) {
-                $imageService->imageUpload($product, 'images', MediaCollectionEnums::PRODUCT, $data['store_id']);
-            }
         }
     }
 
@@ -85,10 +81,6 @@ class ProductService
             ];
         }
         $product->update($data);
-
-        if ($request->hasFile('images')) {
-            $imageService->imageUpload($product, 'images', MediaCollectionEnums::THUMBNAIL, $product->id);
-        }
     }
 
     public function destroy(int $id)
@@ -103,13 +95,6 @@ class ProductService
         $product?->restore();
     }
 
-    public function addImagesToProduct(Product $product, StoreMediaRequest $request, ImageService $imageService)
-    {
-        if ($request->hasFile('images')) {
-            $imageService->imageUpload($product, 'images', MediaCollectionEnums::PRODUCT, $product->id);
-        }
-    }
-
     public function attachCategoryToProduct(Product $product, ModelIDsRequest $request)
     {
         $category = Category::query()
@@ -117,10 +102,11 @@ class ProductService
         $product->categories()->syncWithoutDetaching($category);
     }
 
-    public function deleteProductImage(Product $product, ModelIDsRequest $request)
+    public function detachCategoryFromProduct(Product $product, ModelIDsRequest $request)
     {
-        $image = $product->media()->find($request->validated('id'));
-        $image?->delete();
+        $category = Category::query()
+            ->find($request->validated('id'));
+        $product->categories()->detach($category);
     }
 
     public function getNewProducts(): AnonymousResourceCollection
@@ -173,7 +159,7 @@ class ProductService
     public function showProductDetails(Product $product): ProductResource
     {
         return new ProductResource(
-            $product->load(['media', 'variations' => function ($query) {
+            $product->load(['variations' => function ($query) {
                 $query->with(['children' => function (HasMany $query) {
                     $query->with(['variationType', 'variationTypeValue',]);
                 }, 'VariationImages', 'VariationColor', 'variationType', 'variationTypeValue'])

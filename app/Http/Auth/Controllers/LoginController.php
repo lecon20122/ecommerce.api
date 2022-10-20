@@ -23,7 +23,7 @@ class LoginController extends BaseController
     {
         try {
             $request->authenticate();
-            $request->session()->regenerate();
+            $request->session()->regenerate(); //TODO:: Check if regenerating the session after login will make another cart
             return redirect()->intended()->withInput();
         } catch (Exception $exception) {
             return $this->redirectBackWithMessage($exception->getMessage());

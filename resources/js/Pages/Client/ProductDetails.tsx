@@ -3,12 +3,11 @@ import {NewMediaProps, ProductWithThumbnail} from "../../types/products";
 import AppLayout from "../../layouts/client";
 import ImageSliderWithZoom from "../../components/client/includes/ImageSliderWithZoom";
 import {Variation} from "../../types/VariationType";
-import {InputNumber, Radio} from "antd";
+import {InputNumber} from "antd";
 import SquaredColorButton from "../../components/client/shards/SquaredColorButton";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
 import SizeRadioButtonComponent from "../../components/client/shards/SizeRadioButtonComponent/SizeRadioButtonComponent";
-import laravel from "laravel-vite-plugin";
 
 interface Props {
   product: ProductWithThumbnail
@@ -16,12 +15,12 @@ interface Props {
 }
 
 function ProductDetails({product, locale}: Props) {
-  const [currentMedia, setCurrentMedia] = useState<NewMediaProps[]>(product.media)
+
+  const [currentMedia, setCurrentMedia] = useState<NewMediaProps[]>(product.variations[0].media)
   const [currentVariation, setCurrentVariation] = useState<Variation>(product.variations[0])
   const [currentSizeVariationId, setCurrentSizeVariationId] = useState<0>()
   const [currentMaxStockCount, setCurrentMaxStockCount] = useState<number>(1)
   const [currentQuantity, setCurrentQuantity] = useState<number>(1)
-  const [toggleSizeCheck, setToggleSizeCheck] = useState<boolean>(false)
   const [toggleVariationQuantity, setToggleVariationQuantity] = useState<boolean>(true)
   const [currentImage, setCurrentImage] = useState<NewMediaProps>({...product.variations[0].media[0]})
 
@@ -32,14 +31,9 @@ function ProductDetails({product, locale}: Props) {
     setCurrentSizeVariationId(0)
   }
 
-  const handleClickAddToCart = () => {
-
-  }
   useEffect(() => {
       if (Array.isArray(product.variations) && product.variations.length) {
         setCurrentMedia(product.variations[0].media)
-      } else {
-        setCurrentMedia(product.media)
       }
     }, []
   )
@@ -56,14 +50,10 @@ function ProductDetails({product, locale}: Props) {
   const variationSizeList = currentVariation.children.map((variation) => {
     if (variation.variation_type?.type.en === 'size') {
       return (
-        // <Radio.Button disabled={variation.stock_count <= 1}
-        //               checked={toggleSizeCheck}
-        //               onClick={event => setCurrentMaxStockCount(variation.stock_count)}
-        //               key={variation.id}
-        //               value={variation.id}>{variation.title}</Radio.Button>
         <SizeRadioButtonComponent disabled={variation.stock_count <= 1} variation={variation} key={variation.id}
                                   setCurrentSizeVariationId={setCurrentSizeVariationId}
-                                  setToggleVariationQuantity={setToggleVariationQuantity}/>
+                                  setToggleVariationQuantity={setToggleVariationQuantity}
+                                  setCurrentMaxStockCount={setCurrentMaxStockCount}/>
       )
     }
   })
@@ -71,11 +61,7 @@ function ProductDetails({product, locale}: Props) {
   const addToCart = () => {
     if (currentSizeVariationId) {
       const currentSelectedVariation = currentVariation.children.find((child) => child.id === currentSizeVariationId)
-      console.log({
-        variation_id: currentSizeVariationId,
-        price: currentSelectedVariation?.price as string,
-        quantity: currentQuantity
-      })
+
       Inertia.post(route('client.add.to.cart'), {
         variation_id: currentSizeVariationId,
         price: currentSelectedVariation?.price as string,
@@ -102,10 +88,6 @@ function ProductDetails({product, locale}: Props) {
         </button>
       )
     }
-  }
-
-  const handleSelectSize = () => {
-    setToggleVariationQuantity(false)
   }
 
   return (
@@ -162,8 +144,13 @@ function ProductDetails({product, locale}: Props) {
                     {!toggleVariationQuantity &&
                     <div className={'flex items-center'}>
                       <span className="mr-3">Quantity</span>
-                      <InputNumber disabled={toggleVariationQuantity} min={1} max={currentMaxStockCount}
-                                   onChange={value => setCurrentQuantity(value)}/></div>}
+                      <InputNumber disabled={toggleVariationQuantity}
+                                   min={1} max={currentMaxStockCount}
+                                   onChange={value => setCurrentQuantity(value)}/>
+                      <span className="ml-3">{currentMaxStockCount} left</span>
+
+                    </div>
+                    }
                   </div>
 
                   <p className="mb-4 text-gray-500">

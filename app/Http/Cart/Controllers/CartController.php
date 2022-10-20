@@ -19,6 +19,10 @@ use Inertia\Inertia;
  */
 class CartController extends BaseController
 {
+    public function __construct(protected CartInterface $cartService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,8 +31,9 @@ class CartController extends BaseController
     public function index(): \Inertia\Response|RedirectResponse
     {
         try {
-
-            return Inertia::render('Client/Cart');
+            return Inertia::render('Client/Cart', [
+                'items' => $this->cartService->showCartItems()
+            ]);
         } catch (Exception $exception) {
             return $this->redirectBackWithMessage($exception->getMessage());
         }
@@ -51,11 +56,11 @@ class CartController extends BaseController
      * @param CartInterface $cartService
      * @return RedirectResponse
      */
-    public function store(StoreCartRequest $request, CartInterface $cartService): RedirectResponse
+    public function store(StoreCartRequest $request): RedirectResponse
     {
         try {
             DB::beginTransaction();
-            $cartService->addItem($request->validated('variation_id'), $request->validated('price'), $request->validated('quantity'));
+            $this->cartService->addItem($request->validated('variation_id'), $request->validated('price'), $request->validated('quantity'));
             DB::commit();
             return $this->redirectBackWithMessage('item added to cart successfully');
         } catch (Exception $exception) {

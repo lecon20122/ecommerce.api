@@ -4,6 +4,9 @@
 namespace App\Support\Services\Media;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Spatie\MediaLibrary\MediaCollections\FileAdder;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ImageService
@@ -11,7 +14,10 @@ class ImageService
     public function imageUpload(Model $model, $keyName, $collectionName, $model_id)
     {
         $model->addMultipleMediaFromRequest([$keyName])
-            ->each(function ($fileAdder) use ($collectionName, $model_id) {
+            ->each(/**
+             * @throws FileDoesNotExist
+             * @throws FileIsTooBig
+             */ function (FileAdder $fileAdder) use ($collectionName, $model_id) {
                 $fileAdder
                     ->usingFileName($model_id . '_' . now()->timestamp . '.jpg')
                     ->addCustomHeaders([
@@ -35,5 +41,21 @@ class ImageService
         } else {
             return true;
         }
+    }
+
+    public function setCustomProperty($image_Id, $key, $value)
+    {
+        $media = Media::query()
+            ->find($image_Id);
+        $media?->setCustomProperty($key, $value);
+
+        $media->save();
+    }
+
+    public function forgetCustomProperty($media, $key)
+    {
+        $media?->forgetCustomProperty($key);
+
+        $media?->save();
     }
 }

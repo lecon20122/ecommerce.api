@@ -34,4 +34,8 @@ interface CartInterface
 
     public function cartSubTotal(): float|int;
 
+    public function showCartItems();
+
+    public function destroy();
+
 }

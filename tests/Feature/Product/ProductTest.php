@@ -21,7 +21,6 @@ class ProductTest extends TestCase
     public function test_product_model_has_valid_searchable_array()
     {
         $productModel = Product::factory()->create();
-//        dd(array_keys($productModel->toSearchableArray()));
         $this->assertTrue([
                 'id',
                 'title',
@@ -43,7 +42,7 @@ class ProductTest extends TestCase
      *
      * @return void
      */
-    public function test_as_a_admin_product_can_be_created_with_thumbnail()
+    public function test_as_a_admin_product_can_be_created()
     {
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
@@ -57,9 +56,6 @@ class ProductTest extends TestCase
             'price' => 325,
             'live_at' => now(),
             'store_id' => $store->id,
-            'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 100, 100)
-            ]
         ];
 
         $response = $this->post(route('admin.products.store'), $data);
@@ -77,9 +73,6 @@ class ProductTest extends TestCase
         Storage::fake('public');
         $data = [
             'en' => 'hello',
-            'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 100, 100)
-            ]
         ];
 
         $response = $this->post(route('admin.products.update', ['product' => $product]), $data);
@@ -98,27 +91,6 @@ class ProductTest extends TestCase
         $response = $this->post(route('admin.products.destroy', ['id' => $product->id]))->assertRedirect();
         $response->assertSessionHas('message', 'success');
         $this->assertNull(Product::first());
-    }
-
-    public function test_that_as_a_admin_images_can_added_to_product()
-    {
-        $admin = Admin::factory()->create();
-        $this->actingAs($admin, 'admin');
-
-        $product = Product::factory()->create();
-
-        Storage::fake('public');
-        $data = [
-            'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 100, 100),
-                1 => UploadedFile::fake()->image("test.jpg", 100, 100),
-                2 => UploadedFile::fake()->image("test.jpg", 100, 100),
-            ]
-        ];
-
-        $response = $this->post(route('admin.add.media.to.product', ['product' => $product]), $data)->assertRedirect();
-        $response->assertSessionHas('message', 'success');
-        $this->assertCount(3, Media::all());
     }
 
     public function test_as_a_admin_can_attach_categories_to_product()
@@ -147,6 +119,41 @@ class ProductTest extends TestCase
         ];
 
         $this->assertDatabaseHas('category_product', $expectedData);
+    }
+
+    public function test_as_a_admin_can_detach_categories_from_product()
+    {
+        $admin = Admin::factory()->create();
+
+        $this->actingAs($admin, 'admin');
+
+        $product = Product::factory()->create();
+
+        Category::factory(3)->create();
+
+        $idsToBeAttached = [
+            'id' => [
+                1, 2, 3
+            ]
+        ];
+
+        $this->post(route('admin.attach.category.to.product', ['product' => $product]), $idsToBeAttached);
+
+        $idsToBeDetached = [
+            'id' => [
+                1,
+            ]
+        ];
+
+        $response = $this->post(route('admin.detach.category.from.product', ['product' => $product]), $idsToBeDetached);
+
+
+        $expectedData = [
+            'category_id' => 1,
+            'product_id' => 1
+        ];
+
+        $this->assertDatabaseMissing('category_product', $expectedData);
     }
 
     public function test_as_a_admin_product_can_be_restored()

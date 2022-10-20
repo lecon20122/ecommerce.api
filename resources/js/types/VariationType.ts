@@ -11,10 +11,20 @@ export interface Variation {
   children: Variation[];
   thumbnail?: string
   color?: NewMediaProps
-  stock_count : number,
+  stock_count: number,
+  pivot: Pivot
+  parent : Variation
   media: NewMediaProps[],
+  variation_images: NewMediaProps[],
   variation_type?: VariationTypes,
   variation_type_value?: VariationTypesValues
+}
+
+export interface Pivot {
+  cart_id: number;
+  variation_id: number;
+  quantity: number;
+  price: string;
 }
 
 export interface VariationTypesValues {

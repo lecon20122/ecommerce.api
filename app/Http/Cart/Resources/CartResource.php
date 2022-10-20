@@ -2,9 +2,11 @@
 
 namespace App\Http\Cart\Resources;
 
+use App\Http\Variation\Resources\VariationResource;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use JetBrains\PhpStorm\ArrayShape;
 use JsonSerializable;
 
 class CartResource extends JsonResource
@@ -13,10 +15,12 @@ class CartResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param Request $request
-     * @return array|Arrayable|JsonSerializable
+     * @return array
      */
-    public function toArray($request)
+    #[ArrayShape(['variations' => "\Illuminate\Http\Resources\Json\AnonymousResourceCollection"])] public function toArray($request): array
     {
-        return parent::toArray($request);
+        return [
+            'variations' => VariationResource::collection($this->whenLoaded('variations')),
+        ];
     }
 }

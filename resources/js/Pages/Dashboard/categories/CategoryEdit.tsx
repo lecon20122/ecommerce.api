@@ -16,7 +16,7 @@ interface Props {
 
 
 export default function CategoryEdit({currentCategory, locale, categories}: Props) {
-  console.log(currentCategory)
+
   const selectParentMenuItems = categories.map((category) => {
     return (
       <Select.Option value={category.id}
@@ -51,7 +51,7 @@ export default function CategoryEdit({currentCategory, locale, categories}: Prop
             <Input style={{backgroundColor: currentCategory.secondary_color}}/>
           </Form.Item>
           <Form.Item name={'parent_id'} label='Category Parents'>
-            <Select placeholder={'Select A Parent'}>
+            <Select allowClear placeholder={'Select A Parent'}>
               {selectParentMenuItems}
             </Select>
           </Form.Item>

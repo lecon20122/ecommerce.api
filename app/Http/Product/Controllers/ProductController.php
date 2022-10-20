@@ -99,7 +99,7 @@ class ProductController extends BaseController
                 'currentProduct' => (new ProductService())->getProductsById($id),
                 'variationTypes' => (new VariationService())->getVariationTypes(),
                 'variationTypesValues' => (new VariationService())->getVariationTypeValues(),
-                'categories' => (new CategoryService())->getCategories(),
+                'categories' => (new CategoryService())->getCategories(), //TODO: CACHE ALL CATEGORIES
             ]);
         } catch (Exception $exception) {
             return $this->redirectBackWithError($exception->getMessage());
@@ -168,19 +168,6 @@ class ProductController extends BaseController
         }
     }
 
-    public function addMediaToProduct(Product $product, StoreMediaRequest $request, ImageService $imageService, ProductService $productService): RedirectResponse
-    {
-        DB::beginTransaction();
-        try {
-            $productService->addImagesToProduct($product, $request, $imageService);
-            DB::commit();
-            return $this->redirectBackWithMessage('success');
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->redirectBackWithError();
-        }
-    }
-
     public function attachCategoriesToProduct(Product $product, ModelIDsRequest $request, ProductService $productService): RedirectResponse
     {
         DB::beginTransaction();
@@ -194,13 +181,13 @@ class ProductController extends BaseController
         }
     }
 
-    public function deleteProductImage(Product $product, ModelIDsRequest $request, ProductService $productService): RedirectResponse
+    public function detachCategoryFromProduct(Product $product, ModelIDsRequest $request, ProductService $productService): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $productService->deleteProductImage($product, $request);
+            $productService->detachCategoryFromProduct($product, $request);
             DB::commit();
-            return $this->redirectBackWithMessage('success');
+            return $this->redirectBackWithMessage('category detached');
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithError();

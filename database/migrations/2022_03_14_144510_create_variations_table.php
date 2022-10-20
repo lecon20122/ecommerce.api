@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->foreignId('variation_type_id')->constrained();
             $table->string('sku')->nullable();
             $table->integer('order')->nullable();
+            $table->integer('stock_count')->nullable()->unsigned();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->softDeletes();
             $table->timestamps();

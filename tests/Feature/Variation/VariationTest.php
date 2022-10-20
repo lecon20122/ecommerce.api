@@ -3,6 +3,7 @@
 namespace Tests\Feature\Variation;
 
 use App\Domain\Admin\Models\Admin;
+use App\Domain\Inventory\Models\Stock;
 use App\Domain\Product\Models\Product;
 use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationTypeValue;
@@ -10,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use JetBrains\PhpStorm\NoReturn;
 use Laravel\Sanctum\Sanctum;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
@@ -131,5 +133,55 @@ class VariationTest extends TestCase
         $response = $this->post(route('admin.add.media.to.variation', ['variation' => $variation]), $data)->assertRedirect();
         $response->assertSessionHas('message', 'success');
         $this->assertCount(1, Media::all());
+    }
+
+    #[NoReturn] public function test_variation_image_can_be_set_to_primary_and_its_only_one_per_variation()
+    {
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin, 'admin');
+
+        $variation = Variation::factory()->create();
+        Storage::fake('public');
+        $data = [
+            'images' => [
+                0 => UploadedFile::fake()->image("test.jpg", 100, 100),
+                1 => UploadedFile::fake()->image("test.jpg", 100, 100),
+            ]
+        ];
+        $this->post(route('admin.add.media.to.variation', ['variation' => $variation]), $data);
+
+        $imageId = [
+            'id' => 1,
+        ];
+        $this->post(route('admin.set.variation.image.to.primary', ['variation' => $variation]), $imageId)->assertRedirect();
+
+        $primaryMedia = $variation->media()->where('custom_properties->primary', true)->first();
+
+        $imageIdAttemptTwo = [
+            'id' => 2,
+        ];
+        $this->post(route('admin.set.variation.image.to.primary', ['variation' => $variation]), $imageIdAttemptTwo)->assertRedirect();
+
+        $primaryMedia->refresh();
+
+        $this->assertNull($primaryMedia->getCustomProperty('primary'));
+
+    }
+
+
+    public function testStockCountColumnUpdatedWhenNewStockAdded()
+    {
+        $variation = Variation::factory()->create();
+
+        Stock::create([
+            'variation_id' => $variation->id,
+            'amount' => 5
+        ]);
+
+        Stock::create([
+            'variation_id' => $variation->id,
+            'amount' => -5
+        ]);
+        $this->assertEquals(0, Variation::first()->stock_count);
     }
 }

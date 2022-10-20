@@ -1,18 +1,13 @@
-import React, {useState} from 'react'
+import React from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
 import {Button, Divider, Form, Input, InputNumber, Select} from 'antd';
 import {Inertia} from '@inertiajs/inertia';
 import route from 'ziggy-js';
-import {SubmitHandler, useForm} from 'react-hook-form';
 import {usePage} from "@inertiajs/inertia-react";
-import MediaProductCollection from "../../../components/Lists/MediaProductCollection";
 import {Title} from "../../../types/CategoryType";
 import {Variation, VariationTypes, VariationTypesValues} from "../../../types/VariationType";
 import VariationList from "../../../components/Lists/VariationList";
 import {Category, NewMediaProps} from "../../../types/products";
-import {UploadFile} from "antd/es/upload/interface";
-import Helpers from "../../../utils/Helpers";
-import UploadImageComponent from "../../../components/Forms/UploadImageComponent";
 
 interface Props {
   currentProduct: Product
@@ -20,15 +15,6 @@ interface Props {
   variationTypesValues: VariationTypesValues[]
   locale: string,
   categories: Category[],
-}
-
-interface IFormProps {
-  ar: string
-  en: string
-  description: string
-  price: number
-  images: string
-  store_id: number
 }
 
 interface Product {
@@ -48,27 +34,9 @@ interface MediaForm {
 }
 
 export default function ProductEdit({currentProduct, locale, variationTypesValues, variationTypes, categories}: Props) {
-  console.log(currentProduct)
-  const form = useForm<IFormProps>({mode: "onChange"})
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const helpers = new Helpers()
 
-  const {register, handleSubmit, formState: {errors, isDirty, isValid}, getValues, reset} = form
-  const {
-    register: register2,
-    formState: {errors: errors2},
-    handleSubmit: handleSubmit2,
-  } = useForm<MediaForm>();
 
   const serverSideErrors = usePage().props.errors
-  console.log(serverSideErrors)
-  const handleUpdateProduct: SubmitHandler<IFormProps> = (data) => {
-    const resolveData = {...data}
-    Inertia.post(route('admin.products.update', currentProduct), resolveData, {
-      preserveState: false
-    })
-    reset(getValues())
-  }
 
   const onFinishAttachCategories = (values: any) => {
     Inertia.post(route('admin.attach.category.to.product', currentProduct), values, {
@@ -77,8 +45,26 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
   }
 
   const onFinish = (values: any) => {
-    console.log(values)
+    Inertia.post(route('admin.products.update', currentProduct), values, {
+      preserveState: false
+    })
   };
+
+  const handleDetachCategories = (categoryId: number) => {
+    Inertia.post(route('admin.detach.category.from.product', currentProduct), {id: categoryId}, {
+      preserveState: false
+    })
+  }
+
+  const currentAttachedCategories = currentProduct.categories.map((category) => {
+    return (
+      <div className='border border-1 border-black p-1 flex space-x-1 items-center'>
+        <h1 className={'text-left '}>{category.title.en}</h1>
+        <button className={'cursor text-red-600'} onClick={event => handleDetachCategories(category.id)}>x
+        </button>
+      </div>
+    )
+  })
 
   return (
     <DashboardLayout>
@@ -98,8 +84,6 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
           >
             <Input/>
           </Form.Item>
-
-
           <Form.Item
             label="Title AR"
             name="ar"
@@ -109,18 +93,10 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
             <Input/>
           </Form.Item>
           <Form.Item
-            label="Description"
-            initialValue={currentProduct.description}
-            name="description"
-            rules={[{required: true}]}
-          >
-            <Input/>
-          </Form.Item>
-          <Form.Item
             label="Price"
             initialValue={currentProduct.price}
             name="price"
-            rules={[{required: true, type: "integer", min: 0, max: 100000}]}
+            rules={[{required: true, min: 0, max: 100000}]}
           >
             <InputNumber/>
           </Form.Item>
@@ -131,13 +107,10 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
           </Form.Item>
         </Form>
         <Divider/>
-        <div>
-          <MediaProductCollection media={currentProduct.media} deleteURL={'admin.delete.media.of.product'}
-                                  params={currentProduct}/>
-          <UploadImageComponent buttonLabel={'UPLOAD'} routeName={'admin.add.media.to.product'}
-                                params={currentProduct}/>
+        <div className='container py-3 flex space-x-1 items-center'>
+          <h1>Currently Attached Categories :</h1>
+          {currentAttachedCategories}
         </div>
-        <Divider/>
         <Form className='basis-1/4' onFinish={onFinishAttachCategories} labelCol={{span: 2}}
               wrapperCol={{span: 12}}>
           <Form.Item name="id" label="Attach to Category">

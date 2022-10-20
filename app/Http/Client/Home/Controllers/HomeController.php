@@ -13,7 +13,7 @@ class HomeController extends BaseController
     public function index()
     {
         return Inertia::render('Client/index', [
-            'categories' => CategoryResource::collection((new CategoryService)->getCategoriesChildrenAndThumb()),
+            'categories' => CategoryResource::collection((new CategoryService)->getCategoriesChildrenAndThumbnail()),
         ]);
     }
 }

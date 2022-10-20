@@ -10,6 +10,8 @@ use App\Domain\Product\Models\CategoryProduct;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
+use App\Events\OrderPlacedEvent;
+use App\Events\StockChangedEvent;
 use App\Http\Cart\Observers\CartObserver;
 use App\Http\Category\Observers\CategoryObserver;
 use App\Http\Location\Observer\AddressObserver;
@@ -19,6 +21,9 @@ use App\Http\Product\Observers\ProductObserver;
 use App\Http\Store\Observers\StoreObserver;
 use App\Http\Variation\Observers\VariationObserver;
 use App\Listeners\AssignUserToCart;
+use App\Listeners\DestroyCart;
+use App\Listeners\SyncVariationStockAfterOrderPlaced;
+use App\Listeners\UpdateVariationStock;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -38,6 +43,13 @@ class EventServiceProvider extends ServiceProvider
         ],
         Login::class => [
             AssignUserToCart::class,
+        ],
+        OrderPlacedEvent::class => [
+            SyncVariationStockAfterOrderPlaced::class,
+            DestroyCart::class,
+        ],
+        StockChangedEvent::class => [
+            UpdateVariationStock::class,
         ]
     ];
 

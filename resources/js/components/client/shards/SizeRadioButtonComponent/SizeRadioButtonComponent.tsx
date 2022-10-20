@@ -7,16 +7,18 @@ interface Props {
   disabled: boolean
   setCurrentSizeVariationId: any,
   setToggleVariationQuantity: any,
+  setCurrentMaxStockCount: any,
 }
 
 
-function SizeRadioButtonComponent({variation, disabled, setCurrentSizeVariationId, setToggleVariationQuantity}: Props) {
+function SizeRadioButtonComponent({variation, disabled, setCurrentSizeVariationId, setToggleVariationQuantity , setCurrentMaxStockCount}: Props) {
 
   const [check, setCheck] = useState<boolean>(false)
 
   const onClick = (event: React.ChangeEvent<HTMLInputElement>) => {
 
     if (event.target.checked) {
+      setCurrentMaxStockCount(variation.stock_count)
       setCurrentSizeVariationId(parseFloat(event.target.value))
       setToggleVariationQuantity(false)
     }

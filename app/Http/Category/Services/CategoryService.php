@@ -79,7 +79,7 @@ class CategoryService
         }
     }
 
-    public function getCategoriesChildrenAndThumb(): Collection|array
+    public function getCategoriesChildrenAndThumbnail(): Collection|array
     {
         //TODO:Caching the results
         return Category::query()

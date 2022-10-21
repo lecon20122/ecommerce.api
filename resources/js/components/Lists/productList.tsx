@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ProductWithThumbnail} from "../../types/products";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
 import ToggleRestoreDeleteButton from "../Forms/Buttons/ToggleDeleteRestoreButton";
 import {VariationTypes, VariationTypesValues} from "../../types/VariationType";
-import VariationList from "./VariationList";
 import AntDesignDataTable from "../DataTables/AntDesignDataTable";
 import {ColumnsType} from "antd/es/table";
 import {Button, Space} from "antd";
@@ -21,7 +20,6 @@ interface DataType extends ProductWithThumbnail {
 }
 
 function ProductList({products, locale, variationTypesValues, variationTypes}: Props) {
-  const [expandedRows, setExpandedRows] = useState([]);
 
   const newHandleUpdate = (data: any) => {
     Inertia.get(route('admin.products.edit', data.id))
@@ -37,27 +35,6 @@ function ProductList({products, locale, variationTypesValues, variationTypes}: P
       preserveState: false
     })
   };
-
-  const imageBodyTemplate = (rowData: any) => {
-    if (rowData.media) {
-      return (
-        <img width={50}
-             height={50} src={rowData.media[0 as keyof typeof rowData.media]?.thumbnail}/>
-      )
-    } else {
-      return (
-        <div>nothing to show</div>
-      )
-    }
-  }
-
-  const rowExpansionTemplate = (data: any) => {
-    return (
-      <VariationList variations={data.variations} variationTypes={variationTypes}
-                     variationTypesValues={variationTypesValues} productId={data.id}/>
-    );
-  }
-
 
   const actionBodyTemplate = (rowData: any) => {
     return (
@@ -81,14 +58,6 @@ function ProductList({products, locale, variationTypesValues, variationTypes}: P
       dataIndex: 'id',
     },
     {
-      key: 'media',
-      title: 'Image',
-      dataIndex: 'media',
-      render: (_, record) => (
-        imageBodyTemplate(record)
-      ),
-    },
-    {
       key: 'title',
       title: 'Title EN',
       dataIndex: 'title',
@@ -102,6 +71,7 @@ function ProductList({products, locale, variationTypesValues, variationTypes}: P
       key: 'title',
       title: 'Title AR',
       dataIndex: 'title',
+      responsive: ['md'],
       render: (_, record) => (
         <Space size="middle">
           <span>{record.title.ar}</span>

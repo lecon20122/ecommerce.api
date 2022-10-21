@@ -4,6 +4,8 @@ import {NewMediaProps} from "./products";
 export interface Variation {
   id: number,
   parent_id: number
+  product_id: number
+  store_id: number
   price: string;
   order: number;
   type: string;
@@ -13,7 +15,7 @@ export interface Variation {
   color?: NewMediaProps
   stock_count: number,
   pivot: Pivot
-  parent : Variation
+  parent: Variation
   media: NewMediaProps[],
   variation_images: NewMediaProps[],
   variation_type?: VariationTypes,
@@ -37,5 +39,6 @@ export interface VariationTypes {
   id: number;
   type: Title;
   is_mediable: boolean,
+  is_stockable: boolean,
   variationTypeValues: VariationTypesValues[]
 }

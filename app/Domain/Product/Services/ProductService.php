@@ -138,7 +138,7 @@ class ProductService
 
         $meilisearch = $searchService->searchIndexedModel($params, $productModel)->query(function (Builder $builder) {
             $builder->with(['variations' => function ($query) {
-                $query->with('VariationImages', 'VariationColor')
+                $query->with('VariationImages', 'VariationColor','variationTypeValue','variationType')
                     ->has('VariationImages')
                     ->parent();
             }

@@ -166,7 +166,7 @@ export default function CreateProductVariation({
           </Form.Item>
           <Form.Item
             hidden={!isMediable}
-            label="Category Image"
+            label="Variation Image"
             name="images"
             valuePropName='images'
           >

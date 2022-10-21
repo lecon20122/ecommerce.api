@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('variation_type_values', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('variation_type_id')->constrained();
+            $table->foreignId('variation_type_id')->constrained()->restrictOnDelete();
             $table->json('value');
             $table->timestamps();
             $table->softDeletes();

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Domain\Product\Models\Product;
-use App\Domain\Variation\Models\Variation;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Testing\WithFaker;
 
@@ -19,17 +18,18 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 //        $user = new Domain\User\Models\User();
+//        Product::factory()->create();
 
 //        User::factory()->create();
 //        Admin::factory()->create();
         // Cart::factory(5)->create();
-//         Store::factory()->hasProducts(15)->create();
+//        Store::factory()->create();
         // seeding Products with Me
-//        Product::factory(100)->has(Variation::factory())->create();
+//        Product::factory(100)->hasVariations(4)->create();
         // Category::factory(5)->create();
-//        $products = Product::query()->get();
-//        foreach ($products as $product) {
-//            $product->categories()->attach([rand(1, 2)]);
-//        }
+        $products = Product::query()->get();
+        foreach ($products as $product) {
+            $product->categories()->attach([rand(4, 6)]);
+        }
     }
 }

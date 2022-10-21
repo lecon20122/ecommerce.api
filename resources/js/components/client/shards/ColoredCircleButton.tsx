@@ -19,11 +19,14 @@ function ColoredCircleButton({color, onClick, backgroundImage, onMouseOver, acti
     }
   }
   return (
-    <button
-      style={backgroundFactory()}
-      onClick={onClick}
-      disabled={active}
-      className={`border-2 rounded-full w-[19px] h-[19px] focus:outline-none ${active ? 'border-black' : 'border-gray-300'}`}/>
+    <div
+      className={`border w-[23px] h-[23px] ${active ? 'border-black' : 'border-gray-300'} flex items-center justify-center`}>
+      <button
+        style={backgroundFactory()}
+        onClick={onClick}
+        disabled={active}
+        className={`border w-[19px] h-[19px]`}/>
+    </div>
   );
 }
 

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Variation\Requests;
+namespace App\Http\Inventory\Requests;
 
+use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateVariationTypeRequest extends FormRequest
+class StoreStockRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +25,8 @@ class UpdateVariationTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'ar' => 'nullable|string|max:256',
-            'en' => 'nullable|string|max:256',
-            'is_mediable' => 'nullable|boolean',
-            'is_stockable' => 'nullable|boolean'
+            'variation_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
+            'amount' => ValidationRuleEnums::REQUIRED_INTEGER->value,
         ];
     }
 }

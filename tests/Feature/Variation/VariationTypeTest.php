@@ -10,6 +10,7 @@ use Tests\TestCase;
 class VariationTypeTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic feature test example.
      *
@@ -24,6 +25,7 @@ class VariationTypeTest extends TestCase
             'en' => 'color',
             'ar' => 'لون',
             'is_mediable' => true,
+            'is_stockable' => false,
         ];
 
         $response = $this->post(route('admin.variations.type.store'), $data)
@@ -43,7 +45,7 @@ class VariationTypeTest extends TestCase
             'en' => 'size',
         ];
 
-        $response = $this->post(route('admin.variations.type.update' , ['id' => $variationType->id]), $data)
+        $response = $this->post(route('admin.variations.type.update', ['id' => $variationType->id]), $data)
             ->assertRedirect();
 
         $response->assertSessionHas('message', 'success');
@@ -57,7 +59,7 @@ class VariationTypeTest extends TestCase
         $this->actingAs($admin, 'admin');
         $variationType = VariationType::factory()->create();
 
-        $response = $this->post(route('admin.variations.type.destroy' , ['id' => $variationType->id]))
+        $response = $this->post(route('admin.variations.type.destroy', ['id' => $variationType->id]))
             ->assertRedirect();
 
         $response->assertSessionHas('message', 'success');
@@ -70,7 +72,7 @@ class VariationTypeTest extends TestCase
         $this->actingAs($admin, 'admin');
         $variationType = VariationType::factory()->trashed()->create();
 
-        $response = $this->post(route('admin.variations.type.restore' , ['id' => $variationType->id]))
+        $response = $this->post(route('admin.variations.type.restore', ['id' => $variationType->id]))
             ->assertRedirect();
 
         $response->assertSessionHas('message', 'success');

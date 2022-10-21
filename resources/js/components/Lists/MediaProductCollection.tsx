@@ -2,12 +2,8 @@ import React from 'react';
 import {Inertia} from "@inertiajs/inertia";
 import route, {RouteParam, RouteParamsWithQueryOverload} from "ziggy-js";
 import {Title} from "../../types/CategoryType";
-import {Col, Image, Row} from "antd";
-
-import {Button as AntButton} from 'antd';
-import {Image as ImageMobile} from 'antd-mobile';
+import {Button as AntButton, Image} from "antd";
 import {NewMediaProps} from "../../types/products";
-import {Variation} from "../../types/VariationType";
 
 interface Props {
   media: NewMediaProps[]
@@ -43,8 +39,9 @@ export default function MediaProductCollection({deleteURL, media, params}: Props
     <div className={'flex flex-wrap my-2'}>
       <Image.PreviewGroup>
         {media?.map((item, index) => (
-          <div key={item.id} className='flex-[1_1_130px] my-1'>
-            <Image src={item.big_banner || item.mobile_banner || item.thumbnail} className='px-1'/>
+          <div key={item.id} className='flex-[1_1_60px] my-1'>
+            <Image src={item.big_banner || item.mobile_banner || item.thumbnail}
+                   className='px-1 aspect-[2/3] w-[60px] h-[90px] md:w-[120px] md:h-[180px] object-contain'/>
             <AntButton type="dashed" danger className='flex' onClick={e => handleMediaDelete(item.id)}>
               Delete
             </AntButton>

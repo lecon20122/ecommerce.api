@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
 import {Inertia} from '@inertiajs/inertia';
 import route from 'ziggy-js';
-import {SubmitHandler, useForm} from 'react-hook-form';
 import {StoreWithProducts} from "../../../types/globalTypes";
 import ProductList from "../../../components/Lists/productList";
 import {VariationTypes, VariationTypesValues} from "../../../types/VariationType";
@@ -45,7 +44,6 @@ export default function StoreEdit({currentStore, locale, variationTypesValues, v
           wrapperCol={{span: 6}}
           onFinish={onFinish}
           size={"large"}
-          autoComplete="off"
         >
           <Form.Item
             label="Name"
@@ -70,6 +68,7 @@ export default function StoreEdit({currentStore, locale, variationTypesValues, v
           </Form.Item>
         </Form>
         <Button onClick={() => setOpenAddDialog(true)}>CREATE NEW PRODUCT</Button>
+        <h1 className='text-center text-2xl '>Products</h1>
         <Divider/>
         <ProductList products={currentStore.products} locale={locale} variationTypes={variationTypes}
                      variationTypesValues={variationTypesValues}/>

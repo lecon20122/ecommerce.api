@@ -15,7 +15,6 @@ return new class extends Migration {
         Schema::create('variations', function (Blueprint $table) {
             $table->id();
             $table->json('title')->nullable();
-            $table->json('type')->nullable();
             $table->foreignId('product_id')->constrained();
             $table->foreignId('store_id')->nullable()->constrained(); // instead of doing query every variation
             $table->foreignId('variation_type_value_id')->constrained();
@@ -23,6 +22,7 @@ return new class extends Migration {
             $table->foreignId('variation_type_id')->constrained();
             $table->string('sku')->nullable();
             $table->integer('order')->nullable();
+            $table->boolean('is_stockable')->nullable()->unsigned();
             $table->integer('stock_count')->nullable()->unsigned();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->softDeletes();

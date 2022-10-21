@@ -3,7 +3,6 @@ import {NewMediaProps, ProductWithThumbnail} from "../../types/products";
 import AppLayout from "../../layouts/client";
 import ImageSliderWithZoom from "../../components/client/includes/ImageSliderWithZoom";
 import {Variation} from "../../types/VariationType";
-import {InputNumber} from "antd";
 import SquaredColorButton from "../../components/client/shards/SquaredColorButton";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
@@ -20,7 +19,6 @@ function ProductDetails({product, locale}: Props) {
   const [currentVariation, setCurrentVariation] = useState<Variation>(product.variations[0])
   const [currentSizeVariationId, setCurrentSizeVariationId] = useState<0>()
   const [currentMaxStockCount, setCurrentMaxStockCount] = useState<number>(1)
-  const [currentQuantity, setCurrentQuantity] = useState<number>(1)
   const [toggleVariationQuantity, setToggleVariationQuantity] = useState<boolean>(true)
   const [currentImage, setCurrentImage] = useState<NewMediaProps>({...product.variations[0].media[0]})
 
@@ -42,7 +40,7 @@ function ProductDetails({product, locale}: Props) {
     if (variation.variation_type?.type.en === 'color') {
       return (
         <SquaredColorButton onClick={() => handleClickVariationColors(variation)} key={variation.id}
-                            color={variation.title} backgroundImage={variation.color?.color}/>
+                            color={variation.variation_type_value?.value.en} backgroundImage={variation.color?.color}/>
       )
     }
   })
@@ -65,7 +63,7 @@ function ProductDetails({product, locale}: Props) {
       Inertia.post(route('client.add.to.cart'), {
         variation_id: currentSizeVariationId,
         price: currentSelectedVariation?.price as string,
-        quantity: currentQuantity
+        quantity: 1
       })
     }
   }
@@ -141,16 +139,6 @@ function ProductDetails({product, locale}: Props) {
                         </form>
                       </div>
                     </div>
-                    {!toggleVariationQuantity &&
-                    <div className={'flex items-center'}>
-                      <span className="mr-3">Quantity</span>
-                      <InputNumber disabled={toggleVariationQuantity}
-                                   min={1} max={currentMaxStockCount}
-                                   onChange={value => setCurrentQuantity(value)}/>
-                      <span className="ml-3">{currentMaxStockCount} left</span>
-
-                    </div>
-                    }
                   </div>
 
                   <p className="mb-4 text-gray-500">

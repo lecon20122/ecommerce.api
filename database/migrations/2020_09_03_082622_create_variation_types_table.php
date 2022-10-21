@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->json('type');
             $table->boolean('is_mediable')->unsigned();
+            $table->boolean('is_stockable')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

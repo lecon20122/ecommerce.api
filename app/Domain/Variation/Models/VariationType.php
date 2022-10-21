@@ -13,19 +13,15 @@ class VariationType extends Model
     use HasFactory, HasTranslations, SoftDeletes;
 
     public $translatable = ['type'];
-    protected $fillable = ['type', 'is_mediable'];
-    protected $casts = ['is_mediable' => 'boolean'];
+    protected $fillable = ['type', 'is_mediable', 'is_stockable'];
+    protected $casts = [
+        'is_mediable' => 'boolean',
+        'is_stockable' => 'boolean'
+    ];
 
     public function variations(): HasMany
     {
         return $this->hasMany(Variation::class);
-    }
-
-    public function hasVariationTypeValue($variationTypeId): bool
-    {
-        return $this->variationTypeValues()
-            ->where('variation_type_id', $variationTypeId)
-            ->exists();
     }
 
     public function variationTypeValues(): HasMany

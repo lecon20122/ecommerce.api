@@ -22,7 +22,9 @@ class VariationService
     public function getVariationById(int $id): VariationResource
     {
         return new VariationResource(
-            Variation::with(['children', 'VariationColor', 'VariationImages', 'variationType', 'variationTypeValue'])->find($id)
+            Variation::with(['children' => function ($query) {
+                $query->with('variationType', 'variationTypeValue');
+            }, 'VariationColor', 'VariationImages', 'variationType', 'variationTypeValue'])->find($id)
         );
     }
 
@@ -49,14 +51,11 @@ class VariationService
 
     public function store(StoreVariationRequest $request, ImageService $imageService): void
     {
-
         $data = $request->validated();
 
         $variationType = VariationType::find($data['variation_type_id']);
-        $variationTypeValue = VariationTypeValue::find($data['variation_type_value_id']);
 
-        $data['type'] = $variationType->getTranslations('type');
-        $data['title'] = $variationTypeValue->getTranslations('value');
+        $data['is_stockable'] = $variationType->is_stockable;
 
         $product = Product::query()
             ->find($data['product_id']);
@@ -71,7 +70,10 @@ class VariationService
 
     public function update(array $data, Variation $variation, ImageService $imageService)
     {
-        $variationType = VariationType::with('variationTypeValues')->find($variation->variation_type_id);
+        $variationType = VariationType::query()->find($data['variation_type_id']);
+
+        $data['is_stockable'] = $variationType->is_stockable;
+
         $variation->update($data);
 
         if (array_key_exists('images', $data) && $variationType->is_mediable) {

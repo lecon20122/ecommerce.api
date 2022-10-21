@@ -30,7 +30,20 @@ class Variation extends Model implements HasMedia
 
     public array $translatable = ['title', 'type'];
     protected $touches = ['product'];
-    protected $fillable = ['title', 'price', 'store_id', 'type', 'order', 'product_id', 'parent_id', 'variation_type_value_id', 'variation_type_id', 'stock_count'];
+    protected $fillable = [
+        'title',
+        'price',
+        'store_id',
+        'order',
+        'product_id',
+        'parent_id',
+        'variation_type_value_id',
+        'variation_type_id',
+        'is_stockable',
+        'stock_count'
+    ];
+
+    protected $casts = ['is_stockable' => 'boolean'];
 
     /**
      * @throws InvalidManipulation

@@ -7,6 +7,7 @@ import ColoredCircleButton from "../shards/ColoredCircleButton";
 import {Variation} from "../../../types/VariationType";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {DotLoading} from "antd-mobile";
+import {lowerCase} from "lodash";
 
 interface Props {
   product: ProductWithThumbnail
@@ -26,8 +27,6 @@ function ProductWithVariationsList({product, locale}: Props) {
       if (Array.isArray(product.variations) && product.variations.length) {
         setAvailableMedia(product.variations[0 as keyof typeof product.variations]?.media[0]?.thumbnail)
         setCurrentVariationSelected(product.variations[0].id)
-      } else {
-        setAvailableMedia(product.media[0 as keyof typeof product.media]?.thumbnail)
       }
     }, []
   )
@@ -43,14 +42,15 @@ function ProductWithVariationsList({product, locale}: Props) {
   }
 
   const variationColorsList = product.variations.map((variation, index) => {
-    if (variation.type === 'color' && product.variations.length > 1) {
+
+    if (variation.variation_type?.type.en === 'color' && product.variations.length > 1) {
       return (
         <SwiperSlide key={variation.id} style={{width: "24px"}}>
           <div className='mr-6' onClick={() => handleClickVariationColors(variation)}>
             <ColoredCircleButton
               active={isVariationButtonChecked(variation.id)}
               backgroundImage={variation.color?.color}
-              color={variation.title}
+              color={lowerCase(variation.variation_type_value?.value.en)}
             />
           </div>
         </SwiperSlide>

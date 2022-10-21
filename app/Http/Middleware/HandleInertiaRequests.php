@@ -2,11 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use App\Domain\Cart\Contracts\CartInterface;
+use App\Domain\Cart\Services\CartService;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
+
     /**
      * The root template that's loaded on the first page visit.
      *
@@ -19,7 +23,7 @@ class HandleInertiaRequests extends Middleware
      * Determines the current asset version.
      *
      * @see https://inertiajs.com/asset-versioning
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return string|null
      */
     public function version(Request $request): ?string
@@ -31,22 +35,30 @@ class HandleInertiaRequests extends Middleware
      * Defines the props that are shared by default.
      *
      * @see https://inertiajs.com/shared-data
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return array
+     * @throws Exception
      */
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
             'flash' => [
-                'message' => fn () => $request->session()->get('message')
+                'message' => fn() => $request->session()->get('message')
             ],
             'locale' => function () {
                 return app()->getLocale();
             },
-            'auth' => fn () => $request->user()
+            'items_count' => $this->cartCount(new CartService(session())),
+            'auth' => fn() => $request->user()
                 ? $request->user()->only('id', 'name', 'email')
                 : null,
 
         ]);
+    }
+
+    public function cartCount(CartInterface $cart): int
+    {
+        $cart->findOrCreateCartInstance();
+        return $cart->itemsCount();
     }
 }

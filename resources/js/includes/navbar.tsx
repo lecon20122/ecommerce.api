@@ -4,7 +4,6 @@ import React from 'react'
 import {InertiaLink} from '@inertiajs/inertia-react';
 import route from 'ziggy-js';
 import {Button} from "antd";
-import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 
 export default function Navbar() {
   return (

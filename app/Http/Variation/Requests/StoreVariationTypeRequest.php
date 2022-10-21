@@ -26,7 +26,8 @@ class StoreVariationTypeRequest extends FormRequest
         return [
             'ar' => 'required|string|max:256',
             'en' => 'required|string|max:256',
-            'is_mediable' => 'required|boolean'
+            'is_mediable' => 'required|boolean',
+            'is_stockable' => 'required|boolean'
         ];
     }
 }

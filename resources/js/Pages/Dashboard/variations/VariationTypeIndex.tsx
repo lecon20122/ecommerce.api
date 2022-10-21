@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {VariationTypes} from "../../../types/VariationType";
 import {ColumnsType} from "antd/es/table";
-import {Button, Divider, Form, Input, Select, Space, Table} from "antd";
+import {Button, Divider, Form, Input, Select, Space} from "antd";
 import DashboardLayout from "../../../layouts/dashboard";
 import ModalWithChildren from "./ModalWithChildren";
-import {EditOutlined, DeleteOutlined} from '@ant-design/icons'
+import {DeleteOutlined, EditOutlined} from '@ant-design/icons'
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
 import AntDesignDataTable from "../../../components/DataTables/AntDesignDataTable";
@@ -27,7 +27,7 @@ function VariationTypeIndex({variationTypes, locale}: Props) {
   }
 
   const onDelete = (id: number) => {
-    Inertia.get(route('admin.variations.type.destroy', id))
+    Inertia.post(route('admin.variations.type.destroy', id))
   }
 
   const onFinish = (values: any) => {
@@ -54,11 +54,21 @@ function VariationTypeIndex({variationTypes, locale}: Props) {
     },
     {
       key: 'is_mediable',
-      title: 'eligible for Image',
+      title: 'Eligible for Media',
       dataIndex: 'is_mediable',
       render: (_, record) => (
         <Space size="middle">
           <span>{record.is_mediable ? "Yes" : "No"}</span>
+        </Space>
+      ),
+    },
+    {
+      key: 'is_stockable',
+      title: 'Eligible for Stock',
+      dataIndex: 'is_mediable',
+      render: (_, record) => (
+        <Space size="middle">
+          <span>{record.is_stockable ? "Yes" : "No"}</span>
         </Space>
       ),
     },
@@ -104,8 +114,21 @@ function VariationTypeIndex({variationTypes, locale}: Props) {
               <Input/>
             </Form.Item>
             <Form.Item
-              label="Type AR"
+              label="Eligible for Media ?"
               name="is_mediable"
+              rules={[{required: true, message: 'Please fill type in AR!'}]}
+            >
+              <Select
+                placeholder="this type will have image ?"
+                allowClear
+              >
+                <Select.Option value={true}>yes</Select.Option>
+                <Select.Option value={false}>no</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="is stockable ?"
+              name="is_stockable"
               rules={[{required: true, message: 'Please fill type in AR!'}]}
             >
               <Select

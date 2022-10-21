@@ -19,11 +19,13 @@ function SquaredColorButton({color, onClick, backgroundImage, onMouseOver, activ
     }
   }
   return (
-    <button
-      style={backgroundFactory()}
-      onClick={onClick}
-      disabled={active}
-      className={`border-1 w-[30px] h-[30px] focus:outline-none ${active ? 'border-black' : 'border-gray-300'}`}/>
+    <div className={'flex mx-[2px]'}>
+      <button
+        style={backgroundFactory()}
+        onClick={onClick}
+        disabled={active}
+        className={`border-1 w-[30px] h-[30px] focus:outline-none ${active ? 'border-black' : 'border-gray-300'}`}/>
+    </div>
   );
 }
 

@@ -23,7 +23,7 @@ export default function ToggleRestoreDeleteButton({handleOnClickDelete, handleOn
         className={'mr-2'}
         type={'default'}
         onClick={() => handleOnClickDelete(params)}>
-        DELETE
+        SOFT DELETE
       </Button>
     )
   }

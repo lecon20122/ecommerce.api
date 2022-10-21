@@ -13,5 +13,6 @@ Route::prefix('admin')->group(function () {
         Route::group([], base_path() . '/app/Http/Product/Routes/admin.php');
         Route::group([], base_path() . '/app/Http/Variation/Routes/admin.php');
         Route::group([], base_path() . '/app/Http/Location/Routes/admin.php');
+        Route::group([], base_path() . '/app/Http/Inventory/Routes/admin.php');
     });
 });

@@ -34,6 +34,8 @@ class OrderService
 
         foreach ($this->cartService->items($relationWillBeEagerLoaded) as $variation) {
 
+            if (!$variation->is_stockable) return;
+
             $readyVariation = [
                 $variation->id => [
                     'quantity' => $variation->pivot->quantity,
@@ -42,10 +44,10 @@ class OrderService
                     'pickup_address_id' => $this->addressService->getStorePickupAddressId($variation),
                 ]
             ];
+
             $order->variations()->attach($readyVariation);
         }
 
-//        OrderPlacedEvent::dispatch();
         event(new OrderPlacedEvent());
     }
 

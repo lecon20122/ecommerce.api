@@ -25,6 +25,7 @@ class VariationTypeFactory extends Factory
                 'ar' => $this->faker->jobTitle,
             ],
             'is_mediable' => true,
+            'is_stockable' => true,
         ];
     }
 }

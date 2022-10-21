@@ -19,6 +19,7 @@ class VariationTypeResource extends JsonResource
             'id' => $this->id,
             'type' => $this->getTranslations('type'),
             'is_mediable' => $this->is_mediable,
+            'is_stockable' => $this->is_stockable,
             'variationTypeValues' => VariationTypeValueResource::collection($this->whenLoaded('variationTypeValues')),
         ];
     }

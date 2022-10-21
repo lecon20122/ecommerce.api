@@ -1,11 +1,14 @@
 import React from 'react'
 import {GlobalOutline, UserOutline} from 'antd-mobile-icons'
 import {InertiaLink, usePage} from "@inertiajs/inertia-react";
+import {ShoppingCartOutlined} from '@ant-design/icons';
 import route from "ziggy-js";
 
 
 export default function Navbar() {
+
   const user: any = usePage().props.auth
+  const itemsCount: any = usePage().props.items_count
   const ICON_SIZE = '24'
 
   return (
@@ -18,6 +21,11 @@ export default function Navbar() {
               height="42" width="42" alt="Brand"/> </InertiaLink>
           </div>
           <div className="flex items-center space-x-2 ml-auto">
+            <div>
+              <InertiaLink href={route('client.cart')} className='text-black'>
+                <ShoppingCartOutlined style={{fontSize: '24px'}}/> ({itemsCount})
+              </InertiaLink>
+            </div>
             <div className="dropdown dropdown-hover">
               <div className='flex'>
                 <UserOutline fontSize={ICON_SIZE} className={''}/>
@@ -29,7 +37,6 @@ export default function Navbar() {
                     <hr className='font-bold'/>
                   </li>
                   : ''}
-                <li><a>Cart</a></li>
                 <li><a>Orders</a></li>
                 <li><a href={route('client.logout')}>Sign out</a></li>
               </ul>

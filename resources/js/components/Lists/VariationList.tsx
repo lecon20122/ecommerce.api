@@ -21,7 +21,6 @@ interface DataType extends Variation {
 }
 
 function VariationList({variations, variationTypesValues, variationTypes, productId, storeId}: Props) {
-  const [expandedRows, setExpandedRows] = useState([]);
   const locale: string = usePage().props.locale as string
   const [openAddParentVariantDialog, setOpenAddParentVariantDialog] = useState(false);
   const [openAddChildVariationDialog, setOpenAddChildVariationDialog] = useState(false);
@@ -38,11 +37,6 @@ function VariationList({variations, variationTypesValues, variationTypes, produc
     setParentId(data.id)
     setOpenAddChildVariationDialog(!openAddChildVariationDialog)
   };
-
-  const confirmDeleteProduct = (rawData: any) => {
-    setConfirmDeleteItemDialog(true);
-    setVariationId(rawData.id)
-  }
 
   const handleOnClickVariationRestore = (data: any) => {
     Inertia.post(route('admin.variations.restore', data.id), undefined, {
@@ -90,22 +84,9 @@ function VariationList({variations, variationTypesValues, variationTypes, produc
         <ToggleRestoreDeleteButton handleOnClickRestore={handleOnClickVariationRestore}
                                    handleOnClickDelete={handleOnClickVariationDelete}
                                    params={rowData}/>
-
-        <Button className="mr-2"
-                onClick={() => AddChildVariationHandle(rowData)}>NEW</Button>
-
         <Button className="mr-2"
                 onClick={() => handleOnClickVariationEdit(rowData)}>UPDATE</Button>
-
-        <Button className="mr-2"
-                onClick={() => confirmDeleteProduct(rowData)}>HARD DELETE</Button>
       </React.Fragment>
-    );
-  }
-
-  const rowExpansionTemplate = (data: any) => {
-    return (
-      <Table columns={columns} rowKey={"id"} dataSource={data.children} pagination={false} scroll={{x: true}}/>
     );
   }
 
@@ -143,11 +124,13 @@ function VariationList({variations, variationTypesValues, variationTypes, produc
       title: 'Order',
       dataIndex: 'order',
       key: 'order',
+      responsive: ['lg'],
     },
     {
       title: 'Deleted at',
       dataIndex: 'deleted_at',
       key: 'deleted_at',
+      responsive: ['lg'],
     },
     {
       title: 'Action',
@@ -165,13 +148,7 @@ function VariationList({variations, variationTypesValues, variationTypes, produc
                               productId={productId} locale={locale} variationTypes={variationTypes}
                               variationTypesValues={variationTypesValues} store_id={storeId}/>
 
-      <CreateProductVariation handleAddDialog={() => setOpenAddChildVariationDialog(false)}
-                              openAddDialog={openAddChildVariationDialog}
-                              parentId={parentId}
-                              productId={productId} locale={locale} variationTypes={variationTypes}
-                              variationTypesValues={variationTypesValues} store_id={storeId}/>
-      <Table columns={columns} rowKey={"id"} dataSource={variations}
-             expandable={{expandedRowRender: (record) => rowExpansionTemplate(record)}} scroll={{x: true}}/>
+      <Table columns={columns} rowKey={"id"} dataSource={variations} scroll={{x: true}}/>
     </div>
   )
 

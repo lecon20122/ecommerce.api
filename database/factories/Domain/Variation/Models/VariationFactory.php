@@ -27,7 +27,7 @@ class VariationFactory extends Factory
             'order' => $this->faker->randomDigit(),
 //            'product_id' => $product->id,
             'store_id' => 1,
-            'is_stockable' => true,
+            'is_stockable' => false,
 //            'variation_type_value_id' => VariationTypeValue::factory(),
 //            'variation_type_id' => VariationType::factory(),
             'variation_type_value_id' => rand(1, 5),

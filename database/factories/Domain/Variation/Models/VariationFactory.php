@@ -29,23 +29,23 @@ class VariationFactory extends Factory
         return [
             'price' => $this->faker->randomFloat(null, 99, 500),
             'order' => $this->faker->randomDigit(),
-            'product_id' => $product->id,
+//            'product_id' => $product->id,
             'store_id' => $product->store_id,
             'is_stockable' => true,
-            'variation_type_value_id' => VariationTypeValue::factory(),
-            'variation_type_id' => VariationType::factory(),
-//            'variation_type_value_id' => rand(1, 5),
-//            'variation_type_id' => 1,
+//            'variation_type_value_id' => VariationTypeValue::factory(),
+//            'variation_type_id' => VariationType::factory(),
+            'variation_type_value_id' => rand(1, 5),
+            'variation_type_id' => 1,
         ];
     }
-//
-//    public function configure(): VariationFactory
-//    {
-//        return $this->afterCreating(function (Variation $variation) {
-//            $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
-//            $variation
-//                ->addMediaFromUrl($url)
-//                ->toMediaCollection(MediaCollectionEnums::VARIATION);
-//        });
-//    }
+
+    public function configure(): VariationFactory
+    {
+        return $this->afterCreating(function (Variation $variation) {
+            $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
+            $variation
+                ->addMediaFromUrl($url)
+                ->toMediaCollection(MediaCollectionEnums::VARIATION);
+        });
+    }
 }

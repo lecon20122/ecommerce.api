@@ -15,6 +15,7 @@ return new class extends Migration {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->uuid();
+            $table->index('uuid');
             $table->string('state')->nullable();
             $table->foreignId('user_id')->nullable()->constrained();
             $table->timestamps();

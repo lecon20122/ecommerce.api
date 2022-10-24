@@ -28,7 +28,7 @@ class ProductFactory extends Factory
             ],
             'price' => $this->faker->randomFloat(null, 99, 500),
             'live_at' => now(),
-            'store_id' => 1,
+            'store_id' => Store::factory(),
         ];
     }
 }

@@ -2,11 +2,7 @@
 
 namespace Database\Factories\Domain\Variation\Models;
 
-use App\Domain\Product\Models\Product;
-use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
-use App\Domain\Variation\Models\VariationType;
-use App\Domain\Variation\Models\VariationTypeValue;
 use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,12 +21,12 @@ class VariationFactory extends Factory
      */
     public function definition()
     {
-        $product = Product::factory()->create();
+//        $product = Product::factory()->create();
         return [
             'price' => $this->faker->randomFloat(null, 99, 500),
             'order' => $this->faker->randomDigit(),
 //            'product_id' => $product->id,
-            'store_id' => $product->store_id,
+            'store_id' => 1,
             'is_stockable' => true,
 //            'variation_type_value_id' => VariationTypeValue::factory(),
 //            'variation_type_id' => VariationType::factory(),

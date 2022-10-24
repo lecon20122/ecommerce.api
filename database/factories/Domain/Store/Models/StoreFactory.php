@@ -7,11 +7,12 @@ use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Store\Models\Store>
+ * @extends Factory
  */
 class StoreFactory extends Factory
 {
     protected $model = Store::class;
+
     /**
      * Define the model's default state.
      *
@@ -20,7 +21,7 @@ class StoreFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->firstName,
+            'name' => $this->faker->sentence(2),
             'description' => $this->faker->realText(),
             'user_id' => User::factory(),
             'is_active' => true,

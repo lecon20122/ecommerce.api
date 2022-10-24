@@ -21,7 +21,7 @@ class AdminFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
+            'email' => 'mustafa@admin.com',
             'password' => 'password', // password
             'remember_token' => Str::random(10),
         ];

@@ -16,8 +16,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('cart_id')->constrained();
             $table->foreignId('variation_id')->constrained();
-            $table->integer('quantity');
+            $table->integer('quantity')->default(1);
             $table->decimal('price')->unsigned()->default(0);
+            $table->decimal('total')->unsigned()->default(0);
             $table->timestamps();
         });
     }

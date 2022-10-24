@@ -8,7 +8,7 @@ import route from "ziggy-js";
 export default function Navbar() {
 
   const user: any = usePage().props.auth
-  const itemsCount: any = usePage().props.items_count
+  const cartCount: any = usePage().props.cart_count
   const ICON_SIZE = '24'
 
   return (
@@ -23,7 +23,7 @@ export default function Navbar() {
           <div className="flex items-center space-x-2 ml-auto">
             <div>
               <InertiaLink href={route('client.cart')} className='text-black'>
-                <ShoppingCartOutlined style={{fontSize: '24px'}}/> ({itemsCount})
+                <ShoppingCartOutlined style={{fontSize: '24px'}}/> {cartCount ? cartCount : 0}
               </InertiaLink>
             </div>
             <div className="dropdown dropdown-hover">

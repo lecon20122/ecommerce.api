@@ -3,6 +3,7 @@
 namespace App\Domain\Variation\Models;
 
 use App\Domain\Cart\Models\Cart;
+use App\Domain\Cart\Models\CartVariation;
 use App\Domain\Inventory\Models\Stock;
 use App\Domain\Order\Models\Order;
 use App\Domain\Product\Models\Product;
@@ -101,7 +102,7 @@ class Variation extends Model implements HasMedia
 
     public function carts(): BelongsToMany
     {
-        return $this->belongsToMany(Cart::class)->withPivot(['quantity', 'price']);
+        return $this->belongsToMany(Cart::class)->withPivot(['quantity', 'price', 'total']);
     }
 
     public function parent(): BelongsTo

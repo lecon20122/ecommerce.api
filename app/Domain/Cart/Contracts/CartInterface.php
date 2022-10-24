@@ -3,7 +3,6 @@
 namespace App\Domain\Cart\Contracts;
 
 use Domain\User\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 interface CartInterface
@@ -18,7 +17,7 @@ interface CartInterface
 
     public function cartInstance();
 
-    public function addItem($variation_id, $price, $quantity = 0);
+    public function addItem($variation_id, $price, $quantity);
 
     public function findOrCreateCartInstance();
 
@@ -32,7 +31,7 @@ interface CartInterface
 
     public function model();
 
-    public function cartSubTotal(): float|int;
+    public function cartSubTotal();
 
     public function showCartItems();
 

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Contracts\CartManagerContract;
 use App\Domain\Cart\Contracts\CartInterface;
+use App\Domain\Cart\Services\CartManager;
 use App\Domain\Cart\Services\CartService;
 use Illuminate\Support\ServiceProvider;
 

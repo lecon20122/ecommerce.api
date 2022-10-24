@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Domain\Cart\Contracts\CartInterface;
-use App\Domain\Cart\Services\CartService;
 use Exception;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -48,17 +47,11 @@ class HandleInertiaRequests extends Middleware
             'locale' => function () {
                 return app()->getLocale();
             },
-            'items_count' => $this->cartCount(new CartService(session())),
+            'cart_count' => app()->make(CartInterface::class)->itemsCount(),
             'auth' => fn() => $request->user()
                 ? $request->user()->only('id', 'name', 'email')
                 : null,
 
         ]);
-    }
-
-    public function cartCount(CartInterface $cart): int
-    {
-        $cart->findOrCreateCartInstance();
-        return $cart->itemsCount();
     }
 }

@@ -56,10 +56,7 @@ export default function ShopByCategory({products, locale, filters, category, max
           <div className="flex md:flex-row">
             <ProductsFilter filters={filters} category={category} maxPrice={maxPrice}/>
             <main className="mx-auto">
-              {/*<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-4">*/}
-              {/*  {ProductList}*/}
-              {/*</div>*/}
-              <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-4'>
+              <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 px-4'>
                 {ProductList}
               </div>
               <PaginationComponent links={products.links} meta={products.meta}/>

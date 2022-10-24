@@ -26,7 +26,6 @@ class StoreCartRequest extends FormRequest
     {
         return [
             'variation_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
-            'quantity' => ValidationRuleEnums::REQUIRED_INTEGER->value,
             'price' => 'required|numeric|between:1,999999',
         ];
     }

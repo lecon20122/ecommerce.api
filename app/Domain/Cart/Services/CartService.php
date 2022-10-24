@@ -3,12 +3,12 @@
 namespace App\Domain\Cart\Services;
 
 use App\Domain\Cart\Contracts\CartInterface;
+use App\Domain\Cart\Exceptions\InvalidCartConfigurationException;
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Variation\Models\Variation;
 use Domain\User\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Collection;
@@ -30,7 +30,7 @@ class CartService implements CartInterface
         $this->sessionKey = config(self::CONFIG_SESSION_KEY);
 
         if (empty($this->sessionKey)) {
-            throw new Exception(
+            throw new InvalidCartConfigurationException(
                 sprintf(
                     'Cart session key (`%s`) is empty. Please provide a valid value.',
                     self::CONFIG_SESSION_KEY
@@ -45,7 +45,35 @@ class CartService implements CartInterface
      */
     public function itemsCount(): int
     {
-        return $this->items()->count();
+        if ($this->exists()) {
+            return $this->items()->count();
+        }
+        return 0;
+    }
+
+    /**
+     */
+    public function exists(): bool
+    {
+        return $this->cartId() && $this->model();
+    }
+
+    public function cartId()
+    {
+        return $this->sessionManager->get($this->sessionKey);
+    }
+
+    public function model(): Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
+    {
+        $uuid = $this->cartId();
+
+        if ($uuid && isset($this->cartInstance)) {
+            return $this->cartInstance;
+        } elseif ($uuid) {
+            $this->cartInstance = Cart::query()->where('uuid', $uuid)->first();
+            return $this->cartInstance;
+        }
+        return null;
     }
 
     /**
@@ -81,8 +109,6 @@ class CartService implements CartInterface
     }
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function showCartItems(): ?Model
     {
@@ -101,31 +127,6 @@ class CartService implements CartInterface
         if (!$this->exists()) {
             $this->create();
         }
-    }
-
-    /**
-     */
-    public function exists(): bool
-    {
-        return $this->cartId() && $this->model();
-    }
-
-    public function cartId()
-    {
-        return $this->sessionManager->get($this->sessionKey);
-    }
-
-    public function model(): Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
-    {
-        $uuid = $this->cartId();
-
-        if ($uuid && isset($this->cartInstance)) {
-            return $this->cartInstance;
-        } elseif ($uuid) {
-            $this->cartInstance = Cart::query()->where('uuid', $uuid)->first();
-            return $this->cartInstance;
-        }
-        return null;
     }
 
     /**
@@ -151,7 +152,7 @@ class CartService implements CartInterface
 
     /**
      */
-    public function addItem($variation_id, $price, $quantity = 0)
+    public function addItem($variation_id, $price, $quantity = 1)
     {
         $variation = Variation::query()->find($variation_id);
 
@@ -160,11 +161,15 @@ class CartService implements CartInterface
         if ($existingVariation = $this->cartItemExists($variation->id)) {
             $quantity += $existingVariation->pivot->quantity;
         }
+        $price = $existingVariation->pivot->price ?? $price;
+
+        $quantity = min($quantity, $variation->StockCount());
 
         $this->cartInstance->variations()->syncWithoutDetaching([
             $variation->id => [
-                'quantity' => min($quantity, $variation->StockCount()),
-                'price' => $existingVariation->pivot->price ?? $price,
+                'quantity' => $quantity,
+                'price' => $price,
+                'total' => ($quantity * $price),
             ]
         ]);
     }
@@ -187,15 +192,11 @@ class CartService implements CartInterface
 
     public function cartSubTotal(): float|int
     {
-        $this->findOrCreateCartInstance();
-
-        $subtotal = 0;
-
-        foreach ($this->items() as $item) {
-            $subtotal += $this->calculateCartItemPrice($item->pivot->quantity, $item->pivot->price);
+        if ($this->exists()) {
+//            dd('1');
+            return $this->cartInstance->variations()->sum('total');
         }
-
-        return $subtotal;
+        return 0;
     }
 
     public function calculateCartItemPrice($quantity, $price): float|int
@@ -221,5 +222,27 @@ class CartService implements CartInterface
     {
         $this->cartInstance = null;
         session()->forget($this->sessionKey);
+    }
+
+    public function removeItemFromCart(Variation $variation)
+    {
+        $this->getCartInstance()?->variations()->detach($variation);
+    }
+
+    public function getCartInstance()
+    {
+        if ($this->exists()) {
+            return $this->cartInstance;
+        } else {
+            return null;
+        }
+    }
+
+    public function updateItemQuantity(Variation $variation, $quantity)
+    {
+        $this->getCartInstance()?->variations()->updateExistingPivot($variation->id, [
+            'quantity' => $quantity,
+            'total' => $quantity * $variation->price // calculates new total
+        ]);
     }
 }

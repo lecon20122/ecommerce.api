@@ -66,17 +66,15 @@ function ProductWithVariationsList({product, locale}: Props) {
 
   return (
     <div key={product.id} className='lg:flex-[0_1_19%] flex-[0_1_45%] md:flex-[0_1_30%]'>
-      <div>
+      <div
+        className={'flex items-center justify-center aspect-[182/241.5] lg:aspect-[315/418] lg:w-[315px] lg:h-[418px]'}>
         <img src={availableMedia ? availableMedia : 'https://singlecolorimage.com/get/a0aab0/405x539'}
-             className={`aspect-[61/81] w-full h-full xl:w-[304.66] cursor-pointer ${srcLoaded ? "block" : "hidden"} `}
+             className={`w-full h-full cursor-pointer ${srcLoaded ? "block" : "hidden"} `} // 182 x 241.5
              onLoad={() => setSrcLoaded(true)}
              onClick={(() => handleClickOnProduct(product))}
              alt={product.title[locale as keyof typeof product.title]}/>
         {!srcLoaded &&
-        <div
-          className="flex items-center justify-center aspect-[61/81] w-full h-full bg-grey-600">
-          <DotLoading style={{fontSize: 24}}/>
-        </div>
+        <DotLoading style={{fontSize: 24}}/>
         }
       </div>
 

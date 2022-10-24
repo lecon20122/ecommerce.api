@@ -44,7 +44,7 @@ class VariationTest extends TestCase
             'product_id' => $product->id,
             'store_id' => $product->store_id,
             'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 100, 100)
+                0 => UploadedFile::fake()->image("test.webp", 100, 100)
             ]
         ];
 

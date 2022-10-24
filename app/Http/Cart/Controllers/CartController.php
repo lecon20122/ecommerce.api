@@ -5,7 +5,9 @@ namespace App\Http\Cart\Controllers;
 use App\Domain\Cart\Contracts\CartInterface;
 use App\Domain\Cart\Models\Cart;
 use App\Domain\Cart\Services\CartService;
+use App\Domain\Variation\Models\Variation;
 use App\Http\Cart\Requests\StoreCartRequest;
+use App\Http\Cart\Requests\UpdateCartItemQuantityRequest;
 use App\Http\Cart\Requests\UpdateCartRequest;
 use Application\Controllers\BaseController;
 use Exception;
@@ -19,6 +21,9 @@ use Inertia\Inertia;
  */
 class CartController extends BaseController
 {
+    /**
+     * @param CartInterface $cartService
+     */
     public function __construct(protected CartInterface $cartService)
     {
     }
@@ -32,7 +37,9 @@ class CartController extends BaseController
     {
         try {
             return Inertia::render('Client/Cart', [
-                'items' => $this->cartService->showCartItems()
+                'items' => $this->cartService->showCartItems(),
+                'cartSubTotal' => $this->cartService->cartSubTotal(),
+
             ]);
         } catch (Exception $exception) {
             return $this->redirectBackWithMessage($exception->getMessage());
@@ -60,7 +67,7 @@ class CartController extends BaseController
     {
         try {
             DB::beginTransaction();
-            $this->cartService->addItem($request->validated('variation_id'), $request->validated('price'), $request->validated('quantity'));
+            $this->cartService->addItem($request->validated('variation_id'), $request->validated('price'));
             DB::commit();
             return $this->redirectBackWithMessage('item added to cart successfully');
         } catch (Exception $exception) {
@@ -107,19 +114,47 @@ class CartController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return Response
+     * @param Cart $cart
+     * @param CartService $service
+     * @return void
      */
     public function destroy(Cart $cart, CartService $service)
     {
+        //
+    }
+
+    /**
+     * @param Variation $variation
+     * @return RedirectResponse
+     */
+    public function removeItem(Variation $variation): RedirectResponse
+    {
         try {
             DB::beginTransaction();
-            $service->delete($cart);
+            $this->cartService->removeItemFromCart($variation);
             DB::commit();
-            return $cart;
+            return $this->redirectBackWithMessage('item removed from cart');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->sendError($exception->getMessage(), 400);
+            return $this->redirectBackWithMessage($exception->getMessage());
+        }
+    }
+
+    /**
+     * @param Variation $variation
+     * @param UpdateCartItemQuantityRequest $request
+     * @return RedirectResponse
+     */
+    public function updateItemQuantity(Variation $variation, UpdateCartItemQuantityRequest $request): RedirectResponse
+    {
+        try {
+            DB::beginTransaction();
+            $this->cartService->updateItemQuantity($variation, $request->validated('quantity'));
+            DB::commit();
+            return $this->redirectBackWithMessage('item quantity updated');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 }

@@ -17,9 +17,4 @@ class CartVariation extends Pivot
     {
         return $this->belongsTo(User::class);
     }
-
-    public function getUser()
-    {
-
-    }
 }

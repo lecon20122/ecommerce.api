@@ -3,14 +3,17 @@ import {HomePageCategory} from "../../types/CategoryType";
 import {Category, ProductWithThumbnail} from "../../types/products";
 import MobileNavigation from "../../components/client/includes/MobileNavigation";
 import HomePageTabsComponents from "../../components/client/includes/HomePageTabsComponents";
+import {usePage} from "@inertiajs/inertia-react";
 
 interface Props {
   categories: Category[]
+  stock_count: any
   products: ProductWithThumbnail[]
   locale: string
 }
 
-export default function HomePage({categories, locale}: Props) {
+export default function HomePage({categories, locale }: Props) {
+
   const AppLayout = lazy(() => import('../../layouts/client'));
 
   return (

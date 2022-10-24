@@ -1,4 +1,4 @@
-import React, {Dispatch, MouseEventHandler, SetStateAction, useState} from 'react';
+import React, {useState} from 'react';
 import {Variation} from "../../../../types/VariationType";
 import './SizeRadioButtonComponent.css'
 
@@ -11,7 +11,13 @@ interface Props {
 }
 
 
-function SizeRadioButtonComponent({variation, disabled, setCurrentSizeVariationId, setToggleVariationQuantity , setCurrentMaxStockCount}: Props) {
+function SizeRadioButtonComponent({
+                                    variation,
+                                    disabled,
+                                    setCurrentSizeVariationId,
+                                    setToggleVariationQuantity,
+                                    setCurrentMaxStockCount
+                                  }: Props) {
 
   const [check, setCheck] = useState<boolean>(false)
 
@@ -31,8 +37,9 @@ function SizeRadioButtonComponent({variation, disabled, setCurrentSizeVariationI
              onChange={event => onClick(event)}/>
       <label className={`flex flex-col p-1 border-2 ${disabled ? 'text-gray-400' : ''} border-gray-400 cursor-pointer`}
              htmlFor={`radio${variation.id}`}>
-        <span className="text-sm grow lg:text-lg font-semibold uppercase">{variation.title}</span>
-        <span className="lg:text-lg grow text-sm font-bold">EGP {variation.price}</span>
+        <span
+          className="text-sm grow lg:text-md font-semibold uppercase">{variation.variation_type_value?.value.en}</span>
+        <span className="lg:text-md grow text-sm font-bold">EGP {variation.price}</span>
       </label>
       {disabled && <span className="text-xs text-red-600">OUT OF STOCK</span>}
     </div>

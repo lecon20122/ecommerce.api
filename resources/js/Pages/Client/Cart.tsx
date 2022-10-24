@@ -1,19 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import AppLayout from "../../layouts/client";
 import {Cart as CartType} from "../../types/CartType";
+import {Inertia} from "@inertiajs/inertia";
+import route from "ziggy-js";
+import {Variation} from "../../types/VariationType";
 
 interface Props {
   items: CartType
+  cartSubTotal: number
 }
 
-function Cart({items}: Props) {
+function Cart({items, cartSubTotal}: Props) {
+  const [qty, setQty] = useState(0)
 
+  const onClickUpdateQuantity = (variation: Variation) => {
+    Inertia.post(route('client.update.cart.item.quantity', {variation: variation}), {quantity: qty}, {
+      preserveState: false,
+    })
+  }
   const cartItems = items.variations.map((variation) => {
 
     return (
       <div key={variation.id}>
         <div className="flex flex-wrap lg:flex-row gap-5  mb-4">
-          <div className="w-full lg:w-2/5 xl:w-2/4">
+          <div className="flex space-x-5 items-center flex-space-between w-full lg:w-2/5 xl:w-2/4">
             <figure className="flex leading-5">
               <div>
                 <div className="block w-16 h-16 rounded border border-gray-200 overflow-hidden">
@@ -32,48 +42,38 @@ function Cart({items}: Props) {
                 </p>
               </figcaption>
             </figure>
-          </div>
-          <div className="">
-            <div className="w-24 relative">
-              <input
-                type={'number'}
-                defaultValue={variation.pivot.quantity}
-                min={1}
-                max={variation.stock_count}
-                className="block appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full">
-              </input>
+            <div className="">
+              <div className="w-24 relative flex space-x-1 items-center justify-center">
+                <input
+                  type={'number'}
+                  onChange={event => setQty(parseInt(event.target.value))}
+                  defaultValue={variation.pivot.quantity}
+
+                  min={1}
+                  max={variation.stock_count}
+                  className="block appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full">
+                </input>
+                <button
+                  className='text-blue-600'
+                  disabled={qty == 0}
+                  onClick={event => onClickUpdateQuantity(variation)}>update
+                </button>
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="leading-5">
-              <p
-                className="font-semibold not-italic">EGP {variation.pivot.quantity * parseFloat(variation.pivot.price)}</p>
-              <small className="text-gray-400"> EGP {variation.price} x {variation.pivot.quantity} </small>
+            <div>
+              <div className="leading-5">
+                <p
+                  className="font-semibold not-italic">EGP {variation.pivot.quantity * parseFloat(variation.pivot.price)}</p>
+                <small className="text-gray-400"> EGP {variation.price} x {variation.pivot.quantity} </small>
+              </div>
             </div>
           </div>
           <div className="flex-auto">
             <div className="float-right flex space-x-1">
-              <a href="#"
-                 className="px-3 py-2 inline-block text-blue-600 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                     width="20" height="20"
-                     viewBox="0 0 172 172"
-                     style={{fill: '#000000'}}>
-                  <g fill="none" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt"
-                     strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0"
-                     fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none"
-                     style={{mixBlendMode: 'normal'}}>
-                    <path d="M0,172v-172h172v172z" fill="none"/>
-                    <g fill="#000000">
-                      <path
-                        d="M148.35,6.88c-4.28656,0 -8.55969,1.67969 -11.825,4.945l-2.795,2.795l23.65,23.65c-0.01344,0.01344 2.795,-2.795 2.795,-2.795c6.54406,-6.54406 6.53063,-17.11937 0,-23.65c-3.27875,-3.26531 -7.53844,-4.945 -11.825,-4.945zM128.4625,20.7475c-0.77937,0.1075 -1.505,0.49719 -2.0425,1.075l-111.585,111.6925c-0.44344,0.40313 -0.77937,0.92719 -0.9675,1.505l-6.88,25.8c-0.30906,1.1825 0.04031,2.43219 0.90031,3.29219c0.86,0.86 2.10969,1.20938 3.29219,0.90031l25.8,-6.88c0.57781,-0.18812 1.10188,-0.52406 1.505,-0.9675l111.6925,-111.585c1.37063,-1.33031 1.38406,-3.52062 0.05375,-4.89125c-1.33031,-1.37062 -3.52062,-1.38406 -4.89125,-0.05375l-111.0475,111.0475l-13.975,-13.975l111.0475,-111.0475c1.03469,-0.99437 1.34375,-2.53969 0.76594,-3.85656c-0.57781,-1.31687 -1.90812,-2.13656 -3.34594,-2.05594c-0.1075,0 -0.215,0 -0.3225,0z"/>
-                    </g>
-                  </g>
-                </svg>
-              </a>
-              <a
-                className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100"
-                href="#"> Remove </a>
+              <div
+                onClick={event => onClickRemove(variation)}
+                className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"> Remove
+              </div>
             </div>
           </div>
         </div>
@@ -81,6 +81,13 @@ function Cart({items}: Props) {
       </div>
     )
   })
+
+  const onClickRemove = (variation: Variation) => {
+
+    Inertia.post(route('client.remove.item.from.cart', {variation: variation}), undefined, {
+      preserveState: false,
+    })
+  }
 
   return (
     <AppLayout>
@@ -105,20 +112,20 @@ function Cart({items}: Props) {
               <article className="border border-gray-200 bg-white shadow-sm rounded mb-5 p-3 lg:p-5">
                 <ul className="mb-5">
                   <li className="flex justify-between text-gray-600  mb-1">
-                    <span>Total price:</span>
-                    <span>$245.97</span>
+                    <span>Cart subtotal:</span>
+                    <span>EGP {cartSubTotal}</span>
                   </li>
-                  <li className="flex justify-between text-gray-600  mb-1">
-                    <span>Discount:</span>
-                    <span className="text-green-500">- $60.00</span>
-                  </li>
-                  <li className="flex justify-between text-gray-600  mb-1">
-                    <span>TAX:</span>
-                    <span>$14.00</span>
-                  </li>
+                  {/*<li className="flex justify-between text-gray-600  mb-1">*/}
+                  {/*  <span>Discount:</span>*/}
+                  {/*  <span className="text-green-500">- $60.00</span>*/}
+                  {/*</li>*/}
+                  {/*<li className="flex justify-between text-gray-600  mb-1">*/}
+                  {/*  <span>TAX:</span>*/}
+                  {/*  <span>$14.00</span>*/}
+                  {/*</li>*/}
                   <li className="text-lg font-bold border-t flex justify-between mt-3 pt-3">
                     <span>Total price:</span>
-                    <span>$420.00</span>
+                    <span>EGP {cartSubTotal}</span>
                   </li>
                 </ul>
 

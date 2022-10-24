@@ -3,6 +3,7 @@
 namespace App\App\Providers;
 
 use App\Domain\Cart\Models\Cart;
+use App\Domain\Cart\Models\CartVariation;
 use App\Domain\Category\Models\Category;
 use App\Domain\Location\Models\Address;
 use App\Domain\Order\Models\Order;
@@ -13,6 +14,7 @@ use App\Domain\Variation\Models\Variation;
 use App\Events\OrderPlacedEvent;
 use App\Events\StockChangedEvent;
 use App\Http\Cart\Observers\CartObserver;
+use App\Http\Cart\Observers\CartVariationObserver;
 use App\Http\Category\Observers\CategoryObserver;
 use App\Http\Location\Observer\AddressObserver;
 use App\Http\Order\Observers\OrderObserver;

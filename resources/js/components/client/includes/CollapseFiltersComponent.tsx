@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Collapse} from "antd-mobile";
 import {AddOutline, MinusOutline} from "antd-mobile-icons";
 import {Inertia} from "@inertiajs/inertia";
@@ -72,11 +72,11 @@ function CollapseFilters({filters, category, maxPrice}: Props) {
           {Object.keys(filters[key]).map((item, value) => { // ['black' , '8']
             return (
               <button
-                className={`${selectedFilters[key].includes(item) ? 'w-[30px] h-[30px] border-black rounded-full inline-flex items-center justify-center border'
-                  : 'w-[30px] h-[30px] rounded-full hover:border-black border inline-flex items-center justify-center'}`}
+                className={`${selectedFilters[key].includes(item) ? 'mx-[2px] w-[30px] h-[30px] border-black inline-flex items-center justify-center border'
+                  : 'mx-[2px] w-[30px] h-[30px] hover:border-black border inline-flex items-center justify-center'}`}
                 key={value} name={key} value={item}
                 onClick={(e) => onClick(key, item)}>
-                <div className='w-[20px] h-[20px] rounded-full border-black border'
+                <div className='w-[20px] h-[20px] border-black border'
                      style={{backgroundColor: item}} onClick={(e) => onClick(key, item)}/>
                 {/*<span className='text-black hidden xl:block' onClick={(e) => onClick(key, item)}>{item}</span>*/}
               </button>

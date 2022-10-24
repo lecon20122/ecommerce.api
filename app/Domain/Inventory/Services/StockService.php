@@ -3,19 +3,24 @@
 namespace App\Domain\Inventory\Services;
 
 use App\Domain\Variation\Models\Variation;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use JetBrains\PhpStorm\NoReturn;
 
 class StockService
 {
 
-    public function store(array $data)
+    #[NoReturn] public function store(array $data)
     {
         $variation = $this->isStockable($data['variation_id']);
         $variation?->stocks()->create($data);
     }
 
-    public function isStockable($variation_id): Variation|null
+    public function isStockable($variation_id): Builder|array|Collection|Model|null
     {
-        if ($variation = Variation::query()->find($variation_id)->where('is_stockable', true)->first()) {
+        $variation = Variation::query()->find($variation_id);
+        if ($variation->is_stockable) {
             return $variation;
         } else {
             return null;

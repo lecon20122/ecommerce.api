@@ -9,24 +9,17 @@ use App\Domain\Inventory\Models\Stock;
 use App\Domain\Location\Enums\AddressTypeEnums;
 use App\Domain\Location\Models\Address;
 use App\Domain\Location\Models\District;
-use App\Domain\Location\Services\AddressService;
-use App\Domain\Order\Models\Order;
-use App\Domain\Order\Models\OrderVariation;
-use App\Domain\Order\Services\OrderService;
 use App\Domain\Shipping\Models\ShippingType;
 use App\Domain\Store\Models\Store;
-use App\Events\OrderPlacedEvent;
+use App\Domain\Variation\Models\Variation;
 use App\Listeners\AssignUserToCart;
-use App\Listeners\SyncVariationStockAfterOrderPlaced;
 use Domain\User\Models\User;
 use Exception;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use JetBrains\PhpStorm\NoReturn;
-use Tests\Feature\Order\OrderTest;
 use Tests\TestCase;
-use function PHPUnit\Framework\assertNull;
 
 class CartTest extends TestCase
 {
@@ -35,38 +28,9 @@ class CartTest extends TestCase
 
     protected const CONFIG_SESSION_KEY = 'cart.session.key';
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    #[NoReturn] public function testNonAuthenticatedUserCanAddItemsToCart()
-    {
-        $stock = Stock::factory()->create(); // stock 5 here
-
-        Stock::create([
-            'variation_id' => $stock->variation_id,
-            'amount' => 3,
-        ]);
-
-        $data = [
-            'quantity' => 2,
-            'price' => 241.2,
-            'variation_id' => $stock->variation_id,
-        ];
-
-        $this->post(route('client.add.to.cart'), $data)->assertRedirect();
-        $this->assertDatabaseHas('cart_variation', [
-            'quantity' => 2,
-            'price' => 241.2,
-            'variation_id' => $stock->variation_id,
-            'cart_id' => 1,
-        ]);
-    }
-
     #[NoReturn] public function testNotLoggedInUserCanUpdateAExistingCartItems()
     {
-        $stock = Stock::factory()->create(); // stock 5 here
+        $stock = Stock::factory()->create(); // stock 15 here
 
         Stock::create([
             'variation_id' => $stock->variation_id,
@@ -74,32 +38,30 @@ class CartTest extends TestCase
         ]);
 
         $data = [
-            'quantity' => 2,
             'price' => 241.2,
             'variation_id' => $stock->variation_id,
         ];
         $this->post(route('client.add.to.cart'), $data)->assertRedirect();
         $data2 = [
-            'quantity' => 1,
             'price' => 241.5,
             'variation_id' => $stock->variation_id,
         ];
         $this->post(route('client.add.to.cart'), $data2)->assertRedirect();
 
         $this->assertDatabaseHas('cart_variation', [
-            'quantity' => 3,
+            'quantity' => 2,
             'price' => 241.2,
             'variation_id' => $stock->variation_id,
             'cart_id' => 1,
+            'total' => 482.4
         ]);
     }
 
     public function testAssignUserToCartWhenLoggedIn()
     {
-        $stock = Stock::factory()->create(); // stock 5 here
+        $stock = Stock::factory()->create(); // stock 15 here
         $sessionKey = config(self::CONFIG_SESSION_KEY);
         $data = [
-            'quantity' => 2,
             'price' => 241.2,
             'variation_id' => $stock->variation_id,
         ];
@@ -122,7 +84,7 @@ class CartTest extends TestCase
     #[NoReturn] public function testCartCanCalculateSubTotal()
     {
         $this->createCartAndStock();
-        $expectedValue = (3 * 241.2) + (6 * 154.5);
+        $expectedValue = (2 * 241.2);
         $this->assertEquals($expectedValue, (new CartService(session()))->cartSubTotal());
     }
 
@@ -132,14 +94,12 @@ class CartTest extends TestCase
         $stock2 = Stock::factory()->create(); // stock 15 here
 
         $data = [
-            'quantity' => 3,
             'price' => 241.2,
             'variation_id' => $stock->variation_id,
         ];
         $data2 = [
-            'quantity' => 6,
-            'price' => 154.5,
-            'variation_id' => $stock2->variation_id,
+            'price' => 241.2,
+            'variation_id' => $stock->variation_id,
         ];
         $this->post(route('client.add.to.cart'), $data)->assertRedirect();
         $this->post(route('client.add.to.cart'), $data2)->assertRedirect();
@@ -182,4 +142,46 @@ class CartTest extends TestCase
         $this->assertNull(Cart::first());
     }
 
+
+    public function testRemoveItemFromCart()
+    {
+        $stock = Stock::factory()->create(); // stock 15 here
+
+        Stock::create([
+            'variation_id' => $stock->variation_id,
+            'amount' => 3,
+        ]);
+
+        $data = [
+            'price' => 241.2,
+            'variation_id' => $stock->variation_id,
+        ];
+        $variation = Variation::find($stock->variation_id);
+        $this->post(route('client.add.to.cart'), $data)->assertRedirect();
+        $this->post(route('client.remove.item.from.cart', ['variation' => $variation]))->assertRedirect();
+
+        $this->assertEmpty(CartVariation::all()->toArray());
+
+    }
+
+    public function testUpdateCartItemQuantity()
+    {
+        $stock = Stock::factory()->create(); // stock 15 here
+
+        Stock::create([
+            'variation_id' => $stock->variation_id,
+            'amount' => 3,
+        ]);
+
+        $data = [
+            'price' => 241.2,
+            'variation_id' => $stock->variation_id,
+        ];
+        $variation = Variation::find($stock->variation_id);
+        $this->post(route('client.add.to.cart'), $data)->assertRedirect();
+        $this->post(route('client.update.cart.item.quantity', ['variation' => $variation]), ['quantity' => 3])->assertRedirect();
+
+        $this->assertEquals(3, CartVariation::first()->toArray()['quantity']);
+
+    }
 }

@@ -95,7 +95,7 @@ class ProductAttributeValueController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError($exception->getMessage();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 

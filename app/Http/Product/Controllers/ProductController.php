@@ -144,7 +144,7 @@ class ProductController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 
@@ -164,7 +164,7 @@ class ProductController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 
@@ -177,7 +177,7 @@ class ProductController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 
@@ -190,7 +190,7 @@ class ProductController extends BaseController
             return $this->redirectBackWithMessage('category detached');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 

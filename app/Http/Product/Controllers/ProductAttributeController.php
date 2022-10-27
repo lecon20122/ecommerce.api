@@ -57,7 +57,7 @@ class ProductAttributeController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 
@@ -99,7 +99,7 @@ class ProductAttributeController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 

@@ -128,7 +128,7 @@ class VariationController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithMessage('ops');
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -141,7 +141,7 @@ class VariationController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithMessage('ops');
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -154,7 +154,7 @@ class VariationController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithMessage('ops');
+            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 
@@ -167,7 +167,7 @@ class VariationController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 
@@ -193,7 +193,7 @@ class VariationController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 
@@ -206,7 +206,7 @@ class VariationController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError();
+            return $this->redirectBackWithError($exception->getMessage());
         }
     }
 

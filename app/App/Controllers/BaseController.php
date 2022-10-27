@@ -4,6 +4,7 @@ namespace Application\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 class BaseController extends Controller
@@ -73,6 +74,7 @@ class BaseController extends Controller
 
     public function redirectBackWithError($message = 'ops, something went wrong! dont worry we on it'): RedirectResponse
     {
+        Log::error($message);
         return redirect()->back()->withErrors($message);
     }
 }

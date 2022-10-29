@@ -167,7 +167,7 @@ class VariationController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError($exception->getMessage());
+            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 
@@ -180,7 +180,7 @@ class VariationController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError($exception->getMessage());
+            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 
@@ -193,7 +193,7 @@ class VariationController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError($exception->getMessage());
+            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 
@@ -206,7 +206,7 @@ class VariationController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError($exception->getMessage());
+            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 

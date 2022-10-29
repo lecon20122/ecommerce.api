@@ -82,7 +82,7 @@ class ProductController extends BaseController
                 'product' => $service->showProductDetails($product)
             ]);
         } catch (Exception $exception) {
-            return $this->redirectBackWithError($exception->getMessage());
+            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ class ProductController extends BaseController
                 'categories' => (new CategoryService())->getCategories(), //TODO: CACHE ALL CATEGORIES
             ]);
         } catch (Exception $exception) {
-            return $this->redirectBackWithError($exception->getMessage());
+            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 
@@ -144,7 +144,7 @@ class ProductController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError($exception->getMessage());
+            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 
@@ -164,7 +164,7 @@ class ProductController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError($exception->getMessage());
+            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 
@@ -177,7 +177,7 @@ class ProductController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError($exception->getMessage());
+            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 
@@ -190,7 +190,7 @@ class ProductController extends BaseController
             return $this->redirectBackWithMessage('category detached');
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithError($exception->getMessage());
+            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 

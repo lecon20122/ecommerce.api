@@ -72,7 +72,7 @@ class BaseController extends Controller
         return Redirect::route($route, $params)->with('message', $message);
     }
 
-    public function redirectBackWithError($message = 'ops, something went wrong! dont worry we on it'): RedirectResponse
+    public function logAndRedirectBackWithError($message = 'ops, something went wrong! dont worry we on it'): RedirectResponse
     {
         Log::error($message);
         return redirect()->back()->withErrors($message);

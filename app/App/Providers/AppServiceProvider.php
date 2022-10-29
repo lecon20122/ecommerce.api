@@ -28,10 +28,6 @@ class AppServiceProvider extends ServiceProvider
     {
         JsonResource::withoutWrapping();
 
-        if (config('app.env') === 'production') {
-            URL::forceScheme('https');
-        }
-
         Model::preventLazyLoading(!$this->app->isProduction());
     }
 }

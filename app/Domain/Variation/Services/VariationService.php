@@ -54,11 +54,15 @@ class VariationService
         $data = $request->validated();
 
         $variationType = VariationType::find($data['variation_type_id']);
+        $variationTypeValue = VariationTypeValue::find($data['variation_type_value_id']);
 
         $data['is_stockable'] = $variationType->is_stockable;
 
+
         $product = Product::query()
             ->find($data['product_id']);
+
+        $data['title'] = $this->formVariationTitle($variationTypeValue->value, $product->title);
 
         $variation = $product->variations()
             ->create($data);
@@ -66,6 +70,11 @@ class VariationService
         if ($request->hasFile('images') && $variationType->is_mediable && $variation) {
             $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id, ['primary' => false]);
         }
+    }
+
+    public function formVariationTitle($typeValue, $productTitle): string
+    {
+        return $typeValue . ' ' . $productTitle;
     }
 
     public function update(array $data, Variation $variation, ImageService $imageService)

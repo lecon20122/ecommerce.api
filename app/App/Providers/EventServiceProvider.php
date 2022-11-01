@@ -3,7 +3,6 @@
 namespace App\App\Providers;
 
 use App\Domain\Cart\Models\Cart;
-use App\Domain\Cart\Models\CartVariation;
 use App\Domain\Category\Models\Category;
 use App\Domain\Location\Models\Address;
 use App\Domain\Order\Models\Order;
@@ -24,7 +23,6 @@ use App\Http\Store\Observers\StoreObserver;
 use App\Http\Variation\Observers\VariationObserver;
 use App\Listeners\AssignUserToCart;
 use App\Listeners\DestroyCart;
-use App\Listeners\SyncVariationStockAfterOrderPlaced;
 use App\Listeners\UpdateVariationStock;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
@@ -47,7 +45,7 @@ class EventServiceProvider extends ServiceProvider
             AssignUserToCart::class,
         ],
         OrderPlacedEvent::class => [
-            SyncVariationStockAfterOrderPlaced::class,
+//            SyncVariationStockAfterOrderPlaced::class,
             DestroyCart::class,
         ],
         StockChangedEvent::class => [

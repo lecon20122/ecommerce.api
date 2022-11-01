@@ -3,9 +3,10 @@
 namespace App\Http\Order\Controllers;
 
 use App\Domain\Cart\Contracts\CartInterface;
-use App\Domain\Location\Services\AddressService;
 use App\Domain\Order\Services\OrderService;
+use App\Domain\Shipping\Models\ShippingType;
 use App\Http\Controllers\Controller;
+use App\Http\Location\Resources\AddressResource;
 use App\Http\Order\Requests\StoreOrderRequest;
 use Application\Controllers\BaseController;
 use Exception;
@@ -13,27 +14,52 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class OrderController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @param CartInterface $cart
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function index()
+    public function index(CartInterface $cart): \Inertia\Response|RedirectResponse
     {
-        //
+        try {
+            return Inertia::render('Client/Checkout',
+                [
+                    'user_addresses' => AddressResource::collection(auth('web')->user()?->load('addresses')->addresses),
+                    'shippingTypes' => ShippingType::query()->get(['type', 'price', 'id']),
+                    'items' => $cart->showCartItems(),
+                    'cartSubTotal' => $cart->cartSubTotal(),
+                ]
+            );
+        } catch (Exception $exception) {
+            return $this->redirectBackWithMessage($exception->getMessage());
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return RedirectResponse|\Inertia\Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function create()
+    public function orderCompletedStatus(): \Inertia\Response|RedirectResponse
     {
-        //
+        try {
+            return Inertia::render('Client/Thankyou',
+                [
+                    'orderNumber' => session()->get('order_number'),
+                ]);
+        } catch (Exception $exception) {
+            return $this->redirectBackWithMessage($exception->getMessage());
+        }
     }
 
     /**
@@ -47,9 +73,9 @@ class OrderController extends BaseController
     {
         try {
             DB::beginTransaction();
-            $service->checkout($request->validated());
+            $orderNumber = $service->checkout($request->validated());
             DB::commit();
-            return $this->redirectBackWithMessage('success');
+            return Redirect::route('client.complete.checkout')->with('order_number', $orderNumber);
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithMessage($exception->getMessage());

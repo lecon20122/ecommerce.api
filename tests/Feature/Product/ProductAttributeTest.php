@@ -25,7 +25,8 @@ class ProductAttributeTest extends TestCase
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
         $data = [
-            'attribute' => 'material',
+            'en' => 'material',
+            'ar' => 'خامة',
             'is_filterable' => true,
         ];
         $response = $this->post(route('admin.add.attribute'), $data)->assertRedirect();
@@ -40,7 +41,8 @@ class ProductAttributeTest extends TestCase
         $this->actingAs($admin, 'admin');
         $attribute = ProductAttribute::factory()->create();
         $data = [
-            'attribute' => 'material',
+            'en' => 'material',
+            'ar' => 'خامة',
         ];
         $response = $this->post(route('admin.update.attribute', ['attribute' => $attribute]), $data)->assertRedirect();
 
@@ -85,7 +87,7 @@ class ProductAttributeTest extends TestCase
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
 
-        $attribute = ProductAttribute::factory()->create();
+         ProductAttribute::factory()->create();
         $attribute2 = ProductAttribute::factory()->create();
         $attributeValue = ProductAttributeValue::factory()->create();
         $product = Product::factory()->create();

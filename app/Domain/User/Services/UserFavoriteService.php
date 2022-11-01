@@ -16,7 +16,7 @@ class UserFavoriteService
 
     public function store($productId)
     {
-        if ($productId['product_id'] && auth()->check()) {
+        if (isset($productId['product_id']) && auth()->check()) {
             auth('web')->user()->favorites()->toggle([$productId['product_id']]);
         }
     }

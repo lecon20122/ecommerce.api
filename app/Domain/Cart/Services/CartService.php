@@ -28,7 +28,6 @@ class CartService implements CartInterface
     public function __construct(protected SessionManager $sessionManager)
     {
         $this->sessionKey = config(self::CONFIG_SESSION_KEY);
-
         if (empty($this->sessionKey)) {
             throw new InvalidCartConfigurationException(
                 sprintf(
@@ -66,7 +65,6 @@ class CartService implements CartInterface
     public function model(): Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
     {
         $uuid = $this->cartId();
-
         if ($uuid && isset($this->cartInstance)) {
             return $this->cartInstance;
         } elseif ($uuid) {
@@ -112,12 +110,38 @@ class CartService implements CartInterface
      */
     public function showCartItems(): ?Model
     {
+        if ($this->exists()) {
+            return $this->cartInstance->load(['variations' => function ($query) {
+                $query->with(['parent' => function ($query) {
+                    $query->with('VariationType', 'VariationTypeValue', 'VariationImages');
+                }, 'VariationType', 'VariationTypeValue']);
+            }]);
+        }
+        return null;
+    }
+
+    /**
+     */
+    public function addItem($variation_id, $price, $quantity = 1)
+    {
+        $variation = Variation::query()->find($variation_id);
+
         $this->findOrCreateCartInstance();
-        return $this->cartInstance->load(['variations' => function ($query) {
-            $query->with(['parent' => function ($query) {
-                $query->with('VariationType', 'VariationTypeValue', 'VariationImages');
-            }, 'VariationType', 'VariationTypeValue']);
-        }]);
+
+        if ($existingVariation = $this->cartItemExists($variation->id)) {
+            $quantity += $existingVariation->pivot->quantity;
+        }
+        $price = $existingVariation->pivot->price ?? $price;
+
+        $quantity = min($quantity, $variation->StockCount());
+
+        $this->cartInstance->variations()->syncWithoutDetaching([
+            $variation->id => [
+                'quantity' => $quantity,
+                'price' => $price,
+                'total' => ($quantity * $price),
+            ]
+        ]);
     }
 
     /**
@@ -152,30 +176,6 @@ class CartService implements CartInterface
 
     /**
      */
-    public function addItem($variation_id, $price, $quantity = 1)
-    {
-        $variation = Variation::query()->find($variation_id);
-
-        $this->findOrCreateCartInstance();
-
-        if ($existingVariation = $this->cartItemExists($variation->id)) {
-            $quantity += $existingVariation->pivot->quantity;
-        }
-        $price = $existingVariation->pivot->price ?? $price;
-
-        $quantity = min($quantity, $variation->StockCount());
-
-        $this->cartInstance->variations()->syncWithoutDetaching([
-            $variation->id => [
-                'quantity' => $quantity,
-                'price' => $price,
-                'total' => ($quantity * $price),
-            ]
-        ]);
-    }
-
-    /**
-     */
     public function cartItemExists($variation_id)
     {
         return $this->cartInstance->variations()->find($variation_id);
@@ -193,7 +193,6 @@ class CartService implements CartInterface
     public function cartSubTotal(): float|int
     {
         if ($this->exists()) {
-//            dd('1');
             return $this->cartInstance->variations()->sum('total');
         }
         return 0;

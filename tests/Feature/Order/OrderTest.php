@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Order;
 
+use App\Domain\Cart\Models\CartVariation;
 use App\Domain\Cart\Services\CartService;
 use App\Domain\Inventory\Models\Stock;
 use App\Domain\Location\Enums\AddressTypeEnums;
@@ -13,13 +14,11 @@ use App\Domain\Order\Services\OrderService;
 use App\Domain\Shipping\Models\ShippingType;
 use App\Domain\Store\Models\Store;
 use App\Events\OrderPlacedEvent;
-use App\Listeners\DestroyCart;
 use App\Listeners\SyncVariationStockAfterOrderPlaced;
 use Domain\User\Models\User;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\WithoutEvents;
 use JetBrains\PhpStorm\NoReturn;
 use Tests\TestCase;
 
@@ -38,7 +37,6 @@ class OrderTest extends TestCase
         $this->actingAs($user, 'web');
 
         $this->createCartAndStock();
-
         $district = District::factory()->create();
 
         $address = Address::first();
@@ -55,7 +53,7 @@ class OrderTest extends TestCase
             'nearby_landmark' => 'Care',
         ]);
 
-        $addressType = ShippingType::factory()->create();
+        $addressType = ShippingType::factory()->create(); // payment type
 
 
         $data = [
@@ -76,16 +74,15 @@ class OrderTest extends TestCase
         $stock2 = Stock::factory()->create(); // stock 15 here
 
         $data = [
-            'quantity' => 3,
             'price' => 241.2,
             'variation_id' => $stock->variation_id,
         ];
         $data2 = [
-            'quantity' => 6,
             'price' => 154.5,
             'variation_id' => $stock2->variation_id,
         ];
         $this->post(route('client.add.to.cart'), $data)->assertRedirect();
+
         $this->post(route('client.add.to.cart'), $data2)->assertRedirect();
     }
 
@@ -130,11 +127,11 @@ class OrderTest extends TestCase
 
         $expectedData1 = [
             'variation_id' => 1,
-            'amount' => -3,
+            'amount' => -1,
         ];
         $expectedData2 = [
             'variation_id' => 2,
-            'amount' => -6,
+            'amount' => -1,
         ];
 
         $this->assertDatabaseHas('stocks', $expectedData1);

@@ -15,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class ProductAttributeController extends BaseController
 {
@@ -25,11 +26,18 @@ class ProductAttributeController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return RedirectResponse|\Inertia\Response
      */
-    public function index()
+    public function index(): \Inertia\Response|RedirectResponse
     {
-        //
+        try {
+            return Inertia::render('Dashboard/products/ProductAttributeIndex',
+                [
+                    'productAttributes' => $this->service->indexProductAttribute(),
+                ]);
+        } catch (Exception $exception) {
+            return $this->logAndRedirectBackWithError($exception->getMessage());
+        }
     }
 
     /**
@@ -114,11 +122,11 @@ class ProductAttributeController extends BaseController
         //
     }
 
-    public function attachAttributeToProduct(ProductAttribute $attribute , AttachProductAttributeRequest $request): RedirectResponse
+    public function attachAttributeToProduct(ProductAttribute $attribute, AttachProductAttributeRequest $request): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $this->service->attachAttributeToProduct($attribute , $request->validated());
+            $this->service->attachAttributeToProduct($attribute, $request->validated());
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
@@ -127,11 +135,11 @@ class ProductAttributeController extends BaseController
         }
     }
 
-    public function detachAttributeFromProduct(ProductAttribute $attribute , DetachProductAttributeRequest $request): RedirectResponse
+    public function detachAttributeFromProduct(ProductAttribute $attribute, DetachProductAttributeRequest $request): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $this->service->detachAttributeFromProduct($attribute , $request->validated());
+            $this->service->detachAttributeFromProduct($attribute, $request->validated());
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {

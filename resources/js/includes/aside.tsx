@@ -1,8 +1,7 @@
 import React from "react";
-import {usePage, InertiaLink} from '@inertiajs/inertia-react';
-import {User, LoginInfo} from '../types/auth';
+import {InertiaLink, usePage} from '@inertiajs/inertia-react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSignOutAlt, faUserAlt} from '@fortawesome/free-solid-svg-icons';
+import {faUserAlt} from '@fortawesome/free-solid-svg-icons';
 import route from 'ziggy-js';
 
 export default function Aside() {
@@ -99,9 +98,9 @@ export default function Aside() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
               </svg>
             </span>
             <span className="ml-3">Categories</span>
@@ -186,6 +185,31 @@ export default function Aside() {
             <span className="ml-3">Variations Settings</span>
           </InertiaLink>
         </li>
+        <li className="hover:bg-blue-100 relative">
+          <InertiaLink
+            href={route('admin.index.attribute')}
+            className="flex px-5 py-3 items-center w-full text-white hover:text-white hover:bg-blue-700"
+          >
+            <span aria-hidden="true">
+              <svg
+                className="text-white opacity-50"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="3"/>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+            </span>
+            <span className="ml-3">Product Attributes Settings</span>
+          </InertiaLink>
+        </li>
 
 
         <li className="relative">
@@ -205,8 +229,8 @@ export default function Aside() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                <polyline points="13 2 13 9 20 9"></polyline>
+                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+                <polyline points="13 2 13 9 20 9"/>
               </svg>
             </span>
             <span className="ml-3">More pages</span>

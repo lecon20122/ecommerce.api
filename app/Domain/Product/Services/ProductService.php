@@ -66,7 +66,7 @@ class ProductService
                     'ar' => $request->validated('ar'),
                 ];
             }
-            $product = $store->products()->create($data);
+            $store->products()->create($data);
         }
     }
 

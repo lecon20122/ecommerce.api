@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('product_attributes', function (Blueprint $table) {
             $table->id();
-            $table->string('attribute');
+            $table->json('attribute');
             $table->boolean('is_filterable')->default(false);
             $table->timestamps();
         });

@@ -2,10 +2,10 @@ import React, {useEffect} from 'react'
 import Footer from '../components/client/includes/footer'
 import Navbar from '../components/client/includes/navbar'
 import CategoriesNavigation from "../components/client/includes/categoriesNavigation";
-import {message} from 'antd';
 import {usePage} from "@inertiajs/inertia-react";
-import {Page, PageProps} from "@inertiajs/inertia";
+import {Page} from "@inertiajs/inertia";
 import {AlertColor} from "@mui/material";
+import {Toast} from 'antd-mobile'
 
 
 interface IAppLayout {
@@ -24,7 +24,10 @@ export default function AppLayout({children}: IAppLayout) {
 
   useEffect(() => {
     if (flash.message) {
-      message.success(flash.message)
+      Toast.show({
+        content: flash.message,
+        position: 'top',
+      })
     }
   }, [flash.message])
 

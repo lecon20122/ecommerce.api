@@ -40,7 +40,7 @@ function ImageSliderWithZoom({media, currentMedia}: Props) {
 
   return (
     <div className='flex md:flex-row flex-col basis-[60.83333333333333%]'>
-      <div className='order-first lg:order-last basis-7/8'>
+      <div className='order-first lg:order-last basis-7/8 mx-auto'>
         <Swiper
           ref={swiperRef}
           indicator={(total, current) => (

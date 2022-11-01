@@ -17,6 +17,7 @@ Route::post('products/{product}/attach', [ProductController::class, 'attachCateg
 Route::post('products/{product}/detach', [ProductController::class, 'detachCategoryFromProduct'])->name('admin.detach.category.from.product');
 Route::post('products/{product}/media/delete', [ProductController::class, 'deleteProductImage'])->name('admin.delete.media.of.product');
 
+Route::get('product/attribute', [ProductAttributeController::class, 'index'])->name('admin.index.attribute');
 Route::post('product/attribute/add', [ProductAttributeController::class, 'store'])->name('admin.add.attribute');
 Route::post('product/attribute/{attribute}/update', [ProductAttributeController::class, 'update'])->name('admin.update.attribute');
 

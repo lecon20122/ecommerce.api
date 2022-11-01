@@ -109,3 +109,9 @@ export interface NewMediaProps {
   big_banner: string,
   mobile_banner: string
 }
+
+export interface ProductAttribute {
+  id: number,
+  attribute: Title,
+  is_filterable: boolean
+}

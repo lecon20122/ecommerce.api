@@ -2,6 +2,7 @@
 
 namespace App\Http\Product\Requests;
 
+use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProductAttributeRequest extends FormRequest
@@ -24,7 +25,8 @@ class UpdateProductAttributeRequest extends FormRequest
     public function rules()
     {
         return [
-            'attribute' => 'nullable|string',
+            'en' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
+            'ar' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
             'is_filterable' => 'boolean|nullable'
         ];
     }

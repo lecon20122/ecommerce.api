@@ -39,7 +39,6 @@ class CartController extends BaseController
             return Inertia::render('Client/Cart', [
                 'items' => $this->cartService->showCartItems(),
                 'cartSubTotal' => $this->cartService->cartSubTotal(),
-
             ]);
         } catch (Exception $exception) {
             return $this->redirectBackWithMessage($exception->getMessage());

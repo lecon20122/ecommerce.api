@@ -7,6 +7,7 @@ use App\Domain\Cart\Contracts\CartInterface;
 use App\Domain\Location\Services\AddressService;
 use App\Domain\Order\Models\Order;
 use App\Events\OrderPlacedEvent;
+use App\Listeners\SyncVariationStockAfterOrderPlaced;
 use Exception;
 
 class OrderService
@@ -30,10 +31,10 @@ class OrderService
     public function checkout(array $data)
     {
         $order = $this->createOrderInstance($data);
+
         $relationWillBeEagerLoaded = 'variations.store.addresses';
-
         foreach ($this->cartService->items($relationWillBeEagerLoaded) as $variation) {
-
+            echo 'looped';
             if (!$variation->is_stockable) return;
 
             $readyVariation = [
@@ -48,12 +49,19 @@ class OrderService
             $order->variations()->attach($readyVariation);
         }
 
+        $listener = new SyncVariationStockAfterOrderPlaced($this->cartService);
+        $listener->handle(new OrderPlacedEvent());
+
         event(new OrderPlacedEvent());
+        return $order->uuid;
     }
 
+    /**
+     * @throws Exception
+     */
     public function createOrderInstance($data): Order
     {
-        $order = new Order;
+        $order = new Order();
         $order->subtotal = $this->cartService->cartSubTotal();
         $order->notes = $data['notes'] ?? null;
         $order->shipping_address_id = $this->addressService->checkAndReturnShippingAddressId($data['shipping_address_id']);

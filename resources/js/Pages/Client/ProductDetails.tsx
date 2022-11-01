@@ -17,9 +17,8 @@ function ProductDetails({product, locale}: Props) {
 
   const [currentMedia, setCurrentMedia] = useState<NewMediaProps[]>(product.variations[0].media)
   const [currentVariation, setCurrentVariation] = useState<Variation>(product.variations[0])
-  const [currentSizeVariationId, setCurrentSizeVariationId] = useState<0>()
-  const [currentMaxStockCount, setCurrentMaxStockCount] = useState<number>(1)
-  const [toggleVariationQuantity, setToggleVariationQuantity] = useState<boolean>(true)
+  const [currentSizeVariationId, setCurrentSizeVariationId] = useState<number>(0)
+  const [selectSizeAlert, setSelectSizeAlert] = useState<boolean>(false)
   const [currentImage, setCurrentImage] = useState<NewMediaProps>({...product.variations[0].media[0]})
 
   const handleClickVariationColors = (variation: Variation) => {
@@ -48,43 +47,27 @@ function ProductDetails({product, locale}: Props) {
   const variationSizeList = currentVariation.children.map((variation) => {
     if (variation.variation_type?.type.en === 'size') {
       return (
-        <SizeRadioButtonComponent disabled={variation.stock_count <= 1} variation={variation} key={variation.id}
-                                  setCurrentSizeVariationId={setCurrentSizeVariationId}
-                                  setToggleVariationQuantity={setToggleVariationQuantity}
-                                  setCurrentMaxStockCount={setCurrentMaxStockCount}/>
+        <SizeRadioButtonComponent disabled={variation.stock_count < 1} variation={variation} key={variation.id}
+                                  setCurrentSizeVariationId={setCurrentSizeVariationId}/>
       )
     }
   })
 
   const addToCart = () => {
     if (currentSizeVariationId) {
+      setSelectSizeAlert(false)
       const currentSelectedVariation = currentVariation.children.find((child) => child.id === currentSizeVariationId)
-
       Inertia.post(route('client.add.to.cart'), {
-        variation_id: currentSizeVariationId,
-        price: currentSelectedVariation?.price as string,
-        quantity: 1
-      })
-    }
-  }
-
-
-  const addToCartButton = () => {
-    if (currentSizeVariationId) {
-      return (
-        <button
-          className="px-4 py-2 text-white text-xl bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 basis-5/6"
-          onClick={event => addToCart()}>
-          Add to Cart
-        </button>
+          variation_id: currentSizeVariationId,
+          price: currentSelectedVariation?.price as string,
+          quantity: 1
+        }, {
+          preserveState: false,
+          preserveScroll: false,
+        }
       )
     } else {
-      return (
-        <button
-          className="px-4 py-2 text-white text-xl bg-black border border-transparent rounded-md basis-5/6">
-          Select Size
-        </button>
-      )
+      setSelectSizeAlert(true)
     }
   }
 
@@ -101,23 +84,6 @@ function ProductDetails({product, locale}: Props) {
                   <h2 className="font-semibold text-2xl mb-4">
                     {product.title[locale as keyof typeof product.title]}
                   </h2>
-                  <div className="flex flex-wrap items-center space-x-2 mb-2">
-                    <span className="text-yellow-500">9.3</span>
-
-                    <svg width="6px" height="6px" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="3" cy="3" r="3" fill="#DBDBDB"/>
-                    </svg>
-
-                    <span className="text-gray-400">
-							<i className="fa fa-shopping-bag mr-2"/> 154 orders
-						</span>
-                    <svg width="6px" height="6px" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="3" cy="3" r="3" fill="#DBDBDB"/>
-                    </svg>
-
-                    <span className="text-green-500">Verified</span>
-
-                  </div>
                   <p className="mb-4 font-semibold text-2xl">EGP {currentVariation.price}
 
                   </p>
@@ -127,17 +93,14 @@ function ProductDetails({product, locale}: Props) {
                       {variationColorsList}
                     </div>
                     <div className="flex items-center">
-                      <span className="mr-3">Size</span>
-                      {/*<Radio.Group defaultValue="a"*/}
-                      {/*             buttonStyle="solid"*/}
-                      {/*             onChange={e => handleSelectSize(e)}>*/}
-                      {/*  {variationSizeList}*/}
-                      {/*</Radio.Group>*/}
+                      <span className={`mr-3`}>Size</span>
                       <div className="flex items-center justify-center">
                         <form className="grid grid-cols-3 gap-2 w-full max-w-screen-sm">
                           {variationSizeList}
                         </form>
                       </div>
+                      {selectSizeAlert &&
+                      <span className={`text-red-600`}>! Please select size first</span>}
                     </div>
                   </div>
 
@@ -158,7 +121,11 @@ function ProductDetails({product, locale}: Props) {
                     </li>
                   </ul>
                   <div className="flex gap-2 h-[56px]">
-                    {addToCartButton()}
+                    <button
+                      className="px-4 py-2 text-white text-xl bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 basis-5/6"
+                      onClick={event => addToCart()}>
+                      Add to Cart
+                    </button>
                     <button
                       className=" px-4 py-2 text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100 basis-1/6">
 

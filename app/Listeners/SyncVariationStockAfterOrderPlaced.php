@@ -5,7 +5,6 @@ namespace App\Listeners;
 use App\Domain\Cart\Contracts\CartInterface;
 use App\Events\OrderPlacedEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SyncVariationStockAfterOrderPlaced implements ShouldQueue
 {

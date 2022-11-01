@@ -7,11 +7,12 @@ use App\Domain\Shipping\Models\ShippingType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Shipping\Models\ShippingType>
+ * @extends Factory
  */
 class ShippingTypeFactory extends Factory
 {
     protected $model = ShippingType::class;
+
     /**
      * Define the model's default state.
      *
@@ -21,7 +22,7 @@ class ShippingTypeFactory extends Factory
     {
         return [
             'type' => ShippingEnums::COD->value,
-            'price' => $this->faker->randomFloat(null, 15, 40),
+            'price' => 5,
         ];
     }
 }

@@ -9,5 +9,5 @@ enum ShippingEnums: string
     case OFFICE = 'Office';
 
     //ShippingTypesEnums
-    case COD = 'cod';
+    case COD = 'Cash On Delivery';
 }

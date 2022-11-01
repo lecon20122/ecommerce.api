@@ -12,9 +12,10 @@ function CartSummaryComponent({cartSubTotal, items}: Props) {
 
     return (
       <figure className="flex items-center mb-4 leading-5" key={item.id}>
-        <div>
-          <div className="block relative w-20 h-20 rounded p-1 border border-gray-200">
-            <img src={item.parent.variation_images[0].original_url} alt="Title"/>
+        <div className='rounded  border border-gray-200 p-1'>
+          <div className="block relative w-20 h-20"> {/* TODO:: add onClicking the image go to product page*/}
+            <img src={item.parent.variation_images[0].original_url} alt="Title"
+                 className='w-20 h-20'/> {/*TODO :: make a primary image for variations*/}
             <span
               className="absolute -top-2 -right-2 w-6 h-6 text-sm text-center flex items-center justify-center text-white bg-gray-400 rounded-full">
 										{item.pivot.quantity} </span>

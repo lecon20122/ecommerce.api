@@ -5,19 +5,23 @@ import CartSummaryComponent from "../../components/CartSummaryComponent/CartSumm
 import {Cart} from "../../types/CartType";
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
+import CreateAddressComponent from "../../components/CreateAddressComponent/CreateAddressComponent";
+import {City} from "../../types/LocationTypes";
 
 interface Props {
   user_addresses: UserAddress[],
   items: Cart,
   shippingTypes: Object[]
-  cartSubTotal: number
+  cartSubTotal: number,
+  cities: City[]
 }
 
-function Checkout({user_addresses, items, shippingTypes, cartSubTotal}: Props) {
-
+function Checkout({user_addresses, items, shippingTypes, cartSubTotal, cities}: Props) {
+  // console.log(cities)
   const [shipping_address_id, setShipping_address_id] = useState(0)
   const [shipping_type_id, setShipping_type_id] = useState(0)
   const [notes, setNotes] = useState('')
+  const [openAddAddress, setOpenAddAddress] = useState<boolean>(false)
 
   const userAddresses = user_addresses.map((address) => {
     return (
@@ -66,7 +70,10 @@ function Checkout({user_addresses, items, shippingTypes, cartSubTotal}: Props) {
           <main className="md:w-2/3">
             <article className="border border-gray-200 bg-white shadow-sm rounded p-4 lg:p-6 mb-5">
               <form>
-                <h2 className="text-xl font-semibold mb-5">Shipping Address</h2>
+                <div className={'flex items-center justify-start mb-5 space-x-2'}>
+                  <h2 className="text-xl font-semibold ">Shipping Address</h2>
+                  <label className='text-blue-600' onClick={event => setOpenAddAddress(true)}>+ Add Address</label>
+                </div>
                 <div className="grid sm:grid-cols-3 gap-3 mb-6">
                   {userAddresses}
                 </div>
@@ -96,6 +103,7 @@ function Checkout({user_addresses, items, shippingTypes, cartSubTotal}: Props) {
             </article>
           </main>
           <CartSummaryComponent cartSubTotal={cartSubTotal} items={items}/>
+          <CreateAddressComponent open={openAddAddress} setOpen={setOpenAddAddress} cities={cities}/>
         </div>
       </div>
     </AppLayout>

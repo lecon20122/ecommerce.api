@@ -3,6 +3,8 @@
 namespace App\Http\Order\Controllers;
 
 use App\Domain\Cart\Contracts\CartInterface;
+use App\Domain\Location\Models\City;
+use App\Domain\Location\Models\District;
 use App\Domain\Order\Services\OrderService;
 use App\Domain\Shipping\Models\ShippingType;
 use App\Http\Controllers\Controller;
@@ -36,6 +38,7 @@ class OrderController extends BaseController
                     'shippingTypes' => ShippingType::query()->get(['type', 'price', 'id']),
                     'items' => $cart->showCartItems(),
                     'cartSubTotal' => $cart->cartSubTotal(),
+                    'cities' => City::query()->with('districts')->select(['id', 'name'])->get(), //TODO :: create cache
                 ]
             );
         } catch (Exception $exception) {

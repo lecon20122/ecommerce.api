@@ -23,6 +23,8 @@ class AddressFactory extends Factory
     public function definition()
     {
         return [
+            'name' => $this->faker->name,
+            'phone' => $this->faker->phoneNumber,
             'street' => $this->faker->unique()->streetName,
             'building' => $this->faker->randomNumber,
             'floor' => $this->faker->randomNumber,

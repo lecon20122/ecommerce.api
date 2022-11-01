@@ -34,6 +34,8 @@ class AddressTest extends TestCase
             'floor' => '9',
             'apartment_number' => '18',
             'nearby_landmark' => 'Care',
+            'name' => 'Mustafa Khaled',
+            'phone' => '0111477555'
         ];
 
         $response = $this->post(route('client.add.address'), $data)->assertRedirect();

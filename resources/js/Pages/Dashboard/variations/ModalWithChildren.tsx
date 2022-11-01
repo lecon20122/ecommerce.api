@@ -24,6 +24,7 @@ function ModalWithChildren({openModal, onOk, onCancel, children, title}: Props) 
       onOk={onOk}
       onCancel={onCancel}
       open={openModal}
+      footer={null}
     >
       {children}
     </Modal>

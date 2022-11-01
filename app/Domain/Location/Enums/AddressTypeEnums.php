@@ -7,4 +7,5 @@ enum AddressTypeEnums: string
     case SHIPPING = 'shipping';
     case PICKUP = 'pickup';
     case HOME = 'home';
+    case OFFICE = 'office';
 }

@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Admin\Models\Admin;
-use App\Domain\Product\Models\Product;
-use App\Domain\Shipping\Models\ShippingType;
+use App\Domain\Location\Models\District;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Testing\WithFaker;
 
@@ -34,5 +32,6 @@ class DatabaseSeeder extends Seeder
 //            $product->categories()->attach([rand(4, 6)]);
 //        }
 //        ShippingType::factory()->create();
+        District::factory()->create();
     }
 }

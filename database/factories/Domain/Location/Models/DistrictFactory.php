@@ -7,11 +7,12 @@ use App\Domain\Location\Models\District;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Location\Models\District>
+ * @extends Factory
  */
 class DistrictFactory extends Factory
 {
     protected $model = District::class;
+
     /**
      * Define the model's default state.
      *
@@ -21,7 +22,7 @@ class DistrictFactory extends Factory
     {
         return [
             'city_id' => City::factory(),
-            'name' => $this->faker->streetAddress,
+            'name' => 'Al Hay El Sabee',
         ];
     }
 }

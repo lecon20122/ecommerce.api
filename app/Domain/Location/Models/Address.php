@@ -9,17 +9,18 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'type',
-        'district_id',
-        'street',
-        'building',
-        'floor',
-        'apartment_number',
-        'nearby_landmark',
-        'addressable_type',
-        'addressable_id',
-    ];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+//    protected $fillable = [
+//        'type',
+//        'district_id',
+//        'street',
+//        'building',
+//        'floor',
+//        'apartment_number',
+//        'nearby_landmark',
+//        'addressable_type',
+//        'addressable_id',
+//    ];
 
     public function addressable()
     {

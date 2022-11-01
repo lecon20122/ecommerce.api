@@ -33,6 +33,6 @@ class DatabaseSeeder extends Seeder
 //        foreach ($products as $product) {
 //            $product->categories()->attach([rand(4, 6)]);
 //        }
-        ShippingType::factory()->create();
+//        ShippingType::factory()->create();
     }
 }

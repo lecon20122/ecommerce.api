@@ -1,7 +1,5 @@
 import React from "react";
 import {InertiaLink, usePage} from '@inertiajs/inertia-react';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUserAlt} from '@fortawesome/free-solid-svg-icons';
 import route from 'ziggy-js';
 
 export default function Aside() {
@@ -33,7 +31,7 @@ export default function Aside() {
             className="max-h-9 hover:opacity-70"
           /> */}
         </a>
-        <h3 className="text-white text-left"><FontAwesomeIcon icon={faUserAlt}/> {auth.name}</h3>
+        <h3 className="text-white text-left">{auth.name}</h3>
         <button
           onClick={() => hide_sidebar()}
           className="md:hidden float-right appearance-none border border-transparent bg-transparent text-white"

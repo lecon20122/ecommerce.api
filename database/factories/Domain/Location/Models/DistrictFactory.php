@@ -22,7 +22,7 @@ class DistrictFactory extends Factory
     {
         return [
             'city_id' => City::factory(),
-            'name' => 'Al Hay El Sabee',
+            'name' => $this->faker->name,
         ];
     }
 }

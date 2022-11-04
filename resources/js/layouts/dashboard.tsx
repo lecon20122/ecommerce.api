@@ -1,12 +1,9 @@
 import {Page} from '@inertiajs/inertia';
 import {InertiaLink, usePage} from '@inertiajs/inertia-react';
-import {AlertColor} from '@mui/material';
 import React, {useEffect, useRef, useState} from 'react'
 import Aside from '../includes/aside';
-import {Toast} from "primereact/toast";
-import {Button} from "antd";
 import route from "ziggy-js";
-import {LogoutOutlined} from "@ant-design/icons";
+import {Toast} from "antd-mobile";
 
 interface IDashboardLayout {
   children: JSX.Element,
@@ -14,7 +11,7 @@ interface IDashboardLayout {
 
 interface PageProps extends Page<PageProps> {
   flash: {
-    message: AlertColor
+    message: string
   }
 }
 
@@ -24,7 +21,7 @@ export default function DashboardLayout({children}: IDashboardLayout) {
   const toastRef = useRef<any>(null);
 
   const {flash} = usePage<PageProps>().props
-  console.log(flash)
+
   const [collapsed, setCollapsed] = useState(false);
 
   const toggleCollapsed = () => {
@@ -33,9 +30,12 @@ export default function DashboardLayout({children}: IDashboardLayout) {
 
   useEffect(() => {
     if (flash.message) {
-      toastRef.current?.show({severity: 'success', summary: flash.message, life: 3000});
+      Toast.show({
+        content: flash.message,
+        position: 'top',
+      })
     }
-  }, [toastRef])
+  }, [flash.message])
 
 
   const hide_sidebar = () => {
@@ -73,7 +73,6 @@ export default function DashboardLayout({children}: IDashboardLayout) {
             </div>
           </header>
           {/*NAVBAR*/}
-          <Toast ref={toastRef}/>
           {children}
         </main>
       </div>

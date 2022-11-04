@@ -19,11 +19,9 @@ function ProductDetails({product, locale}: Props) {
   const [currentVariation, setCurrentVariation] = useState<Variation>(product.variations[0])
   const [currentSizeVariationId, setCurrentSizeVariationId] = useState<number>(0)
   const [selectSizeAlert, setSelectSizeAlert] = useState<boolean>(false)
-  const [currentImage, setCurrentImage] = useState<NewMediaProps>({...product.variations[0].media[0]})
 
   const handleClickVariationColors = (variation: Variation) => {
     setCurrentMedia(variation.media)
-    setCurrentImage({...variation.media[0]})
     setCurrentVariation(variation)
     setCurrentSizeVariationId(0)
   }
@@ -78,7 +76,7 @@ function ProductDetails({product, locale}: Props) {
           <div className="max-w-screen-xl lg:mx-auto px-[12px]  md:px-[40px]">
             {/*<div className="grid grid-cols-1 sm:grid-cols-2 gap-2"  > */}
             <div className="flex md:flex-row flex-col">
-              <ImageSliderWithZoom media={currentMedia} currentMedia={currentImage}/>
+              <ImageSliderWithZoom media={currentMedia}/>
               <main className='container md:ml-[50px] basis-[39.16666666666667%]'>
                 <div className='mx-auto'>
                   <h2 className="font-semibold text-2xl mb-4">

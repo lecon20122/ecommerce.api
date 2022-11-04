@@ -26,7 +26,7 @@ export default function Navbar() {
                 <ShoppingCartOutlined style={{fontSize: '24px'}}/> {cartCount ? cartCount : 0}
               </InertiaLink>
             </div>
-            <div className="dropdown dropdown-hover">
+            <div className="dropdown dropdown-hover hidden">
               <div className='flex'>
                 <UserOutline fontSize={ICON_SIZE} className={''}/>
                 {user === null ? '' : <span className={'text-lg ml-1 text-end text-bold'}>{user.name}</span>}
@@ -41,7 +41,7 @@ export default function Navbar() {
                 <li><a href={route('client.logout')}>Sign out</a></li>
               </ul>
             </div>
-            <div className="dropdown dropdown-hover">
+            <div className="dropdown dropdown-hover hidden">
               <GlobalOutline fontSize={ICON_SIZE}/>
               <ul className="dropdown-content menu p-2 shadow bg-base-100 w-52">
                 <li><a>AR</a></li>

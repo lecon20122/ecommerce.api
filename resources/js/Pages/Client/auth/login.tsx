@@ -1,6 +1,5 @@
 import React from 'react'
 import Footer from "../../../components/client/includes/footer";
-import {GoogleOutlined} from '@ant-design/icons'
 import route from "ziggy-js";
 import {Inertia} from "@inertiajs/inertia";
 import {Alert, Button, Form, Input} from "antd";

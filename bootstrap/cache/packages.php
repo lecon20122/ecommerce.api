@@ -135,13 +135,6 @@
       0 => 'Spatie\\Translatable\\TranslatableServiceProvider',
     ),
   ),
-  'staudenmeir/laravel-cte' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Staudenmeir\\LaravelCte\\DatabaseServiceProvider',
-    ),
-  ),
   'tightenco/ziggy' => 
   array (
     'providers' => 

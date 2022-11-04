@@ -126,6 +126,8 @@ class CartTest extends TestCase
             'floor' => '9',
             'apartment_number' => '18',
             'nearby_landmark' => 'Care',
+            'name' => 'Mustafa',
+            'phone' => '01125475',
         ]);
 
         $addressType = ShippingType::factory()->create();

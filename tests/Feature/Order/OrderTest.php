@@ -45,6 +45,8 @@ class OrderTest extends TestCase
 
         $storeAddress->addresses()->create([
             'type' => AddressTypeEnums::PICKUP->value,
+            'name' => 'Mustafa',
+            'phone' => '01125475',
             'district_id' => $district->id,
             'street' => 'Hafez',
             'building' => '25',
@@ -107,6 +109,8 @@ class OrderTest extends TestCase
             'floor' => '9',
             'apartment_number' => '18',
             'nearby_landmark' => 'Care',
+            'name' => 'Mustafa',
+            'phone' => '01125475',
         ]);
 
         $addressType = ShippingType::factory()->create();

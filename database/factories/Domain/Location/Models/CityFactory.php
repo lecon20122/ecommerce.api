@@ -21,7 +21,7 @@ class CityFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'Nasr City',
+            'name' => $this->faker->city,
             'governorate_id' =>  Governorate::factory(),
         ];
     }

@@ -7,8 +7,8 @@
 
 .right-arrow {
     position: absolute;
-    top: 50%;
-    right: 32px;
+    top: 40%;
+    right: 15px;
     font-size: 3rem;
     color: #000;
     z-index: 10;
@@ -18,8 +18,8 @@
 
 .left-arrow {
     position: absolute;
-    top: 50%;
-    left: 32px;
+    top: 40%;
+    left: 15px;
     font-size: 3rem;
     color: #000;
     z-index: 10;
@@ -29,4 +29,14 @@
 
 .slide {
     transition-timing-function: ease;
+}
+
+.mobile-carousel {
+    overflow: auto;
+    scroll-snap-type: x mandatory; /* <- the important piece */
+}
+
+.mobile-carousel .item {
+    flex-shrink: 0;
+    scroll-snap-align: start; /* <- the other important piece */
 }

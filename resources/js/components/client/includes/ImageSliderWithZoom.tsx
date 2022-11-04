@@ -21,10 +21,10 @@ function ImageSliderWithZoom({media}: Props) {
   const sliderList = media?.map((img, index) => {
     return (
       <div
-        className={`hover:p-[2px] hover:drop-shadow-2xl hover:border-black hover:border min mr-[7px] mb-2 ${index === hoveredImageIndex ? 'border-black border drop-shadow-2xl p-[2px]' : ''}`}
+        className={`hover:drop-shadow-2xl hover:border-black hover:border min mr-[7px] mb-2 ${index === hoveredImageIndex ? 'border-black border drop-shadow-2xl w-[62]' : ''}`}
         style={{height: "auto", width: "60px"}}
         key={img.id}>
-        <img className='' src={img.small} alt="Product title" onClick={() => handleOnMouseOver(img)}
+        <img className='w-[60px] p-[2px]' src={img.small} alt="Product title" onClick={() => handleOnMouseOver(img)}
              onMouseOver={() => handleOnMouseOver(img)}/>
       </div>
     )

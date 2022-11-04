@@ -24,33 +24,32 @@ function ImageCarouselComponent({images, imageIndex}: Props) {
   }
 
   return (
-    <section className='slider'>
-      <div className='md:hidden'>
-        <div className='left-arrow' onClick={prevSlide}> left</div>
-        <div className='right-arrow' onClick={nextSlide}> right</div>
-        <div style={{aspectRatio: "670/892.2", width: "370px", height: "auto"}}>
-          {images.map((image, index) => {
-            return (
-              <div>
-                {index === current &&
-                <img alt={image.name} src={image.big}
-                     style={{aspectRatio: "670/892.2", width: "360px", height: "auto"}}/>
-                }
-              </div>
-            )
-          })}
-        </div>
+    <div className={'relative'}>
+      <div className='mobile-carousel flex md:hidden'>
+        {images.map((image, index) => {
+          return (
+            <div className='w-full item relative' key={image.id}>
+              <img alt={image.name} src={image.big}
+                   style={{aspectRatio: "670/892.2", height: "auto"}}/>
+              <span
+                style={{background: "rgba(0,0,0,.3)"}}
+                className='absolute top-[6px] right-[6px] text-[#fff] text-sm py-[4px] px-[8px] rounded-lg'>{`${index + 1} / ${length}`}</span>
+            </div>
+          )
+        })}
       </div>
-      <div className={'aspect-[670/892.2] w-[670px] hidden md:flex'}>
-        <div>
-          {images[imageIndex] != null ? <img alt={images[imageIndex].name} src={images[imageIndex].big}
-                                             className='w-[670px] aspect-[670/892.2]'/> :
-            <img alt={images[0].name} src={images[0].big}
-                 className='w-[670px] aspect-[670/892.2]'/>}
+      <section className='slider'>
+        <div className={'aspect-[670/892.2] w-[670px] hidden md:flex'}>
+          <div>
+            {images[imageIndex] != null ? <img alt={images[imageIndex].name} src={images[imageIndex].big}
+                                               className='w-[670px] aspect-[670/892.2]'/> :
+              <img alt={images[0].name} src={images[0].big}
+                   className='w-[670px] aspect-[670/892.2]'/>}
 
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
 

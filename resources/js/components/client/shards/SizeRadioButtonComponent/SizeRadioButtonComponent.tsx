@@ -14,9 +14,6 @@ function SizeRadioButtonComponent({
                                     disabled,
                                     setCurrentSizeVariationId,
                                   }: Props) {
-
-  const [check, setCheck] = useState<boolean>(false)
-
   const onClick = (event: React.ChangeEvent<HTMLInputElement>) => {
 
     if (event.target.checked) {
@@ -33,7 +30,7 @@ function SizeRadioButtonComponent({
              htmlFor={`radio${variation.id}`}>
         <span
           className="text-sm grow lg:text-md font-semibold uppercase">{variation.variation_type_value?.value.en}</span>
-        {/*<span className="lg:text-md grow text-sm font-bold">EGP {variation.price}</span>*/}
+        <span className="lg:text-md grow text-sm font-bold">EGP {variation.price}</span>
       </label>
     </div>
   );

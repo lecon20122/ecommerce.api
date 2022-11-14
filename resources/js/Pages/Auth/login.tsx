@@ -13,6 +13,8 @@ export default function AdminLogin() {
 
   const serverSideErrors = usePage().props.errors
 
+  console.log(serverSideErrors)
+
   const onFinish = (values: any) => {
     Inertia.post(route('admin.postLogin'), values, {
       preserveState: false

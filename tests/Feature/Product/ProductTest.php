@@ -29,7 +29,7 @@ class ProductTest extends TestCase
                 'price',
                 'store_id',
                 'stores',
-                'category_ids',
+                'category',
                 'created_at',
             ] === array_keys($productModel->toSearchableArray()));
     }
@@ -168,14 +168,6 @@ class ProductTest extends TestCase
         $response->assertSessionHas('message', 'success');
         $product->refresh();
         $this->assertNull(Product::first()->deleted_at);
-    }
-
-    public function test_get_product_search_filters_buy_category()
-    {
-        $productService = new ProductService();
-
-        dd($productService->getProductFiltersByCategory(5));
-
     }
 }
 

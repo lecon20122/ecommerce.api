@@ -19,6 +19,11 @@ class SearchService
      */
     public function filterQueryGenerator(array|string $filters): string
     {
+
+        if($isMainCategoryParamTheOnlyKey = count($filters) === 1 && array_key_exists('mainCategory', $filters)){
+            return $this->generateCategoryQueryString($filters['mainCategory'] ?? null, $filters['category'] ?? null, false);
+        }
+
         $areCategoryAndSubCategoryTheOnlyKeys =
             count($filters) === 2
             && array_key_exists('category', $filters)
@@ -39,7 +44,7 @@ class SearchService
     public function generateCategoryQueryString(string $mainCategory = null, string $category = null, bool $andOperatorFlag = true): ?string
     {
         if (!$mainCategory && !$category) return null;
-        return 'category = ' . '"' . ($category ?? $mainCategory) . '"' . ($andOperatorFlag ? ' AND ' : '');
+        return 'category = ' . '"' . ($category ?? $mainCategory) . '"' . ($andOperatorFlag ? ' OR ' : '');
     }
 
     /**
@@ -102,14 +107,15 @@ class SearchService
     /**
      * @throws Exception
      */
-    public function searchIndexedModel(array $params, $model): Builder
+    public function searchIndexedModel(array $params, $model, int|null $limit = 20): Builder
     {
         if (!in_array(Searchable::class, class_uses_recursive($model::class))) throw new Exception('this model not uses Searchable trait');
 
-        return $model::search($params['q'] ?? '', function (Indexes $meilisearch, string $query, array $options) use ($params) {
+        return $model::search($params['q'] ?? '', function (Indexes $meilisearch, string $query, array $options) use ($params, $limit) {
             $options['facets'] = $params['facets'] ?? null;
             $options['filter'] = $params['filter'] ?? null;
             $options['sort'] = $params['sort'] ?? null;
+            is_null($limit) ? $options['limit'] = 20 : $options['limit'] = $limit;
             return $meilisearch->search($query, $options);
         }
         );

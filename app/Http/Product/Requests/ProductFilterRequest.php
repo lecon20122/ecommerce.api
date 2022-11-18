@@ -27,6 +27,7 @@ class ProductFilterRequest extends FormRequest
         return [
             'category' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
             'mainCategory' => ValidationRuleEnums::REQUIRED_STRING_MAXED->value,
+            'limit' => ValidationRuleEnums::NULLABLE_INTEGER->value,
 
             'size' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
             'color' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,

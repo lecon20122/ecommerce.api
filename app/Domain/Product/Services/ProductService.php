@@ -47,7 +47,7 @@ class ProductService
         ];
 
         $facets = $searchService->searchIndexedModel($params, $productModel)->raw()['facetDistribution'];
-
+        $slugs = [];
         foreach ($facets as $facet => $value) {
 
             if ($facet === 'color') {
@@ -74,7 +74,7 @@ class ProductService
     /**
      * @throws Exception
      */
-    public function getFilteredProducts(array $filters): LengthAwarePaginator
+    public function getFilteredProducts(array $filters, int|null $limit): LengthAwarePaginator
     {
         $searchService = new SearchService();
         $productModel = new Product();
@@ -84,7 +84,7 @@ class ProductService
             'facets' => [...(new VariationService)->getFacetsArray(), 'stores', 'category', 'price'],
         ];
 
-        return $searchService->searchIndexedModel($params, $productModel)->query(function (Builder $builder) {
+        return $searchService->searchIndexedModel($params, $productModel, $limit)->query(function (Builder $builder) {
             $builder->with(['variations' => function ($query) {
                 $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
                     ->has('VariationImages')

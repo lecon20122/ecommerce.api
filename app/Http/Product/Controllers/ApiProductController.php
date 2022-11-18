@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use JetBrains\PhpStorm\NoReturn;
 
 class ApiProductController extends BaseController
@@ -44,8 +45,15 @@ class ApiProductController extends BaseController
     public function getFilteredProducts(ProductFilterRequest $request): AnonymousResourceCollection|JsonResponse
     {
         try {
-            return ProductResource::collection($this->service->getFilteredProducts($request->validated()));
+            return ProductResource::collection(
+                $this->service->getFilteredProducts(
+                    Arr::except(
+                        $request->validated(),
+                        'limit'),
+                    $request->validated('limit')
+                ));
         } catch (Exception $exception) {
+//            dd($exception->getMessage());
             return $this->logErrorsAndRespondWithCustomMessage($exception->getTraceAsString());
         }
     }

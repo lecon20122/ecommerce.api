@@ -14,7 +14,7 @@ class ProductFilterTest extends TestCase
      *
      * @return void
      */
-    public function test_Product_filter()
+    public function Product_filter()
     {
         $response = $this->get(route('api.search.filters.by.category' , ['category' => 'tops']));
         dd($response->json());

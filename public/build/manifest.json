@@ -31,7 +31,7 @@
       "resources/js/Pages/Dashboard/variations/create.tsx"
     ],
     "css": [
-      "assets/app.73f5c955.css"
+      "assets/app.bb6b2c43.css"
     ]
   },
   "resources/js/Pages/Auth/login.tsx": {
@@ -1074,17 +1074,13 @@
       "_getDataOrAriaProps.c03198e8.js"
     ]
   },
-  "should-render.css": {
-    "file": "assets/should-render.fe49b11e.css",
-    "src": "should-render.css"
-  },
   "resources/js/Pages/Client/ProductDetails.css": {
     "file": "assets/ProductDetails.b2529571.css",
     "src": "resources/js/Pages/Client/ProductDetails.css"
   },
-  "index.css": {
-    "file": "assets/index.deb16fc3.css",
-    "src": "index.css"
+  "should-render.css": {
+    "file": "assets/should-render.fe49b11e.css",
+    "src": "should-render.css"
   },
   "resources/js/Pages/Client/ShopByCategory.css": {
     "file": "assets/ShopByCategory.669bca52.css",
@@ -1094,8 +1090,12 @@
     "file": "assets/index.7684baa7.css",
     "src": "resources/js/Pages/Client/index.css"
   },
+  "index.css": {
+    "file": "assets/index.deb16fc3.css",
+    "src": "index.css"
+  },
   "resources/js/app.css": {
-    "file": "assets/app.73f5c955.css",
+    "file": "assets/app.bb6b2c43.css",
     "src": "resources/js/app.css"
   }
 }

@@ -5,7 +5,9 @@ namespace Tests\Feature\Product;
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
+use App\Domain\Product\Services\ProductService;
 use App\Domain\Store\Models\Store;
+use App\Support\Services\SearchService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -166,6 +168,14 @@ class ProductTest extends TestCase
         $response->assertSessionHas('message', 'success');
         $product->refresh();
         $this->assertNull(Product::first()->deleted_at);
+    }
+
+    public function test_get_product_search_filters_buy_category()
+    {
+        $productService = new ProductService();
+
+        dd($productService->getProductFiltersByCategory(5));
+
     }
 }
 

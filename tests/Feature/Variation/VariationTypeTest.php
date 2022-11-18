@@ -5,6 +5,7 @@ namespace Tests\Feature\Variation;
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Variation\Models\VariationType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use JetBrains\PhpStorm\NoReturn;
 use Tests\TestCase;
 
 class VariationTypeTest extends TestCase
@@ -16,7 +17,7 @@ class VariationTypeTest extends TestCase
      *
      * @return void
      */
-    public function test_variation_type_can_be_created()
+    #[NoReturn] public function test_variation_type_can_be_created()
     {
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');

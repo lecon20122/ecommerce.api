@@ -77,4 +77,10 @@ class BaseController extends Controller
         Log::error($message);
         return redirect()->back()->withErrors($message);
     }
+
+    public function logErrorsAndRespondWithCustomMessage($exceptionMessage , $customMessage = 'something went wrong we working on it'): JsonResponse
+    {
+        Log::error($exceptionMessage);
+        return response()->json(['message' => $customMessage]);
+    }
 }

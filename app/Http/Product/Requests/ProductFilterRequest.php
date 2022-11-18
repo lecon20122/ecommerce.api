@@ -2,6 +2,7 @@
 
 namespace App\Http\Product\Requests;
 
+use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductFilterRequest extends FormRequest
@@ -24,22 +25,20 @@ class ProductFilterRequest extends FormRequest
     public function rules()
     {
         return [
-            'color' => 'nullable|array',
-            'color.*' => 'string',
+            'category' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
+            'mainCategory' => ValidationRuleEnums::REQUIRED_STRING_MAXED->value,
 
-            'size' => 'nullable|array',
-            'size.*' => 'string',
+            'size' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
+            'color' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
 
-            'style' => 'nullable|array',
-            'style.*' => 'string',
 
-            'stores' => 'nullable|array',
-            'stores.*' => 'string',
+            'style' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
 
-            'price' => 'nullable|integer',
+            'stores' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
 
-            'sort' => 'array|nullable',
-            'sort.*' => 'boolean'
+            'price' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
+
+            'sort' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
         ];
     }
 }

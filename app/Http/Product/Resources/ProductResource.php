@@ -31,7 +31,7 @@ class ProductResource extends JsonResource
 //            'thumbnail' => $this->getFirstMedia(MediaCollectionEnums::PRODUCT)?->getFullUrl(MediaCollectionEnums::THUMB_CONVENTION),
             'deleted_at' => $this->deleted_at,
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
-            'variation_type' => VariationTypeResource::collection($this->whenLoaded('variationType')),
+            'vt' => VariationTypeResource::collection($this->whenLoaded('variationType')),
             'variation_type_value' => VariationTypeValueResource::collection($this->whenLoaded('variationTypeValue')),
         ];
     }

@@ -33,7 +33,7 @@ class UpdateMeiliSearchAttributesCommands extends Command
         try {
             $client = new Client('http://127.0.0.1:7700', config('scout.meilisearch.key' ));
             $client->index('products')
-                ->updateFilterableAttributes(['category_ids', 'stores', 'price', ...(new VariationService)->getFacetsArray()]);
+                ->updateFilterableAttributes(['category', 'stores', 'price', ...(new VariationService)->getFacetsArray()]);
             $client->index('products')
                 ->updateSortableAttributes(['price', 'created_at']);
             return 0;

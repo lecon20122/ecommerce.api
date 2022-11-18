@@ -194,7 +194,7 @@ class ProductController extends BaseController
         }
     }
 
-    public function getProductsByCategory(Category $category, ProductService $productService, ProductFilterRequest $request): \Inertia\Response|RedirectResponse
+    public function getProductsByCategory(Category $category, ProductService $productService, ProductFilterRequest $request): \Illuminate\Http\JsonResponse
     {
 
         try {
@@ -204,7 +204,13 @@ class ProductController extends BaseController
 
             $products = $productService->getProductsByCategory($category, $request->validated());
 
-            return Inertia::render('Client/ShopByCategory', [
+//            return Inertia::render('Client/ShopByCategory', [
+//                'products' => $products['products'],
+//                'filters' => $products['filters'],
+//                'category' => $category,
+//                'maxPrice' => $products['maxPrice'],
+//            ]);
+            return \response()->json([
                 'products' => $products['products'],
                 'filters' => $products['filters'],
                 'category' => $category,

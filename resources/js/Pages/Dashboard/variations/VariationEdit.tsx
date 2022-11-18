@@ -23,7 +23,7 @@ interface DataType extends Variation {
 }
 
 export default function VariationEdit({currentVariation, variationTypesValues, variationTypes, locale}: Props) {
-  console.log(currentVariation)
+
   const [variationTypeId, setVariationTypeId] = useState(0)
   const [openAddStock, setOpenAddStock] = useState(false)
   const [openAddChildVariationDialog, setOpenAddChildVariationDialog] = useState(false);
@@ -36,6 +36,7 @@ export default function VariationEdit({currentVariation, variationTypesValues, v
     },
     variation_type_id: 0
   }])
+
 
   const handleOnClickVariationRestore = (data: any) => {
     Inertia.post(route('admin.variations.restore', data.id), undefined, {

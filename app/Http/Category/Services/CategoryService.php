@@ -17,6 +17,15 @@ use Illuminate\Support\Facades\DB;
 class CategoryService
 {
 
+    public function apiIndex()
+    {
+        CategoryResource::collection(
+            Category::query()
+                ->with('parent:title,id')
+                ->get()
+        );
+    }
+
     public function adminIndex(): AnonymousResourceCollection
     {
         return CategoryResource::collection(

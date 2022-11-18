@@ -25,11 +25,11 @@ class CategoryTest extends TestCase
         $admin = Admin::factory(1)->create()->first();
         $this->actingAs($admin, 'admin');
         Storage::fake('public');
-        $response = $this->post(route('admin.categories.store'), [
+         $this->post(route('admin.categories.store'), [
             'en' => 'test category',
             'ar' => 'هيللو',
             'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 1000, 1000)
+                0 => UploadedFile::fake()->image("test.jpg", 100, 100)
             ]
         ]);
         $category = Category::with('media')->first();

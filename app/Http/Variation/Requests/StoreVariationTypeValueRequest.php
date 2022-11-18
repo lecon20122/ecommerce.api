@@ -26,6 +26,7 @@ class StoreVariationTypeValueRequest extends FormRequest
         return [
             'ar' => 'required|string|max:256',
             'en' => 'required|string|max:256',
+            'hex_value' => 'nullable|string|max:256|starts_with:#',
             'variation_type_id' => 'integer|required'
         ];
     }

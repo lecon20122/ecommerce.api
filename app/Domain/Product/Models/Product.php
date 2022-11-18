@@ -69,7 +69,7 @@ class Product extends Model
             'price' => $this->price,
             'store_id' => $this->store_id,
             'stores' => $this->load('store')->store->name,
-            'category_ids' => $this->load('categories')->categories->pluck('id')->toArray(),
+            'category' => $this->load('categories')->categories->pluck('slug')->toArray(),
             'created_at' => $this->created_at,
         ], $this->pushVariationTypeValuesIntoVariationType($this->variations));
     }
@@ -78,7 +78,11 @@ class Product extends Model
     {
         $result = [];
         foreach ($variations as $variation) {
-            $result[$variation->variationType?->type][] = $variation->variationTypeValue?->value;
+            if ($variation->variationType?->type === 'color') {
+                $result[$variation->variationType?->type][] = $variation->variationTypeValue?->slug . ',' . $variation->variationTypeValue?->hex_value;
+            } else {
+                $result[$variation->variationType?->type][] = $variation->variationTypeValue?->slug;
+            }
         }
         return $result;
     }

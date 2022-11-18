@@ -2,8 +2,11 @@
 
 namespace App\Support\Services;
 
+use App\Domain\Product\DTOs\ProductFilterDTO;
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use JetBrains\PhpStorm\NoReturn;
 use Laravel\Scout\Builder;
 use Laravel\Scout\Searchable;
 use MeiliSearch\Endpoints\Indexes;
@@ -11,43 +14,62 @@ use MeiliSearch\Endpoints\Indexes;
 class SearchService
 {
     /**
-     * @param $categoryId
-     * @param null $filtersExceptPrice
-     * @param null $maxPrice
+     * @param array|string $filters
      * @return string
      */
-    public function filterFactory($categoryId, $filtersExceptPrice = null, $maxPrice = null): string
+    public function filterQueryGenerator(array|string $filters): string
     {
+        $areCategoryAndSubCategoryTheOnlyKeys =
+            count($filters) === 2
+            && array_key_exists('category', $filters)
+            && array_key_exists('mainCategory', $filters);
 
-        $baseQuery = 'category_ids = ' . $categoryId;
+        $areSizeOrColorExists = isset($filters['size']) | isset($filters['color']);
 
-        if ($filtersExceptPrice) {
-            $filtersExceptPriceString = $this->recursiveFilterIteration($filtersExceptPrice);
+        $stringQuery = $this->generateCategoryQueryString($filters['mainCategory'] ?? null, $filters['category'] ?? null, !$areCategoryAndSubCategoryTheOnlyKeys);
+
+        $stringQuery = $stringQuery . $this->recursiveFilterIteration(Arr::except($filters, ['category', 'mainCategory', 'price']));
+
+        if (isset($filters['price'])) {
+            $stringQuery = $stringQuery . ($areSizeOrColorExists ? ' AND ' : '') . $this->generatePriceRangeQuery($filters['price']);
         }
+        return $stringQuery;
+    }
 
-        if ($maxPrice) {
-            $baseQuery = 'category_ids = ' . $categoryId . ' AND ' . 'price <= ' . $maxPrice;
-        }
-
-        return empty($filtersExceptPriceString)
-            ? $baseQuery
-            : $baseQuery . ' AND ' . $filtersExceptPriceString;
+    public function generateCategoryQueryString(string $mainCategory = null, string $category = null, bool $andOperatorFlag = true): ?string
+    {
+        if (!$mainCategory && !$category) return null;
+        return 'category = ' . '"' . ($category ?? $mainCategory) . '"' . ($andOperatorFlag ? ' AND ' : '');
     }
 
     /**
-     * @param $filters
+     * @param array|string $filters
      * @return null
      */
-    public function recursiveFilterIteration($filters)
+    public function recursiveFilterIteration(array|string $filters)
     {
         if (!$filters) return null;
-        return $this->collectChildren(collect($filters)->filter(fn($filter) => !empty($filter)))
+
+        $splitFilter = $this->splitFiltersStrings($filters);
+
+        return $this->collectChildren(collect($splitFilter)->filter(fn($filter) => !empty($filter)))
             ->map(function ($value, $key) {
                 if (is_string($value)) return $key . ' = "' . $value . '"';
                 return $value->map(fn($value) => $key . ' = "' . $value . '"');
             })
             ->flatten()
-            ->join(' AND ');
+            ->join(' OR ');
+    }
+
+    public function splitFiltersStrings(array|string $filters): array
+    {
+        if (is_string($filters)) return explode(',', $filters);
+
+        foreach ($filters as $filter => $value) {
+            $splitFilters[$filter] = explode(',', $value);
+        }
+
+        return $splitFilters;
     }
 
     public function collectChildren(Collection $collection): Collection
@@ -58,6 +80,12 @@ class SearchService
             }
             return $value;
         });
+    }
+
+    public function generatePriceRangeQuery(string $price): string
+    {
+        $priceRange = explode('-', $price);
+        return 'price >= ' . '"' . $priceRange[0] . '"' . ' AND ' . 'price <= ' . '"' . $priceRange[1] . '"';
     }
 
     /**

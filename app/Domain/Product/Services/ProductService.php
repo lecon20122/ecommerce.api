@@ -5,27 +5,95 @@ namespace App\Domain\Product\Services;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
+use App\Domain\Variation\Models\VariationTypeValue;
 use App\Domain\Variation\Services\VariationService;
 use App\Http\Category\Resources\CategoryResource;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
+use App\Http\Product\Resources\ProductFilterResource;
 use App\Http\Product\Resources\ProductResource;
+use App\Http\Variation\Resources\VariationTypeValueResource;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use App\Support\Services\SearchService;
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\NoReturn;
 
 
 class ProductService
 {
+
+    /**
+     * @throws Exception
+     */
+    public function getProductFiltersByCategory(Category $category): array
+    {
+        $searchService = new SearchService();
+        $productModel = new Product();
+
+        $params = [
+            'filter' => $searchService->generateCategoryQueryString($category->slug, null, false),
+            'facets' => [...(new VariationService)->getFacetsArray(), 'stores'],
+        ];
+
+        $facets = $searchService->searchIndexedModel($params, $productModel)->raw()['facetDistribution'];
+
+        foreach ($facets as $facet => $value) {
+
+            if ($facet === 'color') {
+                foreach ($value as $color => $colorValue) {
+                    $splitColorString = explode(',', $color);
+                    $slugs[$facet][$splitColorString[0]] = $splitColorString[1];
+                }
+            }
+
+            if ($facet !== 'stores' && $facet !== 'color') {
+                $slugs[$facet] = array_keys($value);
+            }
+        }
+
+
+        return [
+            ...$slugs,
+            'stores' => array_keys($facets['stores']),
+            'sub_categories' => CategoryResource::collection($category->load('children')->children),
+        ];
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    public function getFilteredProducts(array $filters): LengthAwarePaginator
+    {
+        $searchService = new SearchService();
+        $productModel = new Product();
+
+        $params = [
+            'filter' => $searchService->filterQueryGenerator($filters),
+            'facets' => [...(new VariationService)->getFacetsArray(), 'stores', 'category', 'price'],
+        ];
+
+        return $searchService->searchIndexedModel($params, $productModel)->query(function (Builder $builder) {
+            $builder->with(['variations' => function ($query) {
+                $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
+                    ->has('VariationImages')
+                    ->parent();
+            }
+            ])->has('variations');
+        })->paginate();
+    }
+
     /**
      * @param int $id
      * @return ProductResource
@@ -132,13 +200,13 @@ class ProductService
         $searchService = new SearchService();
         $productModel = new Product();
 
-        $params['filter'] = $searchService->filterFactory($category->id, Arr::except($filters, 'price'), $filters['price'] ?? null);
+        $params['filter'] = $searchService->filterQueryGenerator($category->id, Arr::except($filters, 'price'), $filters['price'] ?? null);
         $params['sort'] = $searchService->sortFactory($filters['sort'] ?? null);
         $params['facets'] = [...(new VariationService)->getFacetsArray(), 'stores'];
 
         $meilisearch = $searchService->searchIndexedModel($params, $productModel)->query(function (Builder $builder) {
             $builder->with(['variations' => function ($query) {
-                $query->with('VariationImages', 'VariationColor','variationTypeValue','variationType')
+                $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
                     ->has('VariationImages')
                     ->parent();
             }

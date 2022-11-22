@@ -18,7 +18,10 @@ class VariationTypeValueResource extends JsonResource
         return [
             'id' => $this->id,
             'value' => $this->getTranslations('value'),
+            'slug' => $this->slug,
+            'hex_value' => $this->hex_value,
             'variation_type_id' => $this->variation_type_id,
+            'variation_type' => new VariationTypeResource($this->whenLoaded('VariationType')),
         ];
     }
 }

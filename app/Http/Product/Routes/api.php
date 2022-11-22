@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Product\Controllers\ProductController;
-use App\Http\Product\Controllers\VariationController;
+use App\Http\Product\Controllers\ApiProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('products', ProductController::class)->middleware('auth:sanctum')->except('index');
-Route::get('products', [ProductController::class, 'index'])->name('products.index');
+Route::get('category', [ApiProductController::class, 'getFilteredProducts'])->name('shop.by.category.post');
+Route::get('filters/{category}', [ApiProductController::class, 'getProductSearchFilterByCategory'])->name('search.filters.by.category');

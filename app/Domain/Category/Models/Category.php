@@ -117,10 +117,10 @@ class Category extends Model implements HasMedia
         return $query->where('is_active', true);
     }
 
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
+//    public function getRouteKeyName(): string
+//    {
+//        return 'slug';
+//    }
 
     public function resolveRouteBinding($value, $field = null): Model|Builder|null
     {

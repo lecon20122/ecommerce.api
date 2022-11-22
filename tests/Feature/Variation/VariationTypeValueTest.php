@@ -11,7 +11,7 @@ use Tests\TestCase;
 class VariationTypeValueTest extends TestCase
 {
     use RefreshDatabase;
-    public function test_variation_type_value_can_be_created()
+    public function test_variation_type_value_can_be_created_and_with_slug()
     {
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
@@ -21,6 +21,7 @@ class VariationTypeValueTest extends TestCase
         $data = [
             'en' => 'red',
             'ar' => 'احمر',
+            'hex_value' => '#225',
             'variation_type_id' => $variationType->id
         ];
 
@@ -29,6 +30,7 @@ class VariationTypeValueTest extends TestCase
         $response->assertSessionHas('message', 'success');
 
         $this->assertEquals('red', VariationTypeValue::first()->value);
+        $this->assertEquals('red', VariationTypeValue::first()->slug);
     }
 
     public function test_variation_type_value_can_be_updated()

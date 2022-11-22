@@ -31,9 +31,9 @@ class UpdateMeiliSearchAttributesCommands extends Command
     public function handle(): int
     {
         try {
-            $client = new Client('http://127.0.0.1:7700', config('scout.meilisearch.key' ));
+            $client = new Client('http://127.0.0.1:7700', config('scout.meilisearch.key'));
             $client->index('products')
-                ->updateFilterableAttributes(['category_ids', 'stores', 'price', ...(new VariationService)->getFacetsArray()]);
+                ->updateFilterableAttributes(['category', 'stores', 'price', 'color_ids', 'size_ids', ...(new VariationService)->getFacetsArray()]);
             $client->index('products')
                 ->updateSortableAttributes(['price', 'created_at']);
             return 0;

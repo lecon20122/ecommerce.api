@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('variation_type_id')->constrained()->restrictOnDelete();
             $table->json('value');
+            //            $table->string('slug');
+//            $table->string('hex_value')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

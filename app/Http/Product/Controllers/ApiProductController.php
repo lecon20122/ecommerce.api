@@ -25,12 +25,12 @@ class ApiProductController extends BaseController
      * Display a listing of the resource.
      *
      * @param Category $category
-     * @return JsonResponse
+     * @return array|JsonResponse
      */
-    #[NoReturn] public function getProductSearchFilterByCategory(Category $category): JsonResponse
+    #[NoReturn] public function getProductSearchFilterByCategory(Category $category)
     {
         try {
-            return \response()->json($this->service->getProductFiltersByCategory($category));
+            return $this->service->getProductFiltersByCategory($category);
         } catch (Exception $exception) {
             return $this->logErrorsAndRespondWithCustomMessage($exception->getMessage());
         }

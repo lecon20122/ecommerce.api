@@ -63,7 +63,7 @@ class SearchService
                 return $value->map(fn($value) => $key . ' = "' . $value . '"');
             })
             ->flatten()
-            ->join(' OR ');
+            ->join(' AND ');
     }
 
     public function splitFiltersStrings(array|string $filters): array

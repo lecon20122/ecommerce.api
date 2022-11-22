@@ -11,7 +11,6 @@ use App\Http\Category\Resources\CategoryResource;
 use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
-use App\Http\Product\Resources\ProductFilterResource;
 use App\Http\Product\Resources\ProductResource;
 use App\Http\Variation\Resources\VariationTypeValueResource;
 use App\Support\Enums\MediaCollectionEnums;
@@ -43,28 +42,23 @@ class ProductService
 
         $params = [
             'filter' => $searchService->generateCategoryQueryString($category->slug, null, false),
-            'facets' => [...(new VariationService)->getFacetsArray(), 'stores'],
+            'facets' => [...(new VariationService)->getFacetsArray(), 'stores', 'color_ids', 'size_ids'],
         ];
 
         $facets = $searchService->searchIndexedModel($params, $productModel)->raw()['facetDistribution'];
-        $slugs = [];
-        foreach ($facets as $facet => $value) {
 
-            if ($facet === 'color') {
-                foreach ($value as $color => $colorValue) {
-                    $splitColorString = explode(',', $color);
-                    $slugs[$facet][$splitColorString[0]] = $splitColorString[1];
-                }
-            }
-
-            if ($facet !== 'stores' && $facet !== 'color') {
-                $slugs[$facet] = array_keys($value);
-            }
-        }
+        $variations =
+            VariationTypeValue::query()
+                ->with('VariationType:id,type')
+                ->select('id', 'value', 'slug', 'hex_value', 'variation_type_id')
+                ->find(
+                    array_keys([...$facets['color_ids'], ...$facets['size_ids']])
+                )
+                ->groupBy('VariationType.type');
 
 
         return [
-            ...$slugs,
+            ...$variations,
             'stores' => array_keys($facets['stores']),
             'sub_categories' => CategoryResource::collection($category->load('children')->children),
         ];

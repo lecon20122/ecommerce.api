@@ -78,11 +78,8 @@ class Product extends Model
     {
         $result = [];
         foreach ($variations as $variation) {
-            if ($variation->variationType?->type === 'color') {
-                $result[$variation->variationType?->type][] = $variation->variationTypeValue?->slug . ',' . $variation->variationTypeValue?->hex_value;
-            } else {
-                $result[$variation->variationType?->type][] = $variation->variationTypeValue?->slug;
-            }
+            $result[$variation->variationType?->type][] = $variation->variationTypeValue?->slug;
+            $result[$variation->variationType?->type . '_' . 'ids'][] = $variation->variationTypeValue?->id;
         }
         return $result;
     }

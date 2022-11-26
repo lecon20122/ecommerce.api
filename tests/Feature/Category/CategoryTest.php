@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use JetBrains\PhpStorm\NoReturn;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
@@ -25,7 +26,7 @@ class CategoryTest extends TestCase
         $admin = Admin::factory(1)->create()->first();
         $this->actingAs($admin, 'admin');
         Storage::fake('public');
-         $this->post(route('admin.categories.store'), [
+        $this->post(route('admin.categories.store'), [
             'en' => 'test category',
             'ar' => 'هيللو',
             'images' => [
@@ -56,7 +57,7 @@ class CategoryTest extends TestCase
         $this->actingAs($admin, 'admin');
         $category = Category::factory()->create();
 
-        $response = $this->post(route('admin.categories.update', ['category' => $category]), [
+        $response = $this->post(route('admin.categories.update', ['id' => $category->id]), [
             'en' => 'new category',
         ])->assertRedirect();
 
@@ -81,7 +82,7 @@ class CategoryTest extends TestCase
         $this->assertNull(Category::first());
     }
 
-    #[NoReturn] public function test_that_as_a_admin_can_add_a_single_image_to_category()
+    #[NoReturn] public function test_that_as_a_admin_can_add_a_single_thumbnail_to_category()
     {
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
@@ -92,9 +93,10 @@ class CategoryTest extends TestCase
         $data = [
             'images' => [
                 0 => UploadedFile::fake()->image("test.jpg", 100, 100),
+                1 => UploadedFile::fake()->image("test.jpg", 100, 100),
             ]
         ];
-        $response = $this->post(route('admin.add.media.to.category', ['category' => $category]), $data)->assertRedirect();
+        $response = $this->post(route('admin.add.media.to.category', ['id' => $category->id]), $data)->assertRedirect();
         $response->assertSessionHas('message', 'success');
 
         $this->assertCount(1, $category->media);
@@ -112,5 +114,32 @@ class CategoryTest extends TestCase
         $response->assertSessionHas('message', 'success');
 
         $this->assertTrue(Category::first()->is_active);
+    }
+
+    #[NoReturn] public function test_that_as_a_admin_can_delete_a_category_thumbnail()
+    {
+        $admin = Admin::factory()->create();
+        $this->actingAs($admin, 'admin');
+
+        $category = Category::factory()->create();
+
+        Storage::fake('public');
+        $data = [
+            'images' => [
+                0 => UploadedFile::fake()->image("test.jpg", 100, 100),
+            ]
+        ];
+        $response = $this->post(route('admin.add.media.to.category', ['id' => $category->id]), $data)->assertRedirect();
+        $response->assertSessionHas('message', 'success');
+
+        $this->assertCount(1, $category->media);
+
+        $dataToDelete = [
+            'id' => $category->thumbnail->id
+        ];
+
+        $this->post(route('admin.delete.media.of.category', ['id' => $category->id]), $dataToDelete)->assertRedirect();
+        $category->refresh();
+        $this->assertCount(0, $category->media);
     }
 }

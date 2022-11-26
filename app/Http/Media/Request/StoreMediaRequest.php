@@ -26,7 +26,7 @@ class StoreMediaRequest extends FormRequest
         return [
             'collection_name' => 'string|nullable',
             'images' => 'required',
-            'images.*' => 'mimes:jpg,webp|max:1024',
+            'images.*' => 'mimes:jpg,webp,png|max:2048',
         ];
     }
 }

@@ -50,7 +50,7 @@ Route::name('api.')->group(function () {
 //    Route::group([], base_path() . '/app/Http/Auth/Routes/api.php');
 //
 //    //Category Routes
-//    Route::group([], base_path() . '/app/Http/Category/Routes/api.php');
+    Route::group([], base_path() . '/app/Http/Category/Routes/api.php');
 //
 //    //Cart Routes
 //    Route::group([], base_path() . '/app/Http/Cart/Routes/api.php');

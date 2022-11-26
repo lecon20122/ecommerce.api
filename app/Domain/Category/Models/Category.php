@@ -35,32 +35,31 @@ class Category extends Model implements HasMedia
     {
         $this->addMediaConversion(MediaCollectionEnums::THUMB_CONVENTION)
             ->format(Manipulations::FORMAT_WEBP)
-            ->width(310)
-            ->height(303)
-            ->performOnCollections(MediaCollectionEnums::CATEGORY);
+            ->width(198)
+            ->height(198)
+            ->performOnCollections(MediaCollectionEnums::THUMBNAIL);
 
         $this->addMediaConversion(MediaCollectionEnums::CATEGORY_MOBILE_BANNER_CONVENTION)
             ->format(Manipulations::FORMAT_WEBP)
-            ->width(412)
-            ->height(412)
+            ->width(900)
+            ->height(540)
             ->performOnCollections(MediaCollectionEnums::CATEGORY_MOBILE_BANNER);
 
         $this->addMediaConversion(MediaCollectionEnums::CATEGORY_BIG_BANNER_CONVENTION)
             ->format(Manipulations::FORMAT_WEBP)
-            ->width(1200)
-            ->height(475)
+            ->width(1920)
+            ->height(900)
             ->performOnCollections(MediaCollectionEnums::CATEGORY_BIG_BANNER);
 
     }
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection(MediaCollectionEnums::CATEGORY)
-            ->useFallbackUrl('https://empowher.org/wp-content/uploads/2021/03/image-placeholder-350x350-1.png')
+        $this->addMediaCollection(MediaCollectionEnums::THUMBNAIL)
             ->singleFile();
-        $this->addMediaCollection(MediaCollectionEnums::CATEGORY_MOBILE_BANNER)
-            ->onlyKeepLatest(3);
         $this->addMediaCollection(MediaCollectionEnums::CATEGORY_BIG_BANNER)
+            ->onlyKeepLatest(3);
+        $this->addMediaCollection(MediaCollectionEnums::CATEGORY_MOBILE_BANNER)
             ->onlyKeepLatest(3);
     }
 
@@ -96,7 +95,7 @@ class Category extends Model implements HasMedia
     public function thumbnail(): MorphOne
     {
         return $this->morphOneMedia()
-            ->where('collection_name', MediaCollectionEnums::THUMBNAIL);
+            ->where('collection_name', '=', MediaCollectionEnums::THUMBNAIL);
     }
 
     /**
@@ -105,6 +104,18 @@ class Category extends Model implements HasMedia
     public function thumbnails()
     {
         return $this->morphManyMedia()->where('collection_name', MediaCollectionEnums::THUMBNAIL);
+    }
+
+    public function banners(): MorphMany
+    {
+        return $this->morphManyMedia()
+            ->where('collection_name', MediaCollectionEnums::CATEGORY_BIG_BANNER);
+    }
+
+    public function mobileBanners(): MorphMany
+    {
+        return $this->morphManyMedia()
+            ->where('collection_name', MediaCollectionEnums::CATEGORY_MOBILE_BANNER);
     }
 
     public function scopeParent($query)

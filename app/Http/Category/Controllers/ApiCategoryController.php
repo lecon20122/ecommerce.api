@@ -5,7 +5,9 @@ namespace App\Http\Category\Controllers;
 use App\Http\Category\Services\CategoryService;
 use App\Http\Controllers\Controller;
 use Application\Controllers\BaseController;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 class ApiCategoryController extends BaseController
@@ -17,11 +19,15 @@ class ApiCategoryController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-
+        try {
+            return $this->service->getCategoriesParentsWithItsMediaAndChildren();
+        } catch (Exception $exception) {
+            $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
     }
 
     /**

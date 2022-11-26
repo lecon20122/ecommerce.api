@@ -12,7 +12,7 @@ return [
      * The maximum file size of an item in bytes.
      * Adding a larger file will result in an exception.
      */
-    'max_file_size' => 1024 * 1024 * 1, // 1MB
+    'max_file_size' => 2024 * 1024 * 1, // 2MB
 
     /*
      * This queue will be used to generate derived and responsive images.
@@ -148,7 +148,8 @@ return [
      * your custom jobs extend the ones provided by the package.
      */
     'jobs' => [
-        'perform_conversions' => Spatie\MediaLibrary\Conversions\Jobs\PerformConversionsJob::class,
+//        'perform_conversions' => Spatie\MediaLibrary\Conversions\Jobs\PerformConversionsJob::class,
+        'perform_conversions' => \App\Support\Jobs\PerformConversionsAndDeleteTheOriginalFileJob::class,
         'generate_responsive_images' => Spatie\MediaLibrary\ResponsiveImages\Jobs\GenerateResponsiveImagesJob::class,
     ],
 

@@ -32,7 +32,7 @@ class ApiProductController extends BaseController
         try {
             return $this->service->getProductFiltersByCategory($category);
         } catch (Exception $exception) {
-            return $this->logErrorsAndRespondWithCustomMessage($exception->getMessage());
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ class ApiProductController extends BaseController
                 ));
         } catch (Exception $exception) {
 //            dd($exception->getMessage());
-            return $this->logErrorsAndRespondWithCustomMessage($exception->getTraceAsString());
+            return $this->logErrorsAndReturnJsonMessage($exception->getTraceAsString());
         }
     }
 

@@ -44,6 +44,9 @@ export default function CategoryEdit({currentCategory, locale, categories}: Prop
           <Form.Item name={'en'} label='Title EN' initialValue={currentCategory.title.en}>
             <Input/>
           </Form.Item>
+          <Form.Item name={'ar'} label='Title AR' initialValue={currentCategory.title.ar}>
+            <Input/>
+          </Form.Item>
           <Form.Item name={'primary_color'} label='Primary Color' initialValue={currentCategory.primary_color}>
             <Input style={{backgroundColor: currentCategory.primary_color}}/>
           </Form.Item>

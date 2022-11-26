@@ -11,17 +11,27 @@ use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
 
-    public function apiIndex()
+    public function getCategoriesParentsWithItsMediaAndChildren(): AnonymousResourceCollection
     {
-        CategoryResource::collection(
+        return CategoryResource::collection(
             Category::query()
-                ->with('parent:title,id')
+                ->with([
+                    'banners',
+                    'mobileBanners',
+                    'children' => function (HasMany $query) {
+                        $query->with('thumbnail')
+                            ->has('thumbnail')
+                                ->has('products');
+                    }])
+                ->parent()
+                ->has('children')
                 ->get()
         );
     }
@@ -57,8 +67,9 @@ class CategoryService
         return new CategoryResource(Category::with('media')->find($id));
     }
 
-    public function update(UpdateCategoryRequest $request, ImageService $imageService, Category $category)
+    public function update(UpdateCategoryRequest $request, ImageService $imageService, $id)
     {
+        $category = Category::query()->find($id);
         DB::beginTransaction();
         $data = $request->validated();
         if ($request->has('en') || $request->has('ar')) {
@@ -112,23 +123,28 @@ class CategoryService
         );
     }
 
-    public function addImagesToCategory(Category $category, StoreMediaRequest $request, ImageService $imageService)
+    public function uploadCategoryThumbnail($id, StoreMediaRequest $request, ImageService $imageService)
     {
+        $category = Category::query()->find($id);
         if ($request->hasFile('images')) {
-            $imageService->imageUpload($category, 'images', MediaCollectionEnums::CATEGORY, $category->id);
+            [$width, $height] = $imageService->getDimensions($request->file('images')[0]);
+            $imageService->imageUploadWithDimensions($category, 'images', MediaCollectionEnums::THUMBNAIL, $category->id, $width, $height);
         }
     }
 
-    public function deleteCategoryImage(Category $category, ModelIDsRequest $request)
+    public function deleteCategoryThumbnail($id, $mediaId)
     {
-        $image = $category->media()->find($request->validated('id'));
+        $category = Category::query()->find($id);
+        $image = $category->media()->find($mediaId);
         $image?->delete();
     }
 
-    public function addBannerToCategory(Category $category, StoreMediaRequest $request, ImageService $imageService)
+    public function addBannerToCategory($id, StoreMediaRequest $request, ImageService $imageService)
     {
+        $category = Category::query()->find($id);
         if ($request->hasFile('images')) {
-            $imageService->imageUpload($category, 'images', $request->validated('collection_name'), $category->id);
+            [$width, $height] = $imageService->getDimensions($request->file('images')[0]);
+            $imageService->imageUploadWithDimensions($category, 'images', $request->validated('collection_name'), $category->id, $width, $height);
         }
     }
 

@@ -1,1 +1,0 @@
-import{j as o}from"./app.8ebb39ab.js";import{T as e}from"./Table.4f6af7c7.js";function n({rowKey:r="id",columns:t,dataSource:a}){return o(e,{rowKey:r,columns:t,dataSource:a,scroll:{x:!0}})}export{n as A};

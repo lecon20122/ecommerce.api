@@ -2,6 +2,9 @@
 
 namespace App\Http\Category\Resources;
 
+use App\Http\Media\Resources\CategoryBannerResource;
+use App\Http\Media\Resources\CategoryMobileBannerResource;
+use App\Http\Media\Resources\CategoryThumbnailResource;
 use App\Http\Media\Resources\MediaResource;
 use App\Http\Product\Resources\ProductResource;
 use Illuminate\Http\Request;
@@ -28,7 +31,12 @@ class CategoryResource extends JsonResource
             'children' => CategoryResource::collection($this->whenLoaded('children')),
             'parent' => new CategoryResource($this->whenLoaded('parent')),
             'products' => ProductResource::collection($this->whenLoaded('products')),
+            'images' => [
+                'banners' => CategoryBannerResource::collection($this->whenLoaded('banners')),
+                'mobile_banners' => CategoryMobileBannerResource::collection($this->whenLoaded('mobileBanners')),
+            ],
             'media' => MediaResource::collection($this->whenLoaded('media')),
+            'thumbnail' => new CategoryThumbnailResource($this->whenLoaded('thumbnail')),
         ];
     }
 }

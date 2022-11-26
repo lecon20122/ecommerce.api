@@ -109,10 +109,10 @@ class CategoryController extends BaseController
      * @param ImageService $imageService
      * @return RedirectResponse
      */
-    public function update(UpdateCategoryRequest $request, Category $category, CategoryService $categoryService, ImageService $imageService): RedirectResponse
+    public function update(UpdateCategoryRequest $request, $id, CategoryService $categoryService, ImageService $imageService): RedirectResponse
     {
         try {
-            $categoryService->update($request, $imageService, $category);
+            $categoryService->update($request, $imageService, $id);
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
@@ -139,11 +139,11 @@ class CategoryController extends BaseController
     }
 
 
-    public function addMediaToCategory(Category $category, StoreMediaRequest $request, ImageService $imageService, CategoryService $categoryService): RedirectResponse
+    public function uploadCategoryThumbnail($id, StoreMediaRequest $request, ImageService $imageService, CategoryService $categoryService): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $categoryService->addImagesToCategory($category, $request, $imageService);
+            $categoryService->uploadCategoryThumbnail($id, $request, $imageService);
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
@@ -152,11 +152,11 @@ class CategoryController extends BaseController
         }
     }
 
-    public function deleteCategoryImage(Category $category, ModelIDsRequest $request, CategoryService $categoryService): RedirectResponse
+    public function deleteCategoryThumbnail($id, ModelIDsRequest $request, CategoryService $categoryService): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $categoryService->deleteCategoryImage($category, $request);
+            $categoryService->deleteCategoryThumbnail($id, $request->validated('id'));
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
@@ -165,11 +165,11 @@ class CategoryController extends BaseController
         }
     }
 
-    public function addBannerToCategory(Category $category, StoreMediaRequest $request, ImageService $imageService, CategoryService $categoryService): RedirectResponse
+    public function addBannerToCategory($id, StoreMediaRequest $request, ImageService $imageService, CategoryService $categoryService): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $categoryService->addBannerToCategory($category, $request, $imageService);
+            $categoryService->addBannerToCategory($id, $request, $imageService);
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {

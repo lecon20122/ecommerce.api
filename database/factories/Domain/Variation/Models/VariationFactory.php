@@ -38,11 +38,13 @@ class VariationFactory extends Factory
 //            'variation_type_id' => 1,
         ];
     }
-//
+
 //    public function configure(): VariationFactory
 //    {
 //        return $this->afterCreating(function (Variation $variation) {
-//            $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
+//
+////            $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
+//            $url = 'https://picsum.photos/1200/1919.webp';
 //            $variation
 //                ->addMediaFromUrl($url)
 //                ->toMediaCollection(MediaCollectionEnums::VARIATION);

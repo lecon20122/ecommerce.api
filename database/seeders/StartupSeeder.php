@@ -65,6 +65,31 @@ class StartupSeeder extends Seeder
                 ],
                 'is_active' => true
             ],
+            [
+                'title' => [
+                    'en' => 'Men Shoes',
+                    'ar' => 'أحذية للرجال'
+                ],
+                'is_active' => true,
+                'parent_id' => 1 // men
+            ],
+            [
+                'title' => [
+                    'en' => 'Women Dresses',
+                    'ar' => 'فساتين للنساء'
+                ],
+                'is_active' => true,
+                'parent_id' => 2 // women
+            ],
+            [
+                'title' => [
+                    'en' => 'Kids Shoes',
+                    'ar' => 'أحذية للأطفال'
+                ],
+                'is_active' => true,
+                'parent_id' => 3 // kids
+            ],
+
         ]; //categories [women , men , kids]
         foreach ($categories as $category) {
             Category::create($category);
@@ -167,5 +192,7 @@ class StartupSeeder extends Seeder
         foreach ($variationTypesValues as $variationTypesValue) {
             VariationTypeValue::create($variationTypesValue);
         }
+
+
     }
 }

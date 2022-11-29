@@ -24,7 +24,7 @@ class CustomPathDirectory implements PathGenerator
 
     public function getPathForConversions(Media $media): string
     {
-        return $this->folderStructure($media) . 'conversions/';
+        return $this->folderStructure($media);
     }
 
     public function getPathForResponsiveImages(Media $media): string

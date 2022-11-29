@@ -44,7 +44,7 @@ class VariationFactory extends Factory
 //        return $this->afterCreating(function (Variation $variation) {
 //
 ////            $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
-//            $url = 'https://picsum.photos/1200/1919.webp';
+//            $url = 'https://picsum.photos/1200/1919';
 //            $variation
 //                ->addMediaFromUrl($url)
 //                ->toMediaCollection(MediaCollectionEnums::VARIATION);

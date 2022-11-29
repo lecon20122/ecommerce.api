@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
+use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationType;
+use App\Support\Enums\MediaCollectionEnums;
 use Faker\Generator;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -38,7 +40,6 @@ class ProductSeeder extends Seeder
 
         Store::factory(5)->create();
 
-
         Product::factory(5)->create([
             'title' => [
                 'en' => $this->faker->paragraph(1),
@@ -46,19 +47,31 @@ class ProductSeeder extends Seeder
             ],
             'price' => $this->faker->randomFloat(null, 99, 500),
             'live_at' => now(),
-            'store_id' => rand(0, 5),
-        ])->each(function ($product) use ($colorType) {
-            Variation::factory(3)->create(
-                [
-                    'price' => $this->faker->randomFloat(null, 99, 500),
-                    'order' => $this->faker->randomDigit(),
-                    'store_id' => $product->store_id,
-                    'product_id' => $product->id,
-                    'is_stockable' => true,
-                    'variation_type_id' => $colorType->id,
-                    'variation_type_value_id' => rand(0, 6),
-                ]
-            );
+            'store_id' => rand(1, 5),
+        ])->each(function (Product $product) use ($colorType) {
+            for ($i = 0; $i < 4; $i++) {
+
+                $variation = $product->variations()->create(
+                    [
+                        'price' => $this->faker->randomFloat(null, 99, 500),
+                        'order' => $this->faker->randomDigit(),
+                        'store_id' => $product->store_id,
+                        'product_id' => $product->id,
+                        'is_stockable' => true,
+                        'variation_type_id' => $colorType->id,
+                        'variation_type_value_id' => rand(1, 6),
+                    ]);
+
+                $url = 'https://picsum.photos/1200/1919';
+//                $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
+                $variation
+                    ->addMediaFromUrl($url)
+                    ->toMediaCollection(MediaCollectionEnums::VARIATION);
+            }
         });
+
+        foreach (Product::all() as $product){
+            $product->categories()->attach(rand(4,6));
+        }
     }
 }

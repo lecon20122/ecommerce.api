@@ -63,15 +63,16 @@ class Product extends Model
     public function toSearchableArray(): array
     {
         $this->load(['variations' => fn($query) => $query->with(['variationType', 'variationTypeValue'])]);
-        return array_merge([
-            'id' => $this->id,
+        return [
+            'slug' => $this->slug,
             'title' => $this->title,
+            ...$this->pushVariationTypeValuesIntoVariationType($this->variations),
             'price' => $this->price,
-            'store_id' => $this->store_id,
-            'stores' => $this->load('store')->store->name,
             'category' => $this->load('categories')->categories->pluck('slug')->toArray(),
+            'stores' => $this->load('store')->store->name,
             'created_at' => $this->created_at,
-        ], $this->pushVariationTypeValuesIntoVariationType($this->variations));
+            'id' => $this->id,
+        ];
     }
 
     public function pushVariationTypeValuesIntoVariationType($variations): array

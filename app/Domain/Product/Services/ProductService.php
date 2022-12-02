@@ -31,6 +31,26 @@ use JetBrains\PhpStorm\NoReturn;
 
 class ProductService
 {
+    public static function __callStatic($name, $arguments)
+    {
+        return (new static)->$name(...$arguments);
+    }
+
+    public function getProductBySlug(string $slug): ProductResource
+    {
+        $product = Product::query()
+            ->with(['variations' => function ($query) {
+                $query->with(['VariationImages', 'VariationColor', 'variationTypeValue', 'variationType', 'children' => function ($query) {
+                    $query->with(['variationTypeValue', 'variationType', 'media']);
+                }])
+                    ->has('VariationImages')
+                    ->parent();
+            }
+            ])
+            ->where('slug', '=', $slug)
+            ->first();
+        return new ProductResource($product);
+    }
 
     /**
      * @throws Exception
@@ -52,7 +72,7 @@ class ProductService
                 ->with('VariationType:id,type')
                 ->select('id', 'value', 'slug', 'hex_value', 'variation_type_id')
                 ->find(
-                    array_keys([...$facets['color_ids'], ...$facets['size_ids']])
+                    [...array_keys($facets['color_ids']), ...array_keys($facets['size_ids'])]
                 )
                 ->groupBy('VariationType.type');
 
@@ -63,7 +83,6 @@ class ProductService
             'sub_categories' => CategoryResource::collection($category->load('children')->children),
         ];
     }
-
 
     /**
      * @throws Exception

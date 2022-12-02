@@ -20,7 +20,7 @@ class SearchService
     public function filterQueryGenerator(array|string $filters): string
     {
 
-        if($isMainCategoryParamTheOnlyKey = count($filters) === 1 && array_key_exists('mainCategory', $filters)){
+        if (count($filters) === 1 && array_key_exists('mainCategory', $filters)) {
             return $this->generateCategoryQueryString($filters['mainCategory'] ?? null, $filters['category'] ?? null, false);
         }
 
@@ -33,7 +33,7 @@ class SearchService
 
         $stringQuery = $this->generateCategoryQueryString($filters['mainCategory'] ?? null, $filters['category'] ?? null, !$areCategoryAndSubCategoryTheOnlyKeys);
 
-        $stringQuery = $stringQuery . $this->recursiveFilterIteration(Arr::except($filters, ['category', 'mainCategory', 'price']));
+        $stringQuery = $stringQuery . $this->generateSizeAndColorQueryString(Arr::except($filters, ['category', 'mainCategory', 'price']));
 
         if (isset($filters['price'])) {
             $stringQuery = $stringQuery . ($areSizeOrColorExists ? ' AND ' : '') . $this->generatePriceRangeQuery($filters['price']);
@@ -44,26 +44,26 @@ class SearchService
     public function generateCategoryQueryString(string $mainCategory = null, string $category = null, bool $andOperatorFlag = true): ?string
     {
         if (!$mainCategory && !$category) return null;
-        return 'category = ' . '"' . ($category ?? $mainCategory) . '"' . ($andOperatorFlag ? ' OR ' : '');
+        return 'category = ' . '"' . ($category ?? $mainCategory) . '"' . ($andOperatorFlag ? ' AND ' : '');
     }
 
     /**
      * @param array|string $filters
-     * @return null
+     * @return string|null
      */
-    public function recursiveFilterIteration(array|string $filters)
+    public function generateSizeAndColorQueryString(array|string $filters): ?string
     {
         if (!$filters) return null;
 
         $splitFilter = $this->splitFiltersStrings($filters);
-
-        return $this->collectChildren(collect($splitFilter)->filter(fn($filter) => !empty($filter)))
+        $query = $this->collectChildren(collect($splitFilter)->filter(fn($filter) => !empty($filter)))
             ->map(function ($value, $key) {
                 if (is_string($value)) return $key . ' = "' . $value . '"';
                 return $value->map(fn($value) => $key . ' = "' . $value . '"');
             })
             ->flatten()
-            ->join(' AND ');
+            ->join(' OR ');
+        return '(' . $query . ')';
     }
 
     public function splitFiltersStrings(array|string $filters): array
@@ -90,7 +90,7 @@ class SearchService
     public function generatePriceRangeQuery(string $price): string
     {
         $priceRange = explode('-', $price);
-        return 'price >= ' . '"' . $priceRange[0] . '"' . ' AND ' . 'price <= ' . '"' . $priceRange[1] . '"';
+        return 'price ' . '"' . $priceRange[0] . '"' . ' TO ' . '"' . $priceRange[1] . '"';
     }
 
     /**

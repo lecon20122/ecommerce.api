@@ -59,7 +59,7 @@ class BaseController extends Controller
         if (!empty($message)) {
             $response['success'] = $message;
         }
-        return response()->json($response, 200);
+        return response()->json($response);
     }
 
     public function redirectBackWithMessage($message): RedirectResponse
@@ -80,7 +80,7 @@ class BaseController extends Controller
 
     public function logErrorsAndReturnJsonMessage($exceptionMessage, $class = null, $functionName = null, $customMessage = 'something went wrong we working on it'): JsonResponse
     {
-        Log::error($exceptionMessage . 'At' . $class . ' , ' . $functionName);
+        Log::error($exceptionMessage . '  At CLASS ' . $class . ' , ' . $functionName . '()');
         return response()->json(['message' => $customMessage]);
     }
 }

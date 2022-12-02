@@ -31,7 +31,7 @@ class SearchServiceTest extends TestCase
             'stores' => 'Adara',
         ];
         $expectedResult = 'size = "XL" OR size = "M" OR color = "green" OR color = "blue" OR stores = "Adara"';
-        $actualResult = (new SearchService())->recursiveFilterIteration($filters);
+        $actualResult = (new SearchService())->generateSizeAndColorQueryString($filters);
         $this->assertEquals($expectedResult, $actualResult);
     }
 

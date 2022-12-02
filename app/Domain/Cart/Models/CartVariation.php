@@ -12,6 +12,7 @@ class CartVariation extends Pivot
     use HasFactory;
 
     protected $table = 'cart_variation';
+    protected $guarded = ['id'];
 
     public function user(): BelongsTo
     {

@@ -11,6 +11,7 @@ use App\Http\Cart\Requests\UpdateCartItemQuantityRequest;
 use App\Http\Cart\Requests\UpdateCartRequest;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,20 @@ class CartController extends BaseController
      */
     public function __construct(protected CartInterface $cartService)
     {
+    }
+
+
+    public function addToCart(StoreCartRequest $request): JsonResponse
+    {
+        try {
+            DB::beginTransaction();
+            $result = $this->cartService->addItem($request->validated('variation_id'), $request->validated('price'), quantity: 1);
+            DB::commit();
+            return $result;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
     }
 
     /**

@@ -38,28 +38,29 @@ class ProductSeeder extends Seeder
     {
         $colorType = VariationType::query()->whereRaw("JSON_EXTRACT(type, '$.en') = 'color'")->first();
 
-        Store::factory(5)->create();
-
-        Product::factory(5)->create([
-            'title' => [
-                'en' => $this->faker->paragraph(1),
-                'ar' => $this->faker->name(),
-            ],
-            'price' => $this->faker->randomFloat(null, 99, 500),
-            'live_at' => now(),
-            'store_id' => rand(1, 5),
-        ])->each(function (Product $product) use ($colorType) {
+//        Store::factory(5)->create();
+//        Product::factory(5)->create([
+//            'title' => [
+//                'en' => $this->faker->paragraph(1),
+//                'ar' => $this->faker->name(),
+//            ],
+//            'price' => $this->faker->randomFloat(null, 99, 500),
+//            'live_at' => now(),
+//            'store_id' => rand(1, 5),
+//        ]);
+        Product::factory(100)->create();
+        $div = pow(10 , 2);
+        foreach (Product::all() as $product) {
             for ($i = 0; $i < 4; $i++) {
-
                 $variation = $product->variations()->create(
                     [
-                        'price' => $this->faker->randomFloat(null, 99, 500),
+                        'price' => mt_rand(1 * $div , 500 * $div) / $div,
                         'order' => $this->faker->randomDigit(),
                         'store_id' => $product->store_id,
                         'product_id' => $product->id,
                         'is_stockable' => true,
                         'variation_type_id' => $colorType->id,
-                        'variation_type_value_id' => rand(1, 6),
+                        'variation_type_value_id' => rand(1, 5),
                     ]);
 
                 $url = 'https://picsum.photos/1200/1919';
@@ -68,10 +69,7 @@ class ProductSeeder extends Seeder
                     ->addMediaFromUrl($url)
                     ->toMediaCollection(MediaCollectionEnums::VARIATION);
             }
-        });
-
-        foreach (Product::all() as $product){
-            $product->categories()->attach(rand(4,6));
+            $product->categories()->attach(rand(4, 6));
         }
     }
 }

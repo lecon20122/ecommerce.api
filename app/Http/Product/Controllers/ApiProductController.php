@@ -3,7 +3,9 @@
 namespace App\Http\Product\Controllers;
 
 use App\Domain\Category\Models\Category;
+use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
+use App\Http\Product\Requests\ProductBySlugRequest;
 use App\Http\Product\Requests\ProductFilterRequest;
 use App\Http\Product\Resources\ProductResource;
 use Application\Controllers\BaseController;
@@ -27,18 +29,16 @@ class ApiProductController extends BaseController
      * @param Category $category
      * @return array|JsonResponse
      */
-    #[NoReturn] public function getProductSearchFilterByCategory(Category $category)
+    #[NoReturn] public function getProductSearchFilterByCategory(Category $category): JsonResponse|array
     {
         try {
             return $this->service->getProductFiltersByCategory($category);
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage());
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage() , __CLASS__ , __FUNCTION__);
         }
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
      * @param ProductFilterRequest $request
      * @return AnonymousResourceCollection|JsonResponse
      */
@@ -53,20 +53,21 @@ class ApiProductController extends BaseController
                     $request->validated('limit')
                 ));
         } catch (Exception $exception) {
-//            dd($exception->getMessage());
-            return $this->logErrorsAndReturnJsonMessage($exception->getTraceAsString());
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage() , __CLASS__ , __FUNCTION__);
         }
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return Response
+     * @param ProductBySlugRequest $request
+     * @return ProductResource|JsonResponse
      */
-    public function store(Request $request)
+    public function getProduct(ProductBySlugRequest $request): ProductResource | JsonResponse
     {
-        //
+        try {
+            return $this->service->getProductBySlug($request->validated('slug'));
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage() , __CLASS__ , __FUNCTION__);
+        }
     }
 
     /**

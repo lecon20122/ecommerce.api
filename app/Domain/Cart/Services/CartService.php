@@ -133,15 +133,20 @@ class CartService implements CartInterface
         }
         $price = $existingVariation->pivot->price ?? $price;
 
-        $quantity = min($quantity, $variation->StockCount());
 
-        $this->cartInstance->variations()->syncWithoutDetaching([
-            $variation->id => [
-                'quantity' => $quantity,
-                'price' => $price,
-                'total' => ($quantity * $price),
-            ]
-        ]);
+        $quantity = min($quantity, $variation->StockCount());
+        if ($quantity) {
+            $this->cartInstance->variations()->syncWithoutDetaching([
+                $variation->id => [
+                    'quantity' => $quantity,
+                    'price' => $price,
+                    'total' => ($quantity * $price),
+                ]
+            ]);
+            return response()->json(['message' => 'item added to cart successfully']);
+        } else {
+            return response()->json(['message' => 'item has no stock']);
+        }
     }
 
     /**

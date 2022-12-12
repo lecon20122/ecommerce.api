@@ -2,13 +2,17 @@
 
 namespace App\Http\Auth\Controllers;
 
+use App\Http\Auth\Requests\ProviderAuthTokenRequest;
+use App\Http\Auth\Resources\UserResource;
 use Application\Controllers\BaseController;
 use Domain\User\Models\User;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Support\Enums\ThirdPartyEnums;
 
@@ -21,17 +25,31 @@ class SocialiteController extends BaseController
         return Socialite::driver(ThirdPartyEnums::Google)->scopes($scopes)->redirect();
     }
 
-    public function oauthProviderCallBack()
+    /**
+     * @param ProviderAuthTokenRequest $request
+     * @return UserResource|JsonResponse
+     */
+    public function getUserFromToken(ProviderAuthTokenRequest $request): UserResource|JsonResponse
     {
         try {
-            $providerUser = Socialite::driver(ThirdPartyEnums::Google)->user();
+            $user = Socialite::driver($request->validated('provider'))
+                ->userFromToken($request->validated('token'));
 
+            return new UserResource($this->oauthProviderCreateAndLogin($user));
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    public function oauthProviderCreateAndLogin($providerUser)
+    {
+        try {
             if ($providerUser) {
                 $user = $this->createOrUpdateUser($providerUser);
                 Auth::login($user);
             }
 
-            return Redirect::intended();
+            return $user;
         } catch (Exception $exception) {
             DB::rollBack();
             $this->sendError($exception->getMessage());
@@ -47,8 +65,6 @@ class SocialiteController extends BaseController
             'email' => $providerUser->email,
             'name' => $providerUser->name,
             'password' => $providerUser->email . $providerUser->id,
-            'provider_token' => $providerUser->token,
-            'provider_refresh_token' => $providerUser->refreshToken,
             'oauth_provider_type' => ThirdPartyEnums::Google,
         ];
 

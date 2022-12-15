@@ -25,6 +25,7 @@ class UpdateCartItemQuantityRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
             'quantity' => ValidationRuleEnums::REQUIRED_INTEGER->value,
         ];
     }

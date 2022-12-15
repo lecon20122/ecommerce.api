@@ -53,10 +53,10 @@ export default function AdminLogin() {
                 </Button>
               </Form.Item>
               <div className={'flex justify-between content-center gap-4'}>
-                <p className="text-start mt-5">
-                  <a className="text-blue-500" href={route('client.signup')}>create new account</a>
-                </p>
-                <a className="text-blue-500 text-end mt-5" href={route('client.forget.password')}>forget password</a>
+                {/*<p className="text-start mt-5">*/}
+                {/*  <a className="text-blue-500" href={route('client.signup')}>create new account</a>*/}
+                {/*</p>*/}
+                {/*<a className="text-blue-500 text-end mt-5" href={route('client.forget.password')}>forget password</a>*/}
               </div>
             </Form>
           </div>

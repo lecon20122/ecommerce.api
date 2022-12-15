@@ -34,8 +34,6 @@ class VariationFactory extends Factory
             'is_stockable' => true,
             'variation_type_value_id' => VariationTypeValue::factory(),
             'variation_type_id' => VariationType::factory(),
-//            'variation_type_value_id' => rand(1, 5),
-//            'variation_type_id' => 1,
         ];
     }
 

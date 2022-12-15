@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Domain\Inventory\Models\Stock;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
@@ -50,7 +51,7 @@ class ProductSeeder extends Seeder
 //            'live_at' => now(),
 //            'store_id' => rand(1, 5),
 //        ]);
-        Product::factory(60)->create([
+        Product::factory(20)->create([
             'store_id' => rand(1, 2),
         ]);
         $div = pow(10, 2);
@@ -77,8 +78,15 @@ class ProductSeeder extends Seeder
                         'variation_type_id' => $sizeType->id,
                         'variation_type_value_id' => rand(6, 9),
                     ]);
+                Stock::factory()->create([
+                    'variation_id' => $sizeVariation->id,
+                    'amount' => 1000
+                ]);
                 $url = 'https://picsum.photos/1200/1919';
 //                $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
+                $colorVariation
+                    ->addMediaFromUrl($url)
+                    ->toMediaCollection(MediaCollectionEnums::VARIATION);
                 $colorVariation
                     ->addMediaFromUrl($url)
                     ->toMediaCollection(MediaCollectionEnums::VARIATION);

@@ -87,9 +87,6 @@ class ProductSeeder extends Seeder
                 $colorVariation
                     ->addMediaFromUrl($url)
                     ->toMediaCollection(MediaCollectionEnums::VARIATION);
-                $colorVariation
-                    ->addMediaFromUrl($url)
-                    ->toMediaCollection(MediaCollectionEnums::VARIATION);
             }
             $product->categories()->attach(rand(4, 6));
         }

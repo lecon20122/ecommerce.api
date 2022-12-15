@@ -33,10 +33,12 @@ trait CustomHasMedia
             ->orderBy('order_column');
     }
 
-    public function getMediaByCollectionName($collectionName): MorphOne
+    public function getMediaByCollectionAndConvention($collectionName): MorphOne
     {
         return $this->morphOne(config('media-library.media_model'), 'model')
             ->where('collection_name', $collectionName)
             ->orderBy('order_column');
     }
+
+
 }

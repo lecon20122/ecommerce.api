@@ -142,7 +142,7 @@ class Variation extends Model implements HasMedia
 
     public function VariationColor(): MorphOne
     {
-        return $this->getMediaByCollectionName(MediaCollectionEnums::VARIATION_COLOR);
+        return $this->getMediaByCollectionAndConvention(MediaCollectionEnums::VARIATION_COLOR);
     }
 
     public function VariationImages(): MorphMany
@@ -169,5 +169,10 @@ class Variation extends Model implements HasMedia
     public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);
+    }
+
+    public function variationSmallImage(): Model|MorphOne|null
+    {
+        return $this->getMediaByCollectionAndConvention(MediaCollectionEnums::VARIATION);
     }
 }

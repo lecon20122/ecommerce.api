@@ -3,6 +3,7 @@
 namespace App\Http\Variation\Resources;
 
 use App\Http\Media\Resources\MediaResource;
+use App\Http\Media\Resources\VariationSmallMedia;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -30,9 +31,9 @@ class VariationResource extends JsonResource
             'deleted_at' => $this->deleted_at,
             'children' => VariationResource::collection($this->whenLoaded('children')),
             'media' => MediaResource::collection($this->whenLoaded('VariationImages')),
+            'small_image' => new VariationSmallMedia($this->whenLoaded('variationSmallImage')),
             'color' => new MediaResource($this->whenLoaded('VariationColor')),
             'stock_count' => $this->stock_count,
-//            'parent' => new MediaResource($this->whenLoaded('parent')),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Support\Requests;
 
+use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ModelIDsRequest extends FormRequest
@@ -24,8 +25,7 @@ class ModelIDsRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required',
-            'id.*'=>'required|numeric|integer'
+            'id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
         ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Cart\Resources;
 
+use App\Http\Media\Resources\MediaResource;
+use App\Http\Store\Resources\StoreResource;
 use App\Http\Variation\Resources\VariationResource;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
@@ -17,10 +19,15 @@ class CartResource extends JsonResource
      * @param Request $request
      * @return array
      */
-    #[ArrayShape(['variations' => "\Illuminate\Http\Resources\Json\AnonymousResourceCollection"])] public function toArray($request): array
+    public function toArray($request): array
     {
         return [
-            'variations' => VariationResource::collection($this->whenLoaded('variations')),
+            'id' => $this->id,
+            'variation' => new VariationResource($this->whenLoaded('variation')),
+            'parent_variation' => new VariationResource($this->whenLoaded('parentVariation')),
+            'store' => new StoreResource($this->whenLoaded('store')),
+            'quantity' => $this->quantity,
+            'price' => $this->price,
         ];
     }
 }

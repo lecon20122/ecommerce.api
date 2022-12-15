@@ -4,15 +4,21 @@ namespace App\Http\Cart\Controllers;
 
 use App\Domain\Cart\Contracts\CartInterface;
 use App\Domain\Cart\Models\Cart;
+use App\Domain\Cart\Services\CartActions;
 use App\Domain\Cart\Services\CartService;
 use App\Domain\Variation\Models\Variation;
 use App\Http\Cart\Requests\StoreCartRequest;
 use App\Http\Cart\Requests\UpdateCartItemQuantityRequest;
 use App\Http\Cart\Requests\UpdateCartRequest;
+use App\Http\Cart\Resources\CartResource;
+use App\Support\Requests\ModelIDsRequest;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -24,11 +30,21 @@ class CartController extends BaseController
 {
     /**
      * @param CartInterface $cartService
+     * @param CartActions $cartActions
      */
-    public function __construct(protected CartInterface $cartService)
+    public function __construct(protected CartInterface $cartService, protected CartActions $cartActions)
     {
     }
 
+
+    public function getItems(): JsonResponse|AnonymousResourceCollection
+    {
+        try {
+            return $this->cartActions->getItems();
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
 
     public function addToCart(StoreCartRequest $request): JsonResponse
     {
@@ -138,19 +154,32 @@ class CartController extends BaseController
     }
 
     /**
-     * @param Variation $variation
-     * @return RedirectResponse
+     * @param ModelIDsRequest $request
+     * @return JsonResponse|AnonymousResourceCollection
      */
-    public function removeItem(Variation $variation): RedirectResponse
+    public function removeItem(ModelIDsRequest $request): JsonResponse|AnonymousResourceCollection
     {
         try {
             DB::beginTransaction();
-            $this->cartService->removeItemFromCart($variation);
+            $this->cartActions->remove($request->validated());
             DB::commit();
-            return $this->redirectBackWithMessage('item removed from cart');
+            return $this->cartActions->getItems();
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithMessage($exception->getMessage());
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    public function updateCartItemQuantity(UpdateCartItemQuantityRequest $request): JsonResponse|AnonymousResourceCollection
+    {
+        try {
+            DB::beginTransaction();
+            $this->cartActions->updateCartItemQuantity($request->validated());
+            DB::commit();
+            return $this->cartActions->getItems();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }
 
@@ -169,6 +198,19 @@ class CartController extends BaseController
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithMessage($exception->getMessage());
+        }
+    }
+
+    public function add(StoreCartRequest $request): JsonResponse|AnonymousResourceCollection
+    {
+        try {
+            DB::beginTransaction();
+            $cart = $this->cartActions->add($request->validated());
+            DB::commit();
+            return $cart;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }
 }

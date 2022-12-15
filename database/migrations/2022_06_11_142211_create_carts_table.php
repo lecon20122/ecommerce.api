@@ -14,10 +14,13 @@ return new class extends Migration {
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
-            $table->index('uuid');
-            $table->string('state')->nullable();
+            $table->unsignedInteger('quantity')->default(1);
+            $table->decimal('price')->unsigned()->default(0);
+            $table->foreignId('variation_id')->nullable()->constrained();
             $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('store_id')->nullable()->constrained();
+            // variation_parent_id is the variation with the color and images
+            $table->foreignId('variation_parent_id')->nullable()->references('id')->on('variations');
             $table->timestamps();
         });
     }

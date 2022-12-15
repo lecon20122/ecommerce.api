@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Laravel\Socialite\Facades\Socialite;
@@ -34,7 +35,7 @@ class SocialiteController extends BaseController
         try {
             $user = Socialite::driver($request->validated('provider'))
                 ->userFromToken($request->validated('token'));
-
+            Log::info('user' , $user);
             return new UserResource($this->oauthProviderCreateAndLogin($user));
         } catch (Exception $exception) {
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);

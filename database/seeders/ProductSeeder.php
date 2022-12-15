@@ -37,7 +37,9 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $colorType = VariationType::query()->whereRaw("JSON_EXTRACT(type, '$.en') = 'color'")->first();
-
+        $sizeType = VariationType::query()->whereRaw("JSON_EXTRACT(type, '$.en') = 'size'")->first();
+        $store = Store::factory()->create();
+        $store2 = Store::factory()->create();
 //        Store::factory(5)->create();
 //        Product::factory(5)->create([
 //            'title' => [
@@ -48,24 +50,36 @@ class ProductSeeder extends Seeder
 //            'live_at' => now(),
 //            'store_id' => rand(1, 5),
 //        ]);
-        Product::factory(100)->create();
-        $div = pow(10 , 2);
+        Product::factory(5)->create([
+            'store_id' => rand(1, 2),
+        ]);
+        $div = pow(10, 2);
         foreach (Product::all() as $product) {
             for ($i = 0; $i < 4; $i++) {
-                $variation = $product->variations()->create(
+                $colorVariation = $product->variations()->create(
                     [
-                        'price' => mt_rand(1 * $div , 500 * $div) / $div,
+                        'price' => mt_rand(1 * $div, 500 * $div) / $div,
                         'order' => $this->faker->randomDigit(),
                         'store_id' => $product->store_id,
                         'product_id' => $product->id,
-                        'is_stockable' => true,
+                        'is_stockable' => false,
                         'variation_type_id' => $colorType->id,
                         'variation_type_value_id' => rand(1, 5),
                     ]);
-
+                $sizeVariation = $product->variations()->create(
+                    [
+                        'price' => mt_rand(1 * $div, 500 * $div) / $div,
+                        'order' => $this->faker->randomDigit(),
+                        'parent_id' => $colorVariation->id,
+                        'store_id' => $product->store_id,
+                        'product_id' => $product->id,
+                        'is_stockable' => true,
+                        'variation_type_id' => $sizeType->id,
+                        'variation_type_value_id' => rand(6, 9),
+                    ]);
                 $url = 'https://picsum.photos/1200/1919';
 //                $url = 'https://source.unsplash.com/random/1280x1919/?fashion';
-                $variation
+                $colorVariation
                     ->addMediaFromUrl($url)
                     ->toMediaCollection(MediaCollectionEnums::VARIATION);
             }

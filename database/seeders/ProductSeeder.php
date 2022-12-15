@@ -50,7 +50,7 @@ class ProductSeeder extends Seeder
 //            'live_at' => now(),
 //            'store_id' => rand(1, 5),
 //        ]);
-        Product::factory(5)->create([
+        Product::factory(60)->create([
             'store_id' => rand(1, 2),
         ]);
         $div = pow(10, 2);

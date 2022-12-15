@@ -23,6 +23,13 @@
         "spatie/laravel-translatable": "^6.0",
         "tightenco/ziggy": "^1.4"
     },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "laravel/telescope"
+            ]
+        }
+    },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
         "fakerphp/faker": "^1.9.1",
@@ -42,7 +49,10 @@
             "Support\\": "app/Support",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "exclude-from-classmap": [
+            "app/Providers/TelescopeServiceProvider.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

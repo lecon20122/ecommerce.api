@@ -16,7 +16,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-Route::post('third-party-login', [SocialiteController::class, 'getUserFromToken'])->name('third-party-login');
+Route::get('/third-party-login', [SocialiteController::class, 'getUserFromToken'])->name('third-party-login');
 
 
 //Route::get('login', [LoginController::class, 'view'])->name('client.login');

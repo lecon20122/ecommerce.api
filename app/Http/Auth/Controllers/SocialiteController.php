@@ -35,7 +35,6 @@ class SocialiteController extends BaseController
         try {
             $user = Socialite::driver($request->validated('provider'))
                 ->userFromToken($request->validated('token'));
-            Log::info('user' , $user);
             return new UserResource($this->oauthProviderCreateAndLogin($user));
         } catch (Exception $exception) {
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
@@ -44,17 +43,11 @@ class SocialiteController extends BaseController
 
     public function oauthProviderCreateAndLogin($providerUser)
     {
-        try {
-            if ($providerUser) {
-                $user = $this->createOrUpdateUser($providerUser);
-                Auth::login($user);
-            }
-
-            return $user;
-        } catch (Exception $exception) {
-            DB::rollBack();
-            $this->sendError($exception->getMessage());
+        if ($providerUser) {
+            $user = $this->createOrUpdateUser($providerUser);
+            Auth::login($user);
         }
+        return $user;
     }
 
     public function createOrUpdateUser($providerUser)

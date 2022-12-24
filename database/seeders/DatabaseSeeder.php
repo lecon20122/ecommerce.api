@@ -26,15 +26,13 @@ class DatabaseSeeder extends Seeder
 //            StartupSeeder::class,
 //            ProductSeeder::class,
 //        ]);
-        $gov = Governorate::factory()->create([
-            'name' => 'Cairo',
-        ]);
+
         $city = City::factory()->create([
-            'governorate_id' => $gov->id,
+            'governorate_id' => 1,
             'name' => 'Nasr City'
         ]);
         $city2 = City::factory()->create([
-            'governorate_id' => $gov->id,
+            'governorate_id' => 1,
             'name' => 'Maadi'
         ]);
 

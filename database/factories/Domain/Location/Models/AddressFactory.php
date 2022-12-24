@@ -34,7 +34,6 @@ class AddressFactory extends Factory
             'nearby_landmark' => $this->faker->streetName,
             'addressable_id' => User::factory(),
             'addressable_type' => User::class,
-
         ];
     }
 }

@@ -28,13 +28,13 @@ class StoreAddressRequest extends FormRequest
         return [
             'name' => 'string|required|max:255',
             'phone' => 'string|required|max:255',
-            'district_id' => 'required|numeric',
             'street' => 'string|required|max:255',
             'building' => 'string|required|max:255',
             'floor' => 'string|required|max:255',
             'apartment_number' => 'string|required|max:255',
-            'nearby_landmark' => 'string|required|max:255',
-            'type' => [new Enum(AddressTypeEnums::class), 'required'],
+            'district_id' => 'required|numeric',
+            'nearby_landmark' => 'string|nullable|max:255',
+            'type' => [new Enum(AddressTypeEnums::class), 'nullable'],
         ];
     }
 }

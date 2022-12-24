@@ -54,6 +54,9 @@ Route::name('api.')->group(function () {
 //
 //    //Cart Routes
     Route::group([], base_path() . '/app/Http/Cart/Routes/api.php');
+
+    //Location Routes
+    Route::group([], base_path() . '/app/Http/Location/Routes/api.php');
 //
 //    //Order Routes
 //    Route::group([], base_path() . '/app/Http/Order/Routes/api.php');

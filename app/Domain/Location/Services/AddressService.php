@@ -4,11 +4,19 @@ namespace App\Domain\Location\Services;
 
 use App\Domain\Location\Enums\AddressTypeEnums;
 use App\Domain\Store\Models\Store;
+use App\Http\Location\Resources\AddressResource;
 use Exception;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
 class AddressService
 {
+
+    public function getUserAddresses(): AnonymousResourceCollection
+    {
+        return AddressResource::collection(\auth('web')->user()->addresses()->get());
+    }
+
     /**
      * @throws Exception
      */
@@ -38,5 +46,11 @@ class AddressService
             ->addresses()
             ->where('type', AddressTypeEnums::PICKUP->value)
             ->first()?->id;
+    }
+
+    public function createAddress(array $data)
+    {
+        $user = auth('web')->user();
+        $user->addresses()->create($data);
     }
 }

@@ -38,7 +38,7 @@ class AddressTest extends TestCase
             'phone' => '0111477555'
         ];
 
-        $response = $this->post(route('client.add.address'), $data)->assertRedirect();
+        $this->post(route('api.client.add.addresses'), $data)->assertOk();
 
         $this->assertNotNull(Address::first());
         $this->assertEquals(AddressTypeEnums::SHIPPING->value, Address::first()->type);

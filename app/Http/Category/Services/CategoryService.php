@@ -28,7 +28,7 @@ class CategoryService
                     'children' => function (HasMany $query) {
                         $query->with('thumbnail')
                             ->has('thumbnail')
-                                ->has('products');
+                            ->has('products');
                     }])
                 ->parent()
                 ->has('children')

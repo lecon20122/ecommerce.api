@@ -3,24 +3,21 @@
 namespace App\Http\Location\Controllers;
 
 use App\Domain\Location\Models\Address;
+use App\Domain\Location\Services\AddressService;
 use App\Http\Location\Requests\StoreAddressRequest;
 use App\Http\Location\Requests\UpdateAddressRequest;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class AddressController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
+    public function __construct(protected AddressService $service)
     {
-        //
     }
 
     /**
@@ -37,19 +34,32 @@ class AddressController extends BaseController
      * Store a newly created resource in storage.
      *
      * @param StoreAddressRequest $request
-     * @return RedirectResponse
+     * @return AnonymousResourceCollection|JsonResponse
      */
-    public function store(StoreAddressRequest $request): RedirectResponse
+    public function store(StoreAddressRequest $request): AnonymousResourceCollection | JsonResponse
     {
         DB::beginTransaction();
         try {
-            $user = auth('web')->user();
-            $user->addresses()->create($request->validated());
+            $this->service->createAddress($request->validated());
             DB::commit();
-            return $this->redirectBackWithMessage('success');
+            return $this->index();
         } catch (Exception $exception) {
             DB::rollBack();
-            return $this->redirectBackWithMessage($exception->getMessage());
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return JsonResponse | AnonymousResourceCollection
+     */
+    public function index(): AnonymousResourceCollection|JsonResponse
+    {
+        try {
+            return $this->service->getUserAddresses();
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }
 

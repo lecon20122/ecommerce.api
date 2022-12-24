@@ -6,6 +6,10 @@ use App\Domain\Location\Models\City;
 use App\Http\Location\Requests\StoreCityRequest;
 use App\Http\Location\Requests\UpdateCityRequest;
 use Application\Controllers\BaseController;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -16,11 +20,15 @@ class CityController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return array|Collection|JsonResponse
      */
-    public function index()
+    public function index(): array|Collection|JsonResponse
     {
-        //
+        try {
+            return City::query()->with('districts')->has('districts')->get();
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
     }
 
     /**
@@ -46,7 +54,7 @@ class CityController extends BaseController
             City::query()->create($request->validated());
             DB::commit();
             return $this->redirectBackWithMessage('success');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithMessage($exception->getMessage());
         }
@@ -88,7 +96,7 @@ class CityController extends BaseController
             $city->update($request->validated());
             DB::commit();
             return $this->redirectBackWithMessage('success');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithMessage($exception->getMessage());
         }

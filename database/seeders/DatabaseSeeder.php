@@ -26,11 +26,8 @@ class DatabaseSeeder extends Seeder
 //            StartupSeeder::class,
 //            ProductSeeder::class,
 //        ]);
+        $city = City::query()->where('name' , 'Nasr City')->first();
 
-        $city = City::factory()->create([
-            'governorate_id' => 1,
-            'name' => 'Nasr City'
-        ]);
         $city2 = City::factory()->create([
             'governorate_id' => 1,
             'name' => 'Maadi'

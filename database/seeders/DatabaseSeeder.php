@@ -40,16 +40,16 @@ class DatabaseSeeder extends Seeder
 
         District::factory()->create([
             'city_id' => $city->id,
-            'district' => 'Al Hay Sabea'
+            'name' => 'Al Hay Sabea'
         ]);
         District::factory()->create([
             'city_id' => $city->id,
-            'district' => 'Al Hay Sades'
+            'name' => 'Al Hay Sades'
         ]);
 
         District::factory()->create([
             'city_id' => $city2->id,
-            'district' => '90 Street'
+            'name' => '90 Street'
         ]);
     }
 }

@@ -31,9 +31,11 @@ class SearchService
 
         $areSizeOrColorExists = isset($filters['size']) | isset($filters['color']);
 
-        $stringQuery = $this->generateCategoryQueryString($filters['mainCategory'] ?? null, $filters['category'] ?? null, !$areCategoryAndSubCategoryTheOnlyKeys);
+        $colors = Arr::except($filters, ['category', 'mainCategory', 'price', 'size']);
+        $sizes = Arr::except($filters, ['category', 'mainCategory', 'price', 'color']);
 
-        $stringQuery = $stringQuery . $this->generateSizeAndColorQueryString(Arr::except($filters, ['category', 'mainCategory', 'price']));
+        $stringQuery = $this->generateCategoryQueryString($filters['mainCategory'] ?? null, $filters['category'] ?? null, !$areCategoryAndSubCategoryTheOnlyKeys);
+        $stringQuery = $stringQuery . $this->generateSizeAndColorQueryString($colors, $sizes);
 
         if (isset($filters['price'])) {
             $stringQuery = $stringQuery . ($areSizeOrColorExists ? ' AND ' : '') . $this->generatePriceRangeQuery($filters['price']);
@@ -48,10 +50,22 @@ class SearchService
     }
 
     /**
-     * @param array|string $filters
+     * @param array|string $color
+     * @param array|string $size
      * @return string|null
      */
-    public function generateSizeAndColorQueryString(array|string $filters): ?string
+    public function generateSizeAndColorQueryString(array|string $color, array|string $size): ?string
+    {
+        $andOperatorIfBothSizeAndColorExists = $color && $size ? ' AND ' : '';
+        return $this->generateColorQuery($color) . $andOperatorIfBothSizeAndColorExists . $this->generateSizeQuery($size);
+    }
+
+    public function generateColorQuery(array|string $filters): ?string
+    {
+        return $this->generateOptionalBetweenBracketsQuery($filters);
+    }
+
+    public function generateOptionalBetweenBracketsQuery(array|string $filters): ?string
     {
         if (!$filters) return null;
 
@@ -85,6 +99,11 @@ class SearchService
             }
             return $value;
         });
+    }
+
+    public function generateSizeQuery(array|string $filters): ?string
+    {
+        return $this->generateOptionalBetweenBracketsQuery($filters);
     }
 
     public function generatePriceRangeQuery(string $price): string

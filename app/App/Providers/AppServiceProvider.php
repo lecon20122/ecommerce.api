@@ -7,6 +7,7 @@ use App\Providers\TelescopeServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
 
@@ -35,5 +36,9 @@ class AppServiceProvider extends ServiceProvider
         JsonResource::withoutWrapping();
 
         Model::preventLazyLoading(!$this->app->isProduction());
+
+        Validator::extend('string_or_array', function ($attribute, $value, $parameters, $validator) {
+            return is_string($value) || is_array($value);
+        });
     }
 }

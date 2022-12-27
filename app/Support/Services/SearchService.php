@@ -45,7 +45,7 @@ class SearchService
 
 
         if (isset($filters['price'])) {
-            $stringQuery = $stringQuery . ($areSizeOrColorExists ? ' AND ' : '') . $this->generatePriceRangeQuery($filters['price']);
+            $stringQuery = $stringQuery . ($areSizeOrColorExists || $stores ? ' AND ' : '') . $this->generatePriceRangeQuery($filters['price']);
         }
         return $stringQuery;
     }
@@ -121,6 +121,10 @@ class SearchService
     public function generatePriceRangeQuery(string $price): string
     {
         $priceRange = explode('-', $price);
+        if (!$priceRange[1]) {
+            return 'price' . ' > ' . '"' . $priceRange[0] . '"';
+        }
+
         return 'price ' . '"' . $priceRange[0] . '"' . ' TO ' . '"' . $priceRange[1] . '"';
     }
 

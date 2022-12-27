@@ -31,11 +31,18 @@ class SearchService
 
         $areSizeOrColorExists = isset($filters['size']) | isset($filters['color']);
 
-        $colors = Arr::except($filters, ['category', 'mainCategory', 'price', 'size']);
-        $sizes = Arr::except($filters, ['category', 'mainCategory', 'price', 'color']);
+        $colors = Arr::only($filters, ['color']);
+        $sizes = Arr::only($filters, ['size']);
+        $stores = Arr::only($filters, ['stores']);
 
-        $stringQuery = $this->generateCategoryQueryString($filters['mainCategory'] ?? null, $filters['category'] ?? null, !$areCategoryAndSubCategoryTheOnlyKeys);
-        $stringQuery = $stringQuery . $this->generateSizeAndColorQueryString($colors, $sizes);
+        $categoryQuery = $this->generateCategoryQueryString($filters['mainCategory'] ?? null, $filters['category'] ?? null, !$areCategoryAndSubCategoryTheOnlyKeys);
+
+        if ($stores) {
+            $categoryQuery = $categoryQuery . $this->generateStoreQuery($stores) . ($areSizeOrColorExists ? ' AND ' : '');
+        }
+
+        $stringQuery = $categoryQuery . $this->generateSizeAndColorQueryString($colors, $sizes);
+
 
         if (isset($filters['price'])) {
             $stringQuery = $stringQuery . ($areSizeOrColorExists ? ' AND ' : '') . $this->generatePriceRangeQuery($filters['price']);
@@ -49,18 +56,7 @@ class SearchService
         return 'category = ' . '"' . ($category ?? $mainCategory) . '"' . ($andOperatorFlag ? ' AND ' : '');
     }
 
-    /**
-     * @param array|string $color
-     * @param array|string $size
-     * @return string|null
-     */
-    public function generateSizeAndColorQueryString(array|string $color, array|string $size): ?string
-    {
-        $andOperatorIfBothSizeAndColorExists = $color && $size ? ' AND ' : '';
-        return $this->generateColorQuery($color) . $andOperatorIfBothSizeAndColorExists . $this->generateSizeQuery($size);
-    }
-
-    public function generateColorQuery(array|string $filters): ?string
+    public function generateStoreQuery(array|string $filters): ?string
     {
         return $this->generateOptionalBetweenBracketsQuery($filters);
     }
@@ -99,6 +95,22 @@ class SearchService
             }
             return $value;
         });
+    }
+
+    /**
+     * @param array|string $color
+     * @param array|string $size
+     * @return string|null
+     */
+    public function generateSizeAndColorQueryString(array|string $color, array|string $size): ?string
+    {
+        $andOperatorIfBothSizeAndColorExists = $color && $size ? ' AND ' : '';
+        return $this->generateColorQuery($color) . $andOperatorIfBothSizeAndColorExists . $this->generateSizeQuery($size);
+    }
+
+    public function generateColorQuery(array|string $filters): ?string
+    {
+        return $this->generateOptionalBetweenBracketsQuery($filters);
     }
 
     public function generateSizeQuery(array|string $filters): ?string

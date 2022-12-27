@@ -16,10 +16,11 @@ class SearchServiceTest extends TestCase
             'color' => 'green,blue',
             'mainCategory' => 'men',
             'category' => 'men-shoes',
-            'price' => '100-200'
+            'price' => '100-200',
+            'stores' => 'kza,dd',
         ];
 
-        $expected = 'category = "men-shoes" AND (color = "green" OR color = "blue") AND (size = "XL" OR size = "M") AND price "100" TO "200"';
+        $expected = 'category = "men-shoes" AND (stores = "kza" OR stores = "dd") AND (color = "green" OR color = "blue") AND (size = "XL" OR size = "M") AND price "100" TO "200"';
 
         $actual = (new SearchService())->filterQueryGenerator($filters);
 

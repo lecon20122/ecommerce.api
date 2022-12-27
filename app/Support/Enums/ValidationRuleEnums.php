@@ -12,5 +12,4 @@ enum ValidationRuleEnums: string
 
     case REQUIRED_INTEGER = 'required|integer';
     case NULLABLE_INTEGER = 'nullable|integer';
-
 }

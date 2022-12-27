@@ -7,6 +7,8 @@ use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
 use App\Http\Product\Requests\ProductBySlugRequest;
 use App\Http\Product\Requests\ProductFilterRequest;
+use App\Http\Product\Requests\StoreProductRequest;
+use App\Http\Product\Requests\UpdateProductRequest;
 use App\Http\Product\Resources\ProductResource;
 use Application\Controllers\BaseController;
 use Exception;
@@ -34,7 +36,7 @@ class ApiProductController extends BaseController
         try {
             return $this->service->getProductFiltersByCategory($category);
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage() , __CLASS__ , __FUNCTION__);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }
 
@@ -53,7 +55,7 @@ class ApiProductController extends BaseController
                     $request->validated('limit')
                 ));
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage() , __CLASS__ , __FUNCTION__);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }
 
@@ -61,47 +63,73 @@ class ApiProductController extends BaseController
      * @param ProductBySlugRequest $request
      * @return ProductResource|JsonResponse
      */
-    public function getProduct(ProductBySlugRequest $request): ProductResource | JsonResponse
+    public function getProduct(ProductBySlugRequest $request): ProductResource|JsonResponse
     {
         try {
             return $this->service->getProductBySlug($request->validated('slug'));
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage() , __CLASS__ , __FUNCTION__);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource for specified store.
      *
-     * @param int $id
-     * @return Response
+     * @return JsonResponse|AnonymousResourceCollection
      */
-    public function show($id)
+    public function getStoreProducts(): JsonResponse|AnonymousResourceCollection
     {
-        //
+        try {
+            return $this->service->getStoreProducts();
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return Response
+     * @param StoreProductRequest $request
+     * @return JsonResponse|void
      */
-    public function edit($id)
+    public function storeStoreProduct(StoreProductRequest $request)
     {
-        //
+        try {
+            return $this->service->store($request->validated());
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    /**
+     *
+     *
+     * @param UpdateProductRequest $request
+     * @param Product $product
+     * @return JsonResponse
+     */
+    public function updateStoreProduct(UpdateProductRequest $request, Product $product): JsonResponse
+    {
+        try {
+            $this->service->update($request->validated(), $product);
+            return $this->sendSuccess();
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int $id
-     * @return Response
+     * @param  $id
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function deleteStoreProduct($id): JsonResponse
     {
-        //
+        try {
+            $this->service->destroy($id);
+            return $this->sendSuccess();
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
     }
 
     /**

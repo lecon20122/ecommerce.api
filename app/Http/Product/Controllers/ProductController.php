@@ -16,6 +16,7 @@ use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -52,14 +53,13 @@ class ProductController extends BaseController
      *
      * @param StoreProductRequest $request
      * @param ProductService $service
-     * @param ImageService $imageService
      * @return RedirectResponse
      */
-    public function store(StoreProductRequest $request, ProductService $service, ImageService $imageService): RedirectResponse
+    public function store(StoreProductRequest $request, ProductService $service): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $service->store($request, $imageService);
+            $service->store($request->validated());
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
@@ -112,14 +112,13 @@ class ProductController extends BaseController
      * @param UpdateProductRequest $request
      * @param ProductService $service
      * @param Product $product
-     * @param ImageService $imageService
      * @return RedirectResponse
      */
-    public function update(UpdateProductRequest $request, ProductService $service, Product $product, ImageService $imageService): RedirectResponse
+    public function update(UpdateProductRequest $request, ProductService $service, Product $product): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $service->update($request, $product, $imageService);
+            $service->update($request->validated(), $product);
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
@@ -194,7 +193,7 @@ class ProductController extends BaseController
         }
     }
 
-    public function getProductsByCategory(Category $category, ProductService $productService, ProductFilterRequest $request): \Illuminate\Http\JsonResponse
+    public function getProductsByCategory(Category $category, ProductService $productService, ProductFilterRequest $request): JsonResponse
     {
 
         try {

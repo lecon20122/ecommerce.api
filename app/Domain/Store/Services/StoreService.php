@@ -30,7 +30,7 @@ class StoreService
         $user = User::query()
             ->find($request->validated('user_id', ['id']));
 
-        $user?->stores()->create($request->validated());
+        $user?->store()->create($request->validated());
     }
 
     public function getStoreById(int $id): StoreResource

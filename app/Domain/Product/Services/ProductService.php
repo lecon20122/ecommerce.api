@@ -17,7 +17,9 @@ use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use App\Support\Services\SearchService;
+use Domain\User\Models\User;
 use Exception;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,15 +27,36 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\NoReturn;
 
 
 class ProductService
 {
+    protected ?Authenticatable $user;
+
+    public function __construct()
+    {
+        $this->user = auth()->user() ?? null;
+    }
+
     public static function __callStatic($name, $arguments)
     {
         return (new static)->$name(...$arguments);
+    }
+
+    public function getStoreProducts(): AnonymousResourceCollection
+    {
+        /** @var Store $store */
+        $store = $this->user->store();
+
+        $products = $store->products()->with(['variations' => function ($query) {
+            $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
+                ->parent();
+        }
+        ]);
+        return ProductResource::collection($products);
     }
 
     public function getProductBySlug(string $slug): ProductResource
@@ -130,35 +153,34 @@ class ProductService
     }
 
     /**
-     * @param StoreProductRequest $request
-     * @param ImageService $imageService
-     *
+     * @param array $data
      */
 
-    public function store(StoreProductRequest $request, ImageService $imageService)
+    public function store(array $data)
     {
-        $data = $request->validated();
+        if (Auth::guard('admin')->check()) {
+            $store = Store::query()->find($data['store_id']);
+        } else {
+            $store = $this->user->store();
+        }
 
-        $store = Store::query()->find($data['store_id']);
         if ($store) {
-            if ($request->has('en') || $request->has('ar')) {
+            if (isset($data['en']) || isset($data['ar'])) {
                 $data['title'] = [
-                    'en' => $request->validated('en'),
-                    'ar' => $request->validated('ar'),
+                    'en' => $data['en'],
+                    'ar' => $data['ar'],
                 ];
             }
-            $store->products()->create($data);
+            return $store->products()->create($data);
         }
     }
 
-    public function update(UpdateProductRequest $request, Product $product, ImageService $imageService)
+    public function update(array $data, Product $product)
     {
-        $data = $request->validated();
-
-        if ($request->has('en') || $request->has('ar')) {
+        if (isset($data['en']) || isset($data['ar'])) {
             $data['title'] = [
-                'en' => $request->validated('en'),
-                'ar' => $request->validated('ar'),
+                'en' => $data['en'],
+                'ar' => $data['ar'],
             ];
         }
         $product->update($data);

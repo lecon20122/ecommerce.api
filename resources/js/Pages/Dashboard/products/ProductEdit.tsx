@@ -96,9 +96,9 @@ export default function ProductEdit({currentProduct, locale, variationTypesValue
             label="Price"
             initialValue={currentProduct.price}
             name="price"
-            rules={[{required: true, min: 0, max: 100000}]}
+            rules={[{required: true}]}
           >
-            <InputNumber/>
+            <Input/>
           </Form.Item>
           <Form.Item wrapperCol={{offset: 2, span: 1}}>
             <Button type="default" htmlType="submit">

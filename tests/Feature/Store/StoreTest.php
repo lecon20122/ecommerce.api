@@ -46,7 +46,7 @@ StoreTest extends TestCase
 
         $user = User::factory()->create();
 
-        $store = $user->stores()->create([
+        $store = $user->store()->create([
             'name' => $this->faker->unique()->firstName,
             'description' => $this->faker->realText(),
         ]);
@@ -69,7 +69,7 @@ StoreTest extends TestCase
 
         $user = User::factory()->create();
 
-        $store = $user->stores()->create([
+        $store = $user->store()->create([
             'name' => $this->faker->unique()->firstName,
             'description' => $this->faker->realText(),
         ]);

@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -79,15 +80,16 @@ class User extends Authenticatable
         return $this->morphMany(Address::class, 'addressable');
     }
 
-    public function stores(): HasMany
+    public function store(): HasOne
     {
-        return $this->hasMany(Store::class);
+        return $this->hasOne(Store::class);
     }
 
     public function carts(): HasMany
     {
         return $this->hasMany(Cart::class);
     }
+
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
@@ -95,6 +97,6 @@ class User extends Authenticatable
 
     public function favorites(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class , 'favorites');
+        return $this->belongsToMany(Product::class, 'favorites');
     }
 }

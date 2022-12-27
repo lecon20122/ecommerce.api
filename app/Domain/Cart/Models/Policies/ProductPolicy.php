@@ -5,6 +5,8 @@ namespace App\Domain\Cart\Models\Policies;
 use App\Domain\Product\Models\Product;
 use Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ProductPolicy
 {
@@ -13,8 +15,8 @@ class ProductPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \Domain\User\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @return Response|bool
      */
     public function viewAny(User $user)
     {
@@ -24,9 +26,9 @@ class ProductPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \Domain\User\Models\User  $user
-     * @param  \App\Domain\Cart\Models\Product  $product
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @param Product $product
+     * @return void
      */
     public function view(User $user, Product $product)
     {
@@ -36,23 +38,31 @@ class ProductPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \Domain\User\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
-        //
+        if (Auth::guard('admin')->check()) {
+            return true;
+        }
+        if ($user->store()->count() > 0) {
+            return true;
+        }
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \Domain\User\Models\User  $user
-     * @param  \App\Domain\Cart\Models\Product  $product
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @param Product $product
+     * @return bool
      */
-    public function update(User $user, Product $product)
+    public function update(User $user, Product $product): bool
     {
+        if (Auth::guard('admin')->check()) {
+            return true;
+        }
         if ($user->id === $product->user_id) {
             return true;
         }
@@ -61,12 +71,15 @@ class ProductPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \Domain\User\Models\User  $user
-     * @param  \App\Domain\Cart\Models\Product  $product
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @param Product $product
+     * @return Response|bool
      */
-    public function delete(User $user, Product $product)
+    public function delete(User $user, Product $product): Response|bool
     {
+        if (Auth::guard('admin')->check()) {
+            return true;
+        }
         if ($user->id === $product->user_id) {
             return true;
         }
@@ -75,12 +88,15 @@ class ProductPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \Domain\User\Models\User  $user
-     * @param  \App\Domain\Cart\Models\Product  $product
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @param Product $product
+     * @return Response|bool
      */
-    public function restore(User $user, Product $product)
+    public function restore(User $user, Product $product): Response|bool
     {
+        if (Auth::guard('admin')->check()) {
+            return true;
+        }
         if ($user->id === $product->user_id) {
             return true;
         }
@@ -89,12 +105,15 @@ class ProductPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \Domain\User\Models\User  $user
-     * @param  \App\Domain\Cart\Models\Product  $product
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @param Product $product
+     * @return bool
      */
-    public function forceDelete(User $user, Product $product)
+    public function forceDelete(User $user, Product $product): bool
     {
+        if (Auth::guard('admin')->check()) {
+            return true;
+        }
         if ($user->id === $product->user_id) {
             return true;
         }

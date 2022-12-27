@@ -11,4 +11,9 @@ class ProductObserver
     {
         $product->slug = Str::slug($product->title);
     }
+
+    public function updating(Product $product)
+    {
+        $product->slug = Str::slug($product->title);
+    }
 }

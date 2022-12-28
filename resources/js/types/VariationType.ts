@@ -23,13 +23,13 @@ export interface Variation {
 }
 
 export interface Color {
-  id:        number;
-  name:      string;
+  id: number;
+  name: string;
   file_name: string;
   mime_type: string;
-  width:     null;
-  height:    null;
-  color:     string;
+  width: null;
+  height: null;
+  color: string;
 }
 
 export interface Pivot {
@@ -42,7 +42,8 @@ export interface Pivot {
 export interface VariationTypesValues {
   id: number;
   value: Title;
-  variation_type_id: number
+  variation_type_id: number;
+  hex_value: string
 }
 
 export interface VariationTypes {

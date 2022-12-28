@@ -83,7 +83,7 @@ class VariationTypeController extends BaseController
     {
         try {
             return Inertia::render('Dashboard/variations/VariationTypeValueIndex', [
-                'currentVariationType' => new VariationTypeResource(VariationType::with('variationTypeValues')->find($id)),
+                'currentVariationType' => new VariationTypeResource(VariationType::with('variationTypeValues.colorImage')->find($id)),
             ]);
         } catch (Exception $exception) {
             return $this->redirectBackWithMessage($exception->getMessage());

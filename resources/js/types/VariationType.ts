@@ -44,6 +44,7 @@ export interface VariationTypesValues {
   value: Title;
   variation_type_id: number;
   hex_value: string
+  color : VariationColorImage
 }
 
 export interface VariationTypes {
@@ -52,4 +53,12 @@ export interface VariationTypes {
   is_mediable: boolean,
   is_stockable: boolean,
   variationTypeValues: VariationTypesValues[]
+}
+
+export interface VariationColorImage {
+  id:        number;
+  name:      string;
+  width:     number;
+  height:    number;
+  url:     string;
 }

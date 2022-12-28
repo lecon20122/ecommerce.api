@@ -35,6 +35,7 @@ Route::get('variation/type/value/{id}', [VariationTypeValueController::class, 'e
 Route::post('variation/type/value/{id}', [VariationTypeValueController::class, 'update'])->name('admin.variations.type.value.update');
 Route::post('variation/type/value/{id}/delete', [VariationTypeValueController::class, 'destroy'])->name('admin.variations.type.value.destroy');
 Route::post('variation/type/value/{id}/restore', [VariationTypeValueController::class, 'restore'])->name('admin.variations.type.value.restore');
+Route::post('variation-type-value/{variationTypeValue}/color-image', [VariationTypeValueController::class, 'uploadColorPhoto'])->name('admin.add.color.image.to.variation.type.value');
 
 Route::post('variation/size-description', [SizeDescriptionController::class, 'store'])->name('admin.store.variations.size.description');
 Route::post('variation/size-description/{id}', [SizeDescriptionController::class, 'update'])->name('admin.update.variations.size.description');

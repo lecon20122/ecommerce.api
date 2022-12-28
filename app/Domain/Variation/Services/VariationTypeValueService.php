@@ -2,8 +2,12 @@
 
 namespace App\Domain\Variation\Services;
 
+use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationTypeValue;
+use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Variation\Resources\VariationTypeValueResource;
+use App\Support\Enums\MediaCollectionEnums;
+use App\Support\Services\Media\ImageService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class VariationTypeValueService
@@ -53,5 +57,12 @@ class VariationTypeValueService
     {
         $variation = VariationTypeValue::withTrashed()->find($id);
         $variation?->forceDelete();
+    }
+
+    public function uploadColorImage(VariationTypeValue $variationTypeValue, StoreMediaRequest $request, ImageService $imageService)
+    {
+        if ($request->hasFile('images')) {
+            $imageService->imageUpload($variationTypeValue, 'images', MediaCollectionEnums::VARIATION_COLOR, $variationTypeValue->id);
+        }
     }
 }

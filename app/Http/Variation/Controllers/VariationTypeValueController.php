@@ -2,9 +2,12 @@
 
 namespace App\Http\Variation\Controllers;
 
+use App\Domain\Variation\Models\VariationTypeValue;
 use App\Domain\Variation\Services\VariationTypeValueService;
+use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Variation\Requests\StoreVariationTypeValueRequest;
 use App\Http\Variation\Requests\UpdateVariationTypeValueRequest;
+use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -134,6 +137,26 @@ class VariationTypeValueController extends BaseController
         DB::beginTransaction();
         try {
             $service->permanentDelete($id);
+            DB::commit();
+            return $this->redirectBackWithMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->redirectBackWithMessage('ops');
+        }
+    }
+
+    /**
+     * @param VariationTypeValue $variationTypeValue
+     * @param StoreMediaRequest $request
+     * @param ImageService $imageService
+     * @param VariationTypeValueService $service
+     * @return RedirectResponse
+     */
+    public function uploadColorPhoto(VariationTypeValue $variationTypeValue, StoreMediaRequest $request, ImageService $imageService, VariationTypeValueService $service): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $service->uploadColorImage($variationTypeValue, $request, $imageService);
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {

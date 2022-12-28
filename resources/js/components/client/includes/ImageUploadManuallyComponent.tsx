@@ -7,19 +7,26 @@ import route, {RouteParam, RouteParamsWithQueryOverload} from "ziggy-js";
 import {Product} from "../../../types/products";
 import {Variation} from "../../../types/VariationType";
 import {Category} from "../../../types/CategoryType";
+import {UploadListType} from "antd/lib/upload/interface";
 
 interface Props {
   param: RouteParamsWithQueryOverload | RouteParam
   routeName: string
   multiple: boolean
   buttonLabel?: string
+  listType?: UploadListType;
+  className?: string | undefined;
+  btnClassName?: string | undefined;
 }
 
 export default function ImageUploadManually({
                                               param,
                                               routeName,
                                               multiple,
-                                              buttonLabel = 'Click to Upload'
+                                              listType = "picture",
+                                              buttonLabel = 'Click to Upload',
+                                              className = 'py-2',
+                                              btnClassName = 'mt-[16px]'
                                             }: Props) {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -47,23 +54,22 @@ export default function ImageUploadManually({
   }
 
   return (
-    <div className={'py-2'}>
+    <div className={className}>
       <Upload
         onChange={(e) => onChangeHandler(e)}
-        listType="picture"
+        listType={listType}
         onRemove={onRemove}
         multiple={multiple}
       >
         {fileList.length < 6 && <Button icon={<UploadOutlined/>}>{buttonLabel}</Button>}
       </Upload>
       <Button
-        className='flex'
         type="default"
 
         onClick={handleUpload}
         disabled={fileList.length === 0}
         loading={uploading}
-        style={{marginTop: 16}}
+        className={btnClassName}
       >
         {uploading ? 'Uploading' : 'Start Upload'}
       </Button>

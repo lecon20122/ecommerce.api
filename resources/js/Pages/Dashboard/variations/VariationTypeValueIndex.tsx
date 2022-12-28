@@ -7,6 +7,7 @@ import ModalWithChildren from "./ModalWithChildren";
 import {EditOutlined, DeleteOutlined} from '@ant-design/icons'
 import {Inertia} from "@inertiajs/inertia";
 import route from "ziggy-js";
+import ImageUploadManually from "../../../components/client/includes/ImageUploadManuallyComponent";
 
 interface DataType extends VariationTypesValues {
   key?: string;
@@ -18,13 +19,13 @@ interface Props {
 }
 
 function VariationTypeValueIndex({currentVariationType, locale}: Props) {
-
+  console.log(currentVariationType)
   const [openModal, setOpenModal] = useState(false);
   const [openUpdateValueModal, setOpenUpdateValueModal] = useState(false);
   const [currentVariationValue, setCurrentVariationValue] = useState<VariationTypesValues>();
 
   const onUpdate = (values: VariationTypesValues) => {
-    console.log(values)
+
     setOpenUpdateValueModal(true)
     setCurrentVariationValue(values)
   }
@@ -54,6 +55,16 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
       dataIndex: 'id',
     },
     {
+      key: 'color',
+      title: 'Color Image',
+      dataIndex: 'url',
+      render: (_, record) => (
+        <Space size="middle">
+          <img src={record.color?.url} width={26} height={26}/>
+        </Space>
+      ),
+    },
+    {
       key: 'value',
       title: 'Value',
       dataIndex: 'value',
@@ -80,6 +91,11 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
         <Space size="middle">
           <EditOutlined onClick={(e) => onUpdate(record)}/>
           <DeleteOutlined onClick={(e) => onDelete(record.id)}/>
+          <ImageUploadManually param={record} buttonLabel={'Upload Images'}
+                               listType="picture"
+                               className={'flex justify-content items-center'}
+                               btnClassName={'mt-0'}
+                               routeName={'admin.add.color.image.to.variation.type.value'} multiple={false}/>
         </Space>
       ),
     },
@@ -88,7 +104,6 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
   return (
     <DashboardLayout>
       <div className={'container mx-auto py-4'}>
-
         <ModalWithChildren openModal={openModal} onOk={() => setOpenModal(false)}
                            onCancel={() => setOpenModal(false)}>
           <Form

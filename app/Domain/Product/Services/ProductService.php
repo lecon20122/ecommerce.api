@@ -92,16 +92,14 @@ class ProductService
 
         $variations =
             VariationTypeValue::query()
-                ->with('VariationType:id,type')
+                ->with(['VariationType:id,type','colorImage'])
                 ->select('id', 'value', 'slug', 'hex_value', 'variation_type_id')
                 ->find(
                     [...array_keys($facets['color_ids']), ...array_keys($facets['size_ids'])]
-                )
-                ->groupBy('VariationType.type');
-
+                );
 
         return [
-            ...$variations,
+            'filters' => VariationTypeValueResource::collection($variations),
             'stores' => array_keys($facets['stores']),
             'sub_categories' => CategoryResource::collection($category->load('children')->children),
         ];

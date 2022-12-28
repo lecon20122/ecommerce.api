@@ -23,7 +23,7 @@ interface DataType extends Variation {
 }
 
 export default function VariationEdit({currentVariation, variationTypesValues, variationTypes, locale}: Props) {
-
+  console.log(currentVariation)
   const [variationTypeId, setVariationTypeId] = useState(0)
   const [openAddStock, setOpenAddStock] = useState(false)
   const [openAddChildVariationDialog, setOpenAddChildVariationDialog] = useState(false);
@@ -160,11 +160,18 @@ export default function VariationEdit({currentVariation, variationTypesValues, v
             <Form form={form} name="horizontal_login" layout="horizontal" onFinish={onFinish} className='py-5 px-5'
                   size={'large'}>
               <Form.Item
+                initialValue={currentVariation.title}
+                label={'Title'}
+                name="title"
+              >
+                <Input placeholder="Title"/>
+              </Form.Item>
+              <Form.Item
                 initialValue={currentVariation.order}
                 label={'Order'}
                 name="order"
               >
-                <Input placeholder="Title" type={'number'}/>
+                <Input placeholder="Order" type={'number'}/>
               </Form.Item>
               <Form.Item
                 initialValue={currentVariation.price}
@@ -205,7 +212,8 @@ export default function VariationEdit({currentVariation, variationTypesValues, v
           <div className={'p-2'}>
             <h1 className={''}>Variation Images Max : 6</h1>
             <MediaProductCollection params={currentVariation} media={currentVariation.media}
-                                    deleteURL={'admin.delete.media.of.variations'}/>
+                                    deleteURL={'admin.delete.media.of.variations'}
+                                    variationColor={currentVariation.color}/>
             <div className={'flex flex-wrap space-x-1'}>
               <ImageUploadManually param={currentVariation} buttonLabel={'Upload Images'}
                                    routeName={'admin.add.media.to.variation'} multiple/>

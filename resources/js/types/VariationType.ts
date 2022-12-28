@@ -12,7 +12,7 @@ export interface Variation {
   title: string;
   children: Variation[];
   thumbnail?: string
-  color?: NewMediaProps
+  color?: Color
   stock_count: number,
   pivot: Pivot
   parent: Variation
@@ -20,6 +20,16 @@ export interface Variation {
   variation_images: NewMediaProps[],
   variation_type?: VariationTypes,
   variation_type_value?: VariationTypesValues
+}
+
+export interface Color {
+  id:        number;
+  name:      string;
+  file_name: string;
+  mime_type: string;
+  width:     null;
+  height:    null;
+  color:     string;
 }
 
 export interface Pivot {

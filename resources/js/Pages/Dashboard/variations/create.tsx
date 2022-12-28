@@ -57,7 +57,7 @@ export default function CreateProductVariation({
     )
   })
 
-  console.log(variationTypesValues)
+
   useEffect(() => {
     const data = variationTypesValues.filter(type => type.variation_type_id == variationTypeId)
     setFilteredVariationType(data)

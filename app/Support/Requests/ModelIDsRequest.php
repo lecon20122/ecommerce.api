@@ -25,7 +25,7 @@ class ModelIDsRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'string_or_array',
+            'id' => 'numeric_or_array|required',
             'id.*' => ValidationRuleEnums::REQUIRED_NUMERIC->value,
         ];
     }

@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading(!$this->app->isProduction());
 
         Validator::extend('string_or_array', function ($attribute, $value, $parameters, $validator) {
-            return is_string($value) || is_array($value);
+            return is_numeric($value) || is_array($value);
         });
     }
 }

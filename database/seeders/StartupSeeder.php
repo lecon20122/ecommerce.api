@@ -46,8 +46,6 @@ class StartupSeeder extends Seeder
             Admin::factory()->create();
         }
 
-        $this->AddressSeeder();
-
         $categories = [
             [
                 'title' => [
@@ -198,6 +196,7 @@ class StartupSeeder extends Seeder
             VariationTypeValue::create($variationTypesValue);
         }
 
+        $this->AddressSeeder();
     }
 
     public function AddressSeeder()
@@ -211,7 +210,7 @@ class StartupSeeder extends Seeder
             ]);
         }
 
-        City::factory(10)->create([
+        City::factory(5)->create([
             'governorate_id' => $gov->id,
         ]);
 

@@ -3,16 +3,17 @@
 namespace Database\Factories\Domain\Location\Models;
 
 use App\Domain\Location\Models\City;
-use App\Domain\Location\Models\Country;
 use App\Domain\Location\Models\Governorate;
+use Faker\Provider\ar_EG\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Location\Models\City>
+ * @extends Factory
  */
 class CityFactory extends Factory
 {
     protected $model = City::class;
+
     /**
      * Define the model's default state.
      *
@@ -21,8 +22,8 @@ class CityFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->city,
-            'governorate_id' =>  Governorate::factory(),
+            'name' => Address::cityName(),
+            'governorate_id' => Governorate::factory(),
         ];
     }
 }

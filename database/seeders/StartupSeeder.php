@@ -6,6 +6,7 @@ use App\Domain\Admin\Models\Admin;
 use App\Domain\Category\Models\Category;
 use App\Domain\Location\Models\City;
 use App\Domain\Location\Models\District;
+use App\Domain\Location\Models\Governorate;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
@@ -45,7 +46,7 @@ class StartupSeeder extends Seeder
             Admin::factory()->create();
         }
 
-        $this->citySeeder();
+        $this->AddressSeeder();
 
         $categories = [
             [
@@ -199,24 +200,25 @@ class StartupSeeder extends Seeder
 
     }
 
-    public function citySeeder()
+    public function AddressSeeder()
     {
-        $city = City::query()->where('name', 'Nasr City')->first();
+        if (Governorate::query()->where('name', 'cairo')->first()) {
+            $gov = Governorate::query()->where('name', 'cairo')->first();
 
-        $city2 = City::query()->where('name', 'Maadi')->first();
+        } else {
+            $gov = Governorate::factory()->create([
+                'name' => 'cairo'
+            ]);
+        }
 
-        District::factory()->create([
-            'city_id' => $city->id,
-            'name' => 'Al Hay Sabea'
-        ]);
-        District::factory()->create([
-            'city_id' => $city->id,
-            'name' => 'Al Hay Sades'
+        City::factory(20)->create([
+            'governorate_id' => $gov->id,
         ]);
 
-        District::factory()->create([
-            'city_id' => $city2->id,
-            'name' => '90 Street'
-        ]);
+        foreach (City::all() as $city) {
+            District::factory(3)->create([
+                'city_id' => $city->id,
+            ]);
+        }
     }
 }

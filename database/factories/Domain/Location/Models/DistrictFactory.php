@@ -22,7 +22,7 @@ class DistrictFactory extends Factory
     {
         return [
             'city_id' => City::factory(),
-            'name' => $this->faker->name,
+            'name' => $this->faker->streetName(),
         ];
     }
 }

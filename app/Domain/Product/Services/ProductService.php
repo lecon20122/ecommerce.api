@@ -92,7 +92,7 @@ class ProductService
 
         $variations =
             VariationTypeValue::query()
-                ->with(['VariationType:id,type','colorImage'])
+                ->with(['VariationType:id,type', 'colorImage'])
                 ->select('id', 'value', 'slug', 'hex_value', 'variation_type_id')
                 ->find(
                     [...array_keys($facets['color_ids']), ...array_keys($facets['size_ids'])]
@@ -136,7 +136,7 @@ class ProductService
     {
         return new ProductResource(
             Product::query()
-                ->with(['categories', 'variations' => function ($query) {
+                ->with(['categories', 'description.productAttribute', 'variations' => function ($query) {
                     $query->withTrashed()
                         ->parent()
                         ->with(['variationType', 'media', 'variationTypeValue', 'children' => function ($query) {

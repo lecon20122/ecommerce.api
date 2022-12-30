@@ -16,7 +16,12 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('product_id')->constrained();
             $table->foreignId('product_attribute_id')->constrained();
-            $table->foreignId('product_attribute_value_id')->constrained();
+            $table->json('value');
+
+
+            $table->string('en')->virtualAs("JSON_EXTRACT(value, '$.en')");
+            $table->string('ar')->virtualAs("JSON_EXTRACT(value, '$.ar')");
+            $table->unique(['product_id', 'product_attribute_id', 'en', 'ar']);
             $table->timestamps();
         });
     }

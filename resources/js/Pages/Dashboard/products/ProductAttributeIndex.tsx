@@ -33,8 +33,10 @@ function ProductAttributeIndex({productAttributes}: Props) {
     setCurrentProductAttribute(record)
   }
 
-  const onDelete = (id: number) => {
-    Inertia.post(route('admin.variations.type.destroy', id))
+  const onDelete = (record: ProductAttribute) => {
+    Inertia.post(route('admin.delete.attribute', {attribute: record}), undefined, {
+      preserveState: false
+    })
   }
 
   const onFinish = (values: any) => {
@@ -85,7 +87,7 @@ function ProductAttributeIndex({productAttributes}: Props) {
       render: (_, record) => (
         <Space size="middle">
           <EditOutlined onClick={(e) => onUpdate(record)}/>
-          <DeleteOutlined onClick={(e) => onDelete(record.id)}/>
+          <DeleteOutlined onClick={(e) => onDelete(record)}/>
         </Space>
       ),
     },

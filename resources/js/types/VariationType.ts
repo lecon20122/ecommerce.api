@@ -62,3 +62,9 @@ export interface VariationColorImage {
   height:    number;
   url:     string;
 }
+
+export interface Setting {
+  name : string,
+  value : string,
+  image : VariationColorImage
+}

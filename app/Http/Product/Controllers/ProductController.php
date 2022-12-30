@@ -4,6 +4,8 @@ namespace App\Http\Product\Controllers;
 
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
+use App\Domain\Product\Models\ProductAttribute;
+use App\Domain\Product\Services\ProductAttributeService;
 use App\Domain\Product\Services\ProductService;
 use App\Domain\User\Services\UserFavoriteService;
 use App\Domain\Variation\Services\VariationService;
@@ -97,6 +99,7 @@ class ProductController extends BaseController
         try {
             return Inertia::render('Dashboard/products/ProductEdit', [
                 'currentProduct' => (new ProductService())->getProductsById($id),
+                'attributes' => (new ProductAttributeService())->indexProductAttribute(),
                 'variationTypes' => (new VariationService())->getVariationTypes(),
                 'variationTypesValues' => (new VariationService())->getVariationTypeValues(),
                 'categories' => (new CategoryService())->getCategories(), //TODO: CACHE ALL CATEGORIES

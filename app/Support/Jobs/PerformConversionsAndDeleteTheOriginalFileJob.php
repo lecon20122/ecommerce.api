@@ -3,6 +3,7 @@
 namespace App\Support\Jobs;
 
 use App\Domain\Media\CustomPathDirectory;
+use App\Support\Enums\MediaCollectionEnums;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -27,7 +28,10 @@ class PerformConversionsAndDeleteTheOriginalFileJob extends PerformConversionsJo
     public function handle(FileManipulator $fileManipulator): bool
     {
         $fileManipulator->performConversions($this->conversions, $this->media, $this->onlyMissing);
-        $this->deleteOriginalFileAfterUpload($this->media);
+
+        if ($this->conversions->first()->getName() !== MediaCollectionEnums::LOGO_CONVERSION) {
+            $this->deleteOriginalFileAfterUpload($this->media);
+        }
         return true;
     }
 

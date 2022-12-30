@@ -114,12 +114,20 @@ class ProductAttributeController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return Response
+     * @param ProductAttribute $productAttribute
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(ProductAttribute $attribute): RedirectResponse
     {
-        //
+        DB::beginTransaction();
+        try {
+            $this->service->delete($attribute);
+            DB::commit();
+            return $this->redirectBackWithMessage('success');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->logAndRedirectBackWithError($exception->getMessage());
+        }
     }
 
     public function attachAttributeToProduct(ProductAttribute $attribute, AttachProductAttributeRequest $request): RedirectResponse

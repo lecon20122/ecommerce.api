@@ -19,13 +19,12 @@ interface Props {
 }
 
 function VariationTypeValueIndex({currentVariationType, locale}: Props) {
-  console.log(currentVariationType)
+
   const [openModal, setOpenModal] = useState(false);
   const [openUpdateValueModal, setOpenUpdateValueModal] = useState(false);
   const [currentVariationValue, setCurrentVariationValue] = useState<VariationTypesValues>();
 
   const onUpdate = (values: VariationTypesValues) => {
-
     setOpenUpdateValueModal(true)
     setCurrentVariationValue(values)
   }

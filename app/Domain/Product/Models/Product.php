@@ -34,6 +34,11 @@ class Product extends Model
         return $this->hasMany(Variation::class);
     }
 
+    public function description(): HasMany
+    {
+        return $this->hasMany(ProductDescription::class);
+    }
+
     public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);

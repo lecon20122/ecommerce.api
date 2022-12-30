@@ -23,9 +23,9 @@ class ProductDescriptionFactory extends Factory
     public function definition()
     {
         return [
+            'value' => $this->faker->name,
             'product_id' => Product::factory(),
             'product_attribute_id' => ProductAttribute::factory(),
-            'product_attribute_value_id' => ProductAttributeValue::factory(),
         ];
     }
 }

@@ -1,4 +1,5 @@
 import {ProductWithThumbnail} from "./products";
+import {Title} from "./CategoryType";
 
 export interface ResponseMessage {
   setErrors?: string,
@@ -66,4 +67,17 @@ export interface Meta {
   per_page: number;
   to: number;
   total: number;
+}
+
+export interface ProductDescription {
+  id: number,
+  value: Title,
+  product_id: number,
+  attribute: ProductAttribute
+}
+
+export interface ProductAttribute {
+  id: number,
+  attribute: Title,
+  is_filterable: boolean,
 }

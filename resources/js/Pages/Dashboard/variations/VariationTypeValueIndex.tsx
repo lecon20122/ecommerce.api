@@ -139,7 +139,6 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
               label="Hex Value"
               hidden={currentVariationType.type.en === 'size'}
               name="hex_value"
-              rules={[{required: true, message: 'fill the color hex value'}]}
             >
               <Input/>
             </Form.Item>

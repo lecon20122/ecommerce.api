@@ -4,7 +4,7 @@ import {Category} from '../../../types/products';
 import {Inertia} from '@inertiajs/inertia';
 import route from 'ziggy-js';
 import MediaProductCollection from "../../../components/Lists/MediaProductCollection";
-import {Button, Form, Input, Select} from "antd";
+import {Button, Form, Input, InputNumber, Select} from "antd";
 import UploadImageComponent from "../../../components/Forms/UploadImageComponent";
 import {MediaConversionEnums} from "../../../Enums/MediaConversionEnums";
 
@@ -46,6 +46,9 @@ export default function CategoryEdit({currentCategory, locale, categories}: Prop
           </Form.Item>
           <Form.Item name={'ar'} label='Title AR' initialValue={currentCategory.title.ar}>
             <Input/>
+          </Form.Item>
+          <Form.Item name={'order'} label='Order' initialValue={currentCategory.order}>
+            <InputNumber/>
           </Form.Item>
           <Form.Item name={'primary_color'} label='Primary Color' initialValue={currentCategory.primary_color}>
             <Input style={{backgroundColor: currentCategory.primary_color}}/>

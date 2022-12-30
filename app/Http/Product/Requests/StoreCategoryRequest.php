@@ -2,6 +2,7 @@
 
 namespace App\Http\Product\Requests;
 
+use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCategoryRequest extends FormRequest
@@ -26,6 +27,7 @@ class StoreCategoryRequest extends FormRequest
         return [
             'ar' => 'required|unique:categories,title',
             'en' => 'required|unique:categories,title',
+            'order' => ValidationRuleEnums::NULLABLE_NUMERIC->value,
             'parent_id' => 'nullable',
             'images' => 'nullable',
             'images.*' => 'mimes:jpg,webp|max:1024',

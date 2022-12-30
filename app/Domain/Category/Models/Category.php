@@ -25,7 +25,7 @@ class Category extends Model implements HasMedia
     use HasFactory, HasTranslations, SoftDeletes, CustomHasMedia;
 
     public $translatable = ['title'];
-    protected $fillable = ['title', 'slug', 'parent_id', 'primary_color', 'secondary_color', 'is_active'];
+    protected $fillable = ['title', 'slug', 'parent_id', 'primary_color', 'secondary_color', 'is_active','order'];
     protected $casts = ['is_active' => 'boolean'];
 
     /**

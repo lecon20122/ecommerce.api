@@ -4,7 +4,7 @@ import DashboardLayout from '../../../layouts/dashboard';
 import route from 'ziggy-js';
 import {Inertia,} from '@inertiajs/inertia';
 import {ColumnsType} from "antd/es/table";
-import {Button, Divider, Form, Input, Select, Space, Table, Upload} from "antd";
+import {Button, Divider, Form, Input, InputNumber, Select, Space, Table, Upload} from "antd";
 import {SwapOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import ModalWithChildren from "../variations/ModalWithChildren";
 import {UploadChangeParam, UploadFile} from "antd/es/upload/interface";
@@ -77,6 +77,11 @@ export default function CategoryIndex({categories, locale}: Props) {
           <span>{record.title.en}</span>
         </Space>
       ),
+    },
+    {
+      key: 'order',
+      title: 'Order',
+      dataIndex: 'order',
     },
     {
       key: 'parent',
@@ -165,6 +170,9 @@ export default function CategoryIndex({categories, locale}: Props) {
               rules={[{required: true, message: 'Please fill type in AR!'}]}
             >
               <Input/>
+            </Form.Item>
+            <Form.Item name={'order'} label='Order'>
+              <InputNumber/>
             </Form.Item>
             <Form.Item
               label="Parent Category"

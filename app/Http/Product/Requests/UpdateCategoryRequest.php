@@ -2,6 +2,7 @@
 
 namespace App\Http\Product\Requests;
 
+use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCategoryRequest extends FormRequest
@@ -26,6 +27,7 @@ class UpdateCategoryRequest extends FormRequest
         return [
             'ar' => 'nullable|string',
             'en' => 'nullable|string',
+            'order' => ValidationRuleEnums::NULLABLE_NUMERIC->value,
             'parent_id' => 'integer|numeric|nullable',
             'image_id' => 'nullable',
             'images' => 'nullable',

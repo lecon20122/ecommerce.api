@@ -16,6 +16,7 @@ export interface Category {
   thumbnail?: Thumbnail;
   parent: Category
   is_active: boolean
+  order: number,
   media: NewMediaProps[]
   primary_color: string
   secondary_color: string

@@ -211,7 +211,7 @@ class StartupSeeder extends Seeder
             ]);
         }
 
-        City::factory(20)->create([
+        City::factory(10)->create([
             'governorate_id' => $gov->id,
         ]);
 

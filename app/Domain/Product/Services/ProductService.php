@@ -62,7 +62,7 @@ class ProductService
     public function getProductBySlug(string $slug): ProductResource
     {
         $product = Product::query()
-            ->with(['variations' => function ($query) {
+            ->with(['description.productAttribute', 'variations' => function ($query) {
                 $query->with(['VariationImages', 'VariationColor', 'variationTypeValue', 'variationType', 'children' => function ($query) {
                     $query->with(['variationTypeValue', 'variationType', 'media']);
                 }])
@@ -119,7 +119,7 @@ class ProductService
         ];
 
         return $searchService->searchIndexedModel($params, $productModel, $limit)->query(function (Builder $builder) {
-            $builder->with(['description.productAttribute', 'variations' => function ($query) {
+            $builder->with(['variations' => function ($query) {
                 $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
                     ->has('VariationImages')
                     ->parent();

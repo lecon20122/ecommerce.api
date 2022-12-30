@@ -119,7 +119,7 @@ class ProductService
         ];
 
         return $searchService->searchIndexedModel($params, $productModel, $limit)->query(function (Builder $builder) {
-            $builder->with(['variations' => function ($query) {
+            $builder->with(['description.productAttribute', 'variations' => function ($query) {
                 $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
                     ->has('VariationImages')
                     ->parent();

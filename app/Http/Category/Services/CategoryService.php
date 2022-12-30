@@ -22,6 +22,7 @@ class CategoryService
     {
         return CategoryResource::collection(
             Category::query()
+                ->has('children')
                 ->with([
                     'banners',
                     'mobileBanners',
@@ -31,7 +32,7 @@ class CategoryService
                             ->has('products');
                     }])
                 ->parent()
-                ->has('children')
+                ->orderBy('order')
                 ->get()
         );
     }

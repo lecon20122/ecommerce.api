@@ -24,7 +24,6 @@ class ApiCategoryController extends BaseController
     public function index(): AnonymousResourceCollection
     {
         try {
-
             return $this->service->getCategoriesParentsWithItsMediaAndChildren();
         } catch (Exception $exception) {
             $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);

@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Category\Models\Category;
+use App\Domain\Location\Models\City;
+use App\Domain\Location\Models\District;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
@@ -42,6 +44,8 @@ class StartupSeeder extends Seeder
         if (!Admin::query()->where('email', '=', 'mustafa@admin.com')->first()) {
             Admin::factory()->create();
         }
+
+        $this->citySeeder();
 
         $categories = [
             [
@@ -193,6 +197,26 @@ class StartupSeeder extends Seeder
             VariationTypeValue::create($variationTypesValue);
         }
 
+    }
 
+    public function citySeeder()
+    {
+        $city = City::query()->where('name', 'Nasr City')->first();
+
+        $city2 = City::query()->where('name', 'Maadi')->first();
+
+        District::factory()->create([
+            'city_id' => $city->id,
+            'name' => 'Al Hay Sabea'
+        ]);
+        District::factory()->create([
+            'city_id' => $city->id,
+            'name' => 'Al Hay Sades'
+        ]);
+
+        District::factory()->create([
+            'city_id' => $city2->id,
+            'name' => '90 Street'
+        ]);
     }
 }

@@ -22,26 +22,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        $this->call([
-//            StartupSeeder::class,
-//            ProductSeeder::class,
-//        ]);
-        $city = City::query()->where('name', 'Nasr City')->first();
-
-        $city2 = City::query()->where('name', 'Maadi')->first();
-
-        District::factory()->create([
-            'city_id' => $city->id,
-            'name' => 'Al Hay Sabea'
-        ]);
-        District::factory()->create([
-            'city_id' => $city->id,
-            'name' => 'Al Hay Sades'
+        $this->call([
+            StartupSeeder::class,
+            ProductSeeder::class,
         ]);
 
-        District::factory()->create([
-            'city_id' => $city2->id,
-            'name' => '90 Street'
-        ]);
     }
 }

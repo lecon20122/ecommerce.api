@@ -73,6 +73,20 @@ class ApiProductController extends BaseController
     }
 
     /**
+     * @param StoreProductRequest $request
+     * @return JsonResponse|AnonymousResourceCollection
+     */
+    public function storeStoreProduct(StoreProductRequest $request): JsonResponse|AnonymousResourceCollection
+    {
+        try {
+            $this->service->store($request->validated());
+            return $this->getStoreProducts();
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    /**
      * Display the specified resource for specified store.
      *
      * @return JsonResponse|AnonymousResourceCollection
@@ -81,19 +95,6 @@ class ApiProductController extends BaseController
     {
         try {
             return $this->service->getStoreProducts();
-        } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
-        }
-    }
-
-    /**
-     * @param StoreProductRequest $request
-     * @return JsonResponse|void
-     */
-    public function storeStoreProduct(StoreProductRequest $request)
-    {
-        try {
-            return $this->service->store($request->validated());
         } catch (Exception $exception) {
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }

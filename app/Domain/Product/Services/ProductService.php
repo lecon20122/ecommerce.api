@@ -46,17 +46,21 @@ class ProductService
         return (new static)->$name(...$arguments);
     }
 
-    public function getStoreProducts(): AnonymousResourceCollection
+    public function getStoreProducts()
     {
         /** @var Store $store */
-        $store = $this->user->store();
+        $store = \auth()->user()->store()->first();
 
-        $products = $store->products()->with(['variations' => function ($query) {
-            $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
-                ->parent();
+        if ($store) {
+            $products = $store->products()->with(['variations' => function ($query) {
+                $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
+                    ->parent();
+            }
+            ])->get();
+            return ProductResource::collection($products);
+        } else {
+            response()->json(['no products']);
         }
-        ]);
-        return ProductResource::collection($products);
     }
 
     public function getProductBySlug(string $slug): ProductResource
@@ -152,14 +156,15 @@ class ProductService
 
     /**
      * @param array $data
+     * @return void
      */
 
     public function store(array $data)
     {
-        if (Auth::guard('admin')->check()) {
+        if (Auth::guard('admin')->check() && isset($data['store_id'])) {
             $store = Store::query()->find($data['store_id']);
         } else {
-            $store = $this->user->store();
+            $store = \auth()->user()->store()->first();
         }
 
         if ($store) {
@@ -169,15 +174,19 @@ class ProductService
                     'ar' => $data['ar'],
                 ];
             }
-            return $store->products()->create($data);
+            $store->products()->create($data);
         }
     }
 
     public function update(array $data, Product $product)
     {
-        if (isset($data['en']) || isset($data['ar'])) {
+        if (isset($data['en'])) {
             $data['title'] = [
                 'en' => $data['en'],
+            ];
+        }
+        if (isset($data['ar'])) {
+            $data['title'] = [
                 'ar' => $data['ar'],
             ];
         }
@@ -187,7 +196,7 @@ class ProductService
     public function destroy(int $id)
     {
         $product = Product::query()->find($id);
-        $product?->delete();
+        $product?->forceDelete();
     }
 
     public function restore(int $id)

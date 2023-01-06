@@ -37,6 +37,7 @@ class User extends Authenticatable
         'provider_token',
         'provider_refresh_token',
         'phone',
+        'is_owner'
     ];
 
     /**
@@ -60,8 +61,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'created_at' => 'datetime:m/d/Y | D, h:m:s A',
-        'updated_at' => 'datetime:m/d/Y | h:m:s A',
+        'is_owner' => 'boolean'
     ];
 
     public function setPasswordAttribute($password)

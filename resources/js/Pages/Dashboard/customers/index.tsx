@@ -52,6 +52,11 @@ export default function index({users, locale}: Props) {
       dataIndex: 'name',
     },
     {
+      key: 'email',
+      title: 'Email',
+      dataIndex: 'email',
+    },
+    {
       key: 'created_at',
       title: 'Join Date',
       dataIndex: 'created_at',

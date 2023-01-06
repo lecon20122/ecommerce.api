@@ -46,9 +46,7 @@ class ProductPolicy
         if (Auth::guard('admin')->check()) {
             return true;
         }
-        if ($user->store()->count() > 0) {
-            return true;
-        }
+        return false;
     }
 
     /**
@@ -63,9 +61,10 @@ class ProductPolicy
         if (Auth::guard('admin')->check()) {
             return true;
         }
-        if ($user->id === $product->user_id) {
+        if ($user->store()->id === $product->store_id) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -80,9 +79,11 @@ class ProductPolicy
         if (Auth::guard('admin')->check()) {
             return true;
         }
-        if ($user->id === $product->user_id) {
+        if ($user->store()->id === $product->store_id) {
             return true;
         }
+        return false;
+
     }
 
     /**
@@ -97,9 +98,10 @@ class ProductPolicy
         if (Auth::guard('admin')->check()) {
             return true;
         }
-        if ($user->id === $product->user_id) {
+        if ($user->store()->id === $product->store_id) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -114,8 +116,9 @@ class ProductPolicy
         if (Auth::guard('admin')->check()) {
             return true;
         }
-        if ($user->id === $product->user_id) {
+        if ($user->store()->id === $product->store_id) {
             return true;
         }
+        return false;
     }
 }

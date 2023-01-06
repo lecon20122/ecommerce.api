@@ -25,6 +25,7 @@ class ProductResource extends JsonResource
             'title' => $this->getTranslations('title'),
             'price' => $this->price,
             'slug' => $this->slug,
+            'live_at' => $this->live_at,
             'store_id' => $this->store_id,
             'media' => MediaResource::collection($this->whenLoaded('media')),
             'variations' => VariationResource::collection($this->whenLoaded('variations')),

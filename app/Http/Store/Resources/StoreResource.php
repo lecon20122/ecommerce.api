@@ -5,15 +5,18 @@ namespace App\Http\Store\Resources;
 use App\Http\Auth\Resources\UserResource;
 use App\Http\Product\Resources\ProductPaginateResource;
 use App\Http\Product\Resources\ProductResource;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use JsonSerializable;
 
 class StoreResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param Request $request
+     * @return array
      */
     public function toArray($request)
     {

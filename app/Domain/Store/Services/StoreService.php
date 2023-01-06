@@ -31,6 +31,8 @@ class StoreService
             ->find($request->validated('user_id', ['id']));
 
         $user?->store()->create($request->validated());
+        $user->is_owner = true;
+        $user->save();
     }
 
     public function getStoreById(int $id): StoreResource
@@ -63,11 +65,8 @@ class StoreService
         }
     }
 
-    public function checkAndReturnStore(Variation $variation, $store_id)
+    public function getStore()
     {
-        if ($variation->store_id == $store_id) {
-            return $store_id;
-        }
-
+        return auth('web')->user()->store()->first();
     }
 }

@@ -17,6 +17,10 @@ use Inertia\Inertia;
 
 class StoreController extends BaseController
 {
+    public function __construct(protected StoreService $storeService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +30,7 @@ class StoreController extends BaseController
     {
         try {
             return Inertia::render('Dashboard/stores/StoreIndex', [
-                'stores' => StoreResource::collection((new StoreService())->index())]);
+                'stores' => StoreResource::collection($this->storeService->index())]);
         } catch (Exception $exception) {
             return $this->redirectBackWithMessage($exception->getMessage());
         }
@@ -46,14 +50,13 @@ class StoreController extends BaseController
      * Store a newly created resource in storage.
      *
      * @param StoreCreateRequest $request
-     * @param StoreService $storeService
      * @return RedirectResponse
      */
-    public function store(StoreCreateRequest $request, StoreService $storeService): RedirectResponse
+    public function store(StoreCreateRequest $request): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $storeService->store($request);
+            $this->storeService->store($request);
             DB::commit();
             return $this->redirectToWithMessage('admin.stores.index', 'success');
         } catch (Exception $exception) {
@@ -68,9 +71,13 @@ class StoreController extends BaseController
      * @param int $id
      * @return Response
      */
-    public function show($id)
+    public function getStore()
     {
-        //
+        try {
+            return $this->storeService->store($request->validated());
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
     }
 
     /**
@@ -83,7 +90,7 @@ class StoreController extends BaseController
     {
         try {
             return Inertia::render('Dashboard/stores/StoreEdit', [
-                'currentStore' => (new StoreService())->getStoreById($id),
+                'currentStore' => $this->storeService->getStoreById($id),
                 'variationTypes' => (new VariationService())->getVariationTypes(),
                 'variationTypesValues' => (new VariationService())->getVariationTypeValues(),
             ]);
@@ -103,7 +110,7 @@ class StoreController extends BaseController
     public function update(StoreUpdateRequest $request, Store $store): RedirectResponse
     {
         try {
-            (new StoreService())->update($store, $request);
+            $this->storeService->update($store, $request);
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             DB::rollback();
@@ -121,7 +128,7 @@ class StoreController extends BaseController
     {
         DB::beginTransaction();
         try {
-            (new StoreService())->delete($id);
+            $this->storeService->delete($id);
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {

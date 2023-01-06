@@ -20,7 +20,6 @@ Route::group([], function () {
     Route::group([], base_path() . '/app/Http/Category/Routes/web.php');
     Route::group([], base_path() . '/app/Http/Product/Routes/web.php');
     Route::group([], base_path() . '/app/Http/User/Routes/web.php');
-    Route::group([], base_path() . '/app/Http/Cart/Routes/web.php');
     Route::group([], base_path() . '/app/Http/Location/Routes/web.php');
     Route::group([], base_path() . '/app/Http/Order/Routes/web.php');
     Route::group([], base_path() . '/app/Http/Inventory/Routes/web.php');

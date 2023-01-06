@@ -4,6 +4,7 @@ namespace Tests\Feature\Store;
 
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Store\Models\Store;
+use App\Domain\Store\Services\StoreService;
 use App\Support\Enums\HttpStatusEnums;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -37,6 +38,7 @@ StoreTest extends TestCase
         $response->assertSessionHas('message', 'success');
 
         $this->assertEquals('JK', Store::first()->name);
+        $this->assertTrue(User::first()->is_owner);
     }
 
     public function test_store_can_be_updated()
@@ -77,5 +79,17 @@ StoreTest extends TestCase
         $response = $this->post(route('admin.stores.destroy', ['id' => $store->id]))->assertRedirect();
         $response->assertSessionHas('message', 'success');
         $this->assertNull(Store::first());
+    }
+
+    public function testStoreOwnerCanGetHisStore()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'web');
+
+        Store::factory()->create([
+            'user_id' => $user,
+        ]);
+
+        $this->assertEquals($user->id , (new StoreService())->getStore()->user_id);
     }
 }

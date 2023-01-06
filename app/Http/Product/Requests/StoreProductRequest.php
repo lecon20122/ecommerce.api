@@ -27,7 +27,7 @@ class StoreProductRequest extends FormRequest
             'ar' => 'required|string|max:256',
             'en' => 'required|string|max:256',
             'price' => 'required|numeric|integer',
-            'store_id' => 'required',
+            'store_id' => 'nullable',
         ];
     }
 }

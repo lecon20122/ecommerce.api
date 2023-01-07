@@ -101,17 +101,31 @@ class ApiProductController extends BaseController
     }
 
     /**
+     * Display the specified resource for specified store.
+     *
+     * @param ProductBySlugRequest $request
+     * @return JsonResponse|ProductResource
+     */
+    public function getStoreProductBySlug(ProductBySlugRequest $request): JsonResponse|ProductResource
+    {
+        try {
+            return $this->service->getStoreProductBySlug($request->validated('slug'));
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    /**
      *
      *
      * @param UpdateProductRequest $request
      * @param Product $product
-     * @return JsonResponse
+     * @return JsonResponse|ProductResource
      */
-    public function updateStoreProduct(UpdateProductRequest $request, Product $product): JsonResponse
+    public function updateStoreProduct(UpdateProductRequest $request, Product $product): JsonResponse|ProductResource
     {
         try {
-            $this->service->update($request->validated(), $product);
-            return $this->sendSuccess();
+            return $this->service->update($request->validated(), $product);
         } catch (Exception $exception) {
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }

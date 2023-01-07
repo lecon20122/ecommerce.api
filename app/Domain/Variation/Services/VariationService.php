@@ -14,6 +14,7 @@ use App\Http\Variation\Resources\VariationTypeValueResource;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class VariationService
@@ -26,6 +27,19 @@ class VariationService
                 $query->with('variationType', 'variationTypeValue');
             }, 'VariationColor', 'VariationImages', 'variationType', 'variationTypeValue'])->find($id)
         );
+    }
+
+    public function getVariationDetails(Variation $variation): JsonResponse|VariationResource
+    {
+        if (auth()->user()->store()->first()->id === $variation->store_id) {
+            return new VariationResource(
+                $variation->load(['children' => function ($query) {
+                    $query->with('variationType', 'variationTypeValue');
+                }, 'VariationColor', 'VariationImages', 'variationType', 'variationTypeValue'])
+            );
+        } else {
+            return response()->json([], 401);
+        }
     }
 
     public function getVariationTypes(): AnonymousResourceCollection

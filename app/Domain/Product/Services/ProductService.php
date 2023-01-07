@@ -24,6 +24,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -52,11 +53,7 @@ class ProductService
         $store = \auth()->user()->store()->first();
 
         if ($store) {
-            $products = $store->products()->with(['variations' => function ($query) {
-                $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
-                    ->parent();
-            }
-            ])->get();
+            $products = $store->products()->get();
             return ProductResource::collection($products);
         } else {
             response()->json(['no products']);
@@ -178,7 +175,7 @@ class ProductService
         }
     }
 
-    public function update(array $data, Product $product)
+    public function update(array $data, Product $product): JsonResponse|ProductResource
     {
         if (isset($data['en'])) {
             $data['title'] = [
@@ -191,6 +188,25 @@ class ProductService
             ];
         }
         $product->update($data);
+        return $this->getStoreProductBySlug($product->slug);
+    }
+
+    public function getStoreProductBySlug(string $slug): JsonResponse|ProductResource
+    {
+        /** @var Store $store */
+        $store = \auth()->user()->store()->first();
+
+        if ($store) {
+            $products = $store->products()->where('slug', $slug)->with(['description.productAttribute', 'variations' => function ($query) {
+                $query->with(['VariationImages', 'VariationColor', 'variationTypeValue', 'variationType', 'children' => function ($query) {
+                    $query->with(['variationTypeValue', 'variationType', 'media']);
+                }]);
+            }
+            ])->first();
+            return new ProductResource($products);
+        } else {
+            return response()->json(['Store Not Found']);
+        }
     }
 
     public function destroy(int $id)

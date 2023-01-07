@@ -42,6 +42,9 @@ Route::name('api.')->group(function () {
 //
 //    //Product Routes
     Route::group([], base_path() . '/app/Http/Product/Routes/api.php');
+
+    //Product Routes
+    Route::group([], base_path() . '/app/Http/Variation/Routes/api.php');
 //
 //    //Store Routes
 //    Route::group([], base_path() . '/app/Http/Store/Routes/api.php');

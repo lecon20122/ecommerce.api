@@ -11,6 +11,7 @@ Route::get('product', [ApiProductController::class, 'getProduct'])->name('get.pr
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('store/products', [ApiProductController::class, 'getStoreProducts'])->name('get.store.products');
     Route::post('store/product', [ApiProductController::class, 'storeStoreProduct'])->name('add.store.products');
-    Route::post('store/product/{product}/update', [ApiProductController::class, 'updateStoreProduct'])->name('update.store.product');
-    Route::post('store/product/{product}/force-delete', [ApiProductController::class, 'deleteStoreProduct'])->name('force.delete.store.product');
+    Route::get('store/product/details', [ApiProductController::class, 'getStoreProductBySlug'])->name('get.store.product.by.slug');
+    Route::post('store/product/update/{product:slug}', [ApiProductController::class, 'updateStoreProduct'])->name('update.store.product');
+    Route::post('store/product/force-delete/{product:slug}', [ApiProductController::class, 'deleteStoreProduct'])->name('force.delete.store.product');
 });

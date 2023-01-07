@@ -40,7 +40,6 @@ class BaseController extends Controller
      *
      * @param $error
      * @param int $code
-     * @param array $errorMessages
      * @return JsonResponse
      */
     public function sendError($error, int $code = 400): JsonResponse
@@ -82,5 +81,10 @@ class BaseController extends Controller
     {
         Log::error($exceptionMessage . '  At CLASS ' . $class . ' , ' . $functionName . '()');
         return response()->json(['message' => $customMessage]);
+    }
+
+    public function respondWithOk(): JsonResponse
+    {
+        return response()->json();
     }
 }

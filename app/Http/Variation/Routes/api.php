@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Product\Controllers\ProductController;
-use App\Http\Product\Controllers\VariationController;
+use App\Http\Variation\Controllers\ApiVariationController;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('products', ProductController::class)->middleware('auth:sanctum')->except('index');
-Route::get('products', [ProductController::class, 'index'])->name('products.index');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('variation/{variation}', [ApiVariationController::class, 'show'])->name('get.owner.variation');
+    Route::get('variation-types', [ApiVariationController::class, 'getVariationTypes'])->name('get.variation.types');
+});
 
-Route::apiResource('variations', VariationController::class)->middleware('auth:sanctum')->except('index');
-Route::get('variations', [VariationController::class, 'index'])->name('variations.index');

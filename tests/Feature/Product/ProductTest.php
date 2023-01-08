@@ -12,6 +12,7 @@ use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
@@ -76,10 +77,15 @@ class ProductTest extends TestCase
     public function test_as_a_admin_product_can_be_updated()
     {
         $admin = Admin::factory()->create();
-        $this->actingAs($admin, 'admin');
 
+        $this->actingAs($admin, 'admin');
+//        if (Auth::guard('admin')->check()) {
+//            dd(true);
+//        }
         $product = Product::factory()->create();
+
         Storage::fake('public');
+
         $data = [
             'en' => 'hello',
         ];
@@ -136,7 +142,7 @@ class ProductTest extends TestCase
         $this->assertEquals('hello', $product->title);
     }
 
-    public function test_as_a_store_owner_can_force_delete_my_product()
+    public function test_as_a_store_owner_can_soft_delete_his_product()
     {
         $user = User::factory()->create();
 
@@ -150,8 +156,26 @@ class ProductTest extends TestCase
             'store_id' => $store->id
         ]);
 
-        $this->post(route('api.force.delete.store.product', ['product' => $product]));
-        $this->assertNull(Product::first());
+        $this->post(route('api.delete.store.product') , ['id' => $product->id]);
+        $this->assertNotNull(Product::withTrashed()->first()->deleted_at);
+    }
+
+    public function test_as_a_store_owner_can_restore_his_product()
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user, 'web');
+
+        $store = Store::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $product = Product::factory()->trashed()->create([
+            'store_id' => $store->id
+        ]);
+
+        $this->post(route('api.restore.store.product') , ['id' => $product->id]);
+        $this->assertNull(Product::withTrashed()->first()->deleted_at);
     }
 
     public function test_as_a_admin_product_can_be_destroyed()
@@ -252,7 +276,7 @@ class ProductTest extends TestCase
 
         Product::factory()->create(['store_id' => $store->id]);
 
-//        dd((new ProductService())->getStoreProducts());
+        $this->assertArrayHasKey('title', (new ProductService())->getStoreProducts()[0]);
     }
 }
 

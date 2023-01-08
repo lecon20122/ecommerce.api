@@ -10,6 +10,7 @@ use App\Http\Product\Requests\ProductFilterRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
 use App\Http\Product\Resources\ProductResource;
+use App\Support\Requests\ModelIDsRequest;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -134,27 +135,32 @@ class ApiProductController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  $id
-     * @return JsonResponse
+     * @param ModelIDsRequest $request
+     * @return JsonResponse|AnonymousResourceCollection
      */
-    public function deleteStoreProduct($id): JsonResponse
+    public function deleteStoreProduct(ModelIDsRequest $request): JsonResponse|AnonymousResourceCollection
     {
         try {
-            $this->service->destroy($id);
-            return $this->sendSuccess();
+            $this->service->destroy($request->validated('id'));
+            return $this->getStoreProducts();
         } catch (Exception $exception) {
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update the specified resource in storage.
      *
-     * @param int $id
-     * @return Response
+     * @param ModelIDsRequest $request
+     * @return JsonResponse|AnonymousResourceCollection
      */
-    public function destroy($id)
+    public function restoreStoreProduct(ModelIDsRequest $request): JsonResponse|AnonymousResourceCollection
     {
-        //
+        try {
+            $this->service->restore($request->validated('id'));
+            return $this->getStoreProducts();
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
     }
 }

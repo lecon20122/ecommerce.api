@@ -7,5 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('variation/{variation}', [ApiVariationController::class, 'show'])->name('get.owner.variation');
     Route::get('variation-types', [ApiVariationController::class, 'getVariationTypes'])->name('get.variation.types');
+    Route::post('variation/add-media/{variation}', [ApiVariationController::class, 'addMediaToVariation'])->name('add.media.to.store.variation');
+    Route::post('variation/delete-media/{variation}', [ApiVariationController::class, 'deleteVariationImage'])->name('delete.media.of.store.variation');
 });
 

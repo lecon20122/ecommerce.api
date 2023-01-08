@@ -16,6 +16,7 @@ use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class VariationService
 {
@@ -124,9 +125,12 @@ class VariationService
 
     public function addImagesToVariation(Variation $variation, StoreMediaRequest $request, ImageService $imageService)
     {
-        if ($request->hasFile('images')) {
-            $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
+        if (Auth::guard('admin')->check() || \auth()->user()->store()->first()->id === $variation->store_id) {
+            if ($request->hasFile('images')) {
+                $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
+            }
         }
+
     }
 
     public function uploadVariationColorImage(Variation $variation, StoreMediaRequest $request, ImageService $imageService)
@@ -138,8 +142,10 @@ class VariationService
 
     public function deleteVariationImage(Variation $variation, ModelIDsRequest $request)
     {
-        $image = $variation->media()->find($request->validated('id'));
-        $image?->delete();
+        if (Auth::guard('admin')->check() || \auth()->user()->store()->first()->id === $variation->store_id) {
+            $image = $variation->media()->find($request->validated('id'));
+            $image?->delete();
+        }
     }
 
     public function getFacetsArray(): array

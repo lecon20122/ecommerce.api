@@ -5,15 +5,18 @@ namespace App\Http\Variation\Controllers;
 use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Services\VariationService;
 use App\Http\Controllers\Controller;
+use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\ProductBySlugRequest;
 use App\Http\Variation\Requests\GetVariationBySlugRequest;
 use App\Http\Variation\Requests\StoreVariationRequest;
 use App\Http\Variation\Requests\UpdateVariationRequest;
 use App\Http\Variation\Resources\VariationResource;
+use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
@@ -57,21 +60,6 @@ class ApiVariationController extends BaseController
         try {
             $this->service->store($request->validated(), $imageService);
             return $this->respondWithOk();
-        } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Variation $variation
-     * @return JsonResponse|VariationResource
-     */
-    public function show(Variation $variation): JsonResponse|VariationResource
-    {
-        try {
-            return $this->service->getVariationDetails($variation);
         } catch (Exception $exception) {
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
@@ -133,6 +121,46 @@ class ApiVariationController extends BaseController
             return $this->respondWithOk();
         } catch (Exception $exception) {
             DB::rollBack();
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    public function addMediaToVariation(Variation $variation, StoreMediaRequest $request, ImageService $imageService): VariationResource|JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->addImagesToVariation($variation, $request, $imageService);
+            DB::commit();
+            return $this->show($variation);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+    public function deleteVariationImage(Variation $variation, ModelIDsRequest $request): VariationResource|JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->deleteVariationImage($variation, $request);
+            DB::commit();
+            return $this->show($variation);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Variation $variation
+     * @return JsonResponse|VariationResource
+     */
+    public function show(Variation $variation): JsonResponse|VariationResource
+    {
+        try {
+            return $this->service->getVariationDetails($variation);
+        } catch (Exception $exception) {
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }

@@ -28,6 +28,7 @@ export default function ImageUploadManually({
                                               className = 'py-2',
                                               btnClassName = 'mt-[16px]'
                                             }: Props) {
+
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
 
@@ -37,6 +38,7 @@ export default function ImageUploadManually({
       formData.append('images[]', file.originFileObj as RcFile);
     });
     setUploading(true);
+    console.log(formData)
     Inertia.post(route(routeName, param), formData, {
       preserveState: false
     })

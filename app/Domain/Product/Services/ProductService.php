@@ -53,7 +53,7 @@ class ProductService
         $store = \auth()->user()->store()->first();
 
         if ($store) {
-            $products = $store->products()->get();
+            $products = $store->products()->withTrashed()->get();
             return ProductResource::collection($products);
         } else {
             response()->json(['no products']);
@@ -137,6 +137,7 @@ class ProductService
     {
         return new ProductResource(
             Product::query()
+                ->withTrashed()
                 ->with(['categories', 'description.productAttribute', 'variations' => function ($query) {
                     $query->withTrashed()
                         ->parent()
@@ -175,7 +176,7 @@ class ProductService
         }
     }
 
-    public function update(array $data, Product $product): JsonResponse|ProductResource
+    public function update(array $data, Product $product)
     {
         if (isset($data['en'])) {
             $data['title'] = [
@@ -188,7 +189,11 @@ class ProductService
             ];
         }
         $product->update($data);
-        return $this->getStoreProductBySlug($product->slug);
+
+        if (Auth::guard('web')->check()) {
+            return $this->getStoreProductBySlug($product->slug);
+        }
+
     }
 
     public function getStoreProductBySlug(string $slug): JsonResponse|ProductResource
@@ -197,7 +202,7 @@ class ProductService
         $store = \auth()->user()->store()->first();
 
         if ($store) {
-            $products = $store->products()->where('slug', $slug)->with(['description.productAttribute', 'variations' => function ($query) {
+            $products = $store->products()->withTrashed()->where('slug', $slug)->with(['description.productAttribute', 'variations' => function ($query) {
                 $query->with(['VariationImages', 'VariationColor', 'variationTypeValue', 'variationType', 'children' => function ($query) {
                     $query->with(['variationTypeValue', 'variationType', 'media']);
                 }]);
@@ -212,7 +217,7 @@ class ProductService
     public function destroy(int $id)
     {
         $product = Product::query()->find($id);
-        $product?->forceDelete();
+        $product?->delete();
     }
 
     public function restore(int $id)

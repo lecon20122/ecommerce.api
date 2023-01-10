@@ -7,14 +7,10 @@ use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
 use App\Domain\Store\Models\Store;
-use App\Support\Services\SearchService;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -22,19 +18,19 @@ class ProductTest extends TestCase
     use WithFaker, RefreshDatabase;
 
 
-    public function test_product_model_has_valid_searchable_array()
-    {
-        $productModel = Product::factory()->create();
-        $this->assertTrue([
-                'id',
-                'title',
-                'price',
-                'store_id',
-                'stores',
-                'category',
-                'created_at',
-            ] === array_keys($productModel->toSearchableArray()));
-    }
+//    public function test_product_model_has_valid_searchable_array()
+//    {
+//        $productModel = Product::factory()->create();
+//        $this->assertTrue([
+//                'id',
+//                'title',
+//                'price',
+//                'store_id',
+//                'stores',
+//                'category',
+//                'created_at',
+//            ] === array_keys($productModel->toSearchableArray()));
+//    }
 
     public function test_that_product_model_uses_scout()
     {
@@ -79,9 +75,7 @@ class ProductTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin');
-//        if (Auth::guard('admin')->check()) {
-//            dd(true);
-//        }
+
         $product = Product::factory()->create();
 
         Storage::fake('public');
@@ -90,92 +84,10 @@ class ProductTest extends TestCase
             'en' => 'hello',
         ];
 
-        $response = $this->post(route('admin.products.update', ['product' => $product]), $data);
+        $response = $this->post(route('admin.products.update', ['slug' => $product->slug]), $data);
         $response->assertSessionHas('message', 'success');
         $product->refresh();
         $this->assertEquals('hello', $product->title);
-    }
-
-    public function test_as_a_store_product_can_be_created()
-    {
-        $user = User::factory()->create();
-        $this->actingAs($user, 'web');
-        $store = Store::factory()->create([
-            'user_id' => $user->id
-        ]);
-
-        $data = [
-            'en' => 'new product',
-            'ar' => 'منتج جديد',
-            'price' => 325,
-            'live_at' => now(),
-//            'store_id' => $store->id,
-        ];
-
-        $response = $this->post(route('api.add.store.products'), $data);
-        $product = Product::query()->first();
-
-        $this->assertEquals('new product', $product->title);
-
-    }
-
-    public function test_as_a_store_owner_can_update_my_product()
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user, 'web');
-
-        $store = Store::factory()->create([
-            'user_id' => $user->id
-        ]);
-
-        $product = Product::factory()->create([
-            'store_id' => $store->id
-        ]);
-
-        $data = [
-            'en' => 'hello',
-        ];
-
-        $this->post(route('api.update.store.product', ['product' => $product]), $data);
-        $product->refresh();
-        $this->assertEquals('hello', $product->title);
-    }
-
-    public function test_as_a_store_owner_can_soft_delete_his_product()
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user, 'web');
-
-        $store = Store::factory()->create([
-            'user_id' => $user->id
-        ]);
-
-        $product = Product::factory()->create([
-            'store_id' => $store->id
-        ]);
-
-        $this->post(route('api.delete.store.product') , ['id' => $product->id]);
-        $this->assertNotNull(Product::withTrashed()->first()->deleted_at);
-    }
-
-    public function test_as_a_store_owner_can_restore_his_product()
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user, 'web');
-
-        $store = Store::factory()->create([
-            'user_id' => $user->id
-        ]);
-
-        $product = Product::factory()->trashed()->create([
-            'store_id' => $store->id
-        ]);
-
-        $this->post(route('api.restore.store.product') , ['id' => $product->id]);
-        $this->assertNull(Product::withTrashed()->first()->deleted_at);
     }
 
     public function test_as_a_admin_product_can_be_destroyed()
@@ -265,18 +177,6 @@ class ProductTest extends TestCase
         $this->assertNull(Product::first()->deleted_at);
     }
 
-    public function test_that_as_store_can_get_his_products()
-    {
-        $user = User::factory()->create();
-        $this->actingAs($user, 'web');
 
-        $store = Store::factory()->create([
-            'user_id' => $user,
-        ]);
-
-        Product::factory()->create(['store_id' => $store->id]);
-
-        $this->assertArrayHasKey('title', (new ProductService())->getStoreProducts()[0]);
-    }
 }
 

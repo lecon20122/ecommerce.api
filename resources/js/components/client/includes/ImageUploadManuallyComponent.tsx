@@ -38,7 +38,7 @@ export default function ImageUploadManually({
       formData.append('images[]', file.originFileObj as RcFile);
     });
     setUploading(true);
-    console.log(formData)
+
     Inertia.post(route(routeName, param), formData, {
       preserveState: false
     })

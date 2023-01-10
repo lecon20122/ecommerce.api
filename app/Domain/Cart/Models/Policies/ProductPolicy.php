@@ -2,6 +2,7 @@
 
 namespace App\Domain\Cart\Models\Policies;
 
+use App\Domain\Admin\Models\Admin;
 use App\Domain\Product\Models\Product;
 use Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -39,61 +40,52 @@ class ProductPolicy
      * Determine whether the user can create models.
      *
      * @param User $user
-     * @return bool
+     * @return void
      */
-    public function create(User $user): bool
+    public function create(User $user)
     {
-        if (Auth::guard('admin')->check()) {
-            return true;
-        }
-        return false;
+
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param User $user
+     * @param User|Admin $user
      * @param Product $product
      * @return bool
      */
-    public function update(User $user, Product $product): bool
+    public function update(User|Admin $user, Product $product): bool
     {
         if (Auth::guard('admin')->check()) {
             return true;
-        }elseif ($user->store()->first()->id && $user->store()->first()->id === $product->store_id){
-            return true;
         }
 
-        return false;
+        return $user->isOwner($product->store_id);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param User $user
+     * @param User|Admin $user
      * @param Product $product
-     * @return Response|bool
+     * @return bool
      */
-    public function delete(User $user, Product $product): Response|bool
+    public function delete(User|Admin $user, Product $product): bool
     {
         if (Auth::guard('admin')->check()) {
             return true;
         }
-        if ($user->store()->first()->id === $product->store_id) {
-            return true;
-        }
-        return false;
-
+        return $user->isOwner($product->store_id);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
-     * @param User $user
+     * @param User|Admin $user
      * @param Product $product
      * @return Response|bool
      */
-    public function restore(User $user, Product $product): Response|bool
+    public function restore(User|Admin $user, Product $product): Response|bool
     {
         if (Auth::guard('admin')->check()) {
             return true;
@@ -107,16 +99,13 @@ class ProductPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param User $user
+     * @param User|Admin $user
      * @param Product $product
      * @return bool
      */
-    public function forceDelete(User $user, Product $product): bool
+    public function forceDelete(User|Admin $user, Product $product): bool
     {
         if (Auth::guard('admin')->check()) {
-            return true;
-        }
-        if ($user->store()->first()->id === $product->store_id) {
             return true;
         }
         return false;

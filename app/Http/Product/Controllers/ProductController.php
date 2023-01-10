@@ -117,11 +117,11 @@ class ProductController extends BaseController
      * @param Product $product
      * @return RedirectResponse
      */
-    public function update(UpdateProductRequest $request, ProductService $service, Product $product): RedirectResponse
+    public function update(UpdateProductRequest $request, ProductService $service, string $slug): RedirectResponse
     {
         DB::beginTransaction();
         try {
-            $service->update($request->validated(), $product);
+            $service->update($request->validated(), $slug);
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
@@ -141,7 +141,7 @@ class ProductController extends BaseController
     {
         DB::beginTransaction();
         try {
-            $service->destroy($id);
+            $service->softDelete($id);
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {

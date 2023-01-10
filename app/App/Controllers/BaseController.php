@@ -77,10 +77,10 @@ class BaseController extends Controller
         return redirect()->back()->withErrors($message);
     }
 
-    public function logErrorsAndReturnJsonMessage($exceptionMessage, $class = null, $functionName = null, $customMessage = 'something went wrong we working on it'): JsonResponse
+    public function logErrorsAndReturnJsonMessage($exceptionMessage, $class = null, $functionName = null, int $code = 400, $customMessage = 'something went wrong we working on it'): JsonResponse
     {
         Log::error($exceptionMessage . '  At CLASS ' . $class . ' , ' . $functionName . '()');
-        return response()->json(['message' => $customMessage]);
+        return response()->json(['message' => $customMessage], $code);
     }
 
     public function respondWithOk(): JsonResponse

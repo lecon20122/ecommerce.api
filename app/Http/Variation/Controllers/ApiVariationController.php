@@ -6,8 +6,7 @@ use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Services\VariationService;
 use App\Http\Controllers\Controller;
 use App\Http\Media\Request\StoreMediaRequest;
-use App\Http\Product\Requests\ProductBySlugRequest;
-use App\Http\Variation\Requests\GetVariationBySlugRequest;
+use App\Http\Variation\Requests\StoreStaticVariationRequest;
 use App\Http\Variation\Requests\StoreVariationRequest;
 use App\Http\Variation\Requests\UpdateVariationRequest;
 use App\Http\Variation\Resources\VariationResource;
@@ -16,11 +15,10 @@ use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ApiVariationController extends BaseController
 {
@@ -61,7 +59,47 @@ class ApiVariationController extends BaseController
             $this->service->store($request->validated(), $imageService);
             return $this->respondWithOk();
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
+    public function createColor(StoreStaticVariationRequest $request, ImageService $imageService): VariationResource|JsonResponse
+    {
+        try {
+            return $this->service->createColorVariation($request->validated(), $imageService);
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
+    public function getColorValues(): JsonResponse | AnonymousResourceCollection
+    {
+        try {
+            return $this->service->getVariationColorValues();
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
+    public function createSize(StoreStaticVariationRequest $request, ImageService $imageService): JsonResponse
+    {
+        try {
+            $this->service->createSizeVariation($request->validated(), $imageService);
+            return $this->respondWithOk();
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -101,8 +139,10 @@ class ApiVariationController extends BaseController
             DB::commit();
             return $this->respondWithOk();
         } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -112,11 +152,11 @@ class ApiVariationController extends BaseController
      * @param int $id
      * @return JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $this->service->permanentDelete($id);
+            $this->service->destroy($id);
             DB::commit();
             return $this->respondWithOk();
         } catch (Exception $exception) {
@@ -137,18 +177,6 @@ class ApiVariationController extends BaseController
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }
-    public function deleteVariationImage(Variation $variation, ModelIDsRequest $request): VariationResource|JsonResponse
-    {
-        DB::beginTransaction();
-        try {
-            $this->service->deleteVariationImage($variation, $request);
-            DB::commit();
-            return $this->show($variation);
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
-        }
-    }
 
     /**
      * Display the specified resource.
@@ -161,6 +189,19 @@ class ApiVariationController extends BaseController
         try {
             return $this->service->getVariationDetails($variation);
         } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    public function deleteVariationImage(Variation $variation, ModelIDsRequest $request): VariationResource|JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->deleteVariationImage($variation, $request);
+            DB::commit();
+            return $this->show($variation);
+        } catch (Exception $exception) {
+            DB::rollBack();
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }

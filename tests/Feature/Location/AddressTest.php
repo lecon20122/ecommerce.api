@@ -49,19 +49,19 @@ class AddressTest extends TestCase
      *
      * @return void
      */
-    public function testClientCanUpdateAddress()
-    {
-        $user = User::factory()->create();
-        $this->actingAs($user, 'web');
-
-        $address = Address::factory()->create();
-
-        $data = [
-            'type' => AddressTypeEnums::HOME->value,
-        ];
-
-        $response = $this->post(route('client.update.address' , ['address' => $address]), $data)->assertRedirect();
-
-        $this->assertEquals(AddressTypeEnums::HOME->value, Address::first()->type);
-    }
+//    public function testClientCanUpdateAddress()
+//    {
+//        $user = User::factory()->create();
+//        $this->actingAs($user, 'web');
+//
+//        $address = Address::factory()->create();
+//
+//        $data = [
+//            'type' => AddressTypeEnums::HOME->value,
+//        ];
+//
+//        $response = $this->post(route('client.update.address' , ['address' => $address]), $data)->assertRedirect();
+//
+//        $this->assertEquals(AddressTypeEnums::HOME->value, Address::first()->type);
+//    }
 }

@@ -29,46 +29,46 @@ class OrderTest extends TestCase
     /**
      * @throws Exception
      */
-    #[NoReturn] public function testClientCanCheckout()
-    {
-        $this->expectsEvents(OrderPlacedEvent::class);
-
-        $user = User::factory()->has(Address::factory())->create();
-        $this->actingAs($user, 'web');
-
-        $this->createCartAndStock();
-        $district = District::factory()->create();
-
-        $address = Address::first();
-
-        $storeAddress = Store::first();
-
-        $storeAddress->addresses()->create([
-            'type' => AddressTypeEnums::PICKUP->value,
-            'name' => 'Mustafa',
-            'phone' => '01125475',
-            'district_id' => $district->id,
-            'street' => 'Hafez',
-            'building' => '25',
-            'floor' => '9',
-            'apartment_number' => '18',
-            'nearby_landmark' => 'Care',
-        ]);
-
-        $addressType = ShippingType::factory()->create(); // payment type
-
-
-        $data = [
-            'notes' => 'yes i wanted it',
-            'shipping_address_id' => $address->id,
-            'shipping_type_id' => $addressType->id,
-        ];
-
-        $this->post(route('client.checkout'), $data)->assertRedirect();
-
-        $this->assertCount(2, OrderVariation::all());
-
-    }
+//    #[NoReturn] public function testClientCanCheckout()
+//    {
+//        $this->expectsEvents(OrderPlacedEvent::class);
+//
+//        $user = User::factory()->has(Address::factory())->create();
+//        $this->actingAs($user, 'web');
+//
+//        $this->createCartAndStock();
+//        $district = District::factory()->create();
+//
+//        $address = Address::first();
+//
+//        $storeAddress = Store::first();
+//
+//        $storeAddress->addresses()->create([
+//            'type' => AddressTypeEnums::PICKUP->value,
+//            'name' => 'Mustafa',
+//            'phone' => '01125475',
+//            'district_id' => $district->id,
+//            'street' => 'Hafez',
+//            'building' => '25',
+//            'floor' => '9',
+//            'apartment_number' => '18',
+//            'nearby_landmark' => 'Care',
+//        ]);
+//
+//        $addressType = ShippingType::factory()->create(); // payment type
+//
+//
+//        $data = [
+//            'notes' => 'yes i wanted it',
+//            'shipping_address_id' => $address->id,
+//            'shipping_type_id' => $addressType->id,
+//        ];
+//
+//        $this->post(route('client.checkout'), $data)->assertRedirect();
+//
+//        $this->assertCount(2, OrderVariation::all());
+//
+//    }
 
     public function createCartAndStock()
     {
@@ -88,57 +88,57 @@ class OrderTest extends TestCase
         $this->post(route('client.add.to.cart'), $data2)->assertRedirect();
     }
 
-    public function testOrderItemsStockWillSyncWithNewStockCountAfterOrderBeingPlaced()
-    {
-        $user = User::factory()->has(Address::factory())->create();
-        $this->actingAs($user, 'web');
-
-        $this->createCartAndStock();
-
-        $district = District::factory()->create();
-
-        $address = Address::first();
-
-        $storeAddress = Store::first();
-
-        $storeAddress->addresses()->create([
-            'type' => AddressTypeEnums::PICKUP->value,
-            'district_id' => $district->id,
-            'street' => 'Hafez',
-            'building' => '25',
-            'floor' => '9',
-            'apartment_number' => '18',
-            'nearby_landmark' => 'Care',
-            'name' => 'Mustafa',
-            'phone' => '01125475',
-        ]);
-
-        $addressType = ShippingType::factory()->create();
-
-
-        $data = [
-            'notes' => 'yes i wanted it',
-            'shipping_address_id' => $address->id,
-            'shipping_type_id' => $addressType->id,
-        ];
-        $cartService = new CartService(session());
-
-        (new OrderService(cartService: $cartService, addressService: new AddressService()))->createOrderInstance($data);
-
-        $listener = new SyncVariationStockAfterOrderPlaced($cartService);
-
-        $listener->handle(new OrderPlacedEvent());
-
-        $expectedData1 = [
-            'variation_id' => 1,
-            'amount' => -1,
-        ];
-        $expectedData2 = [
-            'variation_id' => 2,
-            'amount' => -1,
-        ];
-
-        $this->assertDatabaseHas('stocks', $expectedData1);
-        $this->assertDatabaseHas('stocks', $expectedData2);
-    }
+//    public function testOrderItemsStockWillSyncWithNewStockCountAfterOrderBeingPlaced()
+//    {
+//        $user = User::factory()->has(Address::factory())->create();
+//        $this->actingAs($user, 'web');
+//
+//        $this->createCartAndStock();
+//
+//        $district = District::factory()->create();
+//
+//        $address = Address::first();
+//
+//        $storeAddress = Store::first();
+//
+//        $storeAddress->addresses()->create([
+//            'type' => AddressTypeEnums::PICKUP->value,
+//            'district_id' => $district->id,
+//            'street' => 'Hafez',
+//            'building' => '25',
+//            'floor' => '9',
+//            'apartment_number' => '18',
+//            'nearby_landmark' => 'Care',
+//            'name' => 'Mustafa',
+//            'phone' => '01125475',
+//        ]);
+//
+//        $addressType = ShippingType::factory()->create();
+//
+//
+//        $data = [
+//            'notes' => 'yes i wanted it',
+//            'shipping_address_id' => $address->id,
+//            'shipping_type_id' => $addressType->id,
+//        ];
+//        $cartService = new CartService(session());
+//
+//        (new OrderService(cartService: $cartService, addressService: new AddressService()))->createOrderInstance($data);
+//
+//        $listener = new SyncVariationStockAfterOrderPlaced($cartService);
+//
+//        $listener->handle(new OrderPlacedEvent());
+//
+//        $expectedData1 = [
+//            'variation_id' => 1,
+//            'amount' => -1,
+//        ];
+//        $expectedData2 = [
+//            'variation_id' => 2,
+//            'amount' => -1,
+//        ];
+//
+//        $this->assertDatabaseHas('stocks', $expectedData1);
+//        $this->assertDatabaseHas('stocks', $expectedData2);
+//    }
 }

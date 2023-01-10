@@ -8,20 +8,13 @@ use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\VariationTypeValue;
 use App\Domain\Variation\Services\VariationService;
 use App\Http\Category\Resources\CategoryResource;
-use App\Http\Media\Request\StoreMediaRequest;
-use App\Http\Product\Requests\StoreProductRequest;
-use App\Http\Product\Requests\UpdateProductRequest;
 use App\Http\Product\Resources\ProductResource;
 use App\Http\Variation\Resources\VariationTypeValueResource;
-use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
-use App\Support\Services\Media\ImageService;
 use App\Support\Services\SearchService;
-use Domain\User\Models\User;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
@@ -29,8 +22,8 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\NoReturn;
 
 
 class ProductService
@@ -176,8 +169,14 @@ class ProductService
         }
     }
 
-    public function update(array $data, Product $product)
+    public function update(array $data, string $slug)
     {
+        $product = Product::query()->where('slug', '=', $slug)->first();
+
+        if (is_null($product)) abort(404);
+
+        Gate::authorize('update', $product);
+
         if (isset($data['en'])) {
             $data['title'] = [
                 'en' => $data['en'],
@@ -202,21 +201,22 @@ class ProductService
         $store = \auth()->user()->store()->first();
 
         if ($store) {
-            $products = $store->products()->withTrashed()->where('slug', $slug)->with(['description.productAttribute', 'variations' => function ($query) {
-                $query->with(['VariationImages', 'VariationColor', 'variationTypeValue', 'variationType', 'children' => function ($query) {
-                    $query->with(['variationTypeValue', 'variationType', 'media']);
-                }]);
+            $products = $store->products()->withTrashed()->where('slug', $slug)->with(['description.productAttribute', 'variations' => function (HasMany $query) {
+                $query->with(['variationSmallImage' ,  'variationTypeValue', 'variationType']);
             }
             ])->first();
+
+            if (is_null($products)) abort(404);
             return new ProductResource($products);
         } else {
             return response()->json(['Store Not Found']);
         }
     }
 
-    public function destroy(int $id)
+    public function softDelete(int $id)
     {
         $product = Product::query()->find($id);
+        Gate::authorize('delete', $product);
         $product?->delete();
     }
 

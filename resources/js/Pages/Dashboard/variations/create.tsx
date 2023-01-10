@@ -82,7 +82,6 @@ export default function CreateProductVariation({
   }
 
   const onFinish = (values: any) => {
-    console.log(values)
     if (!values.images) {
       storeVariationAction(values)
     } else {

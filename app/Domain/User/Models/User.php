@@ -8,7 +8,6 @@ use App\Domain\Order\Models\Order;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Http\Auth\Notifications\ResetPasswordNotification;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -80,11 +79,6 @@ class User extends Authenticatable
         return $this->morphMany(Address::class, 'addressable');
     }
 
-    public function store(): HasOne
-    {
-        return $this->hasOne(Store::class);
-    }
-
     public function carts(): HasMany
     {
         return $this->hasMany(Cart::class);
@@ -98,5 +92,17 @@ class User extends Authenticatable
     public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'favorites');
+    }
+
+    public function isOwner($store_id): bool
+    {
+        if (is_null($this->store()->first())) return false;
+
+        return $this->store()->first()->id === $store_id;
+    }
+
+    public function store(): HasOne
+    {
+        return $this->hasOne(Store::class);
     }
 }

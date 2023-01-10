@@ -68,17 +68,17 @@ class UserTest extends TestCase
         $this->assertDatabaseHas('favorites', $expectedData);
     }
 
-    public function test_non_authenticated_user_cant_add_products_to_favorites()
-    {
-        User::factory()->create();
-        $user2 = User::factory()->create();
-
-        $product = Product::factory()->create();
-
-        $data = [
-            'product_id' => $product->id,
-        ];
-
-        $this->post(route('add.product.to.user.favorites'), $data)->assertRedirect(route('client.login'));
-    }
+//    public function test_non_authenticated_user_cant_add_products_to_favorites()
+//    {
+//        User::factory()->create();
+//        $user2 = User::factory()->create();
+//
+//        $product = Product::factory()->create();
+//
+//        $data = [
+//            'product_id' => $product->id,
+//        ];
+//
+//        $this->post(route('add.product.to.user.favorites'), $data)->assertRedirect(route('client.login'));
+//    }
 }

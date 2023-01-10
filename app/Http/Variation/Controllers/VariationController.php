@@ -50,7 +50,7 @@ class VariationController extends BaseController
     {
         DB::beginTransaction();
         try {
-            $variationService->store($request, $imageService);
+            $variationService->store($request->validated(), $imageService);
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {

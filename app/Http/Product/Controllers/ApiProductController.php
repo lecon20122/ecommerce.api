@@ -14,11 +14,10 @@ use App\Support\Requests\ModelIDsRequest;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use JetBrains\PhpStorm\NoReturn;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ApiProductController extends BaseController
 {
@@ -37,7 +36,10 @@ class ApiProductController extends BaseController
         try {
             return $this->service->getProductFiltersByCategory($category);
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
         }
     }
 
@@ -56,7 +58,10 @@ class ApiProductController extends BaseController
                     $request->validated('limit')
                 ));
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
         }
     }
 
@@ -69,7 +74,10 @@ class ApiProductController extends BaseController
         try {
             return $this->service->getProductBySlug($request->validated('slug'));
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
         }
     }
 
@@ -83,7 +91,10 @@ class ApiProductController extends BaseController
             $this->service->store($request->validated());
             return $this->getStoreProducts();
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
         }
     }
 
@@ -97,7 +108,10 @@ class ApiProductController extends BaseController
         try {
             return $this->service->getStoreProducts();
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
         }
     }
 
@@ -112,7 +126,10 @@ class ApiProductController extends BaseController
         try {
             return $this->service->getStoreProductBySlug($request->validated('slug'));
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
         }
     }
 
@@ -123,12 +140,15 @@ class ApiProductController extends BaseController
      * @param Product $product
      * @return JsonResponse|ProductResource
      */
-    public function updateStoreProduct(UpdateProductRequest $request, Product $product): JsonResponse|ProductResource
+    public function updateStoreProduct(UpdateProductRequest $request, string $slug): JsonResponse|ProductResource
     {
         try {
-            return $this->service->update($request->validated(), $product);
+            return $this->service->update($request->validated(), $slug);
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
         }
     }
 
@@ -138,13 +158,16 @@ class ApiProductController extends BaseController
      * @param ModelIDsRequest $request
      * @return JsonResponse|AnonymousResourceCollection
      */
-    public function deleteStoreProduct(ModelIDsRequest $request): JsonResponse|AnonymousResourceCollection
+    public function softDeleteStoreProduct(ModelIDsRequest $request): JsonResponse|AnonymousResourceCollection
     {
         try {
-            $this->service->destroy($request->validated('id'));
+            $this->service->softDelete($request->validated('id'));
             return $this->getStoreProducts();
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
         }
     }
 
@@ -160,7 +183,10 @@ class ApiProductController extends BaseController
             $this->service->restore($request->validated('id'));
             return $this->getStoreProducts();
         } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
         }
     }
 }

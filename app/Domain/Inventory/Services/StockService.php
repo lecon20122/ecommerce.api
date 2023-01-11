@@ -38,8 +38,21 @@ class StockService
 
     public function subtractStock(array $data)
     {
-        $variation = $this->isStockable($data['variation_id']);
-        $data['amount'] = 0 - $data['amount'];
-        $variation?->stocks()->create($data);
+        $variation = Variation::query()->find($data['variation_id']);
+
+        $isAdmin = Auth::guard('admin')->check();
+        $isOwner = $isAdmin ? false : auth()->user()->isOwner($variation->store_id);
+
+        if (!$isAdmin && !$isOwner) abort(403);
+
+        if ($variation) {
+            if ($this->isStockable($variation)) {
+                $data['amount'] = 0 - $data['amount'];
+                $variation?->stocks()->create($data);
+
+            }
+        } else {
+            abort(404);
+        }
     }
 }

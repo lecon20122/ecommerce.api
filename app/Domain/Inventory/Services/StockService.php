@@ -22,6 +22,8 @@ class StockService
             if ($this->isStockable($variation)) {
                 $variation?->stocks()->create($data);
             }
+        } else {
+            abort(404);
         }
     }
 

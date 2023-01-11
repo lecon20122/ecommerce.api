@@ -60,10 +60,13 @@ class StockController extends BaseController
 
     public function apiStore(StoreStockRequest $request): JsonResponse
     {
+        DB::beginTransaction();
         try {
             $this->service->store($request->validated());
+            DB::commit();
             return $this->respondWithOk();
         } catch (Exception $exception) {
+            DB::rollBack();
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }

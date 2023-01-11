@@ -3,13 +3,14 @@
 namespace App\Domain\Product\Services;
 
 use App\Domain\Product\Models\ProductAttribute;
-use Illuminate\Database\Eloquent\Collection;
+use App\Http\Product\Resources\ProductAttributeResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductAttributeService
 {
-    public function indexProductAttribute(): Collection|array
+    public function indexProductAttribute(): AnonymousResourceCollection
     {
-        return ProductAttribute::query()->select(['id', 'attribute', 'is_filterable'])->get();
+        return ProductAttributeResource::collection(ProductAttribute::query()->select(['id', 'attribute', 'is_filterable'])->get());
     }
 
     public function storeProductAttribute(array $data)

@@ -89,6 +89,16 @@ class Category extends Model implements HasMedia
         return $this->belongsToMany(Product::class);
     }
 
+    public function scopeChildren(Builder $query): Builder
+    {
+        return $query->whereNotNull('parent_id');
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('is_active','=' , true);
+    }
+
     /**
      * @return MorphOne
      */
@@ -121,11 +131,6 @@ class Category extends Model implements HasMedia
     public function scopeParent($query)
     {
         return $query->whereNull('parent_id');
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
     }
 
 //    public function getRouteKeyName(): string

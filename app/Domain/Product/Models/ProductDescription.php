@@ -2,6 +2,7 @@
 
 namespace App\Domain\Product\Models;
 
+use App\Support\Traits\HasVirtualFields;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,8 @@ class ProductDescription extends Model
     public $translatable = ['value'];
     protected $guarded = ['id'];
     protected $table = 'product_description';
+    protected $primaryKey = "id";
+
 
     public function productAttribute(): BelongsTo
     {

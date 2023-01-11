@@ -201,8 +201,8 @@ class ProductService
         $store = \auth()->user()->store()->first();
 
         if ($store) {
-            $products = $store->products()->withTrashed()->where('slug', $slug)->with(['description.productAttribute', 'variations' => function (HasMany $query) {
-                $query->with(['variationSmallImage' ,  'variationTypeValue', 'variationType']);
+            $products = $store->products()->withTrashed()->where('slug', $slug)->with(['description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
+                $query->with(['variationSmallImage', 'variationTypeValue', 'variationType']);
             }
             ])->first();
 
@@ -228,6 +228,7 @@ class ProductService
 
     public function attachCategoryToProduct(Product $product, ModelIDsRequest $request)
     {
+        Gate::authorize('attachCategoryToProduct', $product);
         $category = Category::query()
             ->find($request->validated('id'));
         $product->categories()->syncWithoutDetaching($category);
@@ -235,6 +236,7 @@ class ProductService
 
     public function detachCategoryFromProduct(Product $product, ModelIDsRequest $request)
     {
+        Gate::authorize('detachCategoryToProduct', $product);
         $category = Category::query()
             ->find($request->validated('id'));
         $product->categories()->detach($category);

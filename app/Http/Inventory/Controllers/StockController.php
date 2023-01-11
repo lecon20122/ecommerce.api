@@ -6,10 +6,12 @@ use App\Domain\Inventory\Services\StockService;
 use App\Http\Inventory\Requests\StoreStockRequest;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class StockController extends BaseController
 {
@@ -55,6 +57,21 @@ class StockController extends BaseController
             return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
+
+    public function apiStore(StoreStockRequest $request): JsonResponse
+    {
+        try {
+            $this->service->store($request->validated());
+            return $this->respondWithOk();
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+
+    }
+
 
     /**
      * Store a newly created resource in storage.

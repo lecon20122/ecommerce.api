@@ -110,4 +110,20 @@ class ProductPolicy
         }
         return false;
     }
+
+    public function attachCategoryToProduct(User|Admin $user, Product $product): bool
+    {
+        if (Auth::guard('admin')->check()) {
+            return true;
+        }
+        return $user->isOwner($product->store_id);
+    }
+
+    public function detachCategoryToProduct(User|Admin $user, Product $product): bool
+    {
+        if (Auth::guard('admin')->check()) {
+            return true;
+        }
+        return $user->isOwner($product->store_id);
+    }
 }

@@ -11,11 +11,14 @@ use App\Http\Product\Requests\StoreProductAttributeRequest;
 use App\Http\Product\Requests\UpdateProductAttributeRequest;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ProductAttributeController extends BaseController
 {
@@ -37,6 +40,21 @@ class ProductAttributeController extends BaseController
                 ]);
         } catch (Exception $exception) {
             return $this->logAndRedirectBackWithError($exception->getMessage());
+        }
+    }
+
+    /**
+     * @return AnonymousResourceCollection|JsonResponse
+     */
+    public function getProductAttributes(): AnonymousResourceCollection|JsonResponse
+    {
+        try {
+            return $this->service->indexProductAttribute();
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -114,7 +132,7 @@ class ProductAttributeController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param ProductAttribute $productAttribute
+     * @param ProductAttribute $attribute
      * @return RedirectResponse
      */
     public function destroy(ProductAttribute $attribute): RedirectResponse
@@ -130,29 +148,29 @@ class ProductAttributeController extends BaseController
         }
     }
 
-    public function attachAttributeToProduct(ProductAttribute $attribute, AttachProductAttributeRequest $request): RedirectResponse
-    {
-        DB::beginTransaction();
-        try {
-            $this->service->attachAttributeToProduct($attribute, $request->validated());
-            DB::commit();
-            return $this->redirectBackWithMessage('success');
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->logAndRedirectBackWithError($exception->getMessage());
-        }
-    }
-
-    public function detachAttributeFromProduct(ProductAttribute $attribute, DetachProductAttributeRequest $request): RedirectResponse
-    {
-        DB::beginTransaction();
-        try {
-            $this->service->detachAttributeFromProduct($attribute, $request->validated());
-            DB::commit();
-            return $this->redirectBackWithMessage('success');
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->logAndRedirectBackWithError($exception->getMessage());
-        }
-    }
+//    public function attachAttributeToProduct(ProductAttribute $attribute, AttachProductAttributeRequest $request): RedirectResponse
+//    {
+//        DB::beginTransaction();
+//        try {
+//            $this->service->attachAttributeToProduct($attribute, $request->validated());
+//            DB::commit();
+//            return $this->redirectBackWithMessage('success');
+//        } catch (Exception $exception) {
+//            DB::rollBack();
+//            return $this->logAndRedirectBackWithError($exception->getMessage());
+//        }
+//    }
+//
+//    public function detachAttributeFromProduct(ProductAttribute $attribute, DetachProductAttributeRequest $request): RedirectResponse
+//    {
+//        DB::beginTransaction();
+//        try {
+//            $this->service->detachAttributeFromProduct($attribute, $request->validated());
+//            DB::commit();
+//            return $this->redirectBackWithMessage('success');
+//        } catch (Exception $exception) {
+//            DB::rollBack();
+//            return $this->logAndRedirectBackWithError($exception->getMessage());
+//        }
+//    }
 }

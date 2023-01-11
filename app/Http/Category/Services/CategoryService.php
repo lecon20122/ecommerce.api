@@ -8,7 +8,6 @@ use App\Http\Media\Request\StoreMediaRequest;
 use App\Http\Product\Requests\StoreCategoryRequest;
 use App\Http\Product\Requests\UpdateCategoryRequest;
 use App\Support\Enums\MediaCollectionEnums;
-use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,6 +16,13 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
+
+    public function getChildren(): AnonymousResourceCollection
+    {
+        return CategoryResource::collection(
+            Category::query()->children()->active()->select('id','title','parent_id','is_active')->get()
+        );
+    }
 
     public function getCategoriesParentsWithItsMediaAndChildren(): AnonymousResourceCollection
     {

@@ -2,12 +2,14 @@
 
 namespace Tests\Feature\Product;
 
+use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
 use App\Domain\Store\Models\Store;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use JetBrains\PhpStorm\NoReturn;
 use Tests\TestCase;
 
 class ApiProductTest extends TestCase
@@ -95,7 +97,7 @@ class ApiProductTest extends TestCase
             'en' => 'hello',
         ];
 
-        $this->post(route('api.update.store.product',['slug' => $product->slug]), $data);
+        $this->post(route('api.update.store.product', ['slug' => $product->slug]), $data);
         $product->refresh();
         $this->assertNotEquals('hello', $product->title);
     }
@@ -154,4 +156,79 @@ class ApiProductTest extends TestCase
         $this->post(route('api.restore.store.product'), ['id' => $product->id]);
         $this->assertNull(Product::withTrashed()->first()->deleted_at);
     }
+
+    #[NoReturn] public function test_as_a_owner_can_attach_categories_to_product()
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user, 'web');
+
+        $store = Store::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $product = Product::factory()->create([
+            'store_id' => $store->id
+        ]);
+
+        Category::factory(3)->create();
+
+        $ids = [
+            'id' => [
+                1, 2, 3
+            ]
+        ];
+
+        $response = $this->post(route('api.attach.category.to.product', ['product' => $product]), $ids);
+
+        $expectedData = [
+            'category_id' => 3,
+            'product_id' => 1
+        ];
+
+        $this->assertDatabaseHas('category_product', $expectedData);
+    }
+
+    public function test_as_a_admin_can_detach_categories_from_product()
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user, 'web');
+
+        $store = Store::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $product = Product::factory()->create([
+            'store_id' => $store->id
+        ]);
+
+        Category::factory(3)->create();
+
+        $idsToBeAttached = [
+            'id' => [
+                1, 2, 3
+            ]
+        ];
+
+        $this->post(route('api.attach.category.to.product', ['product' => $product]), $idsToBeAttached);
+
+        $idsToBeDetached = [
+            'id' => [
+                1,
+            ]
+        ];
+
+        $response = $this->post(route('api.detach.category.from.product', ['product' => $product]), $idsToBeDetached);
+
+
+        $expectedData = [
+            'category_id' => 1,
+            'product_id' => 1
+        ];
+
+        $this->assertDatabaseMissing('category_product', $expectedData);
+    }
+
+
 }

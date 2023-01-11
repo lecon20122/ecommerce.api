@@ -4,8 +4,8 @@ namespace App\Domain\Product\Services;
 
 use App\Domain\Product\Models\ProductDescription;
 use App\Http\Product\Resources\ProductDescriptionResource;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 
 class ProductDescriptionService
 {
@@ -31,6 +31,10 @@ class ProductDescriptionService
 
     public function update(array $data, $id)
     {
+        $productDescription = ProductDescription::query()->find($id);
+
+        Gate::authorize('update', $productDescription);
+
         if (isset($data['en'])) {
             $data['value'] = [
                 'en' => $data['en'],
@@ -43,11 +47,15 @@ class ProductDescriptionService
             ];
         }
 
-        ProductDescription::query()->find($id)->update($data);
+       $result = $productDescription->update($data);
+
+        return response(['data' => $result]);
     }
 
     public function delete($id)
     {
-        ProductDescription::query()->find($id)->delete();
+        $productDescription = ProductDescription::query()->find($id);
+        Gate::authorize('delete', $productDescription);
+        $productDescription->delete();
     }
 }

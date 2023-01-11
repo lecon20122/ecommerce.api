@@ -20,6 +20,7 @@ class ProductAttributeResource extends JsonResource
         return [
             'id' => $this->id,
             'attribute' => $this->getTranslations('attribute'),
+            'is_filterable' => $this->is_filterable,
         ];
     }
 }

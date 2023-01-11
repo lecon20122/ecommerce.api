@@ -2,16 +2,17 @@
 
 namespace App\Http\Product\Controllers;
 
-use App\Domain\Product\Models\ProductDescription;
 use App\Domain\Product\Services\ProductDescriptionService;
 use App\Http\Product\Requests\StoreProductDescriptionRequest;
 use App\Http\Product\Requests\UpdateProductDescriptionRequest;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ProductDescriptionController extends BaseController
 {
@@ -58,6 +59,22 @@ class ProductDescriptionController extends BaseController
         }
     }
 
+    public function apiStore(StoreProductDescriptionRequest $request): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->store($request->validated());
+            DB::commit();
+            return $this->respondWithOk();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -100,6 +117,20 @@ class ProductDescriptionController extends BaseController
         }
     }
 
+    public function apiUpdate($id, UpdateProductDescriptionRequest $request)
+    {
+//        DB::beginTransaction();
+        try {
+            return $this->service->update($request->validated(), $id);
+        } catch (Exception $exception) {
+//            DB::rollBack();
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -116,6 +147,22 @@ class ProductDescriptionController extends BaseController
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->logAndRedirectBackWithError($exception->getMessage());
+        }
+    }
+
+    public function apiDestroy($id): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->delete($id);
+            DB::commit();
+            return $this->respondWithOk();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 }

@@ -21,6 +21,7 @@ class ProductDescriptionResource extends JsonResource
         return [
             'id' => $this->id,
             'value' => $this->getTranslations('value'),
+            'product_id' => $this->product_id,
             'product' => new ProductResource($this->whenLoaded('product')),
             'attribute' => new ProductAttributeResource($this->whenLoaded('productAttribute')),
         ];

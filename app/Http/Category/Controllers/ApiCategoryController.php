@@ -6,6 +6,7 @@ use App\Http\Category\Services\CategoryService;
 use App\Http\Controllers\Controller;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
@@ -19,14 +20,23 @@ class ApiCategoryController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return AnonymousResourceCollection
+     * @return JsonResponse|AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index(): JsonResponse | AnonymousResourceCollection
     {
         try {
             return $this->service->getCategoriesParentsWithItsMediaAndChildren();
         } catch (Exception $exception) {
-            $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+           return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    public function getChildren(): JsonResponse|AnonymousResourceCollection
+    {
+        try {
+            return $this->service->getChildren();
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }
 

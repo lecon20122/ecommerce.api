@@ -16,6 +16,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
@@ -39,7 +40,7 @@ class ApiProductController extends BaseController
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -61,7 +62,7 @@ class ApiProductController extends BaseController
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -77,7 +78,7 @@ class ApiProductController extends BaseController
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -94,7 +95,7 @@ class ApiProductController extends BaseController
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -111,7 +112,7 @@ class ApiProductController extends BaseController
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -129,7 +130,7 @@ class ApiProductController extends BaseController
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -148,7 +149,7 @@ class ApiProductController extends BaseController
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -167,7 +168,7 @@ class ApiProductController extends BaseController
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 
@@ -186,7 +187,39 @@ class ApiProductController extends BaseController
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__  , $code ?? 400);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
+    public function attachCategoriesToProduct(Product $product, ModelIDsRequest $request): JsonResponse|ProductResource
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->attachCategoryToProduct($product, $request);
+            DB::commit();
+            return $this->service->getStoreProductBySlug($product->slug);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
+    public function detachCategoryFromProduct(Product $product, ModelIDsRequest $request): ProductResource|JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->detachCategoryFromProduct($product, $request);
+            DB::commit();
+            return $this->service->getStoreProductBySlug($product->slug);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 }

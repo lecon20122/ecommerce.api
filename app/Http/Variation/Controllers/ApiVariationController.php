@@ -90,6 +90,18 @@ class ApiVariationController extends BaseController
         }
     }
 
+    public function getSizeValues(): JsonResponse | AnonymousResourceCollection
+    {
+        try {
+            return $this->service->getVariationSizeValues();
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
     public function createSize(StoreStaticVariationRequest $request, ImageService $imageService): JsonResponse
     {
         try {

@@ -31,6 +31,7 @@ class StoreStaticVariationRequest extends FormRequest
             'store_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
             'parent_id' => ValidationRuleEnums::NULLABLE_INTEGER->value,
             'order' => ValidationRuleEnums::NULLABLE_INTEGER->value,
+            'stock_amount' => ValidationRuleEnums::NULLABLE_INTEGER->value,
             'images' => 'nullable',
             'images.*' => 'mimes:jpg,webp,png|max:2048',
         ];

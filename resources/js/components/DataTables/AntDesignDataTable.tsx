@@ -1,8 +1,5 @@
 import React from 'react';
-import {ColumnsType} from "antd/es/table";
 import {Table} from "antd";
-import {TableProps as RcTableProps} from "rc-table/lib/Table";
-import {DefaultRecordType} from "rc-table/es/interface";
 
 interface Props {
   columns: any;

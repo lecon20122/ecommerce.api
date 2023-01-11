@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Variation;
 
+use App\Domain\Inventory\Models\Stock;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
@@ -314,7 +315,7 @@ class ApiVariationTest extends TestCase
         $this->assertEquals($color->id, $response->json()['variation_type_value']['id']);
     }
 
-    public function test_owner_can_create_size_variant()
+    public function test_owner_can_create_size_variant_and_add_stock()
     {
         $user = User::factory()->create();
 
@@ -327,7 +328,8 @@ class ApiVariationTest extends TestCase
         ]);
 
         $size = VariationType::factory()->create([
-            'type' => 'size'
+            'type' => 'size',
+            'is_stockable' => true
         ]);
 
         $colorTypeValue = VariationTypeValue::factory()->create([
@@ -344,12 +346,12 @@ class ApiVariationTest extends TestCase
             'variation_type_value_id' => $sizeTypeValue->id,
             'product_id' => $testData['product']->id,
             'store_id' => $testData['product']->store_id,
-            'images' => [
-                0 => UploadedFile::fake()->image("test.webp", 100, 100)
-            ]
+            'stock_amount' => 5
         ];
         $response = $this->post(route('api.create.size.variation'), $data);
+        $this->assertEquals(5, Stock::first()->amount);
         $this->assertEquals($size->id, Variation::first()->variation_type_id);
+        $this->assertEquals(5, Variation::first()->stock_count);
     }
 
     public function test_GetVariationColorValues()

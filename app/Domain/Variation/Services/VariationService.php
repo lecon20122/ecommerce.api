@@ -2,6 +2,7 @@
 
 namespace App\Domain\Variation\Services;
 
+use App\Domain\Inventory\Services\StockService;
 use App\Domain\Product\Models\Product;
 use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationType;
@@ -52,6 +53,12 @@ class VariationService
     {
         $color = VariationType::query()->with('variationTypeValues')->whereRaw("JSON_EXTRACT(type, '$.en') = 'color'")->first();
         return VariationTypeValueResource::collection($color->variationTypeValues);
+    }
+
+    public function getVariationSizeValues(): AnonymousResourceCollection
+    {
+        $size = VariationType::query()->with('variationTypeValues')->whereRaw("JSON_EXTRACT(type, '$.en') = 'size'")->first();
+        return VariationTypeValueResource::collection($size->variationTypeValues);
     }
 
     public function getVariationTypeValues(): AnonymousResourceCollection
@@ -150,8 +157,11 @@ class VariationService
         $variation = $product->variations()
             ->create($data);
 
-        if (isset($data['images']) && $variation) {
-            $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
+        if ($variation && isset($data['stock_amount'])) {
+            (new StockService())->store([
+                'variation_id' => $variation->id,
+                'amount' => $data['stock_amount'],
+            ]);
         }
     }
 

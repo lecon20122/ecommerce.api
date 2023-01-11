@@ -202,7 +202,7 @@ class ProductService
 
         if ($store) {
             $products = $store->products()->withTrashed()->where('slug', $slug)->with(['description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
-                $query->with(['variationSmallImage', 'variationTypeValue', 'variationType']);
+                $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
             }
             ])->first();
 

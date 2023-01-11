@@ -30,7 +30,7 @@ class StockTest extends TestCase
         $variation->is_stockable = false;
         $variation->save();
 
-        $this->assertNull((new StockService())->isStockable($variation->id));
+        $this->assertFalse((new StockService())->isStockable($variation));
     }
 
     /**

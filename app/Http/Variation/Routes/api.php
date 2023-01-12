@@ -14,7 +14,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('variation/size', [ApiVariationController::class, 'createSize'])->name('create.size.variation');
     Route::get('variation/size/values', [ApiVariationController::class, 'getSizeValues'])->name('get.size.values.variation');
 
-    Route::post('variation/{variation}/update', [ApiVariationController::class, 'update'])->name('update.owner.variation');
+    Route::post('variation/update/{variation}', [ApiVariationController::class, 'update'])->name('update.owner.variation');
     Route::post('variation/delete/{id}', [ApiVariationController::class, 'destroy'])->name('soft.delete.owner.variation');
     Route::get('variation-types', [ApiVariationController::class, 'getVariationTypes'])->name('get.variation.types');
     Route::post('variation/add-media/{variation}', [ApiVariationController::class, 'addMediaToVariation'])->name('add.media.to.store.variation');

@@ -27,10 +27,7 @@ class UpdateVariationRequest extends FormRequest
             'title' => 'nullable|string',
             'price' => 'nullable',
             'order' => 'nullable',
-            'variation_type_id' => 'nullable',
             'variation_type_value_id' => 'nullable',
-            'images' => 'nullable',
-            'images.*' => 'mimes:jpg,webp|max:1024',
         ];
     }
 }

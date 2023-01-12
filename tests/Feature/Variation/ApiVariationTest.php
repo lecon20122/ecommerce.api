@@ -208,7 +208,7 @@ class ApiVariationTest extends TestCase
         $this->assertNotEquals('Black man', Variation::first()->title);
     }
 
-    public function test_variation_can_be_updated_by_owner()
+    public function test_variation_can_be_updated_by_owner_only_by_the_same_type()
     {
         $user = User::factory()->create();
         $notTheOwner = User::factory()->create();
@@ -222,20 +222,18 @@ class ApiVariationTest extends TestCase
             'product_id' => $testData['product']->id
         ]);
 
-        $VariationTypeValue = VariationTypeValue::factory()->create();
-
-        Storage::fake('public');
+        $VariationTypeValue = VariationTypeValue::factory()->create([
+            'variation_type_id' => $variation-> variation_type_id
+        ]);
 
         $data = [
             'title' => 'Black man',
-            'variation_type_id' => $VariationTypeValue->variation_type_id,
             'variation_type_value_id' => $VariationTypeValue->id,
         ];
 
         $response = $this->post(route('api.update.owner.variation', ['variation' => $variation]), $data)->assertOk();
 
         $this->assertEquals($VariationTypeValue->id, Variation::first()->variation_type_value_id);
-        $this->assertEquals($VariationTypeValue->variation_type_id, Variation::first()->variation_type_id);
         $this->assertEquals('Black man', Variation::first()->title);
     }
 

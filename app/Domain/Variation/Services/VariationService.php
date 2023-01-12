@@ -169,15 +169,11 @@ class VariationService
     {
         Gate::authorize('update', $variation);
 
-        $variationType = VariationType::query()->find($data['variation_type_id']);
-
-        $data['is_stockable'] = $variationType->is_stockable;
-
-        $variation->update($data);
-
-        if (array_key_exists('images', $data) && $variationType->is_mediable) {
-            $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
+        if (isset($data['variation_type_value_id'])) {
+            $variationTypeValue = VariationTypeValue::query()->find($data['variation_type_value_id']);
+            if (!$variationTypeValue || $variation->variation_type_id !== $variationTypeValue->variation_type_id) abort(400);
         }
+        $variation->update($data);
     }
 
     public function destroy(int $id)

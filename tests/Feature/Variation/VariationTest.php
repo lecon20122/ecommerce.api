@@ -61,7 +61,7 @@ class VariationTest extends TestCase
         Sanctum::actingAs($admin, [], 'admin');
 
         $variation = Variation::factory()->create();
-//       dd($variation);
+
         $VariationTypeValue = VariationTypeValue::factory()->create();
 
         $data = [
@@ -76,7 +76,6 @@ class VariationTest extends TestCase
         $this->assertEquals($VariationTypeValue->id, Variation::first()->variation_type_value_id);
         $this->assertEquals($VariationTypeValue->variation_type_id, Variation::first()->variation_type_id);
         $this->assertEquals('Black man', Variation::first()->title);
-
     }
 
     public function test_variation_can_be_destroyed()

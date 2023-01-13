@@ -46,7 +46,7 @@ class ApiVariationTest extends TestCase
         $store = Store::factory()->create([
             'user_id' => $user->id
         ]);
-        $product = Product::factory()->create([
+        $product = Product::factory()->trashed()->create([
             'store_id' => $store->id
         ]);
 

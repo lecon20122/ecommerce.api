@@ -25,7 +25,7 @@ class ApiProductTest extends TestCase
             'user_id' => $user,
         ]);
 
-        Product::factory()->create(['store_id' => $store->id]);
+        Product::factory()->trashed()->create(['store_id' => $store->id]);
         $this->assertArrayHasKey('title', (new ProductService())->getStoreProducts()[0]);
         $this->assertEquals($store->id, (new ProductService())->getStoreProducts()[0]['store_id']);
     }
@@ -65,7 +65,7 @@ class ApiProductTest extends TestCase
             'user_id' => $user->id
         ]);
 
-        $product = Product::factory()->create([
+        $product = Product::factory()->trashed()->create([
             'store_id' => $store->id
         ]);
 
@@ -89,7 +89,7 @@ class ApiProductTest extends TestCase
             'user_id' => $user->id
         ]);
 
-        $product = Product::factory()->create([
+        $product = Product::factory()->trashed()->create([
             'store_id' => $store->id
         ]);
 

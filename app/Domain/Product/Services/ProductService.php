@@ -46,7 +46,7 @@ class ProductService
         $store = \auth()->user()->store()->first();
 
         if ($store) {
-            $products = $store->products()->withTrashed()->get();
+            $products = $store->products()->get();
             return ProductResource::collection($products);
         } else {
             response()->json(['no products']);

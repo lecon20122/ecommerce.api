@@ -171,7 +171,7 @@ class ProductService
 
     public function update(array $data, string $slug)
     {
-        $product = Product::withTrashed()->where('slug', '=', $slug)->first();
+        $product = Product::withTrashed()->find($data['product_id']);
 
         if (is_null($product)) abort(404);
 
@@ -187,10 +187,11 @@ class ProductService
                 'ar' => $data['ar'],
             ];
         }
+
         $product->update($data);
 
         if (Auth::guard('web')->check()) {
-            return $this->getStoreProductBySlug($product->slug);
+            return $this->getStoreProductById($data['product_id']);
         }
 
     }
@@ -205,6 +206,25 @@ class ProductService
                 $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
             }
             ])->first();
+
+            if (is_null($products)) abort(404);
+            return new ProductResource($products);
+        } else {
+            return response()->json(['Store Not Found']);
+        }
+    }
+
+
+    public function getStoreProductById(int $id): JsonResponse|ProductResource
+    {
+        /** @var Store $store */
+        $store = \auth()->user()->store()->first();
+
+        if ($store) {
+            $products = $store->products()->withTrashed()->with(['description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
+                $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
+            }
+            ])->find($id);
 
             if (is_null($products)) abort(404);
             return new ProductResource($products);

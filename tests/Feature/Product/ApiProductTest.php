@@ -71,6 +71,7 @@ class ApiProductTest extends TestCase
 
         $data = [
             'en' => 'hello',
+            'product_id' => $product->id
         ];
 
         $this->post(route('api.update.store.product', ['slug' => $product->slug]), $data);

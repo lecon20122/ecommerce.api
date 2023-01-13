@@ -2,6 +2,7 @@
 
 namespace App\Domain\Cart\Models\Policies;
 
+use App\Domain\Admin\Models\Admin;
 use App\Domain\Store\Models\Store;
 use App\Support\Policies\BasePolicy;
 use Domain\User\Models\User;
@@ -48,11 +49,11 @@ class StorePolicy extends BasePolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param User $user
+     * @param User|Admin $user
      * @param Store $store
      * @return bool
      */
-    public function update(User $user, Store $store): bool
+    public function update(User|Admin $user, Store $store): bool
     {
         return $user->id === $store->user_id;
     }
@@ -60,14 +61,13 @@ class StorePolicy extends BasePolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param User $user
+     * @param User|Admin $user
      * @param Store $store
      * @return bool
      */
-    public function delete(User $user, Store $store): bool
+    public function delete(User|Admin $user, Store $store): bool
     {
-        if ($user->id === $store->user_id | auth('admin')->check())
-        {
+        if ($user->id === $store->user_id | auth('admin')->check()) {
             return true;
         }
         return false;
@@ -76,11 +76,11 @@ class StorePolicy extends BasePolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param User $user
+     * @param User|Admin $user
      * @param Store $store
      * @return bool|int
      */
-    public function restore(User $user, Store $store): bool|int
+    public function restore(User|Admin $user, Store $store): bool|int
     {
         return $user->id === $store->user_id;
     }

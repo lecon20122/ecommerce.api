@@ -28,6 +28,7 @@ class UpdateProductRequest extends FormRequest
             'ar' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
             'en' => ValidationRuleEnums::NULLABLE_STRING_MAXED->value,
             'price' => 'nullable|integer',
+            'product_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
         ];
     }
 }

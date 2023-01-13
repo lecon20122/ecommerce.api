@@ -138,7 +138,7 @@ class ApiProductController extends BaseController
      *
      *
      * @param UpdateProductRequest $request
-     * @param Product $product
+     * @param string $slug
      * @return JsonResponse|ProductResource
      */
     public function updateStoreProduct(UpdateProductRequest $request, string $slug): JsonResponse|ProductResource

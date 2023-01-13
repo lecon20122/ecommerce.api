@@ -191,10 +191,11 @@ class ApiProductController extends BaseController
         }
     }
 
-    public function attachCategoriesToProduct(Product $product, ModelIDsRequest $request): JsonResponse|ProductResource
+    public function attachCategoriesToProduct($id, ModelIDsRequest $request): JsonResponse|ProductResource
     {
         DB::beginTransaction();
         try {
+            $product = Product::withTrashed()->find($id);
             $this->service->attachCategoryToProduct($product, $request);
             DB::commit();
             return $this->service->getStoreProductBySlug($product->slug);
@@ -207,10 +208,11 @@ class ApiProductController extends BaseController
         }
     }
 
-    public function detachCategoryFromProduct(Product $product, ModelIDsRequest $request): ProductResource|JsonResponse
+    public function detachCategoryFromProduct($id, ModelIDsRequest $request): ProductResource|JsonResponse
     {
         DB::beginTransaction();
         try {
+            $product = Product::withTrashed()->find($id);
             $this->service->detachCategoryFromProduct($product, $request);
             DB::commit();
             return $this->service->getStoreProductBySlug($product->slug);

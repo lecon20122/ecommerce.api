@@ -20,8 +20,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('store/product/delete', [ApiProductController::class, 'softDeleteStoreProduct'])->name('delete.store.product');
     Route::post('store/product/restore', [ApiProductController::class, 'restoreStoreProduct'])->name('restore.store.product');
 
-    Route::post('store/product/category/attach/{product}', [ApiProductController::class, 'attachCategoriesToProduct'])->name('attach.category.to.product');
-    Route::post('store/product/category/detach/{product}', [ApiProductController::class, 'detachCategoryFromProduct'])->name('detach.category.from.product');
+    Route::post('store/product/category/attach/{id}', [ApiProductController::class, 'attachCategoriesToProduct'])->name('attach.category.to.product');
+    Route::post('store/product/category/detach/{id}', [ApiProductController::class, 'detachCategoryFromProduct'])->name('detach.category.from.product');
 
     Route::post('store/product/description', [ProductDescriptionController::class, 'apiStore'])->name('add.product.description');
     Route::post('store/product/description/update/{id}', [ProductDescriptionController::class, 'apiUpdate'])->name('update.product.description');

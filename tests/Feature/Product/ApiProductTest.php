@@ -167,7 +167,7 @@ class ApiProductTest extends TestCase
             'user_id' => $user->id
         ]);
 
-        $product = Product::factory()->create([
+        $product = Product::factory()->trashed()->create([
             'store_id' => $store->id
         ]);
 
@@ -179,7 +179,7 @@ class ApiProductTest extends TestCase
             ]
         ];
 
-        $response = $this->post(route('api.attach.category.to.product', ['product' => $product]), $ids);
+        $response = $this->post(route('api.attach.category.to.product', ['id' => $product->id]), $ids);
 
         $expectedData = [
             'category_id' => 3,
@@ -211,7 +211,7 @@ class ApiProductTest extends TestCase
             ]
         ];
 
-        $this->post(route('api.attach.category.to.product', ['product' => $product]), $idsToBeAttached);
+        $this->post(route('api.attach.category.to.product', ['id' => $product->id]), $idsToBeAttached);
 
         $idsToBeDetached = [
             'id' => [
@@ -219,7 +219,7 @@ class ApiProductTest extends TestCase
             ]
         ];
 
-        $response = $this->post(route('api.detach.category.from.product', ['product' => $product]), $idsToBeDetached);
+        $response = $this->post(route('api.detach.category.from.product', ['id' => $product->id]), $idsToBeDetached);
 
 
         $expectedData = [

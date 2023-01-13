@@ -75,8 +75,11 @@ class ProductDescriptionPolicy
         if (Auth::guard('admin')->check()) {
             return true;
         }
+        if ($productDescription->product()->first()->store_id) {
+            return $user->isOwner($productDescription->product()->first()->store_id);
+        }
 
-        return $user->isOwner($productDescription->product()->first()->store_id);
+        return false;
     }
 
     /**

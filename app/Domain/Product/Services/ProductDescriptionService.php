@@ -47,7 +47,7 @@ class ProductDescriptionService
             ];
         }
 
-       $result = $productDescription->update($data);
+        $result = $productDescription->update($data);
 
         return response(['data' => $result]);
     }
@@ -56,6 +56,10 @@ class ProductDescriptionService
     {
         $productDescription = ProductDescription::query()->find($id);
         Gate::authorize('delete', $productDescription);
-        $productDescription->delete();
+        if ($productDescription) {
+            $productDescription->delete();
+        } else {
+            abort(404);
+        }
     }
 }

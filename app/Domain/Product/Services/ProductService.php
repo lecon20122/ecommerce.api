@@ -171,7 +171,7 @@ class ProductService
 
     public function update(array $data, string $slug)
     {
-        $product = Product::query()->where('slug', '=', $slug)->first();
+        $product = Product::withTrashed()->where('slug', '=', $slug)->first();
 
         if (is_null($product)) abort(404);
 
@@ -240,15 +240,6 @@ class ProductService
         $category = Category::query()
             ->find($request->validated('id'));
         $product->categories()->detach($category);
-    }
-
-    public function getNewProducts(): AnonymousResourceCollection
-    {
-        return ProductResource::collection(
-            Product::query()
-                ->where('created_at', '<', (Carbon::now())->subDay())
-                ->get()
-        );
     }
 
     /**

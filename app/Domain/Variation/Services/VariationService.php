@@ -76,7 +76,7 @@ class VariationService
 
     public function store(array $data, ImageService $imageService): void
     {
-        $product = Product::query()
+        $product = Product::withTrashed()
             ->find($data['product_id']);
 
         $isAdmin = Auth::guard('admin')->check();
@@ -107,7 +107,7 @@ class VariationService
 
     public function createColorVariation(array $data, ImageService $imageService): VariationResource
     {
-        $product = Product::query()
+        $product = Product::withTrashed()
             ->find($data['product_id']);
 
         if (!auth()->user()->isOwner($product->store_id) && !Auth::guard('admin')->check()) abort(403);

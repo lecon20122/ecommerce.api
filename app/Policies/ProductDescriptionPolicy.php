@@ -60,7 +60,9 @@ class ProductDescriptionPolicy
             return true;
         }
 
-        return $user->isOwner($productDescription->product()->first()->store_id);
+        if ($productDescription->product()->withTrashed()->first()->store_id) {
+            return $user->isOwner($productDescription->product()->withTrashed()->first()->store_id);
+        }
     }
 
     /**
@@ -75,8 +77,8 @@ class ProductDescriptionPolicy
         if (Auth::guard('admin')->check()) {
             return true;
         }
-        if ($productDescription->product()->first()->store_id) {
-            return $user->isOwner($productDescription->product()->first()->store_id);
+        if ($productDescription->product()->withTrashed()->first()->store_id) {
+            return $user->isOwner($productDescription->product()->withTrashed()->first()->store_id);
         }
 
         return false;

@@ -82,6 +82,7 @@ class ProductTest extends TestCase
 
         $data = [
             'en' => 'hello',
+            'product_id' => $product->id
         ];
 
         $response = $this->post(route('admin.products.update', ['slug' => $product->slug]), $data);

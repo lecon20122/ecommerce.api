@@ -107,6 +107,7 @@ class VariationController extends BaseController
             DB::commit();
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
+            dd($exception->getMessage());
             DB::rollBack();
             return $this->redirectBackWithMessage($exception->getMessage());
         }

@@ -62,7 +62,9 @@ class VariationTest extends TestCase
 
         $variation = Variation::factory()->create();
 
-        $VariationTypeValue = VariationTypeValue::factory()->create();
+        $VariationTypeValue = VariationTypeValue::factory()->create([
+            'variation_type_id' => $variation->variation_type_id
+        ]);
 
         $data = [
             'title' => 'Black man',

@@ -63,7 +63,7 @@ class CategoryService
         $category = Category::create($data);
 
         if ($category && $request->hasFile('images')) {
-            $imageService->imageUpload($category, 'images', MediaCollectionEnums::THUMBNAIL, $category->id);
+            $imageService->addMultipleMediaFromRequest($category, 'images', MediaCollectionEnums::THUMBNAIL, $category->id);
         }
         DB::commit();
         return new CategoryResource($category);
@@ -89,7 +89,7 @@ class CategoryService
 
         if ($request->hasFile('images')) {
             if ($imageService->isImageDeleted($request->validated(['image_id']))) {
-                $imageService->imageUpload($category, 'images', MediaCollectionEnums::THUMBNAIL, $category->id);
+                $imageService->addMultipleMediaFromRequest($category, 'images', MediaCollectionEnums::THUMBNAIL, $category->id);
             }
         }
         DB::commit();
@@ -135,7 +135,7 @@ class CategoryService
         $category = Category::query()->find($id);
         if ($request->hasFile('images')) {
             [$width, $height] = $imageService->getDimensions($request->file('images')[0]);
-            $imageService->imageUploadWithDimensions($category, 'images', MediaCollectionEnums::THUMBNAIL, $category->id, $width, $height);
+            $imageService->addMultipleMediaFromRequestWithDimensions($category, 'images', MediaCollectionEnums::THUMBNAIL, $category->id, $width, $height);
         }
     }
 
@@ -151,7 +151,7 @@ class CategoryService
         $category = Category::query()->find($id);
         if ($request->hasFile('images')) {
             [$width, $height] = $imageService->getDimensions($request->file('images')[0]);
-            $imageService->imageUploadWithDimensions($category, 'images', $request->validated('collection_name'), $category->id, $width, $height);
+            $imageService->addMultipleMediaFromRequestWithDimensions($category, 'images', $request->validated('collection_name'), $category->id, $width, $height);
         }
     }
 
@@ -160,5 +160,12 @@ class CategoryService
         $category = Category::query()->find($id);
         $category->is_active = !$category->is_active;
         $category->save();
+    }
+
+    public function attach($product, array $ids)
+    {
+        $category = Category::query()
+            ->find($ids);
+        $product->categories()->syncWithoutDetaching($category);
     }
 }

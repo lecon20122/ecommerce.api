@@ -3,10 +3,8 @@
 
 namespace App\Support\Services\Media;
 
-use App\Domain\Media\CustomPathDirectory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Image\Image;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
@@ -16,39 +14,6 @@ use Throwable;
 
 class ImageService
 {
-    public function imageUpload(Model $model, $keyName, $collectionName, $model_id)
-    {
-        $model->addMultipleMediaFromRequest([$keyName])
-            ->each(/**
-             * @throws FileDoesNotExist
-             * @throws FileIsTooBig
-             */ function (FileAdder $fileAdder) use ($collectionName, $model_id) {
-                $fileAdder
-                    ->usingFileName($model_id . '_' . now()->timestamp . '.jpg')
-                    ->addCustomHeaders([
-                        'ACL' => 'public-read'
-                    ])
-                    ->toMediaCollection($collectionName, config('env-settings.media-filesystem'));
-            });
-    }
-
-    public function imageUploadWithDimensions(Model $model, $keyName, $collectionName, $model_id, $width = null, $height = null)
-    {
-        $model->addMultipleMediaFromRequest([$keyName])
-            ->each(/**
-             * @throws FileDoesNotExist
-             * @throws FileIsTooBig
-             */ function (FileAdder $fileAdder) use ($collectionName, $model_id, $width, $height) {
-                $fileAdder
-                    ->usingFileName($model_id . '_' . now()->timestamp . '.jpg')
-                    ->withCustomProperties(['width' => $width ?? null, 'height' => $height ?? null])
-                    ->addCustomHeaders([
-                        'ACL' => 'public-read'
-                    ])
-                    ->toMediaCollection($collectionName, config('env-settings.media-filesystem'));
-            });
-    }
-
     public function getDimensions(UploadedFile $file): array
     {
         try {
@@ -89,5 +54,38 @@ class ImageService
         $media?->forgetCustomProperty($key);
 
         $media?->save();
+    }
+
+    public function addMultipleMediaFromRequestWithDimensions(Model $model, $keyName, $collectionName, $model_id, $width = null, $height = null)
+    {
+        $model->addMultipleMediaFromRequest([$keyName])
+            ->each(/**
+             * @throws FileDoesNotExist
+             * @throws FileIsTooBig
+             */ function (FileAdder $fileAdder) use ($collectionName, $model_id, $width, $height) {
+                $fileAdder
+                    ->usingFileName($model_id . '_' . now()->timestamp . '.jpg')
+                    ->withCustomProperties(['width' => $width ?? null, 'height' => $height ?? null])
+                    ->addCustomHeaders([
+                        'ACL' => 'public-read'
+                    ])
+                    ->toMediaCollection($collectionName, config('env-settings.media-filesystem'));
+            });
+    }
+
+    public function addMultipleMediaFromRequest(Model $model, $keyName, $collectionName, $model_id)
+    {
+        $model->addMultipleMediaFromRequest([$keyName])
+            ->each(/**
+             * @throws FileDoesNotExist
+             * @throws FileIsTooBig
+             */ function (FileAdder $fileAdder) use ($collectionName, $model_id) {
+                $fileAdder
+                    ->usingFileName($model_id . '_' . now()->timestamp . '.jpg')
+                    ->addCustomHeaders([
+                        'ACL' => 'public-read'
+                    ])
+                    ->toMediaCollection($collectionName, config('env-settings.media-filesystem'));
+            });
     }
 }

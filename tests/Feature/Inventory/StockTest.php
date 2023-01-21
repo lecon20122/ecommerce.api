@@ -74,8 +74,7 @@ class StockTest extends TestCase
             'variation_id' => $variation->id,
             'amount' => 2
         ];
-        $this->post(route('api.add.variation.stock'), $data)->assertOk();
-
+        $res = $this->post(route('api.add.variation.stock'), $data)->assertOk();
         $this->assertEquals(2, Stock::first()->amount);
         $this->assertEquals(2, Variation::first()->stock_count);
     }

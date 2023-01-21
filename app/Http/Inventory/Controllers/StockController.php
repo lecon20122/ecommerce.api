@@ -66,6 +66,7 @@ class StockController extends BaseController
             DB::commit();
             return $this->respondWithOk();
         } catch (Exception $exception) {
+            dd($exception->getMessage());
             DB::rollBack();
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();

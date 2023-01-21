@@ -8,6 +8,7 @@ use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\VariationTypeValue;
 use App\Domain\Variation\Services\VariationService;
 use App\Http\Category\Resources\CategoryResource;
+use App\Http\Category\Services\CategoryService;
 use App\Http\Product\Resources\ProductResource;
 use App\Http\Variation\Resources\VariationTypeValueResource;
 use App\Support\Requests\ModelIDsRequest;
@@ -16,11 +17,10 @@ use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use JetBrains\PhpStorm\ArrayShape;
@@ -35,9 +35,33 @@ class ProductService
         $this->user = auth()->user() ?? null;
     }
 
+
     public static function __callStatic($name, $arguments)
     {
         return (new static)->$name(...$arguments);
+    }
+
+    public function createProductMegaForm(array $data)
+    {
+        $store = \auth()->user()->getAuthenticatedStore();
+
+        if ($store) {
+            $product = $this->createProduct($store, $data);
+            (new CategoryService)->attach($product, $data['category_ids']);
+            (new VariationService)->createOneColorAndManySizes($product, $data);
+        } else {
+            return response()->json(['no store']);
+        }
+
+    }
+
+    public function createProduct(Store $store, $data): Model
+    {
+        $data['title'] = [
+            'en' => $data['en'],
+            'ar' => $data['ar'],
+        ];
+        return $store->products()->create($data);
     }
 
     public function getStoreProducts()
@@ -165,7 +189,7 @@ class ProductService
                     'ar' => $data['ar'],
                 ];
             }
-            $store->products()->create($data);
+            return $store->products()->create($data);
         }
     }
 
@@ -196,25 +220,6 @@ class ProductService
 
     }
 
-    public function getStoreProductBySlug(string $slug): JsonResponse|ProductResource
-    {
-        /** @var Store $store */
-        $store = \auth()->user()->store()->first();
-
-        if ($store) {
-            $products = $store->products()->withTrashed()->where('slug', $slug)->with(['description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
-                $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
-            }
-            ])->first();
-
-            if (is_null($products)) abort(404);
-            return new ProductResource($products);
-        } else {
-            return response()->json(['Store Not Found']);
-        }
-    }
-
-
     public function getStoreProductById(int $id): JsonResponse|ProductResource
     {
         /** @var Store $store */
@@ -225,6 +230,24 @@ class ProductService
                 $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
             }
             ])->find($id);
+
+            if (is_null($products)) abort(404);
+            return new ProductResource($products);
+        } else {
+            return response()->json(['Store Not Found']);
+        }
+    }
+
+    public function getStoreProductBySlug(string $slug): JsonResponse|ProductResource
+    {
+        /** @var Store $store */
+        $store = \auth()->user()->store()->first();
+
+        if ($store) {
+            $products = $store->products()->withTrashed()->where('slug', $slug)->with(['description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
+                $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
+            }
+            ])->first();
 
             if (is_null($products)) abort(404);
             return new ProductResource($products);

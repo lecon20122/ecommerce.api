@@ -9,6 +9,7 @@ use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Http\Auth\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -104,5 +105,12 @@ class User extends Authenticatable
     public function store(): HasOne
     {
         return $this->hasOne(Store::class);
+    }
+
+    public function getAuthenticatedStore(): Model|HasOne|null
+    {
+        if (is_null($this->store()->first())) return null;
+
+        return $this->store()->first();
     }
 }

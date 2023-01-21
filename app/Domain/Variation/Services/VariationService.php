@@ -14,10 +14,12 @@ use App\Http\Variation\Resources\VariationTypeValueResource;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\Media\ImageService;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use JetBrains\PhpStorm\NoReturn;
 
 class VariationService
 {
@@ -96,7 +98,7 @@ class VariationService
             ->create($data);
 
         if (isset($data['images']) && $variationType->is_mediable && $variation) {
-            $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
+            $imageService->addMultipleMediaFromRequest($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
         }
     }
 
@@ -112,57 +114,79 @@ class VariationService
 
         if (!auth()->user()->isOwner($product->store_id) && !Auth::guard('admin')->check()) abort(403);
 
-        $colorType = VariationType::query()->whereRaw("JSON_EXTRACT(type, '$.en') = 'color'")->first();
+        $variation = $this->createColorVariant($product, $data['variation_type_value_id'], $data);
 
-        $variationTypeValue = VariationTypeValue::find($data['variation_type_value_id']);
+        return new VariationResource($variation->load(['variationSmallImage', 'variationTypeValue', 'variationType']));
+    }
 
+    /**
+     * @param Product $product
+     * @param $colorValueId
+     * @param array $data
+     * @return Model
+     */
+    public function createColorVariant(Product $product, $colorValueId, array $data): Model
+    {
+        $colorType = VariationType::query()->select('id')->whereRaw("JSON_EXTRACT(type, '$.en') = 'color'")->first();
+
+        $variationTypeValue = VariationTypeValue::find($colorValueId);
         if ($variationTypeValue->variation_type_id !== $colorType->id) abort(400);
 
+
         $data['is_stockable'] = $colorType->is_stockable;
+        $data['store_id'] = $product->store_id;
 
         $data['title'] = $this->formVariationTitle($variationTypeValue->value, $product->title);
-
         $data['variation_type_id'] = $colorType->id;
-
 
         $variation = $product->variations()
             ->create($data);
 
         if (isset($data['images']) && $variation) {
-            $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
+            (new ImageService())->addMultipleMediaFromRequest($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
         }
 
-        return new VariationResource($variation->load(['variationSmallImage', 'variationTypeValue', 'variationType']));
+        return $variation;
+
     }
 
-    public function createSizeVariation(array $data, ImageService $imageService): void
+    public function createSizeVariation(array $data)
     {
         $product = Product::withTrashed()
             ->find($data['product_id']);
 
         if (!auth()->user()->isOwner($product->store_id) && !Auth::guard('admin')->check()) abort(403);
 
-        $sizeType = VariationType::query()->whereRaw("JSON_EXTRACT(type, '$.en') = 'size'")->first();
+        $variation = $this->createSizeVariant($product, $data['variation_type_value_id'], $data);
 
-        $variationTypeValue = VariationTypeValue::find($data['variation_type_value_id']);
+        if ($variation && isset($data['stock_amount'])) {
+            $stockService = new StockService();
+            $stockService->store([
+                'variation_id' => $variation->id,
+                'amount' => $data['stock_amount'],
+            ]);
+        }
+    }
+
+    #[NoReturn] public function createSizeVariant(Product $product, $sizeValueId, array $data, int $parent_id = null): Model
+    {
+        $sizeType = VariationType::query()->select(['id', 'is_stockable'])->whereRaw("JSON_EXTRACT(type, '$.en') = 'size'")->first();
+
+        $variationTypeValue = VariationTypeValue::find($sizeValueId);
 
         if ($variationTypeValue->variation_type_id !== $sizeType->id) abort(400);
 
         $data['is_stockable'] = $sizeType->is_stockable;
 
-        $data['variation_type_id'] = $sizeType->id;
-
         $data['title'] = $this->formVariationTitle($variationTypeValue->value, $product->title);
 
-        $variation = $product->variations()
-            ->create($data);
-
-        if ($variation && isset($data['stock_amount'])) {
-            (new StockService())->store([
-                'variation_id' => $variation->id,
-                'amount' => $data['stock_amount'],
-            ]);
+        $data['variation_type_id'] = $sizeType->id;
+        $data['store_id'] = $product->store_id;
+        if ($parent_id) {
+            $data['parent_id'] = $parent_id;
         }
+
+        return $product->variations()->create($data);
     }
 
     public function update(array $data, Variation $variation, ImageService $imageService)
@@ -199,16 +223,15 @@ class VariationService
     {
         if (Auth::guard('admin')->check() || \auth()->user()->isOwner($variation->store_id)) {
             if ($request->hasFile('images')) {
-                $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
+                $imageService->addMultipleMediaFromRequest($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
             }
         }
-
     }
 
     public function uploadVariationColorImage(Variation $variation, StoreMediaRequest $request, ImageService $imageService)
     {
         if ($request->hasFile('images')) {
-            $imageService->imageUpload($variation, 'images', MediaCollectionEnums::VARIATION_COLOR, $variation->id);
+            $imageService->addMultipleMediaFromRequest($variation, 'images', MediaCollectionEnums::VARIATION_COLOR, $variation->id);
         }
     }
 
@@ -243,5 +266,20 @@ class VariationService
         }
     }
 
+    public function createOneColorAndManySizes(Product $product, array $data)
+    {
+        $color = $this->createColorVariant($product, $data['variation_type_value_id'], $data);
 
+        if (isset($data['sizes'])) {
+            $this->createManySizeVariants($product, $data['sizes'], $data, $color->id);
+        }
+    }
+
+    #[NoReturn] public function createManySizeVariants(Product $product, array $sizes, array $data, int $parent_id)
+    {
+        foreach ($sizes as $sizeValueId => $value) {
+            $decodedValue = json_decode($value, true);
+            $this->createSizeVariant($product, $decodedValue['variation_type_value_id'], $data, $parent_id);
+        }
+    }
 }

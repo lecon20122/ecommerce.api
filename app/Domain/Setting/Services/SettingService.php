@@ -39,7 +39,7 @@ class SettingService
     public function uploadColorImage(Setting $setting, StoreMediaRequest $request, ImageService $imageService)
     {
         if ($request->hasFile('images')) {
-            $imageService->imageUpload($setting, 'images', MediaCollectionEnums::LOGO, $setting->id);
+            $imageService->addMultipleMediaFromRequest($setting, 'images', MediaCollectionEnums::LOGO, $setting->id);
         }
     }
 }

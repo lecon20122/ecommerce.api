@@ -6,9 +6,14 @@ use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
 use App\Domain\Store\Models\Store;
+use App\Domain\Variation\Models\VariationType;
+use App\Domain\Variation\Models\VariationTypeValue;
 use Domain\User\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use JetBrains\PhpStorm\NoReturn;
 use Tests\TestCase;
 
@@ -231,5 +236,83 @@ class ApiProductTest extends TestCase
         $this->assertDatabaseMissing('category_product', $expectedData);
     }
 
+    public function testAsStoreCanAddProductFromMegaForm()
+    {
+        $user = User::factory()->create();
 
+        $this->actingAs($user, 'web');
+
+        $store = Store::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $color = VariationType::factory()->create([
+            'type' => 'color',
+            'is_stockable' => false,
+            'is_mediable' => true,
+
+
+        ]);
+
+        $size = VariationType::factory()->create([
+            'type' => 'size',
+            'is_stockable' => true,
+            'is_mediable' => false,
+        ]);
+
+        VariationTypeValue::factory()->create([
+            'variation_type_id' => $color->id,
+        ]);
+
+        VariationTypeValue::factory(3)->create([
+            'variation_type_id' => $size->id,
+        ]);
+
+        Category::factory(3)->create();
+
+        Storage::fake('public');
+
+        $data = [
+            'en' => 'hello',
+            'ar' => 'Arabic',
+            'price' => 350,
+            'variation_type_value_id' => $color->id,
+            'sizes' => [
+                json_encode([
+                    'variation_type_value_id' => 2,
+                    'stock_amount' => 10,
+                ]),
+                json_encode([
+                    'variation_type_value_id' => 3,
+                    'stock_amount' => 10,
+                ]),
+                json_encode([
+                    'variation_type_value_id' => 4,
+                    'stock_amount' => 10,
+                ]),
+            ],
+            'category_ids' => [
+                1, 2, 3
+            ],
+            'images' => [
+                0 => UploadedFile::fake()->image("test.jpg", 100, 100),
+                1 => UploadedFile::fake()->image("test.jpg", 100, 100),
+            ],
+            'store_id' => $store->id,
+        ];
+
+        $this->post(route('api.add.store.product.mega.form'), $data);
+
+        $result = Product::with(['categories', 'variations' => function (HasMany $query) {
+            $query
+                ->with('children')
+                ->parent();
+        }])->get()
+            ->toArray();
+
+        $this->assertCount(1, $result);
+        $this->assertCount(3, $result[0]['categories']);
+        $this->assertCount(1, $result[0]['variations']);
+        $this->assertCount(3, $result[0]['variations'][0]['children']);
+    }
 }

@@ -7,6 +7,7 @@ use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
 use App\Http\Product\Requests\ProductBySlugRequest;
 use App\Http\Product\Requests\ProductFilterRequest;
+use App\Http\Product\Requests\StoreProductMegaFormRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
 use App\Http\Product\Resources\ProductResource;
@@ -216,6 +217,21 @@ class ApiProductController extends BaseController
             $this->service->detachCategoryFromProduct($product, $request);
             DB::commit();
             return $this->service->getStoreProductBySlug($product->slug);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
+    public function createProductMegaForm(StoreProductMegaFormRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->createProductMegaForm($request->validated());
+            DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
             if ($exception instanceof HttpExceptionInterface) {

@@ -62,7 +62,7 @@ class VariationTypeValueService
     public function uploadColorImage(VariationTypeValue $variationTypeValue, StoreMediaRequest $request, ImageService $imageService)
     {
         if ($request->hasFile('images')) {
-            $imageService->imageUpload($variationTypeValue, 'images', MediaCollectionEnums::VARIATION_COLOR, $variationTypeValue->id);
+            $imageService->addMultipleMediaFromRequest($variationTypeValue, 'images', MediaCollectionEnums::VARIATION_COLOR, $variationTypeValue->id);
         }
     }
 }

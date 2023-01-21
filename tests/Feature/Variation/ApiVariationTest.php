@@ -311,6 +311,7 @@ class ApiVariationTest extends TestCase
         $response = $this->post(route('api.create.color.variation'), $data);
         $this->assertEquals($color->id, Variation::first()->variation_type_id);
         $this->assertEquals($color->id, $response->json()['variation_type_value']['id']);
+        $this->assertEquals(1, Media::all()->count());
     }
 
     public function test_owner_can_create_size_variant_and_add_stock()

@@ -309,6 +309,7 @@ class ApiProductTest extends TestCase
                 ->parent();
         }])->get()
             ->toArray();
+        dd($result);
         $this->assertCount(1, $result);
         $this->assertCount(3, $result[0]['categories']);
         $this->assertCount(1, $result[0]['variations']);

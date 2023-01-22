@@ -168,11 +168,11 @@ class VariationService
         }
     }
 
-    #[NoReturn] public function createSizeVariant(Product $product, $sizeValueId, array $data, int $parent_id = null): Model
+    #[NoReturn] public function createSizeVariant(Product $product, array $sizeAndStock, array $data, int $parent_id = null): Model
     {
         $sizeType = VariationType::query()->select(['id', 'is_stockable'])->whereRaw("JSON_EXTRACT(type, '$.en') = 'size'")->first();
 
-        $variationTypeValue = VariationTypeValue::find($sizeValueId);
+        $variationTypeValue = VariationTypeValue::find($sizeAndStock['variation_type_value_id']);
 
         if ($variationTypeValue->variation_type_id !== $sizeType->id) abort(400);
 
@@ -187,9 +187,19 @@ class VariationService
         if ($parent_id) {
             $data['parent_id'] = $parent_id;
         }
-        $data['variation_type_value_id'] = $sizeValueId;
 
-        return $product->variations()->create($data);
+        $data['variation_type_value_id'] = $variationTypeValue->id;
+
+        $variation = $product->variations()->create($data);
+
+        if ($variation && isset($sizeAndStock['stock_amount'])) {
+            $stockService = new StockService();
+            $stockService->store([
+                'variation_id' => $variation->id,
+                'amount' => $sizeAndStock['stock_amount'],
+            ]);
+        }
+        return $variation;
     }
 
     public function update(array $data, Variation $variation, ImageService $imageService)
@@ -282,7 +292,7 @@ class VariationService
     {
         foreach ($sizes as $sizeValueId => $value) {
             $decodedValue = json_decode($value, true);
-            $this->createSizeVariant($product, $decodedValue['variation_type_value_id'], $data, $parent_id);
+            $this->createSizeVariant($product, $decodedValue, $data, $parent_id);
         }
     }
 }

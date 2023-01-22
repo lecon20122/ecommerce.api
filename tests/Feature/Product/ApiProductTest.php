@@ -309,10 +309,11 @@ class ApiProductTest extends TestCase
                 ->parent();
         }])->get()
             ->toArray();
-
         $this->assertCount(1, $result);
         $this->assertCount(3, $result[0]['categories']);
         $this->assertCount(1, $result[0]['variations']);
         $this->assertCount(3, $result[0]['variations'][0]['children']);
+        $this->assertEquals(2, $result[0]['variations'][0]['children'][0]['variation_type_value_id']);
+        $this->assertEquals(3, $result[0]['variations'][0]['children'][1]['variation_type_value_id']);
     }
 }

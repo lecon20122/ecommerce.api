@@ -181,10 +181,13 @@ class VariationService
         $data['title'] = $this->formVariationTitle($variationTypeValue->value, $product->title);
 
         $data['variation_type_id'] = $sizeType->id;
+
         $data['store_id'] = $product->store_id;
+
         if ($parent_id) {
             $data['parent_id'] = $parent_id;
         }
+        $data['variation_type_value_id'] = $sizeValueId;
 
         return $product->variations()->create($data);
     }

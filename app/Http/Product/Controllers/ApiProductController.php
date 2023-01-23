@@ -135,6 +135,18 @@ class ApiProductController extends BaseController
         }
     }
 
+    public function getStoreProduct(Product $product): JsonResponse|ProductResource
+    {
+        try {
+            return $this->service->getStoreProduct($product);
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
     /**
      *
      *

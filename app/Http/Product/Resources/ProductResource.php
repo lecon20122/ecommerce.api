@@ -3,7 +3,7 @@
 namespace App\Http\Product\Resources;
 
 use App\Http\Category\Resources\CategoryResource;
-use App\Http\Media\Resources\MediaResource;
+use App\Http\Product\Resource\ProductDiscountResource;
 use App\Http\Variation\Resources\VariationResource;
 use App\Http\Variation\Resources\VariationTypeResource;
 use App\Http\Variation\Resources\VariationTypeValueResource;
@@ -33,6 +33,7 @@ class ProductResource extends JsonResource
             'variation_type' => VariationTypeResource::collection($this->whenLoaded('variationType')),
             'variation_type_value' => VariationTypeValueResource::collection($this->whenLoaded('variationTypeValue')),
             'description' => ProductDescriptionResource::collection($this->whenLoaded('description')),
+            'discounts' => ProductDiscountResource::collection($this->whenLoaded('discounts')),
         ];
     }
 }

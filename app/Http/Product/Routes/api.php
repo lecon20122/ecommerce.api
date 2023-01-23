@@ -14,7 +14,7 @@ Route::get('product', [ApiProductController::class, 'getProduct'])->name('get.pr
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('store/product/mega-form', [ApiProductController::class, 'createProductMegaForm'])->name('add.store.product.mega.form');
     Route::get('store/products', [ApiProductController::class, 'getStoreProducts'])->name('get.store.products');
-    Route::get('store/product/details', [ApiProductController::class, 'getStoreProductBySlug'])->name('get.store.product.by.slug');
+    Route::get('store/product/details/{product}', [ApiProductController::class, 'getStoreProduct'])->name('get.store.product.details');
     Route::get('store/product/attributes', [ProductAttributeController::class, 'getProductAttributes'])->name('get.store.product.attributes');
 
     Route::post('store/product', [ApiProductController::class, 'storeStoreProduct'])->name('add.store.products');

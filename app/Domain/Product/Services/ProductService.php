@@ -13,6 +13,7 @@ use App\Http\Product\Resources\ProductResource;
 use App\Http\Variation\Resources\VariationTypeValueResource;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\SearchService;
+use Domain\User\Models\User;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -23,7 +24,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use JetBrains\PhpStorm\ArrayShape;
 
 
 class ProductService
@@ -215,27 +215,24 @@ class ProductService
         $product->update($data);
 
         if (Auth::guard('web')->check()) {
-            return $this->getStoreProductById($data['product_id']);
+            return $this->getStoreProduct($data['product_id']);
         }
 
     }
 
-    public function getStoreProductById(int $id): JsonResponse|ProductResource
+    public function getStoreProduct(Product $product): JsonResponse|ProductResource
     {
-        /** @var Store $store */
-        $store = \auth()->user()->store()->first();
+        /** @var User $user */
+        $user = \auth()->user();
 
-        if ($store) {
-            $products = $store->products()->withTrashed()->with(['description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
-                $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
-            }
-            ])->find($id);
+        if (!$user->isOwner($product->store_id)) abort(403, 'You are not allowed to access this product');
 
-            if (is_null($products)) abort(404);
-            return new ProductResource($products);
-        } else {
-            return response()->json(['Store Not Found']);
+        $product->load(['discounts', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
+            $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
         }
+        ])->first();
+
+        return new ProductResource($product);
     }
 
     public function getStoreProductBySlug(string $slug): JsonResponse|ProductResource

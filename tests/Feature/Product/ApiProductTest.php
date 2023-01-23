@@ -4,6 +4,7 @@ namespace Tests\Feature\Product;
 
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
+use App\Domain\Product\Models\ProductDiscount;
 use App\Domain\Product\Services\ProductService;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\VariationType;
@@ -316,5 +317,50 @@ class ApiProductTest extends TestCase
         $this->assertCount(3, $result[0]['variations'][0]['children']);
         $this->assertEquals(2, $result[0]['variations'][0]['children'][0]['variation_type_value_id']);
         $this->assertEquals(3, $result[0]['variations'][0]['children'][1]['variation_type_value_id']);
+    }
+
+    public function test_that_store_can_see_his_product()
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user, 'web');
+
+        $store = Store::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $product = Product::factory()->create([
+            'store_id' => $store->id
+        ]);
+
+        ProductDiscount::factory()->create([
+            'product_id' => $product->id,
+        ]);
+
+        $response = $this->get(route('api.get.store.product.details' , ['product' => $product]));
+
+        $response->assertStatus(200);
+        $this->assertNotNull($response->json()['discounts']);
+    }
+    public function test_that_store_owner_only_can_see_his_product()
+    {
+        $user = User::factory()->create();
+        $notOwner = User::factory()->create();
+
+        $this->actingAs($notOwner, 'web');
+
+        $store = Store::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $product = Product::factory()->create([
+            'store_id' => $store->id
+        ]);
+
+        ProductDiscount::factory()->create([
+            'product_id' => $product->id,
+        ]);
+
+        $response = $this->get(route('api.get.store.product.details' , ['product' => $product]))->assertForbidden();
     }
 }

@@ -348,6 +348,8 @@ class ApiVariationTest extends TestCase
             'stock_amount' => 5
         ];
         $response = $this->post(route('api.create.size.variation'), $data);
+
+
         $this->assertEquals(5, Stock::first()->amount);
         $this->assertEquals($size->id, Variation::first()->variation_type_id);
         $this->assertEquals(5, Variation::first()->stock_count);

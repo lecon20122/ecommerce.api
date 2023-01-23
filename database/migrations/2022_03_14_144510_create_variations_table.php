@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreignId('product_id')->constrained();
             $table->foreignId('store_id')->nullable()->constrained(); // instead of doing query every variation
             $table->foreignId('variation_type_value_id')->constrained();
-            $table->decimal('price')->unsigned()->default(0);
+            $table->unsignedInteger('price')->default(0);
             $table->foreignId('variation_type_id')->constrained();
             $table->string('sku')->nullable();
             $table->integer('order')->nullable();

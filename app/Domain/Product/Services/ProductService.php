@@ -288,12 +288,6 @@ class ProductService
     /**
      * @throws Exception
      */
-    #[ArrayShape([
-        'products' => "\Illuminate\Http\Resources\Json\AnonymousResourceCollection",
-        'filters' => "mixed",
-        'category' => "\App\Http\Category\Resources\CategoryResource",
-        'maxPrice' => "mixed"
-    ])]
     public function getProductsByCategory(Category $category, $filters = null): array
     {
         $searchService = new SearchService();

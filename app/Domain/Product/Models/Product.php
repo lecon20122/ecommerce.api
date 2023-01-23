@@ -6,20 +6,15 @@ use App\Domain\Category\Models\Category;
 use App\Domain\Store\Models\Store;
 use App\Domain\User\Models\Favorite;
 use App\Domain\Variation\Models\Variation;
-use App\Support\Enums\MediaCollectionEnums;
-use App\Support\Traits\CustomHasMedia;
 use Domain\User\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
@@ -88,5 +83,18 @@ class Product extends Model
             $result[$variation->variationType?->type . '_' . 'ids'][] = $variation->variationTypeValue?->id;
         }
         return $result;
+    }
+
+    public function discounts(): HasMany
+    {
+        return $this->hasMany(ProductDiscount::class);
+    }
+
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value / 100,
+            set: fn($value) => $value * 100,
+        );
     }
 }

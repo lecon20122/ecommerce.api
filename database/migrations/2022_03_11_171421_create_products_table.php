@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->json('title');
             $table->string('slug');
-            $table->integer('price')->unsigned();
+            $table->unsignedInteger('price')->default(0);
             $table->foreignId('store_id')->constrained();
             $table->dateTime('live_at')->nullable();
             $table->boolean('is_approved')->nullable();

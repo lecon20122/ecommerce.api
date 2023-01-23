@@ -3,6 +3,7 @@
 use App\Http\Product\Controllers\ApiProductController;
 use App\Http\Product\Controllers\ProductAttributeController;
 use App\Http\Product\Controllers\ProductDescriptionController;
+use App\Http\Product\Controllers\ProductDiscountController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('category', [ApiProductController::class, 'getFilteredProducts'])->name('shop.by.category.post'); //TODO:: change route name to 'products'
@@ -27,4 +28,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('store/product/description', [ProductDescriptionController::class, 'apiStore'])->name('add.product.description');
     Route::post('store/product/description/update/{id}', [ProductDescriptionController::class, 'apiUpdate'])->name('update.product.description');
     Route::post('store/product/description/delete/{id}', [ProductDescriptionController::class, 'apiDestroy'])->name('delete.product.description');
+
+    Route::post('store/product/discount', [ProductDiscountController::class, 'updateOrCreate'])->name('update.or.create.product.discount');
 });

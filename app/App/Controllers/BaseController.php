@@ -83,8 +83,8 @@ class BaseController extends Controller
         return response()->json(['message' => $customMessage], $code);
     }
 
-    public function respondWithOk(): JsonResponse
+    public function respondWithOk(string $message = 'success'): JsonResponse
     {
-        return response()->json();
+        return response()->json(['message' => $message ?? 'success']);
     }
 }

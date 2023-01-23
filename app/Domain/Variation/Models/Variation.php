@@ -3,13 +3,13 @@
 namespace App\Domain\Variation\Models;
 
 use App\Domain\Cart\Models\Cart;
-use App\Domain\Cart\Models\CartVariation;
 use App\Domain\Inventory\Models\Stock;
 use App\Domain\Order\Models\Order;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Traits\CustomHasMedia;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,6 +49,8 @@ class Variation extends Model implements HasMedia
     /**
      * @throws InvalidManipulation
      */
+
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion(MediaCollectionEnums::THUMB_CONVENTION)
@@ -88,7 +90,6 @@ class Variation extends Model implements HasMedia
         $this->addMediaCollection(MediaCollectionEnums::VARIATION_COLOR)
             ->singleFile();
     }
-
 
     public function product(): BelongsTo
     {
@@ -174,5 +175,13 @@ class Variation extends Model implements HasMedia
     public function variationSmallImage(): Model|MorphOne|null
     {
         return $this->getMediaByCollectionAndConvention(MediaCollectionEnums::VARIATION);
+    }
+
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value / 100,
+            set: fn($value) => $value * 100,
+        );
     }
 }

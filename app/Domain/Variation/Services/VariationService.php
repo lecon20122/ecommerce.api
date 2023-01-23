@@ -17,6 +17,7 @@ use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use JetBrains\PhpStorm\NoReturn;
@@ -157,15 +158,7 @@ class VariationService
 
         if (!auth()->user()->isOwner($product->store_id) && !Auth::guard('admin')->check()) abort(403);
 
-        $variation = $this->createSizeVariant($product, $data['variation_type_value_id'], $data);
-
-        if ($variation && isset($data['stock_amount'])) {
-            $stockService = new StockService();
-            $stockService->store([
-                'variation_id' => $variation->id,
-                'amount' => $data['stock_amount'],
-            ]);
-        }
+        $variation = $this->createSizeVariant($product, Arr::only($data, ['variation_type_value_id', 'stock_amount']), Arr::except($data, 'stock_amount'));
     }
 
     #[NoReturn] public function createSizeVariant(Product $product, array $sizeAndStock, array $data, int $parent_id = null): Model

@@ -77,10 +77,10 @@ class ProductService
         }
     }
 
-    public function getProductBySlug(string $slug): ProductResource
+    public function getProductById(int $id): ProductResource
     {
         $product = Product::query()
-            ->with(['description.productAttribute', 'variations' => function ($query) {
+            ->with(['discounts', 'description.productAttribute', 'variations' => function ($query) {
                 $query->with(['VariationImages', 'VariationColor', 'variationTypeValue', 'variationType', 'children' => function ($query) {
                     $query->with(['variationTypeValue', 'variationType', 'media']);
                 }])
@@ -88,8 +88,7 @@ class ProductService
                     ->parent();
             }
             ])
-            ->where('slug', '=', $slug)
-            ->first();
+            ->find($id);
         return new ProductResource($product);
     }
 

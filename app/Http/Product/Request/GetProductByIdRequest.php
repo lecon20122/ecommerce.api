@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Product\Requests;
+namespace App\Http\Product\Request;
 
 use App\Support\Enums\ValidationRuleEnums;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductBySlugRequest extends FormRequest
+class GetProductByIdRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,7 +25,7 @@ class ProductBySlugRequest extends FormRequest
     public function rules()
     {
         return [
-            'slug' => ValidationRuleEnums::REQUIRED_STRING_MAXED->value,
+            'id' => ValidationRuleEnums::REQUIRED_INTEGER->value
         ];
     }
 }

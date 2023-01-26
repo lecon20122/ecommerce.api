@@ -19,7 +19,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
@@ -81,7 +80,7 @@ class ProductService
     public function getProductById(int $id): ProductResource
     {
         $product = Product::query()
-            ->with(['discounts', 'description.productAttribute', 'variations' => function ($query) {
+            ->with(['discount', 'store', 'description.productAttribute', 'variations' => function ($query) {
                 $query->with(['VariationImages', 'VariationColor', 'variationTypeValue', 'variationType', 'children' => function ($query) {
                     $query->with(['variationTypeValue', 'variationType', 'media']);
                 }])
@@ -222,6 +221,16 @@ class ProductService
 
     }
 
+    public function loadProductRelations(Product $product): ProductResource
+    {
+        $product->load(['discounts', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
+            $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
+        }
+        ]);
+
+        return new ProductResource($product);
+    }
+
     public function getStoreProduct(Product $product): JsonResponse|ProductResource
     {
         /** @var User $user */
@@ -233,16 +242,6 @@ class ProductService
             $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
         }
         ])->first();
-
-        return new ProductResource($product);
-    }
-
-    public function loadProductRelations(Product $product): ProductResource
-    {
-        $product->load(['discounts', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
-            $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
-        }
-        ]);
 
         return new ProductResource($product);
     }

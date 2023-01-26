@@ -7,6 +7,7 @@ use App\Domain\Product\Models\ProductDiscount;
 use App\Support\Enums\TypeEnum;
 use Exception;
 use Illuminate\Support\Arr;
+use JetBrains\PhpStorm\Pure;
 
 class ProductDiscountService
 {
@@ -83,5 +84,24 @@ class ProductDiscountService
             return $this->getDiscountedPrice($product, $price);
         }
         return $price;
+    }
+
+    #[Pure] public function calculateDiscountedPrice(int $basePrice , ProductDiscount $productDiscount): float|int
+    {
+        if($productDiscount->type === TypeEnum::PERCENTAGE) {
+            return $this->calculateDiscountedPercentagePrice($basePrice, $productDiscount->value);
+        }else {
+            return $this->calculateDiscountedAmountPrice($basePrice, $productDiscount->value);
+        }
+    }
+
+    private function calculateDiscountedPercentagePrice(int $basePrice, mixed $value): float|int
+    {
+        return $basePrice - ($basePrice * $value / 100);
+    }
+
+    private function calculateDiscountedAmountPrice(int $basePrice, mixed $value) : float|int
+    {
+        return $basePrice - $value;
     }
 }

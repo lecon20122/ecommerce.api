@@ -2,6 +2,7 @@
 
 namespace App\Http\Product\Resources;
 
+use App\Domain\Product\Services\ProductDiscountService;
 use App\Http\Category\Resources\CategoryResource;
 use App\Http\Product\Resource\ProductDiscountResource;
 use App\Http\Store\Resources\StoreResource;
@@ -35,7 +36,8 @@ class ProductResource extends JsonResource
             'variation_type' => VariationTypeResource::collection($this->whenLoaded('variationType')),
             'variation_type_value' => VariationTypeValueResource::collection($this->whenLoaded('variationTypeValue')),
             'description' => ProductDescriptionResource::collection($this->whenLoaded('description')),
-            'discounts' => ProductDiscountResource::collection($this->whenLoaded('discounts')),
+            'discount' => new ProductDiscountResource($this->whenLoaded('discount')),
+            'discount_price' => $this->whenLoaded('discount', fn() => (new ProductDiscountService())->calculateDiscountedPrice($this->price, $this->discount)),
         ];
     }
 }

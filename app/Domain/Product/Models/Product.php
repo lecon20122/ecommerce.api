@@ -90,6 +90,11 @@ class Product extends Model
         return $this->hasMany(ProductDiscount::class);
     }
 
+    public function discount()
+    {
+        return $this->hasOne(ProductDiscount::class)->active()->latest();
+    }
+
     protected function price(): Attribute
     {
         return Attribute::make(

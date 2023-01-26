@@ -19,6 +19,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
@@ -137,6 +138,7 @@ class ProductService
 
         return $searchService->searchIndexedModel($params, $productModel, $limit)->query(function (Builder $builder) {
             $builder->with([
+                'discount',
                 'store',
                 'variations' => function ($query) {
                     $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
@@ -196,26 +198,23 @@ class ProductService
 
     public function update(array $data)
     {
-        $product = Product::withTrashed()->find($data['product_id']);
+        $product = Product::find($data['product_id']);
 
         if (is_null($product)) abort(404);
 
         Gate::authorize('update', $product);
 
         if (isset($data['en'])) {
-            $data['title'] = [
-                'en' => $data['en'],
-            ];
+            $data['title']['en'] = $data['en'];
         }
+
         if (isset($data['ar'])) {
-            $data['title'] = [
-                'ar' => $data['ar'],
-            ];
+            $data['title']['ar'] = $data['ar'];
         }
 
         if ($product->update($data)) {
             if (Auth::guard('web')->check()) {
-                return $this->getStoreProduct($product);
+                return $this->loadProductRelations($product);
             }
         } else {
             return response()->json(['error' => 'something went wrong']);
@@ -230,10 +229,20 @@ class ProductService
 
         if (!$user->isOwner($product->store_id)) abort(403, 'You are not allowed to access this product');
 
-        $product->load(['discounts', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
+        $product->load(['discount', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
             $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
         }
         ])->first();
+
+        return new ProductResource($product);
+    }
+
+    public function loadProductRelations(Product $product): ProductResource
+    {
+        $product->load(['discounts', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
+            $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
+        }
+        ]);
 
         return new ProductResource($product);
     }

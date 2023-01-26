@@ -3,6 +3,8 @@
 namespace Database\Factories\Domain\Cart\Models;
 
 use App\Domain\Cart\Models\Cart;
+use App\Domain\Variation\Models\Variation;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +22,12 @@ class CartFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => null,
+            'user_id' => User::factory(),
+            'variation_id' => Variation::factory(),
+            'variation_parent_id' => Variation::factory(),
+            'quantity' => $this->faker->numberBetween(1, 10),
+            'price' => $this->faker->numberBetween(100, 1000),
+            'store_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

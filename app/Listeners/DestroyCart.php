@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Domain\Cart\Contracts\CartInterface;
+
 use App\Domain\Cart\Models\Cart;
 use App\Events\OrderPlacedEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,7 +15,7 @@ class DestroyCart
      *
      * @return void
      */
-    public function __construct(protected CartInterface $cartService)
+    public function __construct()
     {
         //
     }
@@ -28,6 +28,6 @@ class DestroyCart
      */
     public function handle(OrderPlacedEvent $event)
     {
-        $this->cartService->destroy();
+
     }
 }

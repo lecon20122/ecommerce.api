@@ -2,10 +2,13 @@
 
 namespace App\Domain\Order\Models;
 
+use App\Domain\Location\Models\Address;
+use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
@@ -32,7 +35,7 @@ class Order extends Model
         'shipping_type_id'
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -43,4 +46,15 @@ class Order extends Model
             ->belongsToMany(Variation::class, 'order_variation')
             ->withPivot('quantity', 'price', 'store_id', 'pickup_address_id');
     }
+
+    public function shippingAddress(): BelongsTo
+    {
+        return $this->belongsTo(Address::class, 'shipping_address_id');
+    }
+
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
+    }
+
 }

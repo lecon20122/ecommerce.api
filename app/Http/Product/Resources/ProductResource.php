@@ -4,6 +4,7 @@ namespace App\Http\Product\Resources;
 
 use App\Http\Category\Resources\CategoryResource;
 use App\Http\Product\Resource\ProductDiscountResource;
+use App\Http\Store\Resources\StoreResource;
 use App\Http\Variation\Resources\VariationResource;
 use App\Http\Variation\Resources\VariationTypeResource;
 use App\Http\Variation\Resources\VariationTypeValueResource;
@@ -27,6 +28,7 @@ class ProductResource extends JsonResource
             'slug' => $this->slug,
             'live_at' => $this->live_at,
             'store_id' => $this->store_id,
+            'store' => new StoreResource($this->whenLoaded('store')),
             'deleted_at' => $this->deleted_at,
             'variations' => VariationResource::collection($this->whenLoaded('variations')),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),

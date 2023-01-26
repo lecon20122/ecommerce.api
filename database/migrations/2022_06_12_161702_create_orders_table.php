@@ -16,7 +16,6 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
             $table->string('state')->default(StateEnums::PROCESSING->value);
             $table->string('notes')->nullable(); // done
             $table->decimal('total')->default(0)->nullable();
@@ -26,8 +25,8 @@ return new class extends Migration
             $table->decimal('net')->default(0)->nullable(); // after calc
 
             $table->foreignId('user_id')->nullable()->constrained(); // done
+            $table->foreignId('store_id')->nullable()->constrained(); // done
             $table->foreignId('shipping_address_id')->nullable()->constrained('addresses'); // done
-            $table->foreignId('shipping_type_id')->nullable()->constrained(); // done
             $table->timestamp('packaged_at')->nullable();
             $table->timestamp('shipped_at')->nullable();
             $table->timestamps();

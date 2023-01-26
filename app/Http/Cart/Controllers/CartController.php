@@ -2,26 +2,18 @@
 
 namespace App\Http\Cart\Controllers;
 
-use App\Domain\Cart\Contracts\CartInterface;
 use App\Domain\Cart\Models\Cart;
-use App\Domain\Cart\Services\CartActions;
 use App\Domain\Cart\Services\CartService;
-use App\Domain\Variation\Models\Variation;
 use App\Http\Cart\Requests\StoreCartRequest;
 use App\Http\Cart\Requests\UpdateCartItemQuantityRequest;
 use App\Http\Cart\Requests\UpdateCartRequest;
-use App\Http\Cart\Resources\CartResource;
 use App\Support\Requests\ModelIDsRequest;
 use Application\Controllers\BaseController;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
 
 /**
  *
@@ -29,10 +21,9 @@ use Inertia\Inertia;
 class CartController extends BaseController
 {
     /**
-     * @param CartInterface $cartService
-     * @param CartActions $cartActions
+     * @param CartService $cartActions
      */
-    public function __construct(protected CartInterface $cartService, protected CartActions $cartActions)
+    public function __construct(protected CartService $cartActions)
     {
     }
 
@@ -46,36 +37,6 @@ class CartController extends BaseController
         }
     }
 
-    public function addToCart(StoreCartRequest $request): JsonResponse
-    {
-        try {
-            DB::beginTransaction();
-            $result = $this->cartService->addItem($request->validated('variation_id'), $request->validated('price'), quantity: 1);
-            DB::commit();
-            return $result;
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
-        }
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return RedirectResponse|\Inertia\Response
-     */
-    public function index(): \Inertia\Response|RedirectResponse
-    {
-        try {
-            return Inertia::render('Client/Cart', [
-                'items' => $this->cartService->showCartItems(),
-                'cartSubTotal' => $this->cartService->cartSubTotal(),
-            ]);
-        } catch (Exception $exception) {
-            return $this->redirectBackWithMessage($exception->getMessage());
-        }
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -84,26 +45,6 @@ class CartController extends BaseController
     public function create()
     {
         //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StoreCartRequest $request
-     * @param CartInterface $cartService
-     * @return RedirectResponse
-     */
-    public function store(StoreCartRequest $request): RedirectResponse
-    {
-        try {
-            DB::beginTransaction();
-            $this->cartService->addItem($request->validated('variation_id'), $request->validated('price'));
-            DB::commit();
-            return $this->redirectBackWithMessage('item added to cart successfully');
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->redirectBackWithMessage($exception->getMessage());
-        }
     }
 
     /**
@@ -180,24 +121,6 @@ class CartController extends BaseController
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
-        }
-    }
-
-    /**
-     * @param Variation $variation
-     * @param UpdateCartItemQuantityRequest $request
-     * @return RedirectResponse
-     */
-    public function updateItemQuantity(Variation $variation, UpdateCartItemQuantityRequest $request): RedirectResponse
-    {
-        try {
-            DB::beginTransaction();
-            $this->cartService->updateItemQuantity($variation, $request->validated('quantity'));
-            DB::commit();
-            return $this->redirectBackWithMessage('item quantity updated');
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 

@@ -26,12 +26,12 @@ class StoreStaticVariationRequest extends FormRequest
     {
         return [
             'price' => ValidationRuleEnums::REQUIRED_NUMERIC->value,
-            'product_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
-            'variation_type_value_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
-            'store_id' => ValidationRuleEnums::REQUIRED_INTEGER->value,
-            'parent_id' => ValidationRuleEnums::NULLABLE_INTEGER->value,
-            'order' => ValidationRuleEnums::NULLABLE_INTEGER->value,
-            'stock_amount' => ValidationRuleEnums::NULLABLE_INTEGER->value,
+            'product_id' => ValidationRuleEnums::REQUIRED_NUMERIC->value,
+            'variation_type_value_id' => ValidationRuleEnums::REQUIRED_NUMERIC->value,
+            'store_id' => ValidationRuleEnums::REQUIRED_NUMERIC->value,
+            'parent_id' => ValidationRuleEnums::NULLABLE_NUMERIC->value,
+            'order' => ValidationRuleEnums::NULLABLE_NUMERIC->value,
+            'stock_amount' => ValidationRuleEnums::NULLABLE_NUMERIC->value,
             'images' => 'nullable',
             'images.*' => 'mimes:jpg,webp,png|max:2048',
         ];

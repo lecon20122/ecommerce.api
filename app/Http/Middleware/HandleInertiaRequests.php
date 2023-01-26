@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Domain\Cart\Contracts\CartInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -47,7 +46,6 @@ class HandleInertiaRequests extends Middleware
             'locale' => function () {
                 return app()->getLocale();
             },
-            'cart_count' => app()->make(CartInterface::class)->itemsCount(),
             'auth' => fn() => $request->user()
                 ? $request->user()->only('id', 'name', 'email')
                 : null,

@@ -76,13 +76,15 @@ class ApiProductTest extends TestCase
         ]);
 
         $data = [
-            'en' => 'hello',
+            'en' => 'Zecotex New Winter Collection Pajamas 2 Pieces / Milton Camouflage Fashion Print / Stretchy Sweater and Pants with Pockets / Sweatshirts & Pants / Comfortable Home Wear Trousers',
             'product_id' => $product->id
         ];
 
-        $this->post(route('api.update.store.product', ['slug' => $product->slug]), $data);
+        $res = $this->post(route('api.update.store.product'), $data);
         $product->refresh();
-        $this->assertEquals('hello', $product->title);
+
+        $this->assertEquals('Zecotex New Winter Collection Pajamas 2 Pieces / Milton Camouflage Fashion Print / Stretchy Sweater and Pants with Pockets / Sweatshirts & Pants / Comfortable Home Wear Trousers',
+            $product->title);
     }
 
     public function test_product_can_only_be_updated_by_its_owner()
@@ -337,11 +339,12 @@ class ApiProductTest extends TestCase
             'product_id' => $product->id,
         ]);
 
-        $response = $this->get(route('api.get.store.product.details' , ['product' => $product]));
+        $response = $this->get(route('api.get.store.product.details', ['product' => $product]));
 
         $response->assertStatus(200);
         $this->assertNotNull($response->json()['discounts']);
     }
+
     public function test_that_store_owner_only_can_see_his_product()
     {
         $user = User::factory()->create();
@@ -361,6 +364,6 @@ class ApiProductTest extends TestCase
             'product_id' => $product->id,
         ]);
 
-        $response = $this->get(route('api.get.store.product.details' , ['product' => $product]))->assertForbidden();
+        $response = $this->get(route('api.get.store.product.details', ['product' => $product]))->assertForbidden();
     }
 }

@@ -152,14 +152,14 @@ class ApiProductController extends BaseController
      *
      *
      * @param UpdateProductRequest $request
-     * @param string $slug
      * @return JsonResponse|ProductResource
      */
-    public function updateStoreProduct(UpdateProductRequest $request, string $slug): JsonResponse|ProductResource
+    public function updateStoreProduct(UpdateProductRequest $request): JsonResponse|ProductResource
     {
         try {
-            return $this->service->update($request->validated(), $slug);
+            return $this->service->update($request->validated());
         } catch (Exception $exception) {
+            dd($exception->getMessage());
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }

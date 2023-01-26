@@ -2,8 +2,7 @@
 
 namespace Tests\Feature\Order;
 
-use App\Domain\Cart\Models\CartVariation;
-use App\Domain\Cart\Services\CartService;
+
 use App\Domain\Inventory\Models\Stock;
 use App\Domain\Location\Enums\AddressTypeEnums;
 use App\Domain\Location\Models\Address;

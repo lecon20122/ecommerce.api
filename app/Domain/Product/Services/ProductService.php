@@ -136,11 +136,13 @@ class ProductService
         ];
 
         return $searchService->searchIndexedModel($params, $productModel, $limit)->query(function (Builder $builder) {
-            $builder->with(['variations' => function ($query) {
-                $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
-                    ->has('VariationImages')
-                    ->parent();
-            }
+            $builder->with([
+                'store',
+                'variations' => function ($query) {
+                    $query->with('VariationImages', 'VariationColor', 'variationTypeValue', 'variationType')
+                        ->has('VariationImages')
+                        ->parent();
+                }
             ])->has('variations');
         })->paginate();
     }
@@ -192,7 +194,7 @@ class ProductService
         }
     }
 
-    public function update(array $data, string $slug)
+    public function update(array $data)
     {
         $product = Product::withTrashed()->find($data['product_id']);
 
@@ -211,10 +213,12 @@ class ProductService
             ];
         }
 
-        $product->update($data);
-
-        if (Auth::guard('web')->check()) {
-            return $this->getStoreProduct($data['product_id']);
+        if ($product->update($data)) {
+            if (Auth::guard('web')->check()) {
+                return $this->getStoreProduct($product);
+            }
+        } else {
+            return response()->json(['error' => 'something went wrong']);
         }
 
     }

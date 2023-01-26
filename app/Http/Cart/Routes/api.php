@@ -3,7 +3,7 @@
 use App\Http\Cart\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
-//Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('client.add.to.cart');
+
 Route::post('cart', [CartController::class, 'add'])
     ->middleware('auth:sanctum')
     ->name('client.add.to.cart');

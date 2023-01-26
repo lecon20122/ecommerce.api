@@ -203,4 +203,32 @@ class ProductPricingTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    public function test_that_discount_calculator_works_right()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'web');
+
+        $store = Store::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $product = Product::factory()->create([
+            'price' => 450,
+            'store_id' => $store->id,
+        ]);
+
+        $productDiscount = ProductDiscount::factory()->create([
+            'value' => 10,
+            'type' => TypeEnum::PERCENTAGE,
+            'product_id' => $product->id,
+            'start_at' => now(),
+            'end_at' => now()->addDays(5),
+            'is_active' => true,
+        ]);
+
+        $result =  (new ProductDiscountService())->calculateDiscountPrice($product, $product->price);
+
+        $this->assertEquals(405, $result);
+    }
 }

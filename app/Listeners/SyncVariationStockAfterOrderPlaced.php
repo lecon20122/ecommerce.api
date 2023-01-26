@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Domain\Cart\Contracts\CartInterface;
+
 use App\Events\OrderPlacedEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -13,7 +13,7 @@ class SyncVariationStockAfterOrderPlaced implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected CartInterface $cartService)
+    public function __construct()
     {
         //
     }
@@ -24,12 +24,12 @@ class SyncVariationStockAfterOrderPlaced implements ShouldQueue
      * @param OrderPlacedEvent $event
      * @return void
      */
-    public function handle(OrderPlacedEvent $event)
-    {
-        foreach ($this->cartService->items() as $variation) {
-            $variation->stocks()->create([
-                'amount' => 0 - $variation->pivot->quantity
-            ]);
-        }
-    }
+    // public function handle(OrderPlacedEvent $event)
+    // {
+    //     foreach ($this->cartService->items() as $variation) {
+    //         $variation->stocks()->create([
+    //             'amount' => 0 - $variation->pivot->quantity
+    //         ]);
+    //     }
+    // }
 }

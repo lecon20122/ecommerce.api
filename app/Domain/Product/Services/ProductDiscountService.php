@@ -4,6 +4,7 @@ namespace App\Domain\Product\Services;
 
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Models\ProductDiscount;
+use App\Support\Enums\TypeEnum;
 use Exception;
 use Illuminate\Support\Arr;
 
@@ -70,5 +71,17 @@ class ProductDiscountService
         if ($value > 100) {
             throw new Exception('Percentage value must be less than 100');
         }
+    }
+
+    public function calculateDiscountPrice(Product $product , int $price): int
+    {
+        $discount = $this->getActiveDiscount($product);
+        if ($discount) {
+            if ($discount->type === TypeEnum::PERCENTAGE) {
+                return $this->getDiscountedPercentagePrice($product, $price);
+            }
+            return $this->getDiscountedPrice($product, $price);
+        }
+        return $price;
     }
 }

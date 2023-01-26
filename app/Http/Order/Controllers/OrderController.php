@@ -2,7 +2,7 @@
 
 namespace App\Http\Order\Controllers;
 
-use App\Domain\Cart\Contracts\CartInterface;
+
 use App\Domain\Location\Models\City;
 use App\Domain\Location\Models\District;
 use App\Domain\Order\Services\OrderService;
@@ -26,24 +26,23 @@ class OrderController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @param CartInterface $cart
      * @return RedirectResponse|\Inertia\Response
      */
-    public function index(CartInterface $cart): \Inertia\Response|RedirectResponse
+    public function index()
     {
-        try {
-            return Inertia::render('Client/Checkout',
-                [
-                    'user_addresses' => AddressResource::collection(auth('web')->user()?->load('addresses')->addresses),
-                    'shippingTypes' => ShippingType::query()->get(['type', 'price', 'id']),
-                    'items' => $cart->showCartItems(),
-                    'cartSubTotal' => $cart->cartSubTotal(),
-                    'cities' => City::query()->with('districts')->select(['id', 'name'])->get(), //TODO :: create cache
-                ]
-            );
-        } catch (Exception $exception) {
-            return $this->redirectBackWithMessage($exception->getMessage());
-        }
+        // try {
+        //     return Inertia::render('Client/Checkout',
+        //         [
+        //             'user_addresses' => AddressResource::collection(auth('web')->user()?->load('addresses')->addresses),
+        //             'shippingTypes' => ShippingType::query()->get(['type', 'price', 'id']),
+        //             'items' => $cart->showCartItems(),
+        //             'cartSubTotal' => $cart->cartSubTotal(),
+        //             'cities' => City::query()->with('districts')->select(['id', 'name'])->get(), //TODO :: create cache
+        //         ]
+        //     );
+        // } catch (Exception $exception) {
+        //     return $this->redirectBackWithMessage($exception->getMessage());
+        // }
     }
 
     /**
@@ -53,16 +52,16 @@ class OrderController extends BaseController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function orderCompletedStatus(): \Inertia\Response|RedirectResponse
+    public function orderCompletedStatus()
     {
-        try {
-            return Inertia::render('Client/Thankyou',
-                [
-                    'orderNumber' => session()->get('order_number'),
-                ]);
-        } catch (Exception $exception) {
-            return $this->redirectBackWithMessage($exception->getMessage());
-        }
+        // try {
+        //     return Inertia::render('Client/Thankyou',
+        //         [
+        //             'orderNumber' => session()->get('order_number'),
+        //         ]);
+        // } catch (Exception $exception) {
+        //     return $this->redirectBackWithMessage($exception->getMessage());
+        // }
     }
 
     /**
@@ -72,18 +71,18 @@ class OrderController extends BaseController
      * @param StoreOrderRequest $request
      * @return RedirectResponse
      */
-    public function checkout(OrderService $service, StoreOrderRequest $request): RedirectResponse
-    {
-        try {
-            DB::beginTransaction();
-            $orderNumber = $service->checkout($request->validated());
-            DB::commit();
-            return Redirect::route('client.complete.checkout')->with('order_number', $orderNumber);
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return $this->redirectBackWithMessage($exception->getMessage());
-        }
-    }
+    // public function checkout(OrderService $service, StoreOrderRequest $request): RedirectResponse
+    // {
+    //     try {
+    //         DB::beginTransaction();
+    //         $orderNumber = $service->checkout($request->validated());
+    //         DB::commit();
+    //         return Redirect::route('client.complete.checkout')->with('order_number', $orderNumber);
+    //     } catch (Exception $exception) {
+    //         DB::rollBack();
+    //         return $this->redirectBackWithMessage($exception->getMessage());
+    //     }
+    // }
 
     /**
      * Display the specified resource.

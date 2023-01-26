@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('variations', function (Blueprint $table) {
-            $table->unsignedInteger('price', )->default(0)->change();
+        Schema::table('carts', function (Blueprint $table) {
+            $table->unsignedInteger('price')->default(0)->change();
         });
     }
 

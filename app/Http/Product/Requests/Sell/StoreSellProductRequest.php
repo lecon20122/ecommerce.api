@@ -35,15 +35,13 @@ class StoreSellProductRequest extends FormRequest
             'unisex' => ['required', new Boolean],
             "sizes" => 'array|nullable',
             'images' => 'required|array',
-            'images.*' => ['mimes:jpg,webp,png|max:2048',
+            'images.*' => [
+                'mimes:jpg,webp,png|max:2048',
                 Rule::dimensions()
                     ->minWidth(670)
-                    ->minHeight(670)
                     ->maxWidth(2000)
                     ->maxHeight(2000)
-                    ->ratio(4 / 5)
-                    ->ratio(1/1)
-                    ],
+            ],
         ];
     }
 

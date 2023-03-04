@@ -6,6 +6,7 @@ use App\Domain\Admin\Models\Admin;
 use App\Domain\Store\Models\Store;
 use App\Domain\Store\Services\StoreService;
 use App\Support\Enums\HttpStatusEnums;
+use App\Support\Traits\FeatureTestTrait;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -14,7 +15,7 @@ use Tests\TestCase;
 class
 StoreTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase, WithFaker, FeatureTestTrait;
 
     /**
      * A basic feature test example.
@@ -90,6 +91,22 @@ StoreTest extends TestCase
             'user_id' => $user,
         ]);
 
-        $this->assertEquals($user->id , (new StoreService())->getStore()->user_id);
+        $this->assertEquals($user->id, (new StoreService())->getStore()->user_id);
+    }
+
+    public function testStoreCanBeApprovedByAdmin()
+    {
+        $admin = $this->authorizedAdmin();
+
+        $store = Store::factory()->create();
+
+        $response = $this->post(route('admin.stores.approve', ['store' => $store]))->assertRedirect();
+
+        $response->assertSessionHas('message', 'success');
+
+        $store->refresh();
+        $this->assertEquals($admin->id, $store->approved_by);
+        $this->assertNotNull($store->approved_at);
+
     }
 }

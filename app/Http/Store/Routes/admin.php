@@ -9,3 +9,6 @@ Route::post('stores', [StoreController::class, 'store'])->name('admin.stores.sto
 Route::get('stores/{id}', [StoreController::class, 'edit'])->name('admin.stores.edit');
 Route::post('stores/{store}', [StoreController::class, 'update'])->name('admin.stores.update');
 Route::post('stores/{id}/delete', [StoreController::class, 'destroy'])->name('admin.stores.destroy');
+
+Route::post('stores/{store}/approve', [StoreController::class, 'approve'])->name('admin.stores.approve');
+

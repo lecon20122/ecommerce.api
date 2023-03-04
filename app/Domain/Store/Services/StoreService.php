@@ -17,12 +17,10 @@ class StoreService
 {
     public function index(): Collection|array
     {
-        return Cache::remember(CacheKeyEnums::STORE, '3600',
-            fn() => Store::query()
-                ->with('user:id,name')
-                ->latest()
-                ->get()
-        );
+        return Store::query()
+            ->with(['user', 'approvedBy:id,name'])
+            ->latest()
+            ->get();
     }
 
     public function store(StoreCreateRequest $request)
@@ -68,5 +66,13 @@ class StoreService
     public function getStore()
     {
         return auth('web')->user()->store()->first();
+    }
+
+    public function approve(Store $store): void
+    {
+        DB::beginTransaction();
+        if ($store->update(['approved_at' => now(), 'approved_by' => auth('admin')->id()])) {
+            DB::commit();
+        }
     }
 }

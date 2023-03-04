@@ -10,6 +10,7 @@ use App\Http\Store\Requests\StoreUpdateRequest;
 use App\Http\Store\Resources\StoreResource;
 use Application\Controllers\BaseController;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -134,6 +135,16 @@ class StoreController extends BaseController
         } catch (Exception $exception) {
             DB::rollback();
             return $this->redirectBackWithMessage($exception->getMessage());
+        }
+    }
+
+    public function approve(Store $store): JsonResponse|RedirectResponse
+    {
+        try {
+            $this->storeService->approve($store);
+            return $this->redirectBackWithMessage('success');
+        } catch (Exception $exception) {
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
         }
     }
 }

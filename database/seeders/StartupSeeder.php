@@ -102,7 +102,7 @@ class StartupSeeder extends Seeder
         $variationTypes = [
             [
                 'type' => [
-                    'en' =>  TypeEnum::COLOR,
+                    'en' => TypeEnum::COLOR,
                     'ar' => 'لون',
                 ],
                 'is_mediable' => true,
@@ -120,6 +120,7 @@ class StartupSeeder extends Seeder
         foreach ($variationTypes as $variationType) {
             VariationType::create($variationType);
         }
+
         $colorType = VariationType::query()->whereRaw("JSON_EXTRACT(type, '$.en') = 'color'")->first();
         $sizeType = VariationType::query()->whereRaw("JSON_EXTRACT(type, '$.en') = 'size'")->first();
 
@@ -162,6 +163,14 @@ class StartupSeeder extends Seeder
                     'ar' => 'رمادي',
                 ],
                 'hex_value' => '#808080',
+                'variation_type_id' => $colorType->id,
+            ],
+            [
+                'value' => [
+                    'en' => 'Blue',
+                    'ar' => 'ازرق',
+                ],
+                'hex_value' => '#0000FF',
                 'variation_type_id' => $colorType->id,
             ],
             [

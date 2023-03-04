@@ -114,6 +114,7 @@ class SellProductController extends BaseController
         try {
             return $this->service->update($request->validated(), $id);
         } catch (Exception $exception) {
+
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }

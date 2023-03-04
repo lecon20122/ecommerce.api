@@ -1,6 +1,6 @@
 {
   "resources/js/app.jsx": {
-    "file": "assets/app.05d98b2b.js",
+    "file": "assets/app.56da471f.js",
     "src": "resources/js/app.jsx",
     "isEntry": true,
     "dynamicImports": [
@@ -32,88 +32,88 @@
       "resources/js/Pages/Dashboard/variations/create.tsx"
     ],
     "css": [
-      "assets/app.49a3532e.css"
+      "assets/app.0e8cf083.css"
     ]
   },
   "resources/js/Pages/Auth/login.tsx": {
-    "file": "assets/login.1ec45107.js",
+    "file": "assets/login.20319330.js",
     "src": "resources/js/Pages/Auth/login.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_keys.dc1ba59b.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_button.e3d0d8df.js",
-      "_styleChecker.57d5d447.js",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
+      "_keys.7bb37b1f.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_button.4b1e9a05.js",
+      "_styleChecker.a540f3b2.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_motion.f08e8e94.js",
-      "_EyeOutlined.1a5765e6.js"
+      "_motion.1ccd3e55.js",
+      "_EyeOutlined.af4b801b.js"
     ]
   },
-  "_keys.dc1ba59b.js": {
-    "file": "assets/keys.dc1ba59b.js",
+  "_keys.7bb37b1f.js": {
+    "file": "assets/keys.7bb37b1f.js",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_index.1703942c.js": {
-    "file": "assets/index.1703942c.js",
+  "_index.efa81136.js": {
+    "file": "assets/index.efa81136.js",
     "imports": [
-      "_styleChecker.57d5d447.js",
-      "_AntdIcon.e4254bca.js",
-      "_type.78b143b5.js",
+      "_styleChecker.a540f3b2.js",
+      "_AntdIcon.d0aa761c.js",
+      "_type.6a307fc1.js",
       "_index.0579b088.js",
       "resources/js/app.jsx",
-      "_motion.f08e8e94.js",
-      "_button.e3d0d8df.js",
-      "_index.b080db98.js"
+      "_motion.1ccd3e55.js",
+      "_button.4b1e9a05.js",
+      "_index.3524eded.js"
     ]
   },
-  "_index.b080db98.js": {
-    "file": "assets/index.b080db98.js",
+  "_index.3524eded.js": {
+    "file": "assets/index.3524eded.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
-      "_type.78b143b5.js",
+      "_AntdIcon.d0aa761c.js",
+      "_type.6a307fc1.js",
       "_index.0579b088.js",
       "resources/js/app.jsx",
-      "_EyeOutlined.1a5765e6.js",
-      "_keys.dc1ba59b.js",
-      "_motion.f08e8e94.js",
-      "_button.e3d0d8df.js",
-      "_styleChecker.57d5d447.js"
+      "_EyeOutlined.af4b801b.js",
+      "_keys.7bb37b1f.js",
+      "_motion.1ccd3e55.js",
+      "_button.4b1e9a05.js",
+      "_styleChecker.a540f3b2.js"
     ]
   },
-  "_button.e3d0d8df.js": {
-    "file": "assets/button.e3d0d8df.js",
+  "_button.4b1e9a05.js": {
+    "file": "assets/button.4b1e9a05.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
       "resources/js/app.jsx",
-      "_type.78b143b5.js"
+      "_type.6a307fc1.js"
     ]
   },
-  "_styleChecker.57d5d447.js": {
-    "file": "assets/styleChecker.57d5d447.js",
+  "_styleChecker.a540f3b2.js": {
+    "file": "assets/styleChecker.a540f3b2.js",
     "imports": [
-      "_type.78b143b5.js",
-      "_button.e3d0d8df.js",
+      "_type.6a307fc1.js",
+      "_button.4b1e9a05.js",
       "resources/js/app.jsx",
-      "_AntdIcon.e4254bca.js"
+      "_AntdIcon.d0aa761c.js"
     ]
   },
-  "_type.78b143b5.js": {
-    "file": "assets/type.78b143b5.js",
+  "_type.6a307fc1.js": {
+    "file": "assets/type.6a307fc1.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "resources/js/app.jsx",
       "_index.0579b088.js"
     ]
   },
-  "_AntdIcon.e4254bca.js": {
-    "file": "assets/AntdIcon.e4254bca.js",
+  "_AntdIcon.d0aa761c.js": {
+    "file": "assets/AntdIcon.d0aa761c.js",
     "imports": [
       "resources/js/app.jsx",
       "_index.0579b088.js"
@@ -122,234 +122,234 @@
   "_index.0579b088.js": {
     "file": "assets/index.0579b088.js"
   },
-  "_motion.f08e8e94.js": {
-    "file": "assets/motion.f08e8e94.js",
+  "_motion.1ccd3e55.js": {
+    "file": "assets/motion.1ccd3e55.js",
     "imports": [
       "resources/js/app.jsx",
-      "_AntdIcon.e4254bca.js",
-      "_type.78b143b5.js"
+      "_AntdIcon.d0aa761c.js",
+      "_type.6a307fc1.js"
     ]
   },
-  "_EyeOutlined.1a5765e6.js": {
-    "file": "assets/EyeOutlined.1a5765e6.js",
+  "_EyeOutlined.af4b801b.js": {
+    "file": "assets/EyeOutlined.af4b801b.js",
     "imports": [
       "resources/js/app.jsx",
-      "_AntdIcon.e4254bca.js",
-      "_motion.f08e8e94.js",
-      "_type.78b143b5.js"
+      "_AntdIcon.d0aa761c.js",
+      "_motion.1ccd3e55.js",
+      "_type.6a307fc1.js"
     ]
   },
   "resources/js/Pages/Client/Cart.tsx": {
-    "file": "assets/Cart.36d3f267.js",
+    "file": "assets/Cart.b93e5997.js",
     "src": "resources/js/Pages/Client/Cart.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/client.tsx",
-      "_keys.dc1ba59b.js",
-      "_footer.e76cef0a.js",
-      "_UserOutline.7f8abe50.js",
-      "_AntdIcon.e4254bca.js",
+      "_keys.7bb37b1f.js",
+      "_footer.c65da0fb.js",
+      "_UserOutline.7fb8b4f2.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_should-render.b45b9b3a.js",
-      "_index.ddf7583b.js"
+      "_should-render.b9f42ae0.js",
+      "_index.556052ad.js"
     ]
   },
   "resources/js/layouts/client.tsx": {
-    "file": "assets/client.e65ece9c.js",
+    "file": "assets/client.bd2d6309.js",
     "src": "resources/js/layouts/client.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_footer.e76cef0a.js",
-      "_UserOutline.7f8abe50.js",
-      "_keys.dc1ba59b.js",
-      "_AntdIcon.e4254bca.js",
-      "_should-render.b45b9b3a.js",
-      "_index.ddf7583b.js",
+      "_footer.c65da0fb.js",
+      "_UserOutline.7fb8b4f2.js",
+      "_keys.7bb37b1f.js",
+      "_AntdIcon.d0aa761c.js",
+      "_should-render.b9f42ae0.js",
+      "_index.556052ad.js",
       "_index.0579b088.js"
     ]
   },
-  "_footer.e76cef0a.js": {
-    "file": "assets/footer.e76cef0a.js",
+  "_footer.c65da0fb.js": {
+    "file": "assets/footer.c65da0fb.js",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_should-render.b45b9b3a.js": {
-    "file": "assets/should-render.b45b9b3a.js",
+  "_should-render.b9f42ae0.js": {
+    "file": "assets/should-render.b9f42ae0.js",
     "imports": [
       "resources/js/app.jsx",
       "_index.0579b088.js",
-      "_keys.dc1ba59b.js"
+      "_keys.7bb37b1f.js"
     ],
     "css": [
       "assets/should-render.fe49b11e.css"
     ]
   },
-  "_index.ddf7583b.js": {
-    "file": "assets/index.ddf7583b.js",
+  "_index.556052ad.js": {
+    "file": "assets/index.556052ad.js",
     "imports": [
       "resources/js/app.jsx",
       "_index.0579b088.js",
-      "_should-render.b45b9b3a.js"
+      "_should-render.b9f42ae0.js"
     ],
     "css": [
       "assets/index.deb16fc3.css"
     ]
   },
-  "_UserOutline.7f8abe50.js": {
-    "file": "assets/UserOutline.7f8abe50.js",
+  "_UserOutline.7fb8b4f2.js": {
+    "file": "assets/UserOutline.7fb8b4f2.js",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
   "resources/js/Pages/Client/Checkout.tsx": {
-    "file": "assets/Checkout.511e3b37.js",
+    "file": "assets/Checkout.618b62d7.js",
     "src": "resources/js/Pages/Client/Checkout.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/client.tsx",
-      "_keys.dc1ba59b.js",
+      "_keys.7bb37b1f.js",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_index.5fe68930.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_index.66b67cce.js",
-      "_button.e3d0d8df.js",
-      "_footer.e76cef0a.js",
-      "_UserOutline.7f8abe50.js",
-      "_AntdIcon.e4254bca.js",
+      "_index.c608d6f9.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_index.c4e8524c.js",
+      "_button.4b1e9a05.js",
+      "_footer.c65da0fb.js",
+      "_UserOutline.7fb8b4f2.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_should-render.b45b9b3a.js",
-      "_index.ddf7583b.js",
-      "_type.78b143b5.js",
-      "_motion.f08e8e94.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_styleChecker.57d5d447.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_DownOutlined.84767be8.js",
+      "_should-render.b9f42ae0.js",
+      "_index.556052ad.js",
+      "_type.6a307fc1.js",
+      "_motion.1ccd3e55.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_styleChecker.a540f3b2.js",
+      "_EyeOutlined.af4b801b.js",
+      "_DownOutlined.20cc1de1.js",
       "_getDataOrAriaProps.c03198e8.js"
     ]
   },
   "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx": {
-    "file": "assets/ModalWithChildren.75f46025.js",
+    "file": "assets/ModalWithChildren.2affabce.js",
     "src": "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_button.e3d0d8df.js",
-      "_motion.f08e8e94.js",
-      "_DialogWrap.fd96f328.js",
-      "_styleChecker.57d5d447.js",
-      "_getScrollBarSize.eeac028d.js"
+      "_button.4b1e9a05.js",
+      "_motion.1ccd3e55.js",
+      "_DialogWrap.031fc3b0.js",
+      "_styleChecker.a540f3b2.js",
+      "_getScrollBarSize.dcb513b9.js"
     ]
   },
-  "_index.5fe68930.js": {
-    "file": "assets/index.5fe68930.js",
+  "_index.c608d6f9.js": {
+    "file": "assets/index.c608d6f9.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
-      "_type.78b143b5.js",
+      "_AntdIcon.d0aa761c.js",
+      "_type.6a307fc1.js",
       "_index.0579b088.js",
-      "_EyeOutlined.1a5765e6.js",
+      "_EyeOutlined.af4b801b.js",
       "resources/js/app.jsx",
-      "_getScrollBarSize.eeac028d.js",
-      "_index.b080db98.js",
-      "_motion.f08e8e94.js",
-      "_button.e3d0d8df.js",
-      "_styleChecker.57d5d447.js",
-      "_DownOutlined.84767be8.js"
+      "_getScrollBarSize.dcb513b9.js",
+      "_index.3524eded.js",
+      "_motion.1ccd3e55.js",
+      "_button.4b1e9a05.js",
+      "_styleChecker.a540f3b2.js",
+      "_DownOutlined.20cc1de1.js"
     ]
   },
-  "_index.66b67cce.js": {
-    "file": "assets/index.66b67cce.js",
+  "_index.c4e8524c.js": {
+    "file": "assets/index.c4e8524c.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_EyeOutlined.1a5765e6.js",
+      "_EyeOutlined.af4b801b.js",
       "resources/js/app.jsx",
-      "_type.78b143b5.js",
+      "_type.6a307fc1.js",
       "_getDataOrAriaProps.c03198e8.js",
-      "_styleChecker.57d5d447.js"
+      "_styleChecker.a540f3b2.js"
     ]
   },
-  "_getScrollBarSize.eeac028d.js": {
-    "file": "assets/getScrollBarSize.eeac028d.js",
+  "_getScrollBarSize.dcb513b9.js": {
+    "file": "assets/getScrollBarSize.dcb513b9.js",
     "imports": [
-      "_AntdIcon.e4254bca.js"
+      "_AntdIcon.d0aa761c.js"
     ]
   },
-  "_DownOutlined.84767be8.js": {
-    "file": "assets/DownOutlined.84767be8.js",
+  "_DownOutlined.20cc1de1.js": {
+    "file": "assets/DownOutlined.20cc1de1.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "resources/js/app.jsx"
     ]
   },
   "_getDataOrAriaProps.c03198e8.js": {
     "file": "assets/getDataOrAriaProps.c03198e8.js"
   },
-  "_DialogWrap.fd96f328.js": {
-    "file": "assets/DialogWrap.fd96f328.js",
+  "_DialogWrap.031fc3b0.js": {
+    "file": "assets/DialogWrap.031fc3b0.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "resources/js/app.jsx",
-      "_type.78b143b5.js",
-      "_motion.f08e8e94.js",
-      "_getScrollBarSize.eeac028d.js",
+      "_type.6a307fc1.js",
+      "_motion.1ccd3e55.js",
+      "_getScrollBarSize.dcb513b9.js",
       "_index.0579b088.js"
     ]
   },
   "resources/js/Pages/Client/ProductDetails.tsx": {
-    "file": "assets/ProductDetails.6c319acf.js",
+    "file": "assets/ProductDetails.d4fa7f0d.js",
     "src": "resources/js/Pages/Client/ProductDetails.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/client.tsx",
-      "_should-render.b45b9b3a.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
       "_dev-log.30842e3b.js",
       "_bound.bddb6539.js",
-      "_index.09eb5a7d.js",
-      "_index.5123929a.js",
-      "_keys.dc1ba59b.js",
-      "_footer.e76cef0a.js",
-      "_UserOutline.7f8abe50.js",
-      "_AntdIcon.e4254bca.js",
-      "_index.ddf7583b.js",
-      "_type.78b143b5.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_motion.f08e8e94.js",
-      "_css.b44396a7.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js"
+      "_index.bb5cd06e.js",
+      "_index.d5ddae04.js",
+      "_keys.7bb37b1f.js",
+      "_footer.c65da0fb.js",
+      "_UserOutline.7fb8b4f2.js",
+      "_AntdIcon.d0aa761c.js",
+      "_index.556052ad.js",
+      "_type.6a307fc1.js",
+      "_EyeOutlined.af4b801b.js",
+      "_motion.1ccd3e55.js",
+      "_css.abe27269.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js"
     ],
     "css": [
       "assets/ProductDetails.b2529571.css"
     ]
   },
-  "_index.5123929a.js": {
-    "file": "assets/index.5123929a.js",
+  "_index.d5ddae04.js": {
+    "file": "assets/index.d5ddae04.js",
     "imports": [
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
-      "_EyeOutlined.1a5765e6.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
+      "_EyeOutlined.af4b801b.js",
       "resources/js/app.jsx",
       "_index.0579b088.js",
-      "_css.b44396a7.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_motion.f08e8e94.js"
+      "_css.abe27269.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_motion.1ccd3e55.js"
     ]
   },
-  "_index.09eb5a7d.js": {
-    "file": "assets/index.09eb5a7d.js",
+  "_index.bb5cd06e.js": {
+    "file": "assets/index.bb5cd06e.js",
     "imports": [
       "resources/js/app.jsx"
     ]
@@ -360,169 +360,169 @@
   "_bound.bddb6539.js": {
     "file": "assets/bound.bddb6539.js"
   },
-  "_css.b44396a7.js": {
-    "file": "assets/css.b44396a7.js",
+  "_css.abe27269.js": {
+    "file": "assets/css.abe27269.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "resources/js/app.jsx"
     ]
   },
   "resources/js/Pages/Client/ShopByCategory.tsx": {
-    "file": "assets/ShopByCategory.82c738b4.js",
+    "file": "assets/ShopByCategory.9ea7e2a4.js",
     "src": "resources/js/Pages/Client/ShopByCategory.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/layouts/client.tsx",
       "resources/js/app.jsx",
-      "_should-render.b45b9b3a.js",
-      "_index.09eb5a7d.js",
+      "_should-render.b9f42ae0.js",
+      "_index.bb5cd06e.js",
       "_index.0579b088.js",
-      "_traverse-react-node.527d07d4.js",
-      "_keys.dc1ba59b.js",
-      "_index.ddf7583b.js",
+      "_traverse-react-node.037ec328.js",
+      "_keys.7bb37b1f.js",
+      "_index.556052ad.js",
       "_dev-log.30842e3b.js",
-      "_button.e3d0d8df.js",
-      "_footer.e76cef0a.js",
-      "_UserOutline.7f8abe50.js",
-      "_AntdIcon.e4254bca.js",
-      "_type.78b143b5.js"
+      "_button.4b1e9a05.js",
+      "_footer.c65da0fb.js",
+      "_UserOutline.7fb8b4f2.js",
+      "_AntdIcon.d0aa761c.js",
+      "_type.6a307fc1.js"
     ],
     "css": [
       "assets/ShopByCategory.669bca52.css"
     ]
   },
-  "_traverse-react-node.527d07d4.js": {
-    "file": "assets/traverse-react-node.527d07d4.js",
+  "_traverse-react-node.037ec328.js": {
+    "file": "assets/traverse-react-node.037ec328.js",
     "imports": [
       "resources/js/app.jsx",
-      "_index.09eb5a7d.js"
+      "_index.bb5cd06e.js"
     ]
   },
   "resources/js/Pages/Client/Thankyou.tsx": {
-    "file": "assets/Thankyou.46f8e398.js",
+    "file": "assets/Thankyou.92673100.js",
     "src": "resources/js/Pages/Client/Thankyou.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/layouts/client.tsx",
       "resources/js/app.jsx",
-      "_footer.e76cef0a.js",
-      "_UserOutline.7f8abe50.js",
-      "_keys.dc1ba59b.js",
-      "_AntdIcon.e4254bca.js",
+      "_footer.c65da0fb.js",
+      "_UserOutline.7fb8b4f2.js",
+      "_keys.7bb37b1f.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_should-render.b45b9b3a.js",
-      "_index.ddf7583b.js"
+      "_should-render.b9f42ae0.js",
+      "_index.556052ad.js"
     ]
   },
   "resources/js/Pages/Client/auth/login.tsx": {
-    "file": "assets/login.612b06a4.js",
+    "file": "assets/login.c655fcbd.js",
     "src": "resources/js/Pages/Client/auth/login.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_footer.e76cef0a.js",
-      "_keys.dc1ba59b.js",
+      "_footer.c65da0fb.js",
+      "_keys.7bb37b1f.js",
       "resources/js/app.jsx",
-      "_index.6abfa90b.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_button.e3d0d8df.js",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
+      "_index.da9ffc37.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_button.4b1e9a05.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
       "_getDataOrAriaProps.c03198e8.js",
-      "_styleChecker.57d5d447.js",
-      "_motion.f08e8e94.js",
-      "_EyeOutlined.1a5765e6.js"
+      "_styleChecker.a540f3b2.js",
+      "_motion.1ccd3e55.js",
+      "_EyeOutlined.af4b801b.js"
     ]
   },
-  "_index.6abfa90b.js": {
-    "file": "assets/index.6abfa90b.js",
+  "_index.da9ffc37.js": {
+    "file": "assets/index.da9ffc37.js",
     "imports": [
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
       "resources/js/app.jsx",
       "_getDataOrAriaProps.c03198e8.js",
-      "_button.e3d0d8df.js"
+      "_button.4b1e9a05.js"
     ]
   },
   "resources/js/Pages/Client/auth/newPassword.tsx": {
-    "file": "assets/newPassword.48777197.js",
+    "file": "assets/newPassword.eeeb1d8c.js",
     "src": "resources/js/Pages/Client/auth/newPassword.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_footer.e76cef0a.js",
-      "_keys.dc1ba59b.js",
+      "_footer.c65da0fb.js",
+      "_keys.7bb37b1f.js",
       "resources/js/app.jsx",
-      "_index.6abfa90b.js",
-      "_type.78b143b5.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_button.e3d0d8df.js",
-      "_AntdIcon.e4254bca.js",
+      "_index.da9ffc37.js",
+      "_type.6a307fc1.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_button.4b1e9a05.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
       "_getDataOrAriaProps.c03198e8.js",
-      "_styleChecker.57d5d447.js",
-      "_motion.f08e8e94.js",
-      "_EyeOutlined.1a5765e6.js"
+      "_styleChecker.a540f3b2.js",
+      "_motion.1ccd3e55.js",
+      "_EyeOutlined.af4b801b.js"
     ]
   },
   "resources/js/Pages/Client/auth/register.tsx": {
-    "file": "assets/register.1ea22921.js",
+    "file": "assets/register.c67d35cb.js",
     "src": "resources/js/Pages/Client/auth/register.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_keys.dc1ba59b.js",
-      "_footer.e76cef0a.js",
+      "_keys.7bb37b1f.js",
+      "_footer.c65da0fb.js",
       "resources/js/app.jsx",
-      "_type.78b143b5.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_index.6abfa90b.js",
-      "_button.e3d0d8df.js",
-      "_AntdIcon.e4254bca.js",
+      "_type.6a307fc1.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_index.da9ffc37.js",
+      "_button.4b1e9a05.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_styleChecker.57d5d447.js",
-      "_motion.f08e8e94.js",
-      "_EyeOutlined.1a5765e6.js",
+      "_styleChecker.a540f3b2.js",
+      "_motion.1ccd3e55.js",
+      "_EyeOutlined.af4b801b.js",
       "_getDataOrAriaProps.c03198e8.js"
     ]
   },
   "resources/js/Pages/Client/auth/resetPassword.tsx": {
-    "file": "assets/resetPassword.d627f454.js",
+    "file": "assets/resetPassword.2926a5da.js",
     "src": "resources/js/Pages/Client/auth/resetPassword.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_footer.e76cef0a.js",
-      "_keys.dc1ba59b.js",
+      "_footer.c65da0fb.js",
+      "_keys.7bb37b1f.js",
       "resources/js/app.jsx",
-      "_index.6abfa90b.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_button.e3d0d8df.js",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
+      "_index.da9ffc37.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_button.4b1e9a05.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
       "_getDataOrAriaProps.c03198e8.js",
-      "_styleChecker.57d5d447.js",
-      "_motion.f08e8e94.js",
-      "_EyeOutlined.1a5765e6.js"
+      "_styleChecker.a540f3b2.js",
+      "_motion.1ccd3e55.js",
+      "_EyeOutlined.af4b801b.js"
     ]
   },
   "resources/js/Pages/Client/index.tsx": {
-    "file": "assets/index.567e84ce.js",
+    "file": "assets/index.eafe2a87.js",
     "src": "resources/js/Pages/Client/index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_should-render.b45b9b3a.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.09eb5a7d.js",
-      "_traverse-react-node.527d07d4.js",
-      "_UserOutline.7f8abe50.js",
+      "_index.bb5cd06e.js",
+      "_traverse-react-node.037ec328.js",
+      "_UserOutline.7fb8b4f2.js",
       "_bound.bddb6539.js",
-      "_debounce.8c5bc93f.js",
-      "_keys.dc1ba59b.js"
+      "_debounce.7785b830.js",
+      "_keys.7bb37b1f.js"
     ],
     "dynamicImports": [
       "resources/js/layouts/client.tsx"
@@ -531,227 +531,227 @@
       "assets/index.7684baa7.css"
     ]
   },
-  "_debounce.8c5bc93f.js": {
-    "file": "assets/debounce.8c5bc93f.js",
+  "_debounce.7785b830.js": {
+    "file": "assets/debounce.7785b830.js",
     "imports": [
-      "_keys.dc1ba59b.js"
+      "_keys.7bb37b1f.js"
     ]
   },
   "resources/js/Pages/Dashboard/categories/CategoryEdit.tsx": {
-    "file": "assets/CategoryEdit.39d1aa2d.js",
+    "file": "assets/CategoryEdit.39cb209f.js",
     "src": "resources/js/Pages/Dashboard/categories/CategoryEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/layouts/dashboard.tsx",
       "resources/js/app.jsx",
-      "_keys.dc1ba59b.js",
-      "_MediaProductCollection.df4996d8.js",
-      "_Helpers.835ce3c4.js",
-      "_index.1703942c.js",
-      "_index.22aa7e31.js",
-      "_button.e3d0d8df.js",
-      "_index.5fe68930.js",
-      "_index.b080db98.js",
-      "_should-render.b45b9b3a.js",
+      "_keys.7bb37b1f.js",
+      "_MediaProductCollection.5006209b.js",
+      "_Helpers.43bed749.js",
+      "_index.efa81136.js",
+      "_index.6837ef6a.js",
+      "_button.4b1e9a05.js",
+      "_index.c608d6f9.js",
+      "_index.3524eded.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.ddf7583b.js",
-      "_index.5123929a.js",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_motion.f08e8e94.js",
-      "_css.b44396a7.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_DownOutlined.84767be8.js",
-      "_styleChecker.57d5d447.js",
-      "_useForceUpdate.8702b647.js",
-      "_DeleteOutlined.de530464.js"
+      "_index.556052ad.js",
+      "_index.d5ddae04.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
+      "_EyeOutlined.af4b801b.js",
+      "_motion.1ccd3e55.js",
+      "_css.abe27269.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_DownOutlined.20cc1de1.js",
+      "_styleChecker.a540f3b2.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_DeleteOutlined.ef57b09f.js"
     ]
   },
   "resources/js/layouts/dashboard.tsx": {
-    "file": "assets/dashboard.92fa2374.js",
+    "file": "assets/dashboard.bfb68188.js",
     "src": "resources/js/layouts/dashboard.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_keys.dc1ba59b.js",
-      "_should-render.b45b9b3a.js",
-      "_index.ddf7583b.js",
+      "_keys.7bb37b1f.js",
+      "_should-render.b9f42ae0.js",
+      "_index.556052ad.js",
       "_index.0579b088.js"
     ]
   },
-  "_MediaProductCollection.df4996d8.js": {
-    "file": "assets/MediaProductCollection.df4996d8.js",
+  "_MediaProductCollection.5006209b.js": {
+    "file": "assets/MediaProductCollection.5006209b.js",
     "imports": [
       "resources/js/app.jsx",
-      "_keys.dc1ba59b.js",
-      "_index.5123929a.js",
-      "_button.e3d0d8df.js"
+      "_keys.7bb37b1f.js",
+      "_index.d5ddae04.js",
+      "_button.4b1e9a05.js"
     ]
   },
-  "_Helpers.835ce3c4.js": {
-    "file": "assets/Helpers.835ce3c4.js",
+  "_Helpers.43bed749.js": {
+    "file": "assets/Helpers.43bed749.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "resources/js/app.jsx",
-      "_DownOutlined.84767be8.js",
+      "_DownOutlined.20cc1de1.js",
       "_index.0579b088.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_motion.f08e8e94.js",
-      "_type.78b143b5.js",
-      "_index.b080db98.js",
-      "_styleChecker.57d5d447.js",
-      "_button.e3d0d8df.js"
+      "_getScrollBarSize.dcb513b9.js",
+      "_motion.1ccd3e55.js",
+      "_type.6a307fc1.js",
+      "_index.3524eded.js",
+      "_styleChecker.a540f3b2.js",
+      "_button.4b1e9a05.js"
     ]
   },
-  "_index.22aa7e31.js": {
-    "file": "assets/index.22aa7e31.js",
+  "_index.6837ef6a.js": {
+    "file": "assets/index.6837ef6a.js",
     "imports": [
-      "_type.78b143b5.js",
+      "_type.6a307fc1.js",
       "resources/js/app.jsx",
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_button.e3d0d8df.js",
-      "_useForceUpdate.8702b647.js",
-      "_motion.f08e8e94.js",
-      "_DeleteOutlined.de530464.js",
-      "_DownOutlined.84767be8.js",
-      "_index.b080db98.js"
+      "_getScrollBarSize.dcb513b9.js",
+      "_EyeOutlined.af4b801b.js",
+      "_button.4b1e9a05.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_motion.1ccd3e55.js",
+      "_DeleteOutlined.ef57b09f.js",
+      "_DownOutlined.20cc1de1.js",
+      "_index.3524eded.js"
     ]
   },
-  "_useForceUpdate.8702b647.js": {
-    "file": "assets/useForceUpdate.8702b647.js",
+  "_useForceUpdate.de1e8eb6.js": {
+    "file": "assets/useForceUpdate.de1e8eb6.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "resources/js/app.jsx"
     ]
   },
-  "_DeleteOutlined.de530464.js": {
-    "file": "assets/DeleteOutlined.de530464.js",
+  "_DeleteOutlined.ef57b09f.js": {
+    "file": "assets/DeleteOutlined.ef57b09f.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "resources/js/app.jsx"
     ]
   },
   "resources/js/Pages/Dashboard/categories/CategoryIndex.tsx": {
-    "file": "assets/CategoryIndex.20a09faf.js",
+    "file": "assets/CategoryIndex.0799be6c.js",
     "src": "resources/js/Pages/Dashboard/categories/CategoryIndex.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/dashboard.tsx",
-      "_keys.dc1ba59b.js",
+      "_keys.7bb37b1f.js",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_Helpers.835ce3c4.js",
-      "_index.5fe68930.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_index.22aa7e31.js",
-      "_button.e3d0d8df.js",
-      "_index.8458c689.js",
-      "_Table.1d5875e5.js",
-      "_EditOutlined.d8bf75b6.js",
-      "_AntdIcon.e4254bca.js",
-      "_should-render.b45b9b3a.js",
+      "_Helpers.43bed749.js",
+      "_index.c608d6f9.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_index.6837ef6a.js",
+      "_button.4b1e9a05.js",
+      "_index.710a37c0.js",
+      "_Table.52533cc4.js",
+      "_EditOutlined.c3665b35.js",
+      "_AntdIcon.d0aa761c.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.ddf7583b.js",
-      "_type.78b143b5.js",
-      "_motion.f08e8e94.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_styleChecker.57d5d447.js",
-      "_DownOutlined.84767be8.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_useForceUpdate.8702b647.js",
-      "_DeleteOutlined.de530464.js",
-      "_css.b44396a7.js",
-      "_debounce.8c5bc93f.js",
-      "_index.66b67cce.js",
+      "_index.556052ad.js",
+      "_type.6a307fc1.js",
+      "_motion.1ccd3e55.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_styleChecker.a540f3b2.js",
+      "_DownOutlined.20cc1de1.js",
+      "_EyeOutlined.af4b801b.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_DeleteOutlined.ef57b09f.js",
+      "_css.abe27269.js",
+      "_debounce.7785b830.js",
+      "_index.c4e8524c.js",
       "_getDataOrAriaProps.c03198e8.js"
     ]
   },
-  "_index.8458c689.js": {
-    "file": "assets/index.8458c689.js",
+  "_index.710a37c0.js": {
+    "file": "assets/index.710a37c0.js",
     "imports": [
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
       "resources/js/app.jsx"
     ]
   },
-  "_Table.1d5875e5.js": {
-    "file": "assets/Table.1d5875e5.js",
+  "_Table.52533cc4.js": {
+    "file": "assets/Table.52533cc4.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
-      "_type.78b143b5.js",
+      "_AntdIcon.d0aa761c.js",
+      "_type.6a307fc1.js",
       "_index.0579b088.js",
       "resources/js/app.jsx",
-      "_index.b080db98.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_motion.f08e8e94.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_css.b44396a7.js",
-      "_button.e3d0d8df.js",
-      "_index.5fe68930.js",
-      "_useForceUpdate.8702b647.js",
-      "_debounce.8c5bc93f.js",
-      "_index.66b67cce.js",
-      "_styleChecker.57d5d447.js",
-      "_DownOutlined.84767be8.js"
+      "_index.3524eded.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_motion.1ccd3e55.js",
+      "_EyeOutlined.af4b801b.js",
+      "_css.abe27269.js",
+      "_button.4b1e9a05.js",
+      "_index.c608d6f9.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_debounce.7785b830.js",
+      "_index.c4e8524c.js",
+      "_styleChecker.a540f3b2.js",
+      "_DownOutlined.20cc1de1.js"
     ]
   },
-  "_EditOutlined.d8bf75b6.js": {
-    "file": "assets/EditOutlined.d8bf75b6.js",
+  "_EditOutlined.c3665b35.js": {
+    "file": "assets/EditOutlined.c3665b35.js",
     "imports": [
-      "_AntdIcon.e4254bca.js",
+      "_AntdIcon.d0aa761c.js",
       "resources/js/app.jsx"
     ]
   },
   "resources/js/Pages/Dashboard/customers/index.tsx": {
-    "file": "assets/index.825a74e9.js",
+    "file": "assets/index.a3bbbecb.js",
     "src": "resources/js/Pages/Dashboard/customers/index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/dashboard.tsx",
-      "_keys.dc1ba59b.js",
-      "_AntDesignDataTable.97832e88.js",
+      "_keys.7bb37b1f.js",
+      "_AntDesignDataTable.471ec798.js",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_button.e3d0d8df.js",
-      "_should-render.b45b9b3a.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_button.4b1e9a05.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.ddf7583b.js",
-      "_Table.1d5875e5.js",
-      "_AntdIcon.e4254bca.js",
-      "_type.78b143b5.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_motion.f08e8e94.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_css.b44396a7.js",
-      "_index.5fe68930.js",
-      "_styleChecker.57d5d447.js",
-      "_DownOutlined.84767be8.js",
-      "_useForceUpdate.8702b647.js",
-      "_debounce.8c5bc93f.js",
-      "_index.66b67cce.js",
+      "_index.556052ad.js",
+      "_Table.52533cc4.js",
+      "_AntdIcon.d0aa761c.js",
+      "_type.6a307fc1.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_motion.1ccd3e55.js",
+      "_EyeOutlined.af4b801b.js",
+      "_css.abe27269.js",
+      "_index.c608d6f9.js",
+      "_styleChecker.a540f3b2.js",
+      "_DownOutlined.20cc1de1.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_debounce.7785b830.js",
+      "_index.c4e8524c.js",
       "_getDataOrAriaProps.c03198e8.js",
-      "_DialogWrap.fd96f328.js"
+      "_DialogWrap.031fc3b0.js"
     ]
   },
-  "_AntDesignDataTable.97832e88.js": {
-    "file": "assets/AntDesignDataTable.97832e88.js",
+  "_AntDesignDataTable.471ec798.js": {
+    "file": "assets/AntDesignDataTable.471ec798.js",
     "imports": [
       "resources/js/app.jsx",
-      "_Table.1d5875e5.js"
+      "_Table.52533cc4.js"
     ]
   },
   "resources/js/Pages/Dashboard/index.tsx": {
-    "file": "assets/index.890ce22b.js",
+    "file": "assets/index.04405f08.js",
     "src": "resources/js/Pages/Dashboard/index.tsx",
     "isDynamicEntry": true,
     "imports": [
@@ -762,391 +762,391 @@
     ]
   },
   "resources/js/Pages/Dashboard/products/ProductAttributeIndex.tsx": {
-    "file": "assets/ProductAttributeIndex.a263b890.js",
+    "file": "assets/ProductAttributeIndex.9cd36d95.js",
     "src": "resources/js/Pages/Dashboard/products/ProductAttributeIndex.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/dashboard.tsx",
-      "_keys.dc1ba59b.js",
+      "_keys.7bb37b1f.js",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_AntDesignDataTable.97832e88.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_index.5fe68930.js",
-      "_button.e3d0d8df.js",
-      "_index.8458c689.js",
-      "_Table.1d5875e5.js",
-      "_DeleteOutlined.de530464.js",
-      "_EditOutlined.d8bf75b6.js",
-      "_should-render.b45b9b3a.js",
+      "_AntDesignDataTable.471ec798.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_index.c608d6f9.js",
+      "_button.4b1e9a05.js",
+      "_index.710a37c0.js",
+      "_Table.52533cc4.js",
+      "_DeleteOutlined.ef57b09f.js",
+      "_EditOutlined.c3665b35.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.ddf7583b.js",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
-      "_motion.f08e8e94.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_styleChecker.57d5d447.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_DownOutlined.84767be8.js",
-      "_css.b44396a7.js",
-      "_useForceUpdate.8702b647.js",
-      "_debounce.8c5bc93f.js",
-      "_index.66b67cce.js",
+      "_index.556052ad.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
+      "_motion.1ccd3e55.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_styleChecker.a540f3b2.js",
+      "_EyeOutlined.af4b801b.js",
+      "_DownOutlined.20cc1de1.js",
+      "_css.abe27269.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_debounce.7785b830.js",
+      "_index.c4e8524c.js",
       "_getDataOrAriaProps.c03198e8.js"
     ]
   },
   "resources/js/Pages/Dashboard/products/ProductCreate.tsx": {
-    "file": "assets/ProductCreate.c78b3bba.js",
+    "file": "assets/ProductCreate.b6f4e48e.js",
     "src": "resources/js/Pages/Dashboard/products/ProductCreate.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_keys.dc1ba59b.js",
+      "_keys.7bb37b1f.js",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_Helpers.835ce3c4.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_index.22aa7e31.js",
-      "_button.e3d0d8df.js",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
+      "_Helpers.43bed749.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_index.6837ef6a.js",
+      "_button.4b1e9a05.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_motion.f08e8e94.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_styleChecker.57d5d447.js",
-      "_DownOutlined.84767be8.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_useForceUpdate.8702b647.js",
-      "_DeleteOutlined.de530464.js"
+      "_motion.1ccd3e55.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_styleChecker.a540f3b2.js",
+      "_DownOutlined.20cc1de1.js",
+      "_EyeOutlined.af4b801b.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_DeleteOutlined.ef57b09f.js"
     ]
   },
   "resources/js/Pages/Dashboard/products/ProductEdit.tsx": {
-    "file": "assets/ProductEdit.2d8efab7.js",
+    "file": "assets/ProductEdit.a5a5d11f.js",
     "src": "resources/js/Pages/Dashboard/products/ProductEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/dashboard.tsx",
-      "_keys.dc1ba59b.js",
+      "_keys.7bb37b1f.js",
       "resources/js/Pages/Dashboard/variations/create.tsx",
-      "_ToggleDeleteRestoreButton.6e76cebc.js",
-      "_button.e3d0d8df.js",
-      "_Table.1d5875e5.js",
+      "_ToggleDeleteRestoreButton.5adfbfea.js",
+      "_button.4b1e9a05.js",
+      "_Table.52533cc4.js",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_index.8458c689.js",
-      "_index.5fe68930.js",
-      "_EditOutlined.d8bf75b6.js",
-      "_DeleteOutlined.de530464.js",
-      "_should-render.b45b9b3a.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_index.710a37c0.js",
+      "_index.c608d6f9.js",
+      "_EditOutlined.c3665b35.js",
+      "_DeleteOutlined.ef57b09f.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.ddf7583b.js",
-      "_Helpers.835ce3c4.js",
-      "_AntdIcon.e4254bca.js",
-      "_DownOutlined.84767be8.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_motion.f08e8e94.js",
-      "_type.78b143b5.js",
-      "_styleChecker.57d5d447.js",
-      "_index.22aa7e31.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_useForceUpdate.8702b647.js",
-      "_css.b44396a7.js",
-      "_debounce.8c5bc93f.js",
-      "_index.66b67cce.js",
+      "_index.556052ad.js",
+      "_Helpers.43bed749.js",
+      "_AntdIcon.d0aa761c.js",
+      "_DownOutlined.20cc1de1.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_motion.1ccd3e55.js",
+      "_type.6a307fc1.js",
+      "_styleChecker.a540f3b2.js",
+      "_index.6837ef6a.js",
+      "_EyeOutlined.af4b801b.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_css.abe27269.js",
+      "_debounce.7785b830.js",
+      "_index.c4e8524c.js",
       "_getDataOrAriaProps.c03198e8.js",
-      "_DialogWrap.fd96f328.js"
+      "_DialogWrap.031fc3b0.js"
     ]
   },
   "resources/js/Pages/Dashboard/variations/create.tsx": {
-    "file": "assets/create.50a28f17.js",
+    "file": "assets/create.021321ae.js",
     "src": "resources/js/Pages/Dashboard/variations/create.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_keys.dc1ba59b.js",
+      "_keys.7bb37b1f.js",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_Helpers.835ce3c4.js",
-      "_index.5fe68930.js",
-      "_index.8458c689.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_index.22aa7e31.js",
-      "_button.e3d0d8df.js",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
+      "_Helpers.43bed749.js",
+      "_index.c608d6f9.js",
+      "_index.710a37c0.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_index.6837ef6a.js",
+      "_button.4b1e9a05.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_motion.f08e8e94.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_styleChecker.57d5d447.js",
-      "_DownOutlined.84767be8.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_useForceUpdate.8702b647.js",
-      "_DeleteOutlined.de530464.js"
+      "_motion.1ccd3e55.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_styleChecker.a540f3b2.js",
+      "_DownOutlined.20cc1de1.js",
+      "_EyeOutlined.af4b801b.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_DeleteOutlined.ef57b09f.js"
     ]
   },
-  "_ToggleDeleteRestoreButton.6e76cebc.js": {
-    "file": "assets/ToggleDeleteRestoreButton.6e76cebc.js",
+  "_ToggleDeleteRestoreButton.5adfbfea.js": {
+    "file": "assets/ToggleDeleteRestoreButton.5adfbfea.js",
     "imports": [
       "resources/js/app.jsx",
-      "_button.e3d0d8df.js"
+      "_button.4b1e9a05.js"
     ]
   },
   "resources/js/Pages/Dashboard/settings/SettingPage.tsx": {
-    "file": "assets/SettingPage.c3213e41.js",
+    "file": "assets/SettingPage.a814f2f9.js",
     "src": "resources/js/Pages/Dashboard/settings/SettingPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/dashboard.tsx",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_keys.dc1ba59b.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_button.e3d0d8df.js",
-      "_index.8458c689.js",
-      "_Table.1d5875e5.js",
-      "_EditOutlined.d8bf75b6.js",
-      "_should-render.b45b9b3a.js",
+      "_keys.7bb37b1f.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_button.4b1e9a05.js",
+      "_index.710a37c0.js",
+      "_Table.52533cc4.js",
+      "_EditOutlined.c3665b35.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.ddf7583b.js",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
-      "_motion.f08e8e94.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_styleChecker.57d5d447.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_css.b44396a7.js",
-      "_index.5fe68930.js",
-      "_DownOutlined.84767be8.js",
-      "_useForceUpdate.8702b647.js",
-      "_debounce.8c5bc93f.js",
-      "_index.66b67cce.js",
+      "_index.556052ad.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
+      "_motion.1ccd3e55.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_styleChecker.a540f3b2.js",
+      "_EyeOutlined.af4b801b.js",
+      "_css.abe27269.js",
+      "_index.c608d6f9.js",
+      "_DownOutlined.20cc1de1.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_debounce.7785b830.js",
+      "_index.c4e8524c.js",
       "_getDataOrAriaProps.c03198e8.js"
     ]
   },
   "resources/js/Pages/Dashboard/stores/StoreEdit.tsx": {
-    "file": "assets/StoreEdit.e4264d9f.js",
+    "file": "assets/StoreEdit.5483e762.js",
     "src": "resources/js/Pages/Dashboard/stores/StoreEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/dashboard.tsx",
-      "_keys.dc1ba59b.js",
-      "_ToggleDeleteRestoreButton.6e76cebc.js",
-      "_AntDesignDataTable.97832e88.js",
-      "_Table.1d5875e5.js",
-      "_button.e3d0d8df.js",
+      "_keys.7bb37b1f.js",
+      "_ToggleDeleteRestoreButton.5adfbfea.js",
+      "_AntDesignDataTable.471ec798.js",
+      "_Table.52533cc4.js",
+      "_button.4b1e9a05.js",
       "resources/js/Pages/Dashboard/products/ProductCreate.tsx",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_index.8458c689.js",
-      "_should-render.b45b9b3a.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_index.710a37c0.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.ddf7583b.js",
-      "_AntdIcon.e4254bca.js",
-      "_type.78b143b5.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_motion.f08e8e94.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_css.b44396a7.js",
-      "_index.5fe68930.js",
-      "_styleChecker.57d5d447.js",
-      "_DownOutlined.84767be8.js",
-      "_useForceUpdate.8702b647.js",
-      "_debounce.8c5bc93f.js",
-      "_index.66b67cce.js",
+      "_index.556052ad.js",
+      "_AntdIcon.d0aa761c.js",
+      "_type.6a307fc1.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_motion.1ccd3e55.js",
+      "_EyeOutlined.af4b801b.js",
+      "_css.abe27269.js",
+      "_index.c608d6f9.js",
+      "_styleChecker.a540f3b2.js",
+      "_DownOutlined.20cc1de1.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_debounce.7785b830.js",
+      "_index.c4e8524c.js",
       "_getDataOrAriaProps.c03198e8.js",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_DialogWrap.fd96f328.js",
-      "_Helpers.835ce3c4.js",
-      "_index.22aa7e31.js",
-      "_DeleteOutlined.de530464.js"
+      "_DialogWrap.031fc3b0.js",
+      "_Helpers.43bed749.js",
+      "_index.6837ef6a.js",
+      "_DeleteOutlined.ef57b09f.js"
     ]
   },
   "resources/js/Pages/Dashboard/stores/StoreIndex.tsx": {
-    "file": "assets/StoreIndex.6dd77ed3.js",
+    "file": "assets/StoreIndex.311ff8c0.js",
     "src": "resources/js/Pages/Dashboard/stores/StoreIndex.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/dashboard.tsx",
-      "_keys.dc1ba59b.js",
-      "_AntDesignDataTable.97832e88.js",
-      "_Table.1d5875e5.js",
-      "_EditOutlined.d8bf75b6.js",
-      "_should-render.b45b9b3a.js",
+      "_keys.7bb37b1f.js",
+      "_AntDesignDataTable.471ec798.js",
+      "_Table.52533cc4.js",
+      "_button.4b1e9a05.js",
+      "_EditOutlined.c3665b35.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.ddf7583b.js",
-      "_AntdIcon.e4254bca.js",
-      "_type.78b143b5.js",
-      "_index.b080db98.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_motion.f08e8e94.js",
-      "_button.e3d0d8df.js",
-      "_styleChecker.57d5d447.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_css.b44396a7.js",
-      "_index.5fe68930.js",
-      "_DownOutlined.84767be8.js",
-      "_useForceUpdate.8702b647.js",
-      "_debounce.8c5bc93f.js",
-      "_index.66b67cce.js",
+      "_index.556052ad.js",
+      "_AntdIcon.d0aa761c.js",
+      "_type.6a307fc1.js",
+      "_index.3524eded.js",
+      "_EyeOutlined.af4b801b.js",
+      "_motion.1ccd3e55.js",
+      "_styleChecker.a540f3b2.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_css.abe27269.js",
+      "_index.c608d6f9.js",
+      "_DownOutlined.20cc1de1.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_debounce.7785b830.js",
+      "_index.c4e8524c.js",
       "_getDataOrAriaProps.c03198e8.js"
     ]
   },
   "resources/js/Pages/Dashboard/variations/VariationEdit.tsx": {
-    "file": "assets/VariationEdit.1ebee9e4.js",
+    "file": "assets/VariationEdit.7bbdc992.js",
     "src": "resources/js/Pages/Dashboard/variations/VariationEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/dashboard.tsx",
-      "_MediaProductCollection.df4996d8.js",
-      "_keys.dc1ba59b.js",
-      "_ImageUploadManuallyComponent.28d803fe.js",
+      "_MediaProductCollection.5006209b.js",
+      "_keys.7bb37b1f.js",
+      "_ImageUploadManuallyComponent.460e2848.js",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_index.1703942c.js",
-      "_Helpers.835ce3c4.js",
-      "_index.b080db98.js",
-      "_button.e3d0d8df.js",
+      "_index.efa81136.js",
+      "_Helpers.43bed749.js",
+      "_index.3524eded.js",
+      "_button.4b1e9a05.js",
       "resources/js/Pages/Dashboard/variations/create.tsx",
-      "_ToggleDeleteRestoreButton.6e76cebc.js",
-      "_index.5fe68930.js",
-      "_type.78b143b5.js",
-      "_useForceUpdate.8702b647.js",
-      "_AntdIcon.e4254bca.js",
+      "_ToggleDeleteRestoreButton.5adfbfea.js",
+      "_index.c608d6f9.js",
+      "_type.6a307fc1.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_AntdIcon.d0aa761c.js",
       "_index.0579b088.js",
-      "_debounce.8c5bc93f.js",
-      "_Table.1d5875e5.js",
-      "_should-render.b45b9b3a.js",
-      "_index.ddf7583b.js",
-      "_index.5123929a.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_motion.f08e8e94.js",
-      "_css.b44396a7.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_index.22aa7e31.js",
-      "_DeleteOutlined.de530464.js",
-      "_DownOutlined.84767be8.js",
-      "_styleChecker.57d5d447.js",
-      "_index.8458c689.js",
-      "_index.66b67cce.js",
+      "_debounce.7785b830.js",
+      "_Table.52533cc4.js",
+      "_should-render.b9f42ae0.js",
+      "_index.556052ad.js",
+      "_index.d5ddae04.js",
+      "_EyeOutlined.af4b801b.js",
+      "_motion.1ccd3e55.js",
+      "_css.abe27269.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_index.6837ef6a.js",
+      "_DeleteOutlined.ef57b09f.js",
+      "_DownOutlined.20cc1de1.js",
+      "_styleChecker.a540f3b2.js",
+      "_index.710a37c0.js",
+      "_index.c4e8524c.js",
       "_getDataOrAriaProps.c03198e8.js"
     ]
   },
-  "_ImageUploadManuallyComponent.28d803fe.js": {
-    "file": "assets/ImageUploadManuallyComponent.28d803fe.js",
+  "_ImageUploadManuallyComponent.460e2848.js": {
+    "file": "assets/ImageUploadManuallyComponent.460e2848.js",
     "imports": [
       "resources/js/app.jsx",
-      "_keys.dc1ba59b.js",
-      "_index.22aa7e31.js",
-      "_button.e3d0d8df.js",
-      "_AntdIcon.e4254bca.js"
+      "_keys.7bb37b1f.js",
+      "_index.6837ef6a.js",
+      "_button.4b1e9a05.js",
+      "_AntdIcon.d0aa761c.js"
     ]
   },
   "resources/js/Pages/Dashboard/variations/VariationTypeIndex.tsx": {
-    "file": "assets/VariationTypeIndex.c0448260.js",
+    "file": "assets/VariationTypeIndex.7a7e59d1.js",
     "src": "resources/js/Pages/Dashboard/variations/VariationTypeIndex.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/dashboard.tsx",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_keys.dc1ba59b.js",
-      "_AntDesignDataTable.97832e88.js",
-      "_button.e3d0d8df.js",
-      "_index.8458c689.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_index.5fe68930.js",
-      "_Table.1d5875e5.js",
-      "_EditOutlined.d8bf75b6.js",
-      "_DeleteOutlined.de530464.js",
-      "_should-render.b45b9b3a.js",
+      "_keys.7bb37b1f.js",
+      "_AntDesignDataTable.471ec798.js",
+      "_button.4b1e9a05.js",
+      "_index.710a37c0.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_index.c608d6f9.js",
+      "_Table.52533cc4.js",
+      "_EditOutlined.c3665b35.js",
+      "_DeleteOutlined.ef57b09f.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.ddf7583b.js",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
-      "_motion.f08e8e94.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_styleChecker.57d5d447.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_DownOutlined.84767be8.js",
-      "_css.b44396a7.js",
-      "_useForceUpdate.8702b647.js",
-      "_debounce.8c5bc93f.js",
-      "_index.66b67cce.js",
+      "_index.556052ad.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
+      "_motion.1ccd3e55.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_styleChecker.a540f3b2.js",
+      "_EyeOutlined.af4b801b.js",
+      "_DownOutlined.20cc1de1.js",
+      "_css.abe27269.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_debounce.7785b830.js",
+      "_index.c4e8524c.js",
       "_getDataOrAriaProps.c03198e8.js"
     ]
   },
   "resources/js/Pages/Dashboard/variations/VariationTypeValueIndex.tsx": {
-    "file": "assets/VariationTypeValueIndex.db30d983.js",
+    "file": "assets/VariationTypeValueIndex.09b8acd1.js",
     "src": "resources/js/Pages/Dashboard/variations/VariationTypeValueIndex.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
       "resources/js/layouts/dashboard.tsx",
       "resources/js/Pages/Dashboard/variations/ModalWithChildren.tsx",
-      "_keys.dc1ba59b.js",
-      "_ImageUploadManuallyComponent.28d803fe.js",
-      "_index.1703942c.js",
-      "_index.b080db98.js",
-      "_button.e3d0d8df.js",
-      "_index.8458c689.js",
-      "_Table.1d5875e5.js",
-      "_EditOutlined.d8bf75b6.js",
-      "_DeleteOutlined.de530464.js",
-      "_should-render.b45b9b3a.js",
+      "_keys.7bb37b1f.js",
+      "_ImageUploadManuallyComponent.460e2848.js",
+      "_index.efa81136.js",
+      "_index.3524eded.js",
+      "_button.4b1e9a05.js",
+      "_index.710a37c0.js",
+      "_Table.52533cc4.js",
+      "_EditOutlined.c3665b35.js",
+      "_DeleteOutlined.ef57b09f.js",
+      "_should-render.b9f42ae0.js",
       "_index.0579b088.js",
-      "_index.ddf7583b.js",
-      "_type.78b143b5.js",
-      "_AntdIcon.e4254bca.js",
-      "_motion.f08e8e94.js",
-      "_DialogWrap.fd96f328.js",
-      "_getScrollBarSize.eeac028d.js",
-      "_styleChecker.57d5d447.js",
-      "_index.22aa7e31.js",
-      "_EyeOutlined.1a5765e6.js",
-      "_useForceUpdate.8702b647.js",
-      "_DownOutlined.84767be8.js",
-      "_css.b44396a7.js",
-      "_index.5fe68930.js",
-      "_debounce.8c5bc93f.js",
-      "_index.66b67cce.js",
+      "_index.556052ad.js",
+      "_type.6a307fc1.js",
+      "_AntdIcon.d0aa761c.js",
+      "_motion.1ccd3e55.js",
+      "_DialogWrap.031fc3b0.js",
+      "_getScrollBarSize.dcb513b9.js",
+      "_styleChecker.a540f3b2.js",
+      "_index.6837ef6a.js",
+      "_EyeOutlined.af4b801b.js",
+      "_useForceUpdate.de1e8eb6.js",
+      "_DownOutlined.20cc1de1.js",
+      "_css.abe27269.js",
+      "_index.c608d6f9.js",
+      "_debounce.7785b830.js",
+      "_index.c4e8524c.js",
       "_getDataOrAriaProps.c03198e8.js"
     ]
-  },
-  "index.css": {
-    "file": "assets/index.deb16fc3.css",
-    "src": "index.css"
-  },
-  "resources/js/Pages/Client/ShopByCategory.css": {
-    "file": "assets/ShopByCategory.669bca52.css",
-    "src": "resources/js/Pages/Client/ShopByCategory.css"
   },
   "should-render.css": {
     "file": "assets/should-render.fe49b11e.css",
     "src": "should-render.css"
   },
-  "resources/js/Pages/Client/ProductDetails.css": {
-    "file": "assets/ProductDetails.b2529571.css",
-    "src": "resources/js/Pages/Client/ProductDetails.css"
-  },
   "resources/js/Pages/Client/index.css": {
     "file": "assets/index.7684baa7.css",
     "src": "resources/js/Pages/Client/index.css"
   },
+  "resources/js/Pages/Client/ShopByCategory.css": {
+    "file": "assets/ShopByCategory.669bca52.css",
+    "src": "resources/js/Pages/Client/ShopByCategory.css"
+  },
+  "index.css": {
+    "file": "assets/index.deb16fc3.css",
+    "src": "index.css"
+  },
+  "resources/js/Pages/Client/ProductDetails.css": {
+    "file": "assets/ProductDetails.b2529571.css",
+    "src": "resources/js/Pages/Client/ProductDetails.css"
+  },
   "resources/js/app.css": {
-    "file": "assets/app.49a3532e.css",
+    "file": "assets/app.0e8cf083.css",
     "src": "resources/js/app.css"
   }
 }

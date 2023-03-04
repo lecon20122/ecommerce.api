@@ -32,9 +32,13 @@ class SignInController extends BaseController
 
     public function findStore($providerUser)
     {
-        $user = User::query()->with(['store' => function (HasOne $query) {
-            $query->where('approved_at', '!=', null);
-        }])->where('provider_id', $providerUser->id)->first();
+        $user = User::query()->with(
+            [
+                'store' => function (HasOne $query) {
+                    $query->where('approved_at', '!=', null);
+                }
+            ]
+        )->where('provider_id', $providerUser->id)->first();
 
         if ($user) {
             if ($user->store) {

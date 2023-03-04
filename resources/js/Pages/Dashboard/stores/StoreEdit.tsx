@@ -36,6 +36,7 @@ export default function StoreEdit({currentStore, locale, variationTypesValues, v
   return (
     <DashboardLayout>
       <div className='m-2'>
+
         <Form
           className={'container mx-auto'}
           scrollToFirstError

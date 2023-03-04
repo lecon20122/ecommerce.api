@@ -5,7 +5,7 @@ import {Inertia,} from '@inertiajs/inertia';
 import {Store} from "../../../types/globalTypes";
 import AntDesignDataTable from "../../../components/DataTables/AntDesignDataTable";
 import {ColumnsType} from "antd/es/table";
-import {Space} from "antd";
+import {Button, Space} from "antd";
 import {EditOutlined} from "@ant-design/icons";
 
 interface Props {
@@ -24,7 +24,7 @@ export default function StoreIndex({stores, locale}: Props) {
 
 
   const handleOnClickUpdateDialog = (storeId: any) => {
-    Inertia.get(route('admin.stores.edit', {id : storeId}))
+    Inertia.get(route('admin.stores.edit', {id: storeId}))
   };
 
   const handleOnClickDelete = (data: any) => {
@@ -42,6 +42,12 @@ export default function StoreIndex({stores, locale}: Props) {
     })
     setOpenDeleteDialog(false);
   };
+
+  const handleOnClickApprove = (data: DataType) => {
+    Inertia.post(route('admin.stores.approve', data.id), {
+      preserveState: false
+    })
+  }
 
   const columns: ColumnsType<DataType> = [
     {
@@ -65,7 +71,7 @@ export default function StoreIndex({stores, locale}: Props) {
       dataIndex: 'user',
       render: (_, record) => (
         <Space size="middle">
-          <span>{record.user?.name}</span>
+          <span>{record.user?.name}</span> | <span>{record.user?.email}</span>
         </Space>
       ),
     },
@@ -74,7 +80,11 @@ export default function StoreIndex({stores, locale}: Props) {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-            <EditOutlined onClick={(e) => handleOnClickUpdateDialog(record.id)}/>
+          <EditOutlined onClick={(e) => handleOnClickUpdateDialog(record.id)}/>
+          //create approve and reject button
+          <Button onClick={event => handleOnClickApprove(record)} className={record.approved_at ? 'text-red-500' : 'text-green-500'}>
+            {record.approved_at ? 'Disable' : 'Approve'}
+          </Button>
           {/*<DeleteOutlined onClick={(e) => handleOnClickDelete(record.id)}/>*/}
         </Space>
       ),

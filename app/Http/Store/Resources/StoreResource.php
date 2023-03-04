@@ -25,6 +25,8 @@ class StoreResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'user' => new UserResource($this->whenLoaded('user')),
+            'approved_at' => $this->approved_at,
+            'approved_by' => $this->whenLoaded('approvedBy'),
             'products' => ProductResource::collection($this->whenLoaded('products')),
         ];
     }

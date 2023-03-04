@@ -2,6 +2,7 @@
 
 namespace App\Domain\Store\Models;
 
+use App\Domain\Admin\Models\Admin;
 use App\Domain\Location\Models\Address;
 use App\Domain\Product\Models\Product;
 use Domain\User\Models\User;
@@ -40,5 +41,10 @@ class Store extends Model
     public function scopeApproved($query)
     {
         return $query->where([['approved_at', '!=', null], ['approved_by', '!=', null]]);
+    }
+
+    public function approvedBy(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'approved_by', 'id');
     }
 }

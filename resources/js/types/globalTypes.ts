@@ -26,11 +26,18 @@ export interface Store {
   created_at: Date;
   user_id: number;
   user: User;
+  approved_at?: string;
+  approved_by?: {
+    id: number;
+    name: string;
+  };
 }
 
 export interface User {
   id: number;
   name: string;
+
+  email: string;
 }
 
 

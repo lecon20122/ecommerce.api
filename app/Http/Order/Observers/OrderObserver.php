@@ -68,6 +68,6 @@ class OrderObserver
      */
     public function creating(Order $order)
     {
-        $order->uuid = (string)Str::uuid();
+//        $order->uuid = (string)Str::uuid();
     }
 }

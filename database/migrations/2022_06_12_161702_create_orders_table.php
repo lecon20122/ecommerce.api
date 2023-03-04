@@ -18,11 +18,11 @@ return new class extends Migration
             $table->id();
             $table->string('state')->default(StateEnums::PROCESSING->value);
             $table->string('notes')->nullable(); // done
-            $table->decimal('total')->default(0)->nullable();
-            $table->decimal('subtotal')->default(0)->nullable(); // done
-            $table->decimal('delivery_fees')->default(0)->nullable(); // after calc
-            $table->decimal('commission')->default(0)->nullable(); // after calc
-            $table->decimal('net')->default(0)->nullable(); // after calc
+            $table->unsignedInteger('total')->default(0)->nullable();
+            $table->unsignedInteger('subtotal')->default(0)->nullable(); // done
+            $table->unsignedInteger('delivery_fees')->default(0)->nullable(); // after calc
+            $table->unsignedInteger('commission')->default(0)->nullable(); // after calc
+            $table->unsignedInteger('net')->default(0)->nullable(); // after calc
 
             $table->foreignId('user_id')->nullable()->constrained(); // done
             $table->foreignId('store_id')->nullable()->constrained(); // done

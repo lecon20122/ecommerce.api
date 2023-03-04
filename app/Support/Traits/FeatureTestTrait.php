@@ -26,7 +26,7 @@ trait FeatureTestTrait
         return $admin;
     }
 
-    public function unAuthorizedUser(): Collection|Model
+    public function unAuthorizedUser(): User
     {
         $unAuthorizedUser = User::factory()->create();
         $this->authorizedUser();

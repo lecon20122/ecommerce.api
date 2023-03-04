@@ -2,7 +2,12 @@
 
 use App\Http\Product\Controllers\ProductController;
 use App\Http\Variation\Controllers\ApiVariationController;
+use App\Http\Variation\Controllers\Sell\SellVariationController;
 use Illuminate\Support\Facades\Route;
+
+Route::name('sell.')->prefix('sell/v1')->middleware(['auth:sanctum'])->group(function () {
+    Route::post('variation/delete/{variation}', [SellVariationController::class, 'safeDelete'])->name('safe.delete.owner.variation');
+});
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('variation/{variation}', [ApiVariationController::class, 'show'])->name('get.owner.variation');

@@ -57,4 +57,20 @@ class SellVariationService
             $this->createSize($product, $color, $sizeAndStock, $price);
         }
     }
+
+    public function safeDelete(Variation $variation): void
+    {
+        $user = auth()->user();
+        $store = $user->store()->approved()->first();
+        if (!$store) abort(403, 'you are not allowed to view products yet!');
+        if ($variation->store_id !== $store->id) abort(403, 'your store does not own this variation!');
+
+        $variation->load('orders');
+
+        if ($variation->orders) {
+            $variation->delete();
+        } else {
+            $variation->forceDelete();
+        }
+    }
 }

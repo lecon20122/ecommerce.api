@@ -8,7 +8,9 @@ use App\Domain\Order\Models\Order;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Support\Enums\MediaCollectionEnums;
+use App\Support\Enums\TypeEnum;
 use App\Support\Traits\CustomHasMedia;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -55,26 +57,12 @@ class Variation extends Model implements HasMedia
     {
         $this->addMediaConversion(MediaCollectionEnums::THUMB_CONVENTION)
             ->format(Manipulations::FORMAT_WEBP)
-            ->width(405)
-            ->height(539)
-            ->performOnCollections(MediaCollectionEnums::VARIATION);
-
-        $this->addMediaConversion(MediaCollectionEnums::SMALL_CONVENTION)
-            ->format(Manipulations::FORMAT_WEBP)
-            ->width(219)
-            ->height(293)
+            ->width(263)
             ->performOnCollections(MediaCollectionEnums::VARIATION);
 
         $this->addMediaConversion(MediaCollectionEnums::BIG_CONVENTION)
             ->format(Manipulations::FORMAT_WEBP)
-            ->width(600)
-            ->height(799)
-            ->performOnCollections(MediaCollectionEnums::VARIATION);
-
-        $this->addMediaConversion(MediaCollectionEnums::ZOOM_CONVENTION)
-            ->format(Manipulations::FORMAT_WEBP)
-            ->width(1340)
-            ->height(1785)
+            ->width(670)
             ->performOnCollections(MediaCollectionEnums::VARIATION);
 
         $this->addMediaConversion(MediaCollectionEnums::VARIATION_COLOR_CONVENTION)
@@ -184,4 +172,20 @@ class Variation extends Model implements HasMedia
             set: fn($value) => $value * 100,
         );
     }
+
+    public function scopeColor(Builder $query): Builder
+    {
+        return $query->whereHas('variationType', fn($query) => $query->whereRaw("JSON_EXTRACT(type, '$.en') = 'color'"));
+    }
+
+    public function scopeSize(Builder $query): Builder
+    {
+        return $query->whereHas('variationType', fn($query) => $query->whereRaw("JSON_EXTRACT(type, '$.en') = 'size'"));
+    }
+
+    public function mainImage(): MorphOne
+    {
+        return $this->getMediaByCollectionAndConventionNonOrdered(MediaCollectionEnums::VARIATION)->orderByDesc('created_at');
+    }
+
 }

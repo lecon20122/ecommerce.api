@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('description');
-            $table->decimal('delivery_fees')->nullable()->default(0);
+            $table->string('description')->nullable();
+            $table->integer('delivery_fees')->nullable()->default(0);
             $table->boolean('is_active')->default(true);
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('approved_by')->nullable()->constrained('admins');
+            $table->timestamp('approved_at')->nullable();
             $table->timestamps();
 
 

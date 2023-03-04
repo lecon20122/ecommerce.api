@@ -239,7 +239,7 @@ class ProductService
         if (!$user->isOwner($product->store_id)) abort(403, 'You are not allowed to access this product');
 
         $product->load(['discount', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
-            $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
+            $query->with([ 'variationTypeValue', 'variationType'])->parent();
         }
         ])->first();
 

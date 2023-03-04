@@ -225,7 +225,7 @@ class VariationService
         $variation?->forceDelete();
     }
 
-    public function addImagesToVariation(Variation $variation, StoreMediaRequest $request, ImageService $imageService)
+    public function addImagesToVariation(Variation $variation, StoreMediaRequest $request, ImageService $imageService): void
     {
         if (Auth::guard('admin')->check() || \auth()->user()->isOwner($variation->store_id)) {
             if ($request->hasFile('images')) {

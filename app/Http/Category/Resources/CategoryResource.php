@@ -30,6 +30,7 @@ class CategoryResource extends JsonResource
             'primary_color' => $this->primary_color,
             'secondary_color' => $this->secondary_color,
             'children' => CategoryResource::collection($this->whenLoaded('children')),
+            'subcategories' => CategoryResource::collection($this->whenLoaded('childrenRecursive')),
             'parent' => new CategoryResource($this->whenLoaded('parent')),
             'products' => ProductResource::collection($this->whenLoaded('products')),
             'images' => [

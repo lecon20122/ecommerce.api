@@ -36,4 +36,9 @@ class Store extends Model
     {
         return $this->hasMany(Product::class, 'store_id', 'id');
     }
+
+    public function scopeApproved($query)
+    {
+        return $query->where([['approved_at', '!=', null], ['approved_by', '!=', null]]);
+    }
 }

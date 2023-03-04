@@ -12,6 +12,7 @@ use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
+use App\Support\Enums\TypeEnum;
 use Exception;
 use Faker\Generator;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -101,7 +102,7 @@ class StartupSeeder extends Seeder
         $variationTypes = [
             [
                 'type' => [
-                    'en' => 'color',
+                    'en' =>  TypeEnum::COLOR,
                     'ar' => 'لون',
                 ],
                 'is_mediable' => true,
@@ -109,7 +110,7 @@ class StartupSeeder extends Seeder
             ],
             [
                 'type' => [
-                    'en' => 'size',
+                    'en' => TypeEnum::SIZE,
                     'ar' => 'مقاس',
                 ],
                 'is_mediable' => false,

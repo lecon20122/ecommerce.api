@@ -9,7 +9,6 @@ class MediaCollectionEnums
     const THUMBNAIL = 'thumbnails';
     const SMALL = 'small';
     const BIG_CONVENTION = 'big';
-    const ZOOM_CONVENTION = 'zoom';
     const LOGO = 'logo';
 
     const IMAGES = 'images';
@@ -21,6 +20,7 @@ class MediaCollectionEnums
     const IMAGES_CONVENTION = 'images';
     const SMALL_CONVENTION = 'small';
     const VARIATION_COLOR = 'variation_color';
+    const VARIATION_THUMBNAIL = 'variation_thumbnail';
     const CATEGORY_MOBILE_BANNER_CONVENTION = 'category_mobile_banner_convention';
     const CATEGORY_BIG_BANNER_CONVENTION = 'category_big_banner_convention';
     const LOGO_CONVERSION = 'logo_conversion';

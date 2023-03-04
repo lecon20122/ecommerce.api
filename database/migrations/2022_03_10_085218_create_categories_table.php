@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('title');
             $table->string('slug')->unique();
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('opposite_category_id')->nullable();
             $table->string('primary_color')->nullable();
             $table->string('secondary_color')->nullable();
             $table->boolean('is_active')->default(false);

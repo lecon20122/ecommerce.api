@@ -133,11 +133,6 @@ class Category extends Model implements HasMedia
         return $query->whereNull('parent_id');
     }
 
-//    public function getRouteKeyName(): string
-//    {
-//        return 'slug';
-//    }
-
     public function resolveRouteBinding($value, $field = null): Model|Builder|null
     {
         return $this

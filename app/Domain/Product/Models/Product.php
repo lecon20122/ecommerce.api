@@ -6,6 +6,7 @@ use App\Domain\Category\Models\Category;
 use App\Domain\Store\Models\Store;
 use App\Domain\User\Models\Favorite;
 use App\Domain\Variation\Models\Variation;
+use App\Support\Enums\MediaCollectionEnums;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,8 +14,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
@@ -27,6 +31,11 @@ class Product extends Model
     public function variations(): HasMany
     {
         return $this->hasMany(Variation::class);
+    }
+
+    public function variation(): HasOne
+    {
+        return $this->hasOne(Variation::class);
     }
 
     public function description(): HasMany

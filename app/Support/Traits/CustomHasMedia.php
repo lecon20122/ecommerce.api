@@ -40,5 +40,9 @@ trait CustomHasMedia
             ->orderBy('order_column');
     }
 
-
+    public function getMediaByCollectionAndConventionNonOrdered($collectionName): MorphOne
+    {
+        return $this->morphOne(config('media-library.media_model'), 'model')
+            ->where('collection_name', $collectionName);
+    }
 }

@@ -4,6 +4,8 @@ namespace Tests\Feature\Category;
 
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Category\Models\Category;
+use App\Domain\Variation\Models\VariationType;
+use App\Support\Traits\FeatureTestTrait;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -14,7 +16,7 @@ use Tests\TestCase;
 
 class CategoryTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase, WithFaker, FeatureTestTrait;
 
     /**
      * A basic feature test example.

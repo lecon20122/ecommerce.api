@@ -31,9 +31,6 @@ class MediaResource extends JsonResource
         if ($this->hasGeneratedConversion(MediaCollectionEnums::BIG_CONVENTION)) {
             $data['big'] = $this->getFullUrl(MediaCollectionEnums::BIG_CONVENTION);
         }
-        if ($this->hasGeneratedConversion(MediaCollectionEnums::SMALL_CONVENTION)) {
-            $data['small'] = $this->getFullUrl(MediaCollectionEnums::SMALL_CONVENTION);
-        }
         if ($this->hasGeneratedConversion(MediaCollectionEnums::VARIATION_COLOR_CONVENTION)) {
             $data['color'] = $this->getFullUrl(MediaCollectionEnums::VARIATION_COLOR_CONVENTION);
         }

@@ -12,11 +12,15 @@ use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class CategoryController extends BaseController
 {
@@ -72,12 +76,31 @@ class CategoryController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return Response
+     * @return JsonResponse|AnonymousResourceCollection
      */
-    public function show($id)
+    public function sellGetCategories(): JsonResponse|AnonymousResourceCollection
     {
-        //
+        try {
+            return (new CategoryService())->getParentsAndChildren();
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
+
+    public function getCategoriesConfiguration($id): JsonResponse|AnonymousResourceCollection
+    {
+        try {
+            return (new CategoryService())->getCategoryConfiguration($id);
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
     }
 
     /**

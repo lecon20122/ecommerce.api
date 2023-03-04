@@ -4,12 +4,22 @@ use App\Http\Product\Controllers\ApiProductController;
 use App\Http\Product\Controllers\ProductAttributeController;
 use App\Http\Product\Controllers\ProductDescriptionController;
 use App\Http\Product\Controllers\ProductDiscountController;
+use App\Http\Product\Controllers\Sell\SellProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('category', [ApiProductController::class, 'getFilteredProducts'])->name('shop.by.category.post'); //TODO:: change route name to 'products'
 Route::get('filters/{category}', [ApiProductController::class, 'getProductSearchFilterByCategory'])->name('search.filters.by.category');
 Route::get('product', [ApiProductController::class, 'getProduct'])->name('get.product.by.slug');
 
+//Route::post('create-products', [SellProductController::class, 'store'])->name('post.products');
+
+
+Route::name('sell.')->prefix('sell/v1')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('products', [SellProductController::class, 'index'])->name('get.products');
+    Route::post('products', [SellProductController::class, 'store'])->name('post.products');
+    Route::get('products/{id}', [SellProductController::class, 'show'])->name('get.product');
+    Route::put('products/{id}', [SellProductController::class, 'update'])->name('update.product');
+});
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('store/product/mega-form', [ApiProductController::class, 'createProductMegaForm'])->name('add.store.product.mega.form');

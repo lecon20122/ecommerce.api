@@ -17,10 +17,18 @@ use Illuminate\Support\Facades\DB;
 class CategoryService
 {
 
+
+    public function getParentsAndChildren(): AnonymousResourceCollection
+    {
+        return CategoryResource::collection(
+            Category::query()->with('childrenRecursive')->parent()->get()
+        );
+    }
+
     public function getChildren(): AnonymousResourceCollection
     {
         return CategoryResource::collection(
-            Category::query()->children()->active()->select('id','title','parent_id','is_active')->get()
+            Category::query()->children()->active()->select('id', 'title', 'parent_id', 'is_active')->get()
         );
     }
 

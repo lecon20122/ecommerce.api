@@ -20,6 +20,10 @@ return new class extends Migration
             $table->boolean('is_stockable')->unsigned();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->string('en')->virtualAs("JSON_EXTRACT(type, '$.en')");
+            $table->string('ar')->virtualAs("JSON_EXTRACT(type, '$.ar')");
+            $table->unique(['en', 'ar']);
         });
     }
 

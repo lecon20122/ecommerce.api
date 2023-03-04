@@ -17,6 +17,10 @@ return new class extends Migration {
             $table->json('attribute');
             $table->boolean('is_filterable')->default(false);
             $table->timestamps();
+
+            $table->string('en')->virtualAs("JSON_EXTRACT(attribute, '$.en')");
+            $table->string('ar')->virtualAs("JSON_EXTRACT(attribute, '$.ar')");
+            $table->unique(['en', 'ar']);
         });
     }
 

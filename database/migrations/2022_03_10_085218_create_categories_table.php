@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('opposite_category_id')->nullable();
             $table->string('primary_color')->nullable();
             $table->string('secondary_color')->nullable();
+            $table->unsignedInteger('order')->nullable()->index();
             $table->boolean('is_active')->default(false);
             $table->softDeletes();
             $table->timestamps();

@@ -2,23 +2,16 @@
 
 namespace App\Http\Product\Controllers;
 
-use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
-use App\Domain\Product\Models\ProductAttribute;
 use App\Domain\Product\Services\ProductAttributeService;
 use App\Domain\Product\Services\ProductService;
-use App\Domain\User\Services\UserFavoriteService;
 use App\Domain\Variation\Services\VariationService;
 use App\Http\Category\Services\CategoryService;
-use App\Http\Media\Request\StoreMediaRequest;
-use App\Http\Product\Requests\ProductFilterRequest;
 use App\Http\Product\Requests\StoreProductRequest;
 use App\Http\Product\Requests\UpdateProductRequest;
 use App\Support\Requests\ModelIDsRequest;
-use App\Support\Services\Media\ImageService;
 use Application\Controllers\BaseController;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -67,24 +60,6 @@ class ProductController extends BaseController
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->redirectBackWithMessage($exception->getMessage());
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Product $product
-     * @param ProductService $service
-     * @return RedirectResponse|\Inertia\Response
-     */
-    public function show(Product $product, ProductService $service): \Inertia\Response|RedirectResponse
-    {
-        try {
-            return Inertia::render('Client/ProductDetails', [
-                'product' => $service->showProductDetails($product)
-            ]);
-        } catch (Exception $exception) {
-            return $this->logAndRedirectBackWithError($exception->getMessage());
         }
     }
 
@@ -193,34 +168,6 @@ class ProductController extends BaseController
         } catch (Exception $exception) {
             DB::rollBack();
             return $this->logAndRedirectBackWithError($exception->getMessage());
-        }
-    }
-
-    public function getProductsByCategory(Category $category, ProductService $productService, ProductFilterRequest $request): JsonResponse
-    {
-
-        try {
-            if ($request->session()->get('previous_inputs')) {
-                (new UserFavoriteService)->storeAfterAuthenticated($request->session()->get('previous_inputs'));
-            }
-
-            $products = $productService->getProductsByCategory($category, $request->validated());
-
-//            return Inertia::render('Client/ShopByCategory', [
-//                'products' => $products['products'],
-//                'filters' => $products['filters'],
-//                'category' => $category,
-//                'maxPrice' => $products['maxPrice'],
-//            ]);
-            return \response()->json([
-                'products' => $products['products'],
-                'filters' => $products['filters'],
-                'category' => $category,
-                'maxPrice' => $products['maxPrice'],
-            ]);
-        } catch (Exception $exception) {
-            DB::rollback();
-            return $this->redirectBackWithMessage($exception->getMessage());
         }
     }
 }

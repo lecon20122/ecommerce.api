@@ -94,7 +94,7 @@ class CartService
         return $this->calculateSubTotalWithDiscount($this->getCartItems());
     }
 
-    public function calculateSubTotalWithDiscount($items)
+    public function calculateSubTotalWithDiscount($items): float|int
     {
         $subTotal = 0;
         foreach ($items as $cart) {
@@ -109,12 +109,7 @@ class CartService
         return auth()->user()->carts()->get();
     }
 
-    public function getCartSummary()
-    {
-        $cartItems = $this->getCartItemsGroupedByStoreName();
-    }
-
-    public function getCartItemsGroupedByStoreName()
+    public function getCartItemsGroupedByStoreName(): array
     {
         $storeItems = $this->getCartItemsCollectionAndRelationships()->groupBy('store.name');
 
@@ -123,7 +118,7 @@ class CartService
             $summary[$store]['items'] = $items;
             $summary[$store]['subtotal'] = $this->calculateSubTotalWithDiscount($items);
         }
-        dd($summary);
+        return $summary;
     }
 
     public function getCartItemsCollectionAndRelationships()

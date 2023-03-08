@@ -6,9 +6,11 @@ use App\Domain\Cart\Models\Cart;
 use App\Domain\Cart\Services\CartService;
 use App\Domain\Inventory\Models\Stock;
 use App\Domain\Product\Models\ProductDiscount;
+use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
+use App\Support\Enums\TypeEnum;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -236,30 +238,31 @@ class CartTest extends TestCase
         $this->assertEquals(2, Cart::first()->quantity);
     }
 
-    public function testCartTotalCalculationIsRight()
-    {
-        $user = User::factory()->create();
-        $this->actingAs($user, 'web');
-        $variations = $this->createParentAndChildVariations();
-        $variations2 = $this->createParentAndChildVariations();
-
-        $discount = ProductDiscount::factory()->create([
-            'product_id' => $variations['parent']['product_id'],
-            'value' => 13,
-            'type' => 'fixed',
-        ]);
-
-        $carts = Cart::factory(3)->create([
-            'quantity' => 2,
-            'price' => 100,
-            'variation_id' => $variations['child']['id'],
-            'variation_parent_id' => $variations['parent']['id'],
-            'user_id' => $user->id,
-            'store_id' => $variations['parent']['store_id'],
-        ]);
-
-        $this->assertEquals(522, (new CartService())->getCartSubTotalWithDiscount());
-    }
+//    public function testCartTotalCalculationIsRight()
+//    {
+//        $user = User::factory()->create();
+//        $this->actingAs($user, 'web');
+//        $variations = $this->createParentAndChildVariations();
+//        $variations2 = $this->createParentAndChildVariations();
+//
+//        $discount = ProductDiscount::factory()->create([
+//            'product_id' => $variations['parent']['product_id'],
+//            'value' => 13,
+//            'type' => 'fixed',
+//        ]);
+//
+//        $carts = Cart::factory(3)->create([
+//            'quantity' => 2,
+//            'price' => 100,
+//            'variation_id' => $variations['child']['id'],
+//            'variation_parent_id' => $variations['parent']['id'],
+//            'user_id' => $user->id,
+//            'store_id' => $variations['parent']['store_id'],
+//        ]);
+//
+//        $subtotal = (new CartService())->getCartSubTotalWithDiscount();
+//        $this->assertEquals(522, $subtotal);
+//    }
 
     public function test_user_can_get_cart_summary()
     {
@@ -271,7 +274,7 @@ class CartTest extends TestCase
         $discount = ProductDiscount::factory()->create([
             'product_id' => $variations['parent']['product_id'],
             'value' => 13,
-            'type' => 'fixed',
+            'type' => TypeEnum::FIXED,
         ]);
 
         $carts = Cart::factory(3)->create([
@@ -292,6 +295,12 @@ class CartTest extends TestCase
             'store_id' => $variations2['parent']['store_id'],
         ]);
 
-//        dd((new CartService())->getCartSummary());
+        $summary = (new CartService())->getCartItemsGroupedByStoreName();
+
+        $firstStore = Store::find($variations['parent']['store_id']);
+        $secondStore = Store::find($variations2['parent']['store_id']);
+
+        $this->assertEquals(522, $summary[$firstStore->name]['subtotal']);
+        $this->assertEquals(600, $summary[$secondStore->name]['subtotal']);
     }
 }

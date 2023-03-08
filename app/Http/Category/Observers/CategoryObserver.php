@@ -9,8 +9,6 @@ use Illuminate\Support\Str;
 
 class CategoryObserver
 {
-//    protected string $key = CacheKeyEnums::CATEGORY;
-
     protected string $key = CacheKeyEnums::CATEGORY;
 
     public function created(Category $category)

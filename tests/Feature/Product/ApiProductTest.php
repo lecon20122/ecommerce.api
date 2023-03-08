@@ -328,6 +328,14 @@ class ApiProductTest extends TestCase
 
         $this->actingAs($user, 'web');
 
+        $store = Store::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $product = Product::factory()->create([
+            'store_id' => $store->id
+        ]);
+
         ProductDiscount::factory()->create([
             'product_id' => $product->id,
         ]);

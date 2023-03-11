@@ -4,6 +4,7 @@ namespace Tests\Feature\Product\Sell;
 
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Category\Models\Category;
+use App\Domain\Order\Models\Order;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\Sell\SellProductService;
 use App\Domain\Store\Models\Store;
@@ -93,8 +94,6 @@ class SellProductTest extends TestCase
         $res = $this->post(route('api.sell.post.products'), $data)->assertCreated();
         $json = $res->json();
         $this->assertEquals($json['title'], $data['title']);
-//        $this->assertEquals($json['variations'][0]['title']['en'], $colorValue->value);
-//        $this->assertEquals($json['variations'][1]['title']['en'], $sizeValue->value);
         $this->assertEquals(2, Product::first()->categories->count());
         $this->assertEquals(2, Product::first()->variations->count());
         $this->assertEquals(2, Media::all()->count());
@@ -117,8 +116,6 @@ class SellProductTest extends TestCase
             'variation_type_id' => $sizeValue->variationType->id,
             'store_id' => $user->store->id,
         ]);
-
-
     }
 
     public function testUnAuthorizedUserCantCreateProduct()
@@ -171,7 +168,7 @@ class SellProductTest extends TestCase
             'category_id' => $category->id,
         ];
 
-        (new SellProductService())->assignCategories($product, $category->id , true);
+        (new SellProductService())->assignCategories($product, $category->id, true);
 
         $this->assertEquals(2, $product->categories->count());
 
@@ -265,16 +262,15 @@ class SellProductTest extends TestCase
         ]);
 
         $this->get(route('api.sell.get.product', $product->id))->assertForbidden();
-
     }
 
     public function test_mass_product_price_update()
     {
         $product = Product::factory()->create();
 
-       $variation = Variation::factory()->create([
-           'product_id' => $product->id,
-       ]);
+        $variation = Variation::factory()->create([
+            'product_id' => $product->id,
+        ]);
 
         (new SellProductService())->massProductDetailsAndPriceUpdate($product, 100);
 
@@ -311,5 +307,71 @@ class SellProductTest extends TestCase
         $this->assertEquals($json['title']['en'], $data['title']['en']);
         $this->assertEquals($json['price'], $data['price']);
         $this->assertEquals(Variation::all()->toArray()[1]['price'], $data['price']);
+    }
+
+    public function testThatUserCanSoftDeleteProduct()
+    {
+        $user = $this->authorizedUser();
+        $store = $this->createApprovedStore($user);
+
+        $product = Product::factory()->create([
+            'store_id' => $store->id
+        ]);
+
+        $order = Order::factory()->create(
+            [
+                'user_id' => $user->id,
+            ]
+        );
+
+        $variation = Variation::factory()->create(
+            [
+                'store_id' => $store->id,
+                'product_id' => $product->id,
+            ]
+        );
+
+        $order->variations()->attach($variation->id, [
+            'quantity' => 1,
+            'price' => $variation->price,
+            'store_id' => $store->id,
+        ]);
+
+        $this->assertDatabaseHas('order_variation', [
+            'order_id' => $order->id,
+            'variation_id' => $variation->id,
+        ]);
+
+
+        $res = $this->delete(route('api.sell.delete.product', $product->id))->assertOk();
+
+
+        $this->assertSoftDeleted('products', [
+            'id' => $product->id,
+        ]);
+    }
+
+    public function testThatUserCanPermanentlyDeleteProductWhenNoOrders()
+    {
+        $user = $this->authorizedUser();
+
+        $store = $this->createApprovedStore($user);
+
+        $product = Product::factory()->create([
+            'store_id' => $store->id
+        ]);
+
+
+        $variation = Variation::factory()->create(
+            [
+                'store_id' => $store->id,
+                'product_id' => $product->id,
+            ]
+        );
+
+        $this->delete(route('api.sell.delete.product', $product->id))->assertOk();
+
+        $this->assertNull(Product::find($product->id));
+
     }
 }

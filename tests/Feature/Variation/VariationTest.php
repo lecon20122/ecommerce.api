@@ -89,6 +89,7 @@ class VariationTest extends TestCase
         $this->post(route('admin.variations.destroy', ['id' => $variation->id]))->assertRedirect();
 
         $this->assertNull(Variation::first());
+
     }
 
     public function test_variation_can_be_restored()
@@ -136,7 +137,7 @@ class VariationTest extends TestCase
         $this->assertCount(1, Media::all());
     }
 
-    #[NoReturn] public function test_variation_image_can_be_set_to_primary_and_its_only_one_per_variation()
+    public function test_variation_image_can_be_set_to_primary_and_its_only_one_per_variation()
     {
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');

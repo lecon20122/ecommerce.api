@@ -9,6 +9,7 @@ use App\Support\Enums\MediaCollectionEnums;
 use App\Support\Enums\TypeEnum;
 use App\Support\Services\Media\ImageService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SellVariationService
 {
@@ -65,9 +66,11 @@ class SellVariationService
         if (!$store) abort(403, 'you are not allowed to view products yet!');
         if ($variation->store_id !== $store->id) abort(403, 'your store does not own this variation!');
 
-        $variation->load('orders');
+        $variation->load(['orders', 'children' => function (HasMany $query) {
+            $query->whereHas('orders');
+        }]);
 
-        if ($variation->orders) {
+        if ($variation->orders || $variation->children) {
             $variation->delete();
         } else {
             $variation->forceDelete();

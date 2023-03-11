@@ -8,7 +8,6 @@ use App\Domain\Order\Models\Order;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Support\Enums\MediaCollectionEnums;
-use App\Support\Enums\TypeEnum;
 use App\Support\Traits\CustomHasMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;

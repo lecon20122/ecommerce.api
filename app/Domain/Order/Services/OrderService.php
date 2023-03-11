@@ -46,7 +46,7 @@ class OrderService
     //             ]
     //         ];
 
-    //         $order->variations()->attach($readyVariation);
+//         $order->variations()->attach($readyVariation);
     //     }
 
     //     $listener = new SyncVariationStockAfterOrderPlaced($this->cartService);

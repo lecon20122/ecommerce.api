@@ -2,6 +2,7 @@
 
 namespace Application\Controllers;
 
+use App\Support\Traits\HasHttpResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
@@ -9,32 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class BaseController extends Controller
 {
-    /**
-     * return a 200 success response json with results.
-     *
-     * @param mixed $result
-     * @param string|null $message
-     * @return JsonResponse
-     */
-    public function ok(array $result, string $message = null): JsonResponse
-    {
-        if (!empty($message)) {
-            $result['message'] = $message;
-        }
-        return response()->json($result);
-    }
-
-    /**
-     * return a 200 success response json with results for Paginate Results.
-     *
-     * @param mixed $result
-     * @return JsonResponse
-     */
-    public function okWithPaginate(mixed $result): JsonResponse
-    {
-        return response()->json($result, 200);
-    }
-
+    use HasHttpResponse;
     /**
      * return error response.
      *
@@ -47,19 +23,6 @@ class BaseController extends Controller
         return response()->json(['error' => $error], $code);
     }
 
-
-    /**
-     * send Success Message only
-     * @param $message
-     * @return JsonResponse
-     */
-    public function sendSuccess($message = null): JsonResponse
-    {
-        if (!empty($message)) {
-            $response['success'] = $message;
-        }
-        return response()->json($response);
-    }
 
     public function redirectBackWithMessage($message): RedirectResponse
     {

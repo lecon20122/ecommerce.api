@@ -52,7 +52,53 @@ class SellVariationTest extends TestCase
 
     }
 
-    public function testSellVariationCannotBeSafeDeleted()
+
+    public function testThatVariationWithChildrenThatHasOrdersCantBeForceDeleted()
+    {
+        $user = $this->authorizedUser();
+        $store = $this->createApprovedStore($user);
+
+        $order = Order::factory()->create(
+            [
+                'user_id' => $user->id,
+            ]
+        );
+
+        $variation = Variation::factory()->create(
+            [
+                'store_id' => $store->id,
+            ]
+        );
+
+        $childVariation = Variation::factory()->create(
+            [
+                'store_id' => $store->id,
+                'parent_id' => $variation->id
+            ]
+        );
+
+
+        $order->variations()->attach($childVariation->id, [
+            'quantity' => 1,
+            'price' => $childVariation->price,
+            'store_id' => $store->id,
+        ]);
+
+        $this->assertDatabaseHas('order_variation', [
+            'order_id' => $order->id,
+            'variation_id' => $childVariation->id,
+        ]);
+
+        //assert that parent variation has children
+        $this->assertNotNull($variation->load('children')->children);
+
+        $res = $this->post(route('api.sell.safe.delete.owner.variation' , ['variation' => $variation->id]));
+
+        $this->assertNotNull($variation->fresh()->deleted_at);
+
+    }
+
+    public function testWhenVariationHaveNoOrdersOrChildrenWithOrdersCanBeForceDeleted()
     {
         $user = $this->authorizedUser();
         $store = $this->createApprovedStore($user);

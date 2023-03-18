@@ -4,7 +4,7 @@ namespace App\Support\Traits;
 // create trait
 
 use Illuminate\Http\JsonResponse;
-
+use Illuminate\Support\Facades\Log;
 
 trait HasHttpResponse
 {
@@ -43,5 +43,10 @@ trait HasHttpResponse
     public function httpResponseNotFound($message = 'not found'): JsonResponse
     {
         return response()->json(['message' => $message], 404);
+    }
+
+    public function httpResponse($message = 'message', int $code = 200): JsonResponse
+    {
+        return response()->json(['message' => $message], $code);
     }
 }

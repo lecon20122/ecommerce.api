@@ -6,12 +6,16 @@ use App\Domain\Product\Models\Product;
 use App\Domain\Variation\Services\Sell\SellVariationService;
 use App\Http\Product\Resource\Sell\SellProductResource;
 use App\Http\Product\Resources\ProductResource;
+use App\Jobs\NewProductCreatedJob;
+use App\Notifications\NewProductCreatedNotification;
 use App\Support\Enums\TypeEnum;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Benchmark;
+use Illuminate\Support\Facades\Notification;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 use function auth;
 
@@ -61,14 +65,18 @@ class SellProductService
     public function create(array $data)
     {
         $store = auth()->user()->store()->approved()->first();
-        if ($store) {
-            $product = $store->products()->create($data);
-            $this->assignCategories($product, $data['category_id'], $data['unisex']);
-            (new SellVariationService())->createColorAndSizes($product, $data['color_id'], $data['sizes'], $data['price']);
-            return new SellProductResource($product->load('variations'));
-        } else {
-            abort(403, 'You are not allowed to create a product yet!');
-        }
+
+        if (!$store) abort(403, 'you are not allowed to create a product yet!');
+
+        $product = $store->products()->create($data);
+
+        $this->assignCategories($product, $data['category_id'], $data['unisex']);
+
+        (new SellVariationService())->createColorAndSizes($product, $data['color_id'], $data['sizes'], $data['price']);
+
+        if ($product) NewProductCreatedJob::dispatch($product);
+
+        return new SellProductResource($product->load('variations'));
     }
 
     public function update(array $data, int $id)

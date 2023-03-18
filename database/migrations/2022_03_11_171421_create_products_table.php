@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedInteger('price')->default(0);
             $table->foreignId('store_id')->constrained();
             $table->dateTime('live_at')->nullable();
-            $table->boolean('is_approved')->nullable();
+            $table->boolean('is_approved')->default(false);
             $table->foreignId('admin_id')->nullable()->constrained();
             $table->text('meta_keywords')->nullable();
             $table->text('meta_description')->nullable();

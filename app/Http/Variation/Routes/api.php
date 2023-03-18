@@ -6,7 +6,9 @@ use App\Http\Variation\Controllers\Sell\SellVariationController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('sell.')->prefix('sell/v1')->middleware(['auth:sanctum'])->group(function () {
-    Route::post('variation/delete/{variation}', [SellVariationController::class, 'safeDelete'])->name('safe.delete.owner.variation');
+    Route::delete('variation/delete/{variation}', [SellVariationController::class, 'safeDelete'])->name('safe.delete.owner.variation');
+    Route::get('variation/color/{id}', [SellVariationController::class, 'getColorVariationWithItsSizes'])->name('get.color.variation.with.sizes');
+    Route::post('variation/sizes', [SellVariationController::class, 'createSizesVariation'])->name('create.sizes.variation');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

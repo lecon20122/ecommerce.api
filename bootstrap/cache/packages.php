@@ -28,6 +28,24 @@
       'Image' => 'Intervention\\Image\\Facades\\Image',
     ),
   ),
+  'irazasyed/telegram-bot-sdk' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Telegram\\Bot\\Laravel\\TelegramServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Telegram' => 'Telegram\\Bot\\Laravel\\Facades\\Telegram',
+    ),
+  ),
+  'knuckleswtf/scribe' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Knuckles\\Scribe\\ScribeServiceProvider',
+    ),
+  ),
   'laravel/sail' => 
   array (
     'providers' => 
@@ -65,17 +83,6 @@
     'providers' => 
     array (
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    ),
-  ),
-  'livewire/livewire' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Livewire\\LivewireServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Livewire' => 'Livewire\\Livewire',
     ),
   ),
   'nesbot/carbon' => 

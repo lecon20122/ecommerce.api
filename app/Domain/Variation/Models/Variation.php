@@ -56,12 +56,14 @@ class Variation extends Model implements HasMedia
     {
         $this->addMediaConversion(MediaCollectionEnums::THUMB_CONVENTION)
             ->format(Manipulations::FORMAT_WEBP)
-            ->width(263)
+            ->optimize()
+            ->fit(Manipulations::FIT_CONTAIN, 320, 320)
             ->performOnCollections(MediaCollectionEnums::VARIATION);
 
         $this->addMediaConversion(MediaCollectionEnums::BIG_CONVENTION)
             ->format(Manipulations::FORMAT_WEBP)
-            ->width(670)
+            ->optimize()
+            ->width(1340)
             ->performOnCollections(MediaCollectionEnums::VARIATION);
 
         $this->addMediaConversion(MediaCollectionEnums::VARIATION_COLOR_CONVENTION)
@@ -167,24 +169,23 @@ class Variation extends Model implements HasMedia
     protected function price(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $value / 100,
-            set: fn($value) => $value * 100,
+            get: fn ($value) => $value / 100,
+            set: fn ($value) => $value * 100,
         );
     }
 
     public function scopeColor(Builder $query): Builder
     {
-        return $query->whereHas('variationType', fn($query) => $query->whereRaw("JSON_EXTRACT(type, '$.en') = 'color'"));
+        return $query->whereHas('variationType', fn ($query) => $query->whereRaw("JSON_EXTRACT(type, '$.en') = 'color'"));
     }
 
     public function scopeSize(Builder $query): Builder
     {
-        return $query->whereHas('variationType', fn($query) => $query->whereRaw("JSON_EXTRACT(type, '$.en') = 'size'"));
+        return $query->whereHas('variationType', fn ($query) => $query->whereRaw("JSON_EXTRACT(type, '$.en') = 'size'"));
     }
 
-    public function mainImage(): MorphOne
+    public function mainImage()
     {
         return $this->getMediaByCollectionAndConventionNonOrdered(MediaCollectionEnums::VARIATION)->orderByDesc('created_at');
     }
-
 }

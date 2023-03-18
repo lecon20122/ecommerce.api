@@ -2,7 +2,6 @@
 
 namespace App\Http\Product\Controllers\Sell;
 
-use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\Sell\SellProductService;
 use App\Http\Product\Requests\Sell\StoreSellProductRequest;
 use App\Http\Product\Requests\Sell\UpdateSellProduct;
@@ -10,15 +9,18 @@ use App\Http\Product\Resource\Sell\SellProductResource;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
+/**
+ * @group Sell Product
+ * @authenticated
+ * APIs for managing Sell Product
+ */
+
 class SellProductController extends BaseController
 {
-    //create constructor and inject the service
     public function __construct(protected SellProductService $service)
     {
     }
@@ -52,7 +54,8 @@ class SellProductController extends BaseController
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created Sell Product
+     * with Colors and Sizes
      *
      * @param StoreSellProductRequest $request
      * @return SellProductResource|JsonResponse
@@ -74,7 +77,7 @@ class SellProductController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified Sell Product.
      *
      * @param int $id
      * @return SellProductResource|JsonResponse

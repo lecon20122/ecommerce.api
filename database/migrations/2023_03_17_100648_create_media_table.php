@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMediaTable extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('media', function (Blueprint $table) {
@@ -24,9 +23,10 @@ class CreateMediaTable extends Migration
             $table->json('custom_properties');
             $table->json('generated_conversions');
             $table->json('responsive_images');
+            $table->boolean('is_approved')->default(false);
             $table->unsignedInteger('order_column')->nullable()->index();
 
             $table->nullableTimestamps();
         });
     }
-}
+};

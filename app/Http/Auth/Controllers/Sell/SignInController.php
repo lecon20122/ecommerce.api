@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Support\Enums\ThirdPartyEnums;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class SignInController extends BaseController
@@ -41,13 +42,27 @@ class SignInController extends BaseController
         )->where('provider_id', $providerUser->id)->first();
 
         if ($user) {
-            if ($user->store) {
-                Auth::login($user);
-                return $user;
-            }
-            abort(200, 'waits on approval');
+            Auth::login($user);
+            return $user;
+        } else {
+            return $this->register($providerUser);
         }
+    }
 
-        return abort(404);
+    public function register($providerUser)
+    {
+        $data = [
+            'provider_id' => $providerUser->id,
+            'email' => $providerUser->email,
+            'name' => $providerUser->name,
+            'password' => $providerUser->email . $providerUser->id,
+            'oauth_provider_type' => ThirdPartyEnums::Google,
+        ];
+
+        $user = User::create($data);
+
+        if ($user) Auth::login($user);
+
+        return $user;
     }
 }

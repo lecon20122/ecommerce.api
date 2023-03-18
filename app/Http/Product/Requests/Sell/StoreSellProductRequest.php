@@ -38,10 +38,15 @@ class StoreSellProductRequest extends FormRequest
             'images.*' => [
                 'mimes:jpg,webp,png|max:2048',
                 Rule::dimensions()
-                    ->minWidth(670)
+                    ->minWidth(600)
                     ->maxWidth(2000)
-                    ->maxHeight(2000)
             ],
+            // 'main_image' => [
+            //     'mimes:jpg,webp,png|max:2048',
+            //     Rule::dimensions()
+            //         ->minWidth(600)
+            //         ->maxWidth(2000)
+            // ],
         ];
     }
 
@@ -68,7 +73,7 @@ class StoreSellProductRequest extends FormRequest
             'images.array' => 'Images must be an array',
             'images.*.mimes' => 'Images must be jpg, webp or png',
             'images.*.max' => 'Images must be less than 2MB',
-            'images.*.dimensions' => 'Images must be 670x838 to 2000x2000',
+            'images.*.dimensions' => 'Images must be within 600px width to 2000px width',
         ];
     }
 }

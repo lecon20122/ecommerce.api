@@ -21,7 +21,9 @@ class SellVariationResource extends JsonResource
             'id' => $this->id,
             'price' => $this->price,
             'main_image' => new SellMainImageResource($this->whenLoaded('mainImage')),
+            'media' => SellMainImageResource::collection($this->whenLoaded('media')),
             'created_at' => $this->created_at,
+            'children' => SellVariationResource::collection($this->whenLoaded('children')),
             'variation_type_value' => new VariationTypeValueResource($this->whenLoaded('variationTypeValue')),
         ];
     }

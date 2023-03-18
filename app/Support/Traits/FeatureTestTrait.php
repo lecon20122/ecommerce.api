@@ -3,6 +3,7 @@
 namespace App\Support\Traits;
 
 use App\Domain\Admin\Models\Admin;
+use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\VariationType;
 use Domain\User\Models\User;
@@ -68,11 +69,11 @@ trait FeatureTestTrait
         ]);
     }
 
-    public function createSizeValue(): Model|Builder
+    public function createSizeValue($sizeType = null, array $value = null): Model|Builder
     {
-        $sizeType = $this->createSizeType();
+        $sizeType = $sizeType ?? $this->createSizeType();
         return $sizeType->variationTypeValues()->create([
-            'value' => [
+            'value' => $value ?? [
                 'ar' => 'كبير',
                 'en' => 'big',
             ],
@@ -87,6 +88,22 @@ trait FeatureTestTrait
             'user_id' => $user->id,
             'approved_at' => now(),
             'approved_by' => $admin->id
+        ]);
+    }
+
+    // create unapproved store
+    public function createUnApprovedStore(User $user): Model|Builder
+    {
+        return Store::factory()->create([
+            'user_id' => $user->id,
+        ]);
+    }
+
+    // create product
+    public function createProduct(Store $store): Model|Builder
+    {
+        return Product::factory()->create([
+            'store_id' => $store->id,
         ]);
     }
 }

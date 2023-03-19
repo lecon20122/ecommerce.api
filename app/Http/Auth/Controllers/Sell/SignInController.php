@@ -21,13 +21,14 @@ class SignInController extends BaseController
         try {
             $user = Socialite::driver($request->validated('provider'))
                 ->userFromToken($request->validated('token'));
+
             return new UserResource($this->findStore($user));
+
         } catch (Exception $exception) {
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
-                return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400, $exception->getMessage());
             }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 

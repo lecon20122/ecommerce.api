@@ -43,7 +43,7 @@ class BaseController extends Controller
     public function logErrorsAndReturnJsonMessage($exceptionMessage, $class = null, $functionName = null, int $code = 400, $customMessage = 'something went wrong we working on it'): JsonResponse
     {
         Log::error($exceptionMessage . '  At CLASS ' . $class . ' , ' . $functionName . '()');
-        Sentr
+        
         return response()->json(['message' => $customMessage], $code);
     }
 

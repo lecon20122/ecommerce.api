@@ -3,6 +3,10 @@
 namespace Tests\Feature\Store;
 
 use App\Domain\Admin\Models\Admin;
+use App\Domain\Location\Models\City;
+use App\Domain\Location\Models\District;
+use App\Domain\Location\Models\Governorate;
+use App\Domain\Store\Models\SellerRequest;
 use App\Domain\Store\Models\Store;
 use App\Domain\Store\Services\StoreService;
 use App\Support\Enums\HttpStatusEnums;
@@ -107,6 +111,31 @@ StoreTest extends TestCase
         $store->refresh();
         $this->assertEquals($admin->id, $store->approved_by);
         $this->assertNotNull($store->approved_at);
+    }
 
+    public function testUserCanCreateSellerRequest()
+    {
+        $user = $this->authorizedUser();
+
+        $gov = Governorate::factory()->create(['name' => 'cairo']);
+
+        $cities = City::factory()->count(3)->create(['governorate_id' => $gov->id]);
+
+        $district = District::factory()->create(['city_id' => $cities[0]->id]);
+
+        $data = [
+            'name' => 'Mustafa Store',
+            'phone' =>  '01066199150',
+            'company_register' => '19998712',
+            'district_id' => $district->id,
+            'street' => 'street',
+            'building' => 'building',
+            'what_store_sells' => 'mens shoes, womens shoes, kids shoes',
+            'social_media' => 'facebook.com/mustafa',
+        ];
+
+        $response = $this->post(route('api.sell.create.seller.request'), $data)->assertOk();
+
+        $this->assertEquals($user->id, SellerRequest::first()->id);
     }
 }

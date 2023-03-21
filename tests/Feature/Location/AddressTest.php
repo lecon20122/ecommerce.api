@@ -4,7 +4,10 @@ namespace Tests\Feature\Location;
 
 use App\Domain\Location\Enums\AddressTypeEnums;
 use App\Domain\Location\Models\Address;
+use App\Domain\Location\Models\City;
 use App\Domain\Location\Models\District;
+use App\Domain\Location\Models\Governorate;
+use App\Support\Traits\FeatureTestTrait;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -12,7 +15,7 @@ use Tests\TestCase;
 
 class AddressTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase, WithFaker, FeatureTestTrait;
 
     /**
      * A basic feature test example.
@@ -44,24 +47,22 @@ class AddressTest extends TestCase
         $this->assertEquals(AddressTypeEnums::SHIPPING->value, Address::first()->type);
     }
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-//    public function testClientCanUpdateAddress()
-//    {
-//        $user = User::factory()->create();
-//        $this->actingAs($user, 'web');
-//
-//        $address = Address::factory()->create();
-//
-//        $data = [
-//            'type' => AddressTypeEnums::HOME->value,
-//        ];
-//
-//        $response = $this->post(route('client.update.address' , ['address' => $address]), $data)->assertRedirect();
-//
-//        $this->assertEquals(AddressTypeEnums::HOME->value, Address::first()->type);
-//    }
+    public function testGetCairoLocations()
+    {
+        $this->authorizedUser();
+
+        $gov = Governorate::factory()->create(['name' => 'cairo']);
+
+        $cities = City::factory()->count(3)->create(['governorate_id' => $gov->id]);
+
+        $district = District::factory()->create(['city_id' => $cities[0]->id]);
+
+        $res = $this->get(route('api.sell.get.cairo.locations'))->assertOk();
+
+
+        $this->assertEquals($gov->name, $res->json()['name']);
+        $this->assertEquals($cities[0]->name, $res->json()['cities'][0]['name']);
+        $this->assertEquals($district->name, $res->json()['cities'][0]['districts'][0]['name']);
+
+    }
 }

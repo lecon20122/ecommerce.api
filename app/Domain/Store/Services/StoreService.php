@@ -2,6 +2,7 @@
 
 namespace App\Domain\Store\Services;
 
+use App\Domain\Location\Enums\AddressTypeEnums;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
 use App\Http\Store\Requests\StoreCreateRequest;
@@ -74,5 +75,37 @@ class StoreService
         if ($store->update(['approved_at' => now(), 'approved_by' => auth('admin')->id()])) {
             DB::commit();
         }
+    }
+
+    public function createSellerRequest(array $data)
+    {
+        $user = auth('web')->user();
+
+        $store = $user->store()->first();
+
+        if ($store) abort(403, 'You already have a store');
+
+        if ($user->sellerRequest()->first()) abort(403, 'You already have a seller request');
+
+        $addressData = [
+            'name' => $user->name,
+            'phone' => $data['phone'] ?? $user->phone,
+            'district_id' => $data['district_id'],
+            'street' => $data['street'],
+            'building'  => $data['building'],
+            'type' => AddressTypeEnums::PICKUP->value,
+        ];
+
+        $pickupLocation =  $user->addresses()->create($addressData);
+
+        $user->sellerRequest()->create([
+            'name' => $data['name'],
+            'phone' => $data['phone'],
+            'pickup_location' => $pickupLocation->id,
+            'company_register' => $data['company_register'],
+            'what_store_sells' => $data['what_store_sells'],
+            'instagram' => $data['instagram'] ?? null,
+            'facebook' => $data['facebook'] ?? null,
+        ]);
     }
 }

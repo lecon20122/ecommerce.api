@@ -3,9 +3,11 @@
 namespace App\Domain\Location\Services;
 
 use App\Domain\Location\Enums\AddressTypeEnums;
+use App\Domain\Location\Models\Governorate;
 use App\Domain\Store\Models\Store;
 use App\Http\Location\Resources\AddressResource;
 use Exception;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,8 +25,8 @@ class AddressService
     public function checkAndReturnShippingAddressId($address_id)
     {
         return Auth::user()
-                ->addresses()
-                ->find($address_id)->id
+            ->addresses()
+            ->find($address_id)->id
             ?? throw new Exception('this shipping address id not belong to that user');
     }
 
@@ -34,8 +36,8 @@ class AddressService
     public function checkAndReturnPickupAddressId(Store $store, $address_id)
     {
         return $store
-                ->addresses()
-                ->find($address_id)->id
+            ->addresses()
+            ->find($address_id)->id
             ?? throw new Exception('this pickup address id not belong to that store');
     }
 
@@ -52,5 +54,18 @@ class AddressService
     {
         $user = auth('web')->user();
         $user->addresses()->create($data);
+    }
+
+
+    public function getCairoLocations()
+    {
+        return Governorate::query()
+            ->with(['cities' => function (HasMany $query) {
+                $query
+                    ->with('districts:id,name,city_id')
+                    ->select(['id', 'name', 'governorate_id']);
+            }])
+            ->where('name', '=', 'cairo')
+            ->first();
     }
 }

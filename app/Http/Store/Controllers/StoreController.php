@@ -5,6 +5,7 @@ namespace App\Http\Store\Controllers;
 use App\Domain\Store\Models\Store;
 use App\Domain\Store\Services\StoreService;
 use App\Domain\Variation\Services\VariationService;
+use App\Http\Store\Requests\Sell\StoreSellerRequest;
 use App\Http\Store\Requests\StoreCreateRequest;
 use App\Http\Store\Requests\StoreUpdateRequest;
 use App\Http\Store\Resources\StoreResource;
@@ -15,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class StoreController extends BaseController
 {
@@ -31,7 +33,8 @@ class StoreController extends BaseController
     {
         try {
             return Inertia::render('Dashboard/stores/StoreIndex', [
-                'stores' => StoreResource::collection($this->storeService->index())]);
+                'stores' => StoreResource::collection($this->storeService->index())
+            ]);
         } catch (Exception $exception) {
             return $this->redirectBackWithMessage($exception->getMessage());
         }
@@ -66,20 +69,6 @@ class StoreController extends BaseController
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function getStore()
-    {
-        try {
-            return $this->storeService->store($request->validated());
-        } catch (Exception $exception) {
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
-        }
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -98,7 +87,6 @@ class StoreController extends BaseController
         } catch (Exception $exception) {
             return $this->redirectBackWithMessage($exception->getMessage());
         }
-
     }
 
     /**
@@ -145,6 +133,18 @@ class StoreController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    public function createSellerRequest(StoreSellerRequest $request)
+    {
+        try {
+            return $this->storeService->createSellerRequest($request->validated());
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 }

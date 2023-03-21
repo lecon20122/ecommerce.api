@@ -22,7 +22,7 @@ class CityFactory extends Factory
     public function definition()
     {
         return [
-            'name' => Address::cityName(),
+            'name' => $this->faker->city,
             'governorate_id' => Governorate::factory(),
         ];
     }

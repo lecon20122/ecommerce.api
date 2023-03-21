@@ -24,7 +24,7 @@ Route::name('api.')->group(function () {
     Route::group([], base_path() . '/app/Http/Variation/Routes/api.php');
 //
 //    //Store Routes
-//    Route::group([], base_path() . '/app/Http/Store/Routes/api.php');
+   Route::group([], base_path() . '/app/Http/Store/Routes/api.php');
 //
 //    //Auth Routes
     Route::group([], base_path() . '/app/Http/Auth/Routes/api.php');

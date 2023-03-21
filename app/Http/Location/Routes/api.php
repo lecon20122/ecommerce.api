@@ -6,6 +6,10 @@ use App\Http\Location\Controllers\AddressController;
 use App\Http\Location\Controllers\CityController;
 use Illuminate\Support\Facades\Route;
 
+Route::name('sell.')->prefix('sell/v1')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('gov/cairo', [AddressController::class, 'getCairoLocations'])->name('get.cairo.locations');
+});
+
 
 Route::get('address', [AddressController::class, 'index'])
     ->middleware('auth:sanctum')

@@ -13,11 +13,26 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+
 
 class AddressController extends BaseController
 {
     public function __construct(protected AddressService $service)
     {
+    }
+
+    public function getCairoLocations()
+    {
+        try {
+            return $this->service->getCairoLocations();
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this
+            ->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
     }
 
     /**
@@ -117,4 +132,6 @@ class AddressController extends BaseController
     {
         //
     }
+
+
 }

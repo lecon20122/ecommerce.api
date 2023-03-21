@@ -6,6 +6,7 @@ use App\Domain\Cart\Models\Cart;
 use App\Domain\Location\Models\Address;
 use App\Domain\Order\Models\Order;
 use App\Domain\Product\Models\Product;
+use App\Domain\Store\Models\SellerRequest;
 use App\Domain\Store\Models\Store;
 use App\Http\Auth\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -112,5 +113,10 @@ class User extends Authenticatable
         if (is_null($this->store()->first())) return null;
 
         return $this->store()->first();
+    }
+
+    public function sellerRequest(): HasOne
+    {
+        return $this->hasOne(SellerRequest::class);
     }
 }

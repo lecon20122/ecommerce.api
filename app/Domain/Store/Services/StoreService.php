@@ -104,8 +104,7 @@ class StoreService
             'pickup_location' => $pickupLocation->id,
             'company_register' => $data['company_register'],
             'what_store_sells' => $data['what_store_sells'],
-            'instagram' => $data['instagram'] ?? null,
-            'facebook' => $data['facebook'] ?? null,
+            'social_media' => $data['social_media'] ?? null,
         ]);
     }
 }

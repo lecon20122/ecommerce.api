@@ -31,7 +31,7 @@ class StoreSellerRequest extends FormRequest
             'street' => 'required|string|max:255',
             'building' => 'required|string|max:255',
             'what_store_sells' => 'required|string|max:255',
-            'social_media' => 'required|string|max:255',
+            'social_media' => 'nullable|string|max:255',
         ];
     }
 }

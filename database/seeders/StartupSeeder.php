@@ -41,10 +41,9 @@ class StartupSeeder extends Seeder
      */
     public function run()
     {
-        if (!Admin::query()->where('email', '=', 'mustafa@admin.com')->first()) {
-            Admin::factory()->create();
+        if (!ByPass::query()->where('email', 'lecon20122@gmail.com')->exists()) {
             ByPass::create([
-                'email' => 'mustafa@admin.com',
+                'email' => 'lecon20122@gmail.com',
                 'expires_at' => null,
                 'role' => 'admin'
             ]);

@@ -24,15 +24,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            // StartupSeeder::class,
+            StartupSeeder::class,
             //            ProductSeeder::class,
 
-        ]);
-
-        ByPass::create([
-            'email' => 'mustafa@admin.com',
-            'expires_at' => null,
-            'role' => 'admin'
         ]);
     }
 }

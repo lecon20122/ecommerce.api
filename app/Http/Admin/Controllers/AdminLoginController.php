@@ -38,8 +38,6 @@ class AdminLoginController extends BaseController
             if (ByPass::query()->where('email', $user->email)->exists()) {
                 $this->updateOrCreateAdmin($user);
                 return redirect()->route('dashboard.index');
-            } else {
-                return redirect('')
             }
         } catch (Exception $exception) {
             if ($exception instanceof HttpExceptionInterface) {

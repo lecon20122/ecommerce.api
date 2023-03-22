@@ -4,7 +4,7 @@ use App\Http\Admin\Controllers\AdminLoginController;
 use App\Http\Middleware\AdminByPassMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::get('login/{bypass}', [AdminLoginController::class, 'view'])
+Route::get('login', [AdminLoginController::class, 'view'])
     ->name('admin.getLogin')
     ->middleware(AdminByPassMiddleware::class);
 

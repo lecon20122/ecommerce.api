@@ -3,13 +3,11 @@
 namespace Database\Seeders;
 
 use App\Domain\Admin\Models\Admin;
+use App\Domain\Admin\Models\ByPass;
 use App\Domain\Category\Models\Category;
 use App\Domain\Location\Models\City;
 use App\Domain\Location\Models\District;
 use App\Domain\Location\Models\Governorate;
-use App\Domain\Product\Models\Product;
-use App\Domain\Store\Models\Store;
-use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
 use App\Support\Enums\TypeEnum;
@@ -45,7 +43,13 @@ class StartupSeeder extends Seeder
     {
         if (!Admin::query()->where('email', '=', 'mustafa@admin.com')->first()) {
             Admin::factory()->create();
+            ByPass::create([
+                'email' => 'mustafa@admin.com',
+                'expires_at' => null,
+                'role' => 'admin'
+            ]);
         }
+
 
         $categories = [
             [
@@ -213,7 +217,6 @@ class StartupSeeder extends Seeder
     {
         if (Governorate::query()->where('name', 'cairo')->first()) {
             $gov = Governorate::query()->where('name', 'cairo')->first();
-
         } else {
             $gov = Governorate::factory()->create([
                 'name' => 'cairo'

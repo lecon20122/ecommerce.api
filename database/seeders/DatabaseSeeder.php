@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Domain\Admin\Models\ByPass;
 use App\Domain\Location\Enums\LocationEnums;
 use App\Domain\Location\Models\Address;
 use App\Domain\Location\Models\City;
@@ -23,9 +24,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            StartupSeeder::class,
-//            ProductSeeder::class,
+            // StartupSeeder::class,
+            //            ProductSeeder::class,
+
         ]);
 
+        ByPass::create([
+            'email' => 'mustafa@admin.com',
+            'expires_at' => null,
+            'role' => 'admin'
+        ]);
     }
 }

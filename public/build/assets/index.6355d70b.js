@@ -1,0 +1,1 @@
+import{N as o}from"./new-dashboard-layout.35e81327.js";import{j as r}from"./app.f8169ae9.js";import"./index.m.4f4de470.js";import"./index.3cd5509d.js";import"./zoom.31902251.js";import"./Overflow.a5ea01c7.js";function d(){return r(o,{children:r("div",{children:"'Home Page'"})})}export{d as default};

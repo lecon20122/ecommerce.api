@@ -1,13 +1,12 @@
-import React, {useState} from 'react'
-import {User} from '../../../types/auth';
-import DashboardLayout from "../../../layouts/dashboard";
-import {Inertia} from "@inertiajs/inertia";
+import React, { Suspense, lazy, useState } from 'react'
+import { User } from '../../../types/auth';
+import { Inertia } from "@inertiajs/inertia";
 import route from "ziggy-js";
-import {ColumnsType} from "antd/es/table";
-import {Button, Form, Input, Select, Space} from "antd";
-import {EditOutlined, PlusOutlined} from "@ant-design/icons";
+import { ColumnsType } from "antd/es/table";
+import { Button, Form, Input } from "antd";
 import AntDesignDataTable from "../../../components/DataTables/AntDesignDataTable";
 import ModalWithChildren from "../variations/ModalWithChildren";
+import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
 
 interface Props {
   users: User[],
@@ -19,8 +18,7 @@ interface DataType extends User {
 }
 
 
-export default function index({users, locale}: Props) {
-
+export default function index({ users, locale }: Props) {
 
   const [userId, setUserId] = useState(0)
   const [openAddDialog, setOpenAddDialog] = useState(false);
@@ -74,23 +72,23 @@ export default function index({users, locale}: Props) {
 
 
   return (
-    <DashboardLayout>
+    <NewDashboardLayout>
       <div className='container mx-auto py-4'>
         <ModalWithChildren openModal={openAddDialog} onOk={() => setOpenAddDialog(false)}
-                           onCancel={() => setOpenAddDialog(false)} title={"Add New Store"}>
+          onCancel={() => setOpenAddDialog(false)} title={"Add New Store"}>
           <Form
             name="basic"
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
             onFinish={onFinish}
             autoComplete="off"
           >
             <Form.Item
               label="Name"
               name="name"
-              rules={[{required: true, message: 'Please fill store Name'}]}
+              rules={[{ required: true, message: 'Please fill store Name' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
@@ -98,25 +96,25 @@ export default function index({users, locale}: Props) {
               name="user_id"
               initialValue={userId}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
               label="Store Description"
               name="description"
-              rules={[{required: true, message: 'Please fill Store Description', type: 'string'}]}
+              rules={[{ required: true, message: 'Please fill Store Description', type: 'string' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="default" htmlType="submit">
                 Submit
               </Button>
             </Form.Item>
           </Form>
         </ModalWithChildren>
-        <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={users}/>
+        <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={users} />
       </div>
-    </DashboardLayout>
+    </NewDashboardLayout>
   )
 }

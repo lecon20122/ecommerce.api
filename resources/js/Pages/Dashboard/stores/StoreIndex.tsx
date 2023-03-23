@@ -1,12 +1,13 @@
-import React, {useState} from 'react'
+import React, { Suspense, lazy, useState } from 'react'
 import DashboardLayout from '../../../layouts/dashboard';
 import route from 'ziggy-js';
-import {Inertia,} from '@inertiajs/inertia';
-import {Store} from "../../../types/globalTypes";
+import { Inertia, } from '@inertiajs/inertia';
+import { Store } from "../../../types/globalTypes";
 import AntDesignDataTable from "../../../components/DataTables/AntDesignDataTable";
-import {ColumnsType} from "antd/es/table";
-import {Button, Space} from "antd";
-import {EditOutlined} from "@ant-design/icons";
+import { ColumnsType } from "antd/es/table";
+import { Button, Space } from "antd";
+import { EditOutlined } from "@ant-design/icons";
+import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
 
 interface Props {
   stores: Array<Store>
@@ -17,14 +18,13 @@ interface DataType extends Store {
   key?: string;
 }
 
-export default function StoreIndex({stores, locale}: Props) {
-
+export default function StoreIndex({ stores, locale }: Props) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [currentStoreId, setCurrentStoreId] = useState(0);
 
 
   const handleOnClickUpdateDialog = (storeId: any) => {
-    Inertia.get(route('admin.stores.edit', {id: storeId}))
+    Inertia.get(route('admin.stores.edit', { id: storeId }))
   };
 
   const handleOnClickDelete = (data: any) => {
@@ -80,7 +80,7 @@ export default function StoreIndex({stores, locale}: Props) {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined onClick={(e) => handleOnClickUpdateDialog(record.id)}/>
+          <EditOutlined onClick={(e) => handleOnClickUpdateDialog(record.id)} />
           //create approve and reject button
           <Button onClick={event => handleOnClickApprove(record)} className={record.approved_at ? 'text-red-500' : 'text-green-500'}>
             {record.approved_at ? 'Disable' : 'Approve'}
@@ -93,15 +93,15 @@ export default function StoreIndex({stores, locale}: Props) {
 
 
   return (
-    <DashboardLayout>
+    <NewDashboardLayout>
       <div>
         {/*< ConfirmationAlertDialog open={openDeleteDialog} handleClose={handleDeleteClose}*/}
         {/*                          handleAgree={handleAgreeDelete}/>*/}
 
         <div className={'container mx-auto py-4'}>
-          <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={stores}/>
+          <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={stores} />
         </div>
       </div>
-    </DashboardLayout>
+    </NewDashboardLayout>
   )
 }

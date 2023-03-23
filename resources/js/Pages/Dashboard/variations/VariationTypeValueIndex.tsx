@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
-import {VariationTypes, VariationTypesValues} from "../../../types/VariationType";
-import {ColumnsType} from "antd/es/table";
-import {Button, Divider, Form, Input, Select, Space, Table} from "antd";
+import React, { Suspense, lazy, useState } from 'react';
+import { VariationTypes, VariationTypesValues } from "../../../types/VariationType";
+import { ColumnsType } from "antd/es/table";
+import { Button, Divider, Form, Input, Select, Space, Table } from "antd";
 import DashboardLayout from "../../../layouts/dashboard";
 import ModalWithChildren from "./ModalWithChildren";
-import {EditOutlined, DeleteOutlined} from '@ant-design/icons'
-import {Inertia} from "@inertiajs/inertia";
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { Inertia } from "@inertiajs/inertia";
 import route from "ziggy-js";
 import ImageUploadManually from "../../../components/client/includes/ImageUploadManuallyComponent";
+import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
 
 interface DataType extends VariationTypesValues {
   key?: string;
@@ -18,8 +19,7 @@ interface Props {
   locale: string
 }
 
-function VariationTypeValueIndex({currentVariationType, locale}: Props) {
-
+function VariationTypeValueIndex({ currentVariationType, locale }: Props) {
   const [openModal, setOpenModal] = useState(false);
   const [openUpdateValueModal, setOpenUpdateValueModal] = useState(false);
   const [currentVariationValue, setCurrentVariationValue] = useState<VariationTypesValues>();
@@ -42,7 +42,7 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
   };
 
   const onUpdateFinish = (values: any) => {
-    Inertia.post(route('admin.variations.type.value.update', {id: values.id}), values, {
+    Inertia.post(route('admin.variations.type.value.update', { id: values.id }), values, {
       preserveState: false
     })
   }
@@ -59,7 +59,7 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
       dataIndex: 'url',
       render: (_, record) => (
         <Space size="middle">
-          <img src={record.color?.url} width={26} height={26}/>
+          <img src={record.color?.url} width={26} height={26} />
         </Space>
       ),
     },
@@ -79,7 +79,7 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
       dataIndex: 'hex_color',
       render: (_, record) => (
         <Space size="middle">
-          <span className={'font-bold'} style={{color: record.hex_value}}>{record.hex_value}</span>
+          <span className={'font-bold'} style={{ color: record.hex_value }}>{record.hex_value}</span>
         </Space>
       ),
     },
@@ -88,35 +88,36 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined onClick={(e) => onUpdate(record)}/>
-          <DeleteOutlined onClick={(e) => onDelete(record.id)}/>
+          <EditOutlined onClick={(e) => onUpdate(record)} />
+          <DeleteOutlined onClick={(e) => onDelete(record.id)} />
           <ImageUploadManually param={record} buttonLabel={'Upload Images'}
-                               listType="picture"
-                               className={'flex justify-content items-center'}
-                               btnClassName={'mt-0'}
-                               routeName={'admin.add.color.image.to.variation.type.value'} multiple={false}/>
+            listType="picture"
+            className={'flex justify-content items-center'}
+            btnClassName={'mt-0'}
+            routeName={'admin.add.color.image.to.variation.type.value'} multiple={false} />
         </Space>
       ),
     },
   ]
 
   return (
-    <DashboardLayout>
+
+    <NewDashboardLayout>
       <div className={'container mx-auto py-4'}>
         <ModalWithChildren openModal={openModal} onOk={() => setOpenModal(false)}
-                           onCancel={() => setOpenModal(false)}>
+          onCancel={() => setOpenModal(false)}>
           <Form
             name="basic"
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
             onFinish={onFinish}
           >
             <Form.Item
               label="Value EN"
               name="en"
-              rules={[{required: true, message: 'Please fill value in EN!'}]}
+              rules={[{ required: true, message: 'Please fill value in EN!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
@@ -125,24 +126,24 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
               name="variation_type_id"
               initialValue={currentVariationType.id}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
               label="Value AR"
               name="ar"
-              rules={[{required: true, message: 'Please fill value in AR!'}]}
+              rules={[{ required: true, message: 'Please fill value in AR!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
             <Form.Item
               label="Hex Value"
               hidden={currentVariationType.type.en === 'size'}
               name="hex_value"
             >
-              <Input/>
+              <Input />
             </Form.Item>
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="default" htmlType="submit">
                 Submit
               </Button>
@@ -151,20 +152,20 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
         </ModalWithChildren>
 
         <ModalWithChildren openModal={openUpdateValueModal} onOk={() => setOpenUpdateValueModal(false)}
-                           onCancel={() => setOpenUpdateValueModal(false)}>
+          onCancel={() => setOpenUpdateValueModal(false)}>
           <Form
             name="basic"
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
             onFinish={onUpdateFinish}
           >
             <Form.Item
               label="Value EN"
               name="en"
               initialValue={currentVariationValue?.value.en}
-              rules={[{required: true, message: 'Please fill value in EN!'}]}
+              rules={[{ required: true, message: 'Please fill value in EN!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
@@ -173,27 +174,27 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
               name="id"
               initialValue={currentVariationValue?.id}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
               label="Value AR"
               initialValue={currentVariationValue?.value.ar}
               name="ar"
-              rules={[{required: true, message: 'Please fill value in AR!'}]}
+              rules={[{ required: true, message: 'Please fill value in AR!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
             <Form.Item
               label="Hex Value"
               hidden={currentVariationType.type.en === 'size'}
               initialValue={currentVariationValue?.hex_value}
               name="hex_value"
-              rules={[{required: true, message: 'fill the color hex value'}]}
+              rules={[{ required: true, message: 'fill the color hex value' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="default" htmlType="submit">
                 Submit
               </Button>
@@ -201,11 +202,12 @@ function VariationTypeValueIndex({currentVariationType, locale}: Props) {
           </Form>
         </ModalWithChildren>
         <Button onClick={() => setOpenModal(true)}>create new record</Button>
-        <Divider/>
+        <Divider />
 
-        <Table rowKey="id" columns={columns} dataSource={currentVariationType.variationTypeValues}/>
+        <Table rowKey="id" columns={columns} dataSource={currentVariationType.variationTypeValues} />
       </div>
-    </DashboardLayout>
+    </NewDashboardLayout>
+
   );
 }
 

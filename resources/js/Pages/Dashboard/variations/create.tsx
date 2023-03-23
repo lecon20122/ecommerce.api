@@ -33,14 +33,7 @@ export default function CreateProductVariation({
   const [isMediable, setIsMediable] = useState(false)
   const [variationTypeId, setVariationTypeId] = useState(0)
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [filteredVariationType, setFilteredVariationType] = useState<VariationTypesValues[]>([{
-    id: 0,
-    value: {
-      en: '',
-      ar: ''
-    },
-    variation_type_id: 0
-  }])
+  const [filteredVariationType, setFilteredVariationType] = useState<VariationTypesValues[]>()
   const helpers = new Helpers()
 
 

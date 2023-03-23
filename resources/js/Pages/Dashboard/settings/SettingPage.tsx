@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import DashboardLayout from "../../../layouts/dashboard";
-import {Button, Divider, Form, Input, Space, Table} from "antd";
-import {Setting, VariationTypesValues} from "../../../types/VariationType";
-import {ColumnsType} from "antd/es/table";
+import { Button, Divider, Form, Input, Space, Table } from "antd";
+import { Setting } from "../../../types/VariationType";
+import { ColumnsType } from "antd/es/table";
 import ModalWithChildren from "../variations/ModalWithChildren";
-import {Inertia} from "@inertiajs/inertia";
+import { Inertia } from "@inertiajs/inertia";
 import route from "ziggy-js";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-// import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-// import ImageUploadManually from "../../../components/client/includes/ImageUploadManuallyComponent";
+import { EditOutlined } from "@ant-design/icons";
+import LoadingSkeleton from '../../../components/common/loading-skeleton';
+import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
 
 interface DataType extends Setting {
   key?: string;
@@ -19,8 +19,8 @@ interface Props {
   locale: string
 }
 
-function SettingPage({settings, locale}: Props) {
-
+function SettingPage({ settings, locale }: Props) {
+  // const NewDashboardLayout = lazy(() => import('../../../layouts/new-dashboard-layout'));
   const [openModal, setOpenModal] = useState(false);
   const [openUpdateValueModal, setOpenUpdateValueModal] = useState(false);
   const [currentSetting, setCurrentSetting] = useState<Setting>();
@@ -46,7 +46,7 @@ function SettingPage({settings, locale}: Props) {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined onClick={(e) => onUpdate(record)}/>
+          <EditOutlined onClick={(e) => onUpdate(record)} />
           {/*<DeleteOutlined onClick={(e) => onDelete(record.id)}/>*/}
           {/*<ImageUploadManually param={record.image} buttonLabel={'Upload Images'}*/}
           {/*                     listType="picture"*/}
@@ -70,79 +70,79 @@ function SettingPage({settings, locale}: Props) {
   }
 
   const onUpdateFinish = (values: any) => {
-    Inertia.post(route('admin.update.settings', {setting: currentSetting as any}), values, {
+    Inertia.post(route('admin.update.settings', { setting: currentSetting as any }), values, {
       preserveState: false
     })
   }
 
   return (
-    <DashboardLayout>
-      <div className={'container mx-auto py-4'}>
-        <ModalWithChildren openModal={openModal} onOk={() => setOpenModal(false)}
-                           onCancel={() => setOpenModal(false)}>
-          <Form
-            name="basic"
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
-            onFinish={onCreateFinish}
-          >
-            <Form.Item
-              label="Key"
-              name="key"
-              rules={[{required: true, message: 'Please fill the key please'}]}
+      <NewDashboardLayout>
+        <div className={'container mx-auto py-4'}>
+          <ModalWithChildren openModal={openModal} onOk={() => setOpenModal(false)}
+            onCancel={() => setOpenModal(false)}>
+            <Form
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              onFinish={onCreateFinish}
             >
-              <Input/>
-            </Form.Item>
-            <Form.Item
-              label="Value"
-              name="value"
-              rules={[{required: true, message: 'Please fill the value please'}]}
+              <Form.Item
+                label="Key"
+                name="key"
+                rules={[{ required: true, message: 'Please fill the key please' }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Value"
+                name="value"
+                rules={[{ required: true, message: 'Please fill the value please' }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Button type="default" htmlType="submit">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
+          </ModalWithChildren>
+          <ModalWithChildren openModal={openUpdateValueModal} onOk={() => setOpenUpdateValueModal(false)}
+            onCancel={() => setOpenUpdateValueModal(false)}>
+            <Form
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              onFinish={onUpdateFinish}
             >
-              <Input/>
-            </Form.Item>
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
-              <Button type="default" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </ModalWithChildren>
-        <ModalWithChildren openModal={openUpdateValueModal} onOk={() => setOpenUpdateValueModal(false)}
-                           onCancel={() => setOpenUpdateValueModal(false)}>
-          <Form
-            name="basic"
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
-            onFinish={onUpdateFinish}
-          >
-            <Form.Item
-              label="Key"
-              initialValue={currentSetting?.name}
-              name="key"
-              rules={[{required: true, message: 'Please fill the key please'}]}
-            >
-              <Input/>
-            </Form.Item>
-            <Form.Item
-              label="Value"
-              name="value"
-              initialValue={currentSetting?.value}
-              rules={[{required: true, message: 'Please fill the value please'}]}
-            >
-              <Input/>
-            </Form.Item>
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
-              <Button type="default" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </ModalWithChildren>
-        <Button onClick={() => setOpenModal(true)}>create new record</Button>
-        <Divider/>
-        <Table rowKey="id" columns={columns} dataSource={settings}/>
-      </div>
-    </DashboardLayout>
+              <Form.Item
+                label="Key"
+                initialValue={currentSetting?.name}
+                name="key"
+                rules={[{ required: true, message: 'Please fill the key please' }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Value"
+                name="value"
+                initialValue={currentSetting?.value}
+                rules={[{ required: true, message: 'Please fill the value please' }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Button type="default" htmlType="submit">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
+          </ModalWithChildren>
+          <Button onClick={() => setOpenModal(true)}>create new record</Button>
+          <Divider />
+          <Table rowKey="id" columns={columns} dataSource={settings} />
+        </div>
+      </NewDashboardLayout>
   );
 }
 

@@ -10,6 +10,7 @@ import StockRemoveAndAddComponent from "../../../components/StockRemoveAndAddCom
 import CreateProductVariation from "./create";
 import {ColumnsType} from "antd/es/table";
 import ToggleRestoreDeleteButton from "../../../components/Forms/Buttons/ToggleDeleteRestoreButton";
+import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
 
 interface Props {
   currentVariation: Variation
@@ -23,19 +24,12 @@ interface DataType extends Variation {
 }
 
 export default function VariationEdit({currentVariation, variationTypesValues, variationTypes, locale}: Props) {
-  console.log(currentVariation)
+
   const [variationTypeId, setVariationTypeId] = useState(0)
   const [openAddStock, setOpenAddStock] = useState(false)
   const [openAddChildVariationDialog, setOpenAddChildVariationDialog] = useState(false);
   const [openSubtractStock, setOpenSubtractStock] = useState(false)
-  const [filteredVariationType, setFilteredVariationType] = useState<VariationTypesValues[]>([{
-    id: 0,
-    value: {
-      en: '',
-      ar: ''
-    },
-    variation_type_id: 0
-  }])
+  const [filteredVariationType, setFilteredVariationType] = useState<VariationTypesValues[]>()
 
 
   const handleOnClickVariationRestore = (data: any) => {
@@ -115,7 +109,7 @@ export default function VariationEdit({currentVariation, variationTypesValues, v
     )
   })
 
-  const SelectTypeValuesOptions = filteredVariationType.map((value) => {
+  const SelectTypeValuesOptions = filteredVariationType?.map((value) => {
     return (
       <Select.Option value={value.id} key={value.id}>{value.value.en}</Select.Option>
     )
@@ -131,7 +125,7 @@ export default function VariationEdit({currentVariation, variationTypesValues, v
   }, [variationTypeId])
 
   return (
-    <DashboardLayout>
+    <NewDashboardLayout>
 
       <div className='container mx-auto'>
         {/*<div>current Variation Values <span>{currentVariation.type}</span> : <span>{currentVariation.title}</span></div>*/}
@@ -235,6 +229,6 @@ export default function VariationEdit({currentVariation, variationTypesValues, v
           }
         </div>
       </div>
-    </DashboardLayout>
+    </NewDashboardLayout>
   );
 }

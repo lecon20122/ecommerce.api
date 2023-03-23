@@ -1,19 +1,15 @@
 import React, { lazy } from 'react'
 import { Suspense } from 'react';
+import NewDashboardLayout from '../../layouts/new-dashboard-layout';
 
 export default function index() {
-  const DashboardLayout = lazy(() => import('../../layouts/dashboard'));
-
-
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <DashboardLayout>
+      <NewDashboardLayout>
         <div>
           'Home Page'
         </div>
-      </DashboardLayout>
-    </Suspense>
+      </NewDashboardLayout>
   )
 }
 

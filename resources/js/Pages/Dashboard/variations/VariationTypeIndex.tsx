@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {VariationTypes} from "../../../types/VariationType";
-import {ColumnsType} from "antd/es/table";
-import {Button, Divider, Form, Input, Select, Space} from "antd";
-import DashboardLayout from "../../../layouts/dashboard";
+import React, { Suspense, lazy, useState } from 'react';
+import { VariationTypes } from "../../../types/VariationType";
+import { ColumnsType } from "antd/es/table";
+import { Button, Divider, Form, Input, Select, Space } from "antd";
 import ModalWithChildren from "./ModalWithChildren";
-import {DeleteOutlined, EditOutlined} from '@ant-design/icons'
-import {Inertia} from "@inertiajs/inertia";
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { Inertia } from "@inertiajs/inertia";
 import route from "ziggy-js";
 import AntDesignDataTable from "../../../components/DataTables/AntDesignDataTable";
+import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
 
 interface DataType extends VariationTypes {
   key?: string;
@@ -18,8 +18,7 @@ interface Props {
   locale: string
 }
 
-function VariationTypeIndex({variationTypes, locale}: Props) {
-
+function VariationTypeIndex({ variationTypes, locale }: Props) {
   const [openModal, setOpenModal] = useState(false);
 
   const onUpdate = (id: number) => {
@@ -77,46 +76,46 @@ function VariationTypeIndex({variationTypes, locale}: Props) {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined onClick={(e) => onUpdate(record.id)}/>
-          <DeleteOutlined onClick={(e) => onDelete(record.id)}/>
+          <EditOutlined onClick={(e) => onUpdate(record.id)} />
+          <DeleteOutlined onClick={(e) => onDelete(record.id)} />
         </Space>
       ),
     },
   ]
 
   return (
-    <DashboardLayout>
+    <NewDashboardLayout>
       <div className={'container mx-auto py-4'}>
         <Button onClick={() => setOpenModal(true)}>create new record</Button>
-        <Divider/>
+        <Divider />
         <ModalWithChildren openModal={openModal} onOk={() => setOpenModal(false)}
-                           onCancel={() => setOpenModal(false)} title={"Create New Variation"}>
+          onCancel={() => setOpenModal(false)} title={"Create New Variation"}>
           <Form
             name="basic"
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
             onFinish={onFinish}
             autoComplete="off"
           >
             <Form.Item
               label="Type EN"
               name="en"
-              rules={[{required: true, message: 'Please fill type in EN!'}]}
+              rules={[{ required: true, message: 'Please fill type in EN!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
               label="Type AR"
               name="ar"
-              rules={[{required: true, message: 'Please fill type in AR!'}]}
+              rules={[{ required: true, message: 'Please fill type in AR!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
             <Form.Item
               label="Eligible for Media ?"
               name="is_mediable"
-              rules={[{required: true, message: 'Please fill type in AR!'}]}
+              rules={[{ required: true, message: 'Please fill type in AR!' }]}
             >
               <Select
                 placeholder="this type will have image ?"
@@ -129,7 +128,7 @@ function VariationTypeIndex({variationTypes, locale}: Props) {
             <Form.Item
               label="is stockable ?"
               name="is_stockable"
-              rules={[{required: true, message: 'Please fill type in AR!'}]}
+              rules={[{ required: true, message: 'Please fill type in AR!' }]}
             >
               <Select
                 placeholder="this type will have image ?"
@@ -139,16 +138,16 @@ function VariationTypeIndex({variationTypes, locale}: Props) {
                 <Select.Option value={false}>no</Select.Option>
               </Select>
             </Form.Item>
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="default" htmlType="submit">
                 Submit
               </Button>
             </Form.Item>
           </Form>
         </ModalWithChildren>
-        <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={variationTypes}/>
+        <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={variationTypes} />
       </div>
-    </DashboardLayout>
+    </NewDashboardLayout>
   );
 }
 

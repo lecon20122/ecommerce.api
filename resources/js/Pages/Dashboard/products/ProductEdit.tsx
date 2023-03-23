@@ -1,17 +1,18 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
-import {Button, Divider, Form, Input, InputNumber, Select, Space, Table} from 'antd';
-import {Inertia} from '@inertiajs/inertia';
+import { Button, Divider, Form, Input, InputNumber, Select, Space, Table } from 'antd';
+import { Inertia } from '@inertiajs/inertia';
 import route from 'ziggy-js';
-import {usePage} from "@inertiajs/inertia-react";
-import {Title} from "../../../types/CategoryType";
-import {Setting, Variation, VariationTypes, VariationTypesValues} from "../../../types/VariationType";
+import { usePage } from "@inertiajs/inertia-react";
+import { Title } from "../../../types/CategoryType";
+import { Setting, Variation, VariationTypes, VariationTypesValues } from "../../../types/VariationType";
 import VariationList from "../../../components/Lists/VariationList";
-import {Category, NewMediaProps} from "../../../types/products";
-import {ProductAttribute, ProductDescription} from "../../../types/globalTypes";
-import {ColumnsType} from "antd/es/table";
-import {DeleteOutlined, EditOutlined,} from "@ant-design/icons";
+import { Category, NewMediaProps } from "../../../types/products";
+import { ProductAttribute, ProductDescription } from "../../../types/globalTypes";
+import { ColumnsType } from "antd/es/table";
+import { DeleteOutlined, EditOutlined, } from "@ant-design/icons";
 import ModalWithChildren from "../variations/ModalWithChildren";
+import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
 
 interface Props {
   currentProduct: Product
@@ -39,13 +40,13 @@ interface DataType extends ProductDescription {
 }
 
 export default function ProductEdit({
-                                      currentProduct,
-                                      locale,
-                                      variationTypesValues,
-                                      variationTypes,
-                                      categories,
-                                      attributes
-                                    }: Props) {
+  currentProduct,
+  locale,
+  variationTypesValues,
+  variationTypes,
+  categories,
+  attributes
+}: Props) {
 
   const [openUpdateDescriptionModal, setOpenUpdateDescriptionModal] = useState<boolean>(false)
   const [openCreateDescriptionModal, setOpenCreateDescriptionModal] = useState<boolean>(false)
@@ -66,7 +67,7 @@ export default function ProductEdit({
   };
 
   const handleDetachCategories = (categoryId: number) => {
-    Inertia.post(route('admin.detach.category.from.product', currentProduct), {id: categoryId}, {
+    Inertia.post(route('admin.detach.category.from.product', currentProduct), { id: categoryId }, {
       preserveState: false
     })
   }
@@ -83,13 +84,13 @@ export default function ProductEdit({
   }
 
   const onUpdateDescriptionFinish = (values: any) => {
-    Inertia.post(route('admin.update.product.description', {id: values.id}), values, {
+    Inertia.post(route('admin.update.product.description', { id: values.id }), values, {
       preserveState: false
     })
   }
 
   const onDeleteDescription = (id: any) => {
-    Inertia.post(route('admin.delete.product.description', {id: id}), undefined, {
+    Inertia.post(route('admin.delete.product.description', { id: id }), undefined, {
       preserveState: false
     })
   }
@@ -133,20 +134,20 @@ export default function ProductEdit({
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined onClick={(e) => onUpdateDescription(record)}/>
-          <DeleteOutlined onClick={(e) => onDeleteDescription(record.id)}/>
+          <EditOutlined onClick={(e) => onUpdateDescription(record)} />
+          <DeleteOutlined onClick={(e) => onDeleteDescription(record.id)} />
         </Space>
       ),
     },
   ]
 
   return (
-    <DashboardLayout>
+    <NewDashboardLayout>
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
         <Form
           name="basic"
-          labelCol={{span: 2}}
-          wrapperCol={{span: 12}}
+          labelCol={{ span: 2 }}
+          wrapperCol={{ span: 12 }}
           onFinish={onFinish}
           autoComplete="off"
         >
@@ -154,33 +155,33 @@ export default function ProductEdit({
             label="Title EN"
             initialValue={currentProduct.title.en}
             name="en"
-            rules={[{required: true}]}
+            rules={[{ required: true }]}
           >
-            <Input/>
+            <Input />
           </Form.Item>
           <Form.Item
             label="Title AR"
             name="ar"
             initialValue={currentProduct.title.ar}
-            rules={[{required: true}]}
+            rules={[{ required: true }]}
           >
-            <Input/>
+            <Input />
           </Form.Item>
           <Form.Item
             label="Price"
             initialValue={currentProduct.price}
             name="price"
-            rules={[{required: true}]}
+            rules={[{ required: true }]}
           >
-            <Input/>
+            <Input />
           </Form.Item>
-          <Form.Item wrapperCol={{offset: 2, span: 1}}>
+          <Form.Item wrapperCol={{ offset: 2, span: 1 }}>
             <Button type="default" htmlType="submit">
               Submit
             </Button>
           </Form.Item>
         </Form>
-        <Divider/>
+        <Divider />
 
         <div className='flex flex-1'>
           <div className='basis-1/3'>
@@ -189,7 +190,7 @@ export default function ProductEdit({
               {currentAttachedCategories}
             </div>
             <Form onFinish={onFinishAttachCategories}
-                  wrapperCol={{span: 12}}>
+              wrapperCol={{ span: 12 }}>
               <Form.Item name="id">
                 <Select
                   mode="multiple"
@@ -212,22 +213,22 @@ export default function ProductEdit({
           </div>
           <div className='basis-2/3'>
             <Button onClick={() => setOpenCreateDescriptionModal(true)}>create new record</Button>
-            <Divider/>
-            <Table scroll={{x: true}} rowKey="id" columns={columns}
-                   dataSource={currentProduct.description}/>
+            <Divider />
+            <Table scroll={{ x: true }} rowKey="id" columns={columns}
+              dataSource={currentProduct.description} />
           </div>
         </div>
-        <Divider/>
+        <Divider />
         <VariationList variations={currentProduct.variations} storeId={currentProduct.store_id}
-                       variationTypes={variationTypes}
-                       variationTypesValues={variationTypesValues} productId={currentProduct.id}/>
+          variationTypes={variationTypes}
+          variationTypesValues={variationTypesValues} productId={currentProduct.id} />
         <ModalWithChildren openModal={openUpdateDescriptionModal} onOk={() => setOpenUpdateDescriptionModal(false)}
-                           onCancel={() => setOpenUpdateDescriptionModal(false)}>
+          onCancel={() => setOpenUpdateDescriptionModal(false)}>
           <Form
             className={'p-5'}
             name="basic"
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
             onFinish={onUpdateDescriptionFinish}
           >
             <Form.Item name="id" label={'select attribute'}>
@@ -249,25 +250,25 @@ export default function ProductEdit({
               initialValue={currentDescription?.id}
               name="id"
             >
-              <Input/>
+              <Input />
             </Form.Item>
             <Form.Item
               label="Value English"
               initialValue={currentDescription?.value.en}
               name="en"
-              rules={[{required: true, message: 'Please fill the value please'}]}
+              rules={[{ required: true, message: 'Please fill the value please' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
             <Form.Item
               label="Value Arabic"
               initialValue={currentDescription?.value.ar}
               name="ar"
-              rules={[{required: true, message: 'Please fill the value please'}]}
+              rules={[{ required: true, message: 'Please fill the value please' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="default" htmlType="submit">
                 Submit
               </Button>
@@ -275,12 +276,12 @@ export default function ProductEdit({
           </Form>
         </ModalWithChildren>
         <ModalWithChildren openModal={openCreateDescriptionModal} onOk={() => setOpenCreateDescriptionModal(false)}
-                           onCancel={() => setOpenCreateDescriptionModal(false)}>
+          onCancel={() => setOpenCreateDescriptionModal(false)}>
           <Form
             className={'p-5'}
             name="basic"
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
             onFinish={onCreateDescriptionFinish}
           >
             <Form.Item name="product_attribute_id" label={'select attribute'}>
@@ -301,23 +302,23 @@ export default function ProductEdit({
               label="product_id"
               name="product_id"
             >
-              <Input/>
+              <Input />
             </Form.Item>
             <Form.Item
               label="Value English"
               name="en"
-              rules={[{required: true, message: 'Please fill the value please'}]}
+              rules={[{ required: true, message: 'Please fill the value please' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
             <Form.Item
               label="Value Arabic"
               name="ar"
-              rules={[{required: true, message: 'Please fill the value please'}]}
+              rules={[{ required: true, message: 'Please fill the value please' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="default" htmlType="submit">
                 Submit
               </Button>
@@ -325,6 +326,6 @@ export default function ProductEdit({
           </Form>
         </ModalWithChildren>
       </div>
-    </DashboardLayout>
+    </NewDashboardLayout>
   )
 }

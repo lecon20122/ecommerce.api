@@ -1,14 +1,14 @@
-import React, {useState} from 'react'
-import {Category} from '../../../types/products';
-import DashboardLayout from '../../../layouts/dashboard';
+import React, { Suspense, lazy, useState } from 'react'
+import { Category } from '../../../types/products';
 import route from 'ziggy-js';
-import {Inertia,} from '@inertiajs/inertia';
-import {ColumnsType} from "antd/es/table";
-import {Button, Divider, Form, Input, InputNumber, Select, Space, Table, Upload} from "antd";
-import {SwapOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
+import { Inertia, } from '@inertiajs/inertia';
+import { ColumnsType } from "antd/es/table";
+import { Button, Divider, Form, Input, InputNumber, Select, Space, Table, Upload } from "antd";
+import { SwapOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import ModalWithChildren from "../variations/ModalWithChildren";
-import {UploadChangeParam, UploadFile} from "antd/es/upload/interface";
+import { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
 import Helpers from "../../../utils/Helpers";
+import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
 
 interface Props {
   categories: Array<Category>
@@ -20,7 +20,7 @@ interface DataType extends Category {
 }
 
 
-export default function CategoryIndex({categories, locale}: Props) {
+export default function CategoryIndex({ categories, locale }: Props) {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [currentCategoryId, setCurrentCategoryId] = useState(0);
@@ -98,8 +98,8 @@ export default function CategoryIndex({categories, locale}: Props) {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <EditOutlined onClick={(e) => handleOnClickUpdateDialog(record.id)}/>
-          <SwapOutlined onClick={(e) => handleOnClickDelete(record.id)}/>
+          <EditOutlined onClick={(e) => handleOnClickUpdateDialog(record.id)} />
+          <SwapOutlined onClick={(e) => handleOnClickDelete(record.id)} />
         </Space>
       ),
     },
@@ -145,34 +145,34 @@ export default function CategoryIndex({categories, locale}: Props) {
   }
 
   return (
-    <DashboardLayout>
+    <NewDashboardLayout>
       <div>
         <ModalWithChildren openModal={openAddDialog} onOk={() => setOpenAddDialog(false)}
-                           onCancel={() => setOpenAddDialog(false)} title={"Create New Variation"}>
+          onCancel={() => setOpenAddDialog(false)} title={"Create New Variation"}>
           <Form
             name="basic"
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
             onFinish={onFinish}
             autoComplete="off"
           >
             <Form.Item
               label="Type EN"
               name="en"
-              rules={[{required: true, message: 'Please fill type in EN!'}]}
+              rules={[{ required: true, message: 'Please fill type in EN!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
               label="Type AR"
               name="ar"
-              rules={[{required: true, message: 'Please fill type in AR!'}]}
+              rules={[{ required: true, message: 'Please fill type in AR!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
             <Form.Item name={'order'} label='Order'>
-              <InputNumber/>
+              <InputNumber />
             </Form.Item>
             <Form.Item
               label="Parent Category"
@@ -192,12 +192,12 @@ export default function CategoryIndex({categories, locale}: Props) {
             >
               <Upload listType="picture-card" onRemove={onRemove} onChange={(e) => onChangeHandler(e)}>
                 <div>
-                  <PlusOutlined/>
-                  <div style={{marginTop: 8}}>Upload</div>
+                  <PlusOutlined />
+                  <div style={{ marginTop: 8 }}>Upload</div>
                 </div>
               </Upload>
             </Form.Item>
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="default" htmlType="submit">
                 Submit
               </Button>
@@ -208,10 +208,10 @@ export default function CategoryIndex({categories, locale}: Props) {
 
         <div className={'container mx-auto py-4'}>
           <Button onClick={() => setOpenAddDialog(true)}>create new record</Button>
-          <Divider/>
-          <Table columns={columns} rowKey={"id"} dataSource={categories} rowClassName={rowClassName}/>
+          <Divider />
+          <Table columns={columns} rowKey={"id"} dataSource={categories} rowClassName={rowClassName} />
         </div>
       </div>
-    </DashboardLayout>
+    </NewDashboardLayout>
   )
 }

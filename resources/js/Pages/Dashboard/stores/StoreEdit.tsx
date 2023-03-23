@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react'
+import React, {  useState } from 'react'
 import { Inertia } from '@inertiajs/inertia';
 import route from 'ziggy-js';
 import { StoreWithProducts } from "../../../types/globalTypes";
@@ -37,7 +37,6 @@ export default function StoreEdit({ currentStore, locale, variationTypesValues, 
   return (
     <NewDashboardLayout>
       <div className='m-2'>
-
         <Form
           className={'container mx-auto'}
           scrollToFirstError

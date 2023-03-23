@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, {  useState } from 'react';
 import { VariationTypes } from "../../../types/VariationType";
 import { ColumnsType } from "antd/es/table";
 import { Button, Divider, Form, Input, Select, Space } from "antd";
@@ -85,7 +85,7 @@ function VariationTypeIndex({ variationTypes, locale }: Props) {
 
   return (
     <NewDashboardLayout>
-      <div className={'container mx-auto py-4'}>
+      <div className={''}>
         <Button onClick={() => setOpenModal(true)}>create new record</Button>
         <Divider />
         <ModalWithChildren openModal={openModal} onOk={() => setOpenModal(false)}

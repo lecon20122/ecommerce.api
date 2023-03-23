@@ -1,14 +1,14 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, {  useState } from 'react';
 import { VariationTypes, VariationTypesValues } from "../../../types/VariationType";
 import { ColumnsType } from "antd/es/table";
-import { Button, Divider, Form, Input, Select, Space, Table } from "antd";
-import DashboardLayout from "../../../layouts/dashboard";
+import { Button, Divider, Form, Input, Space } from "antd";
 import ModalWithChildren from "./ModalWithChildren";
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Inertia } from "@inertiajs/inertia";
 import route from "ziggy-js";
 import ImageUploadManually from "../../../components/client/includes/ImageUploadManuallyComponent";
 import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
+import AntDesignDataTable from '../../../components/DataTables/AntDesignDataTable';
 
 interface DataType extends VariationTypesValues {
   key?: string;
@@ -101,9 +101,8 @@ function VariationTypeValueIndex({ currentVariationType, locale }: Props) {
   ]
 
   return (
-
     <NewDashboardLayout>
-      <div className={'container mx-auto py-4'}>
+      <div className={''}>
         <ModalWithChildren openModal={openModal} onOk={() => setOpenModal(false)}
           onCancel={() => setOpenModal(false)}>
           <Form
@@ -204,7 +203,7 @@ function VariationTypeValueIndex({ currentVariationType, locale }: Props) {
         <Button onClick={() => setOpenModal(true)}>create new record</Button>
         <Divider />
 
-        <Table rowKey="id" columns={columns} dataSource={currentVariationType.variationTypeValues} />
+        <AntDesignDataTable rowKey="id" columns={columns} dataSource={currentVariationType.variationTypeValues} />
       </div>
     </NewDashboardLayout>
 

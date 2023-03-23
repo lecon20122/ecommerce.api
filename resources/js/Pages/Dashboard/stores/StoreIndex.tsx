@@ -1,5 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react'
-import DashboardLayout from '../../../layouts/dashboard';
+import React, { useState } from 'react'
 import route from 'ziggy-js';
 import { Inertia, } from '@inertiajs/inertia';
 import { Store } from "../../../types/globalTypes";
@@ -95,12 +94,7 @@ export default function StoreIndex({ stores, locale }: Props) {
   return (
     <NewDashboardLayout>
       <div>
-        {/*< ConfirmationAlertDialog open={openDeleteDialog} handleClose={handleDeleteClose}*/}
-        {/*                          handleAgree={handleAgreeDelete}/>*/}
-
-        <div className={'container mx-auto py-4'}>
           <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={stores} />
-        </div>
       </div>
     </NewDashboardLayout>
   )

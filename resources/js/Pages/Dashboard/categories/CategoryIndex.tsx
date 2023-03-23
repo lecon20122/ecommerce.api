@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react'
+import React, {  useState } from 'react'
 import { Category } from '../../../types/products';
 import route from 'ziggy-js';
 import { Inertia, } from '@inertiajs/inertia';
@@ -9,6 +9,7 @@ import ModalWithChildren from "../variations/ModalWithChildren";
 import { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
 import Helpers from "../../../utils/Helpers";
 import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
+import AntDesignDataTable from '../../../components/DataTables/AntDesignDataTable';
 
 interface Props {
   categories: Array<Category>
@@ -77,11 +78,6 @@ export default function CategoryIndex({ categories, locale }: Props) {
           <span>{record.title.en}</span>
         </Space>
       ),
-    },
-    {
-      key: 'order',
-      title: 'Order',
-      dataIndex: 'order',
     },
     {
       key: 'parent',
@@ -205,12 +201,9 @@ export default function CategoryIndex({ categories, locale }: Props) {
           </Form>
         </ModalWithChildren>
 
-
-        <div className={'container mx-auto py-4'}>
-          <Button onClick={() => setOpenAddDialog(true)}>create new record</Button>
-          <Divider />
-          <Table columns={columns} rowKey={"id"} dataSource={categories} rowClassName={rowClassName} />
-        </div>
+        <Button onClick={() => setOpenAddDialog(true)}>create new record</Button>
+        <Divider />
+        <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={categories} rowClassName={rowClassName} />
       </div>
     </NewDashboardLayout>
   )

@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react'
+import React from 'react'
 import { Category } from '../../../types/products';
 import { Inertia } from '@inertiajs/inertia';
 import route from 'ziggy-js';

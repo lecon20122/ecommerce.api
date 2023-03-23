@@ -1,5 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react';
-import DashboardLayout from "../../../layouts/dashboard";
+import React, {  useState } from 'react';
 import { Button, Divider, Form, Input, Space, Table } from "antd";
 import { Setting } from "../../../types/VariationType";
 import { ColumnsType } from "antd/es/table";
@@ -7,8 +6,8 @@ import ModalWithChildren from "../variations/ModalWithChildren";
 import { Inertia } from "@inertiajs/inertia";
 import route from "ziggy-js";
 import { EditOutlined } from "@ant-design/icons";
-import LoadingSkeleton from '../../../components/common/loading-skeleton';
 import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
+import AntDesignDataTable from '../../../components/DataTables/AntDesignDataTable';
 
 interface DataType extends Setting {
   key?: string;
@@ -77,7 +76,7 @@ function SettingPage({ settings, locale }: Props) {
 
   return (
       <NewDashboardLayout>
-        <div className={'container mx-auto py-4'}>
+        <div className={''}>
           <ModalWithChildren openModal={openModal} onOk={() => setOpenModal(false)}
             onCancel={() => setOpenModal(false)}>
             <Form
@@ -140,7 +139,7 @@ function SettingPage({ settings, locale }: Props) {
           </ModalWithChildren>
           <Button onClick={() => setOpenModal(true)}>create new record</Button>
           <Divider />
-          <Table rowKey="id" columns={columns} dataSource={settings} />
+          <AntDesignDataTable rowKey="id" columns={columns} dataSource={settings} />
         </div>
       </NewDashboardLayout>
   );

@@ -1,6 +1,5 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, { useState } from 'react';
 import { ProductAttribute } from "../../../types/products";
-import DashboardLayout from "../../../layouts/dashboard";
 import { Inertia } from "@inertiajs/inertia";
 import route from "ziggy-js";
 import { ColumnsType } from "antd/es/table";
@@ -9,7 +8,6 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ModalWithChildren from "../variations/ModalWithChildren";
 import AntDesignDataTable from "../../../components/DataTables/AntDesignDataTable";
 import ProductAttributeUpdateComponent from "../../../components/ProductAttributeUpdateComponent/ProductAttributeUpdateComponent";
-import LoadingSkeleton from '../../../components/common/loading-skeleton';
 import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
 
 
@@ -98,7 +96,7 @@ function ProductAttributeIndex({ productAttributes }: Props) {
 
   return (
       <NewDashboardLayout>
-        <div className={'container mx-auto py-4'}>
+        <div className={''}>
           <Button onClick={() => setOpenModal(true)}>create new record</Button>
           <Divider />
           <ModalWithChildren openModal={openModal} onOk={() => setOpenModal(false)}

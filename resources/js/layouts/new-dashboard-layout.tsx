@@ -1,18 +1,16 @@
-import { Layout, Menu, theme } from 'antd'
+import { Card, Layout, Menu, theme } from 'antd'
 import React from 'react'
-import { GiClothes, GiHamburgerMenu } from 'react-icons/gi';
-import { FaSignOutAlt, FaUserAlt, FaUsers } from 'react-icons/fa';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { FaUsers } from 'react-icons/fa';
 import { AiTwotoneHome } from 'react-icons/ai';
 import { useWindowSize } from 'react-use';
 import SidebarLink from '../components/common/sidebar-link';
-import { Link } from '@inertiajs/inertia-react';
 
 interface IProps {
   children: React.ReactNode,
-  asLoadingSkeleton?: boolean
 }
 
-export default function NewDashboardLayout({ children, asLoadingSkeleton }: IProps) {
+export default function NewDashboardLayout({ children }: IProps) {
   const { Header, Sider, Content } = Layout;
 
   const {
@@ -20,8 +18,6 @@ export default function NewDashboardLayout({ children, asLoadingSkeleton }: IPro
   } = theme?.useToken();
   const { width } = useWindowSize();
   const [collapsed, setCollapsed] = React.useState(true);
-
-const collapsedState = asLoadingSkeleton ? true : collapsed;
 
   return (
     <Layout style={{
@@ -52,7 +48,7 @@ const collapsedState = asLoadingSkeleton ? true : collapsed;
         </div>
       </Header>
       <Layout>
-        <Sider theme='light' collapsed={collapsedState} collapsedWidth={width > 768 ? undefined : 0}>
+        <Sider theme='light' collapsed={collapsed} collapsedWidth={width > 768 ? undefined : 0}>
           <Menu className='text-black' theme='light' mode='inline' defaultSelectedKeys={['1']} items={[
             {
               key: "dashboard",
@@ -93,7 +89,7 @@ const collapsedState = asLoadingSkeleton ? true : collapsed;
 
           </Menu>
         </Sider>
-        <Content className='m-5'>{children}</Content>
+        <Content className='m-5'><Card>{children}</Card></Content>
       </Layout>
     </Layout>
 

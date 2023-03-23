@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react'
+import React, { useState } from 'react'
 import { User } from '../../../types/auth';
 import { Inertia } from "@inertiajs/inertia";
 import route from "ziggy-js";
@@ -73,7 +73,6 @@ export default function index({ users, locale }: Props) {
 
   return (
     <NewDashboardLayout>
-      <div className='container mx-auto py-4'>
         <ModalWithChildren openModal={openAddDialog} onOk={() => setOpenAddDialog(false)}
           onCancel={() => setOpenAddDialog(false)} title={"Add New Store"}>
           <Form
@@ -114,7 +113,6 @@ export default function index({ users, locale }: Props) {
           </Form>
         </ModalWithChildren>
         <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={users} />
-      </div>
     </NewDashboardLayout>
   )
 }

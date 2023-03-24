@@ -1,10 +1,12 @@
 import { Card, Layout, Menu, theme } from 'antd'
 import React from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { FaUsers } from 'react-icons/fa';
-import { AiTwotoneHome } from 'react-icons/ai';
+import { FaStoreAlt, FaUsers } from 'react-icons/fa';
+import { AiFillShop, AiTwotoneHome } from 'react-icons/ai';
 import { useWindowSize } from 'react-use';
 import SidebarLink from '../components/common/sidebar-link';
+import { usePage } from '@inertiajs/inertia-react';
+import { RolesEnum } from '../Enums/RolesEnum';
 
 interface IProps {
   children: React.ReactNode,
@@ -12,12 +14,22 @@ interface IProps {
 
 export default function NewDashboardLayout({ children }: IProps) {
   const { Header, Sider, Content } = Layout;
+  const admin = usePage().props?.auth[0]
 
   const {
     token: { colorBgContainer },
   } = theme?.useToken();
   const { width } = useWindowSize();
   const [collapsed, setCollapsed] = React.useState(true);
+
+
+  const superAdminLinks = admin?.roles[0].name === RolesEnum.SUPER_ADMIN ? [
+    {
+      key: "byPasses",
+      icon: <FaStoreAlt />,
+      label: <SidebarLink routeName='admin.bypasses.index'>ByPasses</SidebarLink>,
+    },
+  ] : []
 
   return (
     <Layout style={{
@@ -66,9 +78,21 @@ export default function NewDashboardLayout({ children }: IProps) {
               label: <SidebarLink routeName='admin.users'>Customers</SidebarLink>,
             },
             {
-              key: "admin.stores.index",
-              icon: <AiTwotoneHome />,
-              label: <SidebarLink routeName='admin.stores.index'>Stores</SidebarLink>,
+              key: "stores",
+              icon: <AiFillShop />,
+              label: 'Stores',
+              children: [
+                {
+                  key: "admin.stores.index",
+                  icon: <AiTwotoneHome />,
+                  label: <SidebarLink routeName='admin.stores.index'>All Stores</SidebarLink>,
+                },
+                {
+                  key: "admin.stores.requests.index",
+                  icon: <AiTwotoneHome />,
+                  label: <SidebarLink routeName='admin.stores.requests.index'>Seller Requests</SidebarLink>,
+                },
+              ],
             },
             {
               key: "admin.variations.type.index",
@@ -85,6 +109,7 @@ export default function NewDashboardLayout({ children }: IProps) {
               icon: <AiTwotoneHome />,
               label: <SidebarLink routeName='admin.settings.index'>Application Settings</SidebarLink>,
             },
+            ...superAdminLinks,
           ]}>
 
           </Menu>

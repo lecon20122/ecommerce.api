@@ -6,11 +6,12 @@ interface Props {
   rowKey: string
   dataSource: any,
   rowClassName?: string | any
+  onRow?: any
 }
 
-function AntDesignDataTable({ rowKey = "id", columns, dataSource, rowClassName }: Props) {
+function AntDesignDataTable({ rowKey = "id", columns, dataSource, rowClassName, onRow }: Props) {
   return (
-    <Table rowClassName={rowClassName} rowKey={rowKey} columns={columns} dataSource={dataSource} scroll={{ x: true }} />
+    <Table onRow={onRow} rowClassName={rowClassName} rowKey={rowKey} columns={columns} dataSource={dataSource} scroll={{ x: true }} />
   );
 }
 

@@ -15,14 +15,15 @@ return new class extends Migration
     {
         Schema::create('seller_requests', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('brand_name')->unique();
             $table->string('phone')->unique();
-            $table->string('pickup_location');
             $table->string('company_register');
             $table->string('what_store_sells')->nullable();
-            $table->string('social_media')->nullable();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('pickup_location_id')->constrained('addresses');
+
             $table->foreignId('store_id')->nullable()->constrained();
+            $table->string('social_media')->nullable();
             $table->foreignId('approved_by')->nullable()->constrained('admins');
             $table->timestamp('approved_at')->nullable();
             $table->foreignId('rejected_by')->nullable()->constrained('admins');

@@ -33,11 +33,6 @@ class NewProductCreatedJob implements ShouldQueue
      */
     public function handle()
     {
-        // $this->product->load(['variation' => function ($query) {
-        //     $query->with('mainImage')->color();
-        // }]);
-        // create a html message for telegram , wrapped in product link says that a new product has been created in Bold and send it to the telegram channel and include the product link
-
         $message = "<b>New Product Created, Need Admin Approval</b> \n";
         $message .= "<b>Product ID:</b> {$this->product->id} \n";
         $message .= "<b>Product Name:</b> {$this->product->title} \n";
@@ -47,7 +42,7 @@ class NewProductCreatedJob implements ShouldQueue
 
 
         Telegram::sendMessage([
-            'chat_id' => -1001304158950,
+            'chat_id' => config('telegram.bot.modaje.channel_id'),
             'parse_mode' => 'HTML',
             'text' => $message,
         ]);

@@ -24,6 +24,9 @@ class StoreController extends BaseController
     {
     }
 
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -133,6 +136,20 @@ class StoreController extends BaseController
             return $this->redirectBackWithMessage('success');
         } catch (Exception $exception) {
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__);
+        }
+    }
+
+    public function indexStoreRequests()
+    {
+        try {
+            return Inertia::render('Dashboard/stores/store-seller-requests', [
+                'storeRequests' => $this->storeService->indexStoreRequests(),
+            ]);
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndRedirectBack($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
         }
     }
 

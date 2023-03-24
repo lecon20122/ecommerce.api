@@ -6,8 +6,8 @@ import route from "ziggy-js";
 
 interface Props {
   openModal: boolean
-  onOk: () => void
-  onCancel: () => void
+  onOk?: () => void
+  onCancel?: () => void
   children: React.ReactNode
   title?: string
 }

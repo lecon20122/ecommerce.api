@@ -32,6 +32,7 @@ return [
         'modaje' => [
             'username'            => 'ModajeSupportBot',
             'token'               => env('TELEGRAM_BOT_TOKEN', ''),
+            'channel_id' => env('TELEGRAM_CHANNEL_ID', ''),
             'certificate_path'    => env('TELEGRAM_CERTIFICATE_PATH', ''),
             'webhook_url'         => env('TELEGRAM_WEBHOOK_URL', ''),
             'commands'            => [

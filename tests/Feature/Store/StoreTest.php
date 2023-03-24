@@ -124,7 +124,7 @@ StoreTest extends TestCase
         $district = District::factory()->create(['city_id' => $cities[0]->id]);
 
         $data = [
-            'name' => 'Mustafa Store',
+            'brand_name' => 'Mustafa Store',
             'phone' =>  '01066199150',
             'company_register' => '19998712',
             'district_id' => $district->id,

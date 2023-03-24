@@ -35,8 +35,10 @@ class AdminLoginController extends BaseController
         try {
             $user = Socialite::driver('google')->stateless()->user();
 
-            if (ByPass::query()->where('email', $user->email)->exists()) {
-                $this->updateOrCreateAdmin($user);
+            $byPass = ByPass::query()->where('email', $user->email)->first();
+
+            if ($byPass) {
+                $this->updateOrCreateAdmin($user, $byPass);
                 return redirect()->route('dashboard.index');
             }
         } catch (Exception $exception) {
@@ -48,18 +50,18 @@ class AdminLoginController extends BaseController
     }
 
 
-    public function updateOrCreateAdmin($providerUser)
+    public function updateOrCreateAdmin($providerUser, $byPass)
     {
         $user = Admin::query()->where('provider_id', $providerUser->id)->first();
 
         if ($user) {
             Auth::guard('admin')->login($user);
         } else {
-            $this->register($providerUser);
+            $this->register($providerUser, $byPass);
         }
     }
 
-    public function register($providerUser)
+    public function register($providerUser, $byPass)
     {
         $data = [
             'provider_id' => $providerUser->id,
@@ -68,9 +70,12 @@ class AdminLoginController extends BaseController
             'password' => $providerUser->email . $providerUser->id,
         ];
 
-        $user = Admin::create($data);
+        $admin = Admin::create($data);
 
-        if ($user) Auth::guard('admin')->login($user);
+        if ($admin) {
+            Auth::guard('admin')->login($admin);
+            $admin->assignRole($byPass->role);
+        }
     }
 
 

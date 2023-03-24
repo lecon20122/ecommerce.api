@@ -3,19 +3,38 @@
 namespace App\Domain\Store\Services;
 
 use App\Domain\Location\Enums\AddressTypeEnums;
+use App\Domain\Store\Models\SellerRequest;
 use App\Domain\Store\Models\Store;
-use App\Domain\Variation\Models\Variation;
 use App\Http\Store\Requests\StoreCreateRequest;
 use App\Http\Store\Requests\StoreUpdateRequest;
+use App\Http\Store\Resources\SellerRequestResource;
 use App\Http\Store\Resources\StoreResource;
-use App\Support\Enums\CacheKeyEnums;
+use App\Jobs\NewSellerRequestJob;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class StoreService
 {
+
+    public function indexStoreRequests()
+    {
+        return SellerRequestResource::collection(
+            SellerRequest::query()
+                ->with(['user', 'pickupLocation' => function ($query) {
+                    $query->with('district.city');
+                }])
+                ->latest()
+                ->get()
+        );
+    }
+
+    // public function approveStoreSellerRequest()
+    // {
+
+    // }
+
     public function index(): Collection|array
     {
         return Store::query()
@@ -64,11 +83,6 @@ class StoreService
         }
     }
 
-    public function getStore()
-    {
-        return auth('web')->user()->store()->first();
-    }
-
     public function approve(Store $store): void
     {
         DB::beginTransaction();
@@ -83,9 +97,9 @@ class StoreService
 
         $store = $user->store()->first();
 
-        if ($store) abort(403, 'You already have a store');
+        if ($store) abort(400, 'You already have a store');
 
-        if ($user->sellerRequest()->first()) abort(403, 'You already have a seller request');
+        if ($user->sellerRequest()->first()) abort(400, 'You already have a seller request');
 
         $addressData = [
             'name' => $user->name,
@@ -98,13 +112,15 @@ class StoreService
 
         $pickupLocation =  $user->addresses()->create($addressData);
 
-        $user->sellerRequest()->create([
-            'name' => $data['name'],
+        $sellerRequest =  $user->sellerRequest()->create([
+            'brand_name' => $data['brand_name'],
             'phone' => $data['phone'],
-            'pickup_location' => $pickupLocation->id,
+            'pickup_location_id' => $pickupLocation->id,
             'company_register' => $data['company_register'],
             'what_store_sells' => $data['what_store_sells'],
             'social_media' => $data['social_media'] ?? null,
         ]);
+
+        NewSellerRequestJob::dispatch($sellerRequest);
     }
 }

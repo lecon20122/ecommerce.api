@@ -10,6 +10,7 @@ use App\Domain\Location\Models\District;
 use App\Domain\Location\Models\Governorate;
 use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
+use App\Support\Enums\RolesEnum;
 use App\Support\Enums\TypeEnum;
 use Exception;
 use Faker\Generator;
@@ -45,7 +46,7 @@ class StartupSeeder extends Seeder
             ByPass::create([
                 'email' => 'lecon20122@gmail.com',
                 'expires_at' => null,
-                'role' => 'admin'
+                'role' => RolesEnum::SUPER_ADMIN->value
             ]);
         }
 

@@ -20,6 +20,7 @@ class AddressResource extends JsonResource
         return [
             'id' => $this->id,
             'district_id' => $this->district_id,
+            'district' => $this->whenLoaded('district'),
             'apartment_number' => $this->apartment_number,
             'building' => $this->building,
             'floor' => $this->floor,

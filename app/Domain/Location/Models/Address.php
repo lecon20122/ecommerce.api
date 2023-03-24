@@ -26,4 +26,9 @@ class Address extends Model
     {
         return $this->morphTo();
     }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
 }

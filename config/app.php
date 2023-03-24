@@ -169,6 +169,7 @@ return [
          */
         Laravel\Socialite\SocialiteServiceProvider::class,
         Telegram\Bot\Laravel\TelegramServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...

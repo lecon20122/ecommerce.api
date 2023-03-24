@@ -2,14 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Admin\Models\ByPass;
-use App\Domain\Location\Enums\LocationEnums;
-use App\Domain\Location\Models\Address;
-use App\Domain\Location\Models\City;
-use App\Domain\Location\Models\District;
-use App\Domain\Location\Models\Governorate;
-use App\Domain\Variation\Models\VariationType;
-use Domain\User\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,8 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             StartupSeeder::class,
-            //            ProductSeeder::class,
-
+            PermissionSeeder::class,
         ]);
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Domain\Store\Models;
 
 use App\Domain\Admin\Models\Admin;
+use App\Domain\Location\Models\Address;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,6 +29,11 @@ class SellerRequest extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function pickupLocation()
+    {
+        return $this->belongsTo(Address::class, 'pickup_location_id' , 'id');
+    }
+
     // approved by
 
     public function approvedBy()
@@ -40,4 +47,8 @@ class SellerRequest extends Model
     {
         return $this->belongsTo(Admin::class, 'rejected_by');
     }
+
+    // pickup location
+
+
 }

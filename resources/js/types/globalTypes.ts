@@ -1,5 +1,6 @@
-import {ProductWithThumbnail} from "./products";
-import {Title} from "./CategoryType";
+import { ProductWithThumbnail } from "./products";
+import { Title } from "./CategoryType";
+import { RolesEnum } from "../Enums/RolesEnum";
 
 export interface ResponseMessage {
   setErrors?: string,
@@ -36,8 +37,12 @@ export interface Store {
 export interface User {
   id: number;
   name: string;
-
   email: string;
+  is_owner: boolean;
+  status: number;
+  email_verified_at: null;
+  created_at: Date;
+  updated_at: Date;
 }
 
 
@@ -88,3 +93,64 @@ export interface ProductAttribute {
   attribute: Title,
   is_filterable: boolean,
 }
+
+export interface District {
+  id: number;
+  name: string;
+  city_id: number;
+  created_at: Date;
+  updated_at: Date;
+  city: City;
+}
+
+export interface City {
+  id: number;
+  name: string;
+  created_at: Date;
+  updated_at: Date;
+  governorate_id: number;
+  governorate: Governorate;
+}
+
+export interface Governorate {
+  id: number;
+  name: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface Address {
+  id: number;
+  district_id: number;
+  district: District;
+  apartment_number: null;
+  building: string;
+  floor: null;
+  nearby_landmark: null;
+  street: string;
+}
+
+export interface SellerRequest {
+  id: number;
+  company_register: string;
+  brand_name: string;
+  what_store_sells: string;
+  social_media: string;
+  user: User;
+  pickup_location: Address;
+  approved_at: string;
+  rejected_at: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface ByPass {
+  id: number;
+  email: string;
+  role: RolesEnum;
+  expires_at: Date;
+  created_at: Date;
+  updated_at: Date;
+}
+
+

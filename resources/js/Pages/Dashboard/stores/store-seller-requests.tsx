@@ -1,11 +1,14 @@
 import React from 'react'
 import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
 import { SellerRequest } from '../../../types/globalTypes';
-import { Descriptions, Space } from 'antd';
+import { Alert, Button, Descriptions, Space } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import AntDesignDataTable from '../../../components/DataTables/AntDesignDataTable';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import ModalWithChildren from '../variations/ModalWithChildren';
+import { Inertia } from '@inertiajs/inertia';
+import route from 'ziggy-js';
+import { usePage } from '@inertiajs/inertia-react';
 
 interface IProps {
   storeRequests: SellerRequest[],
@@ -21,6 +24,8 @@ interface DataType extends SellerRequest {
 export default function StoreSellerRequests({ storeRequests }: IProps) {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState<DataType | null>(null);
+
+  const serverSideErrors = usePage().props.errors
 
   const columns: ColumnsType<DataType> = [
     {
@@ -46,7 +51,9 @@ export default function StoreSellerRequests({ storeRequests }: IProps) {
       render: (_, record) => (
         <Space size="small">
           <span>{record.user?.name}</span> | <span>{record.user?.email}</span>
+          <Button onClick={() => handleOnRowClick(record)}><FaEye /></Button>
         </Space>
+        // show
       ),
     },
     {
@@ -54,11 +61,29 @@ export default function StoreSellerRequests({ storeRequests }: IProps) {
       title: 'Created At',
       dataIndex: 'created_at',
     },
+    {
+      key: 'Actions',
+      title: 'Actions',
+      dataIndex: 'Actions',
+      render: (_, record) => (
+
+        <Button onClick={() => approveStoreRequest(record.id)}>
+          Approve
+        </Button>
+
+      )
+    }
   ]
 
   const handleOnRowClick = (record: DataType) => {
     setSelectedRow(record);
     setModalVisible(true);
+  }
+
+  const approveStoreRequest = (id: number) => {
+    Inertia.post(route('admin.seller.requests.approve'), { id: id }, {
+      preserveState: false
+    });
   }
 
   return (
@@ -73,11 +98,8 @@ export default function StoreSellerRequests({ storeRequests }: IProps) {
           <Descriptions.Item label="Building">{selectedRow?.pickup_location?.building}</Descriptions.Item>
         </Descriptions>
       </ModalWithChildren>
-      <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={storeRequests} onRow={(data: DataType, index: number) => {
-        return {
-          onClick: () => handleOnRowClick(data),
-        }
-      }} />
+      {/* {serverSideErrors. && <span className='text-red-600'>{serverSideErrors.email}</span>} */}
+      <AntDesignDataTable columns={columns} rowKey={"id"} dataSource={storeRequests} />
     </NewDashboardLayout>
   )
 }

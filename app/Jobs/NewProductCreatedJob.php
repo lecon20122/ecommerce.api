@@ -42,7 +42,7 @@ class NewProductCreatedJob implements ShouldQueue
 
 
         Telegram::sendMessage([
-            'chat_id' => config('telegram.bot.modaje.channel_id'),
+            'chat_id' => config('telegram.bots.modaje.channel_id'),
             'parse_mode' => 'HTML',
             'text' => $message,
         ]);

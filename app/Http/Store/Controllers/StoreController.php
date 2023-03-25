@@ -5,6 +5,7 @@ namespace App\Http\Store\Controllers;
 use App\Domain\Store\Models\Store;
 use App\Domain\Store\Services\StoreService;
 use App\Domain\Variation\Services\VariationService;
+use App\Http\Store\Requests\ApproveSellerRequestRequest;
 use App\Http\Store\Requests\Sell\StoreSellerRequest;
 use App\Http\Store\Requests\StoreCreateRequest;
 use App\Http\Store\Requests\StoreUpdateRequest;
@@ -129,7 +130,7 @@ class StoreController extends BaseController
         }
     }
 
-    public function approve(Store $store): JsonResponse|RedirectResponse
+    public function directStoreApprove(Store $store): JsonResponse|RedirectResponse
     {
         try {
             $this->storeService->approve($store);
@@ -162,6 +163,24 @@ class StoreController extends BaseController
                 $code = $exception->getStatusCode();
             }
             return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
+        }
+    }
+
+    public function approveStoreSellerRequest(ApproveSellerRequestRequest $request)
+    {
+        try {
+            $this->storeService->approveStoreSellerRequest($request->validated('id'));
+            return $this->redirectBackWithMessage('Seller Request Approved Successfully');
+        } catch (Exception $exception) {
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->logErrorsAndRedirectBack(
+                $exception->getMessage(),
+                __CLASS__,
+                __FUNCTION__,
+                $code ?? 400
+            );
         }
     }
 }

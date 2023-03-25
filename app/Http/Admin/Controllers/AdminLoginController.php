@@ -11,7 +11,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
-use Support\Enums\ThirdPartyEnums;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class AdminLoginController extends BaseController
@@ -52,7 +51,8 @@ class AdminLoginController extends BaseController
 
     public function updateOrCreateAdmin($providerUser, $byPass)
     {
-        $user = Admin::query()->where('provider_id', $providerUser->id)->first();
+        $user = Admin::query()
+            ->where('provider_id', $providerUser->id)->first();
 
         if ($user) {
             Auth::guard('admin')->login($user);

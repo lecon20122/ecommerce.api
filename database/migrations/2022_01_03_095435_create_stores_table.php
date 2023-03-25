@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('description')->nullable();
             $table->integer('delivery_fees')->nullable()->default(0);
+            $table->integer('company_register')->nullable();
             $table->boolean('is_active')->default(true);
             $table->foreignId('user_id')->constrained();
             $table->foreignId('approved_by')->nullable()->constrained('admins');

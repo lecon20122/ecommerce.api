@@ -6,10 +6,12 @@ use App\Domain\Admin\Models\Admin;
 use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\VariationType;
+use App\Support\Enums\RolesEnum;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role;
 
 trait FeatureTestTrait
 {
@@ -24,6 +26,17 @@ trait FeatureTestTrait
     {
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
+        return $admin;
+    }
+
+    public function authorizedSuperAdmin(): Collection|Model
+    {
+        $admin = $this->authorizedAdmin();
+
+        Role::query()->create(['name' => RolesEnum::SUPER_ADMIN->value]);
+
+        $admin->assignRole(RolesEnum::SUPER_ADMIN->value);
+
         return $admin;
     }
 

@@ -40,7 +40,7 @@ class NewSellerRequestJob implements ShouldQueue
         $message .= "<b>Seller Sells:</b> {$this->sellerRequest->what_store_sells}\n";
 
         Telegram::sendMessage([
-            'chat_id' => config('telegram.bot.modaje.channel_id'),
+            'chat_id' => config('telegram.bots.modaje.channel_id'),
             'parse_mode' => 'HTML',
             'text' => $message,
         ]);

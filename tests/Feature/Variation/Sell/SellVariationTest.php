@@ -50,12 +50,14 @@ class SellVariationTest extends TestCase
 
         $res = $this->get(route('api.sell.get.color.variation.with.sizes', ['id' => $variation->id]))->assertOk();
 
-        $res->assertJsonFragment(
-            [
-                'id' => $variation->id,
-                'price' => $variation->price,
-            ]
-        );
+        // $res->assertJsonFragment(
+        //     [
+        //         'id' => $variation->id,
+        //         'price' => $variation->price,
+        //     ]
+        // );
+        $this->assertEquals($variation->id, $res->json()['id']);
+        $this->assertEquals($variation->price, $res->json()['price']);
     }
 
     /**

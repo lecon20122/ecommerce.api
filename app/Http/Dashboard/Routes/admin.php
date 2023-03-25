@@ -8,4 +8,4 @@ use Illuminate\Support\Facades\Route;
  * all these routes prefixed with 'admin'
  */
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::get('logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+Route::get('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');

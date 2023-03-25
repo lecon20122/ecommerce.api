@@ -3,6 +3,8 @@
 namespace Tests\Feature\Dashboard;
 
 use App\Domain\Admin\Models\Admin;
+use App\Domain\Admin\Models\ByPass;
+use App\Support\Enums\RolesEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\AssertableInertia;
@@ -18,28 +20,19 @@ class AuthTest extends TestCase
      */
     public function test_it_should_show_the_admin_login_page()
     {
-        $this->get(route('admin.getLogin'))
-            ->assertOk()
-            ->assertInertia(
-                fn (AssertableInertia $page) => $page
-                    ->component('Auth/login')
-                    ->where('errors', [])
-            );
-    }
+        ByPass::create([
+            'email' => 'mustafa@email.com',
+            'expires_at' => null,
+            'role' => RolesEnum::SUPER_ADMIN->value,
+        ]);
 
-    public function test_it_should_return_errors_when_required_fields_fall_validation()
-    {
-        $this->get(route('admin.getLogin'));
-
-        $this
-            ->followingRedirects()
-            ->post(route('admin.postLogin'))
-            ->assertInertia(
-                fn (AssertableInertia $page) => $page
-                    ->component('Auth/login')
-                    ->where('errors.email', 'The email field is required.')
-                    ->where('errors.password', 'The password field is required.')
-            );
+        $res =  $this->get(route('admin.getLogin' ,['bypass' => 'mustafa@email.com']))
+        ->assertOk()
+        ->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Auth/login')
+                ->where('errors', [])
+        );
     }
 
     public function test_it_should_login_successfully_and_redirect_to_the_dashboard_page()

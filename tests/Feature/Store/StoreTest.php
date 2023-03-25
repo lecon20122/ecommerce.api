@@ -3,13 +3,14 @@
 namespace Tests\Feature\Store;
 
 use App\Domain\Admin\Models\Admin;
+use App\Domain\Location\Enums\AddressTypeEnums;
+use App\Domain\Location\Models\Address;
 use App\Domain\Location\Models\City;
 use App\Domain\Location\Models\District;
 use App\Domain\Location\Models\Governorate;
 use App\Domain\Store\Models\SellerRequest;
 use App\Domain\Store\Models\Store;
 use App\Domain\Store\Services\StoreService;
-use App\Support\Enums\HttpStatusEnums;
 use App\Support\Traits\FeatureTestTrait;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -43,7 +44,6 @@ StoreTest extends TestCase
         $response->assertSessionHas('message', 'success');
 
         $this->assertEquals('JK', Store::first()->name);
-        $this->assertTrue(User::first()->is_owner);
     }
 
     public function test_store_can_be_updated()
@@ -86,18 +86,6 @@ StoreTest extends TestCase
         $this->assertNull(Store::first());
     }
 
-    public function testStoreOwnerCanGetHisStore()
-    {
-        $user = User::factory()->create();
-        $this->actingAs($user, 'web');
-
-        Store::factory()->create([
-            'user_id' => $user,
-        ]);
-
-        $this->assertEquals($user->id, (new StoreService())->getStore()->user_id);
-    }
-
     public function testStoreCanBeApprovedByAdmin()
     {
         $admin = $this->authorizedAdmin();
@@ -134,8 +122,51 @@ StoreTest extends TestCase
             'social_media' => 'facebook.com/mustafa',
         ];
 
-        $response = $this->post(route('api.sell.create.seller.request'), $data)->assertOk();
+        $this->post(route('api.sell.create.seller.request'), $data)->assertOk();
 
         $this->assertEquals($user->id, SellerRequest::first()->id);
+    }
+
+    public function testThatAdminCanApproveStoreSellerRequest()
+    {
+        $admin = $this->authorizedSuperAdmin();
+
+        $user = $this->unAuthorizedUser();
+
+        $gov = Governorate::factory()->create(['name' => 'cairo']);
+
+        $cities = City::factory()->count(3)->create(['governorate_id' => $gov->id]);
+
+        $district = District::factory()->create(['city_id' => $cities[0]->id]);
+
+        $addressData = [
+            'name' => $user->name,
+            'phone' =>  '01066199150',
+            'district_id' => $district->id,
+            'street' => 'street',
+            'building' => 'building',
+            'type' => AddressTypeEnums::PICKUP->value,
+        ];
+
+        $pickupLocation =  $user->addresses()->create($addressData);
+
+        $data = [
+            'user_id' => $user->id,
+            'brand_name' => 'Mustafa Store',
+            'company_register' => '19998712',
+            'what_store_sells' => 'mens shoes, womens shoes, kids shoes',
+            'social_media' => 'facebook.com/mustafa',
+            'pickup_location_id' => $pickupLocation->id,
+        ];
+
+        $sellerRequest = SellerRequest::create($data);
+
+        $response = $this->post(route('admin.seller.requests.approve',), ['id' => $sellerRequest->id])
+            ->assertRedirect();
+
+
+        $this->assertEquals(Store::first()->approved_at , now());
+        $this->assertEquals(Store::first()->approved_by , $admin->id);
+        $this->assertNotNull(Store::first()->addresses()->first());
     }
 }

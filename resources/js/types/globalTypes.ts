@@ -38,7 +38,6 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  is_owner: boolean;
   status: number;
   email_verified_at: null;
   created_at: Date;

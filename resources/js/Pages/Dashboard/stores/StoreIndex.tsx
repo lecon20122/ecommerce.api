@@ -80,11 +80,9 @@ export default function StoreIndex({ stores, locale }: Props) {
       render: (_, record) => (
         <Space size="middle">
           <EditOutlined onClick={(e) => handleOnClickUpdateDialog(record.id)} />
-          //create approve and reject button
           <Button onClick={event => handleOnClickApprove(record)} className={record.approved_at ? 'text-red-500' : 'text-green-500'}>
             {record.approved_at ? 'Disable' : 'Approve'}
           </Button>
-          {/*<DeleteOutlined onClick={(e) => handleOnClickDelete(record.id)}/>*/}
         </Space>
       ),
     },

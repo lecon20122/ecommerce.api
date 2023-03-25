@@ -1,12 +1,13 @@
 import { Card, Layout, Menu, theme } from 'antd'
 import React from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { FaStoreAlt, FaUsers } from 'react-icons/fa';
+import { FaSignOutAlt, FaStoreAlt, FaUserAlt, FaUsers } from 'react-icons/fa';
 import { AiFillShop, AiTwotoneHome } from 'react-icons/ai';
 import { useWindowSize } from 'react-use';
 import SidebarLink from '../components/common/sidebar-link';
-import { usePage } from '@inertiajs/inertia-react';
+import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import { RolesEnum } from '../Enums/RolesEnum';
+import route from 'ziggy-js';
 
 interface IProps {
   children: React.ReactNode,
@@ -15,7 +16,9 @@ interface IProps {
 export default function NewDashboardLayout({ children }: IProps) {
   const { Header, Sider, Content } = Layout;
   const admin = usePage().props?.auth[0]
-
+  console.log('====================================');
+  console.log(admin);
+  console.log('====================================');
   const {
     token: { colorBgContainer },
   } = theme?.useToken();
@@ -50,13 +53,15 @@ export default function NewDashboardLayout({ children }: IProps) {
         <div className='flex items-center space-x-8'>
           <GiHamburgerMenu onClick={(e) => setCollapsed(!collapsed)} size={28} className='text-black' />
           {/* <Logo /> */}
-          {/* <div className="-mt-0.5 ">
+          <div className="-mt-0.5 ">
             <div className="flex-shrink-0 text-sm xl:text-base flex focus:outline-none text-heading gap-x-3">
               <FaUserAlt className='w-4 xl:w-[17px] h-auto text-black' />
-              {user?.user.name}
-              <FaSignOutAlt className='w-4 xl:w-[17px] h-auto text-black cursor-pointer' onClick={() => signOut()} />
+              {admin?.name}
+              <InertiaLink href={route('admin.logout')}>
+                <FaSignOutAlt className='w-4 xl:w-[17px] h-auto text-black cursor-pointer' />
+              </InertiaLink>
             </div>
-          </div> */}
+          </div>
         </div>
       </Header>
       <Layout>

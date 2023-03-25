@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone')->unique()->nullable();
             $table->string('email')->unique();
-            $table->boolean('is_owner')->default(false);
             $table->string('oauth_provider_type')->nullable();
             $table->string('provider_id')->nullable();
             $table->string('provider_token')->nullable();

@@ -3,6 +3,7 @@
 namespace App\Domain\Store\Services;
 
 use App\Domain\Location\Enums\AddressTypeEnums;
+use App\Domain\Location\Models\Address;
 use App\Domain\Store\Models\SellerRequest;
 use App\Domain\Store\Models\Store;
 use App\Http\Store\Requests\StoreCreateRequest;
@@ -30,10 +31,7 @@ class StoreService
         );
     }
 
-    // public function approveStoreSellerRequest()
-    // {
 
-    // }
 
     public function index(): Collection|array
     {
@@ -49,8 +47,6 @@ class StoreService
             ->find($request->validated('user_id', ['id']));
 
         $user?->store()->create($request->validated());
-        $user->is_owner = true;
-        $user->save();
     }
 
     public function getStoreById(int $id): StoreResource
@@ -122,5 +118,29 @@ class StoreService
         ]);
 
         NewSellerRequestJob::dispatch($sellerRequest);
+    }
+
+    public function approveStoreSellerRequest(int $id)
+    {
+        $sellerRequest = SellerRequest::query()
+            ->with(['user', 'pickupLocation'])
+            ->findOrFail($id);
+
+        $user = $sellerRequest->user;
+
+        $store = $user->store()->create([
+            'name' => $sellerRequest->brand_name,
+            'description' => $sellerRequest->what_store_sells,
+            'company_register' => $sellerRequest->company_register,
+            'approved_by' => auth('admin')->id(),
+            'approved_at' => now(),
+        ]);
+
+        $sellerRequest->pickupLocation->update([
+            'addressable_id' => $store->id,
+            'addressable_type' => Store::class,
+        ]);
+
+        $sellerRequest->delete();
     }
 }

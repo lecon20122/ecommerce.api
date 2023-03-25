@@ -23,12 +23,6 @@ class BaseController extends Controller
         return response()->json(['error' => $error], $code);
     }
 
-
-    public function redirectBackWithMessage($message): RedirectResponse
-    {
-        return back()->with('message', $message);
-    }
-
     public function redirectToWithMessage($route, $message, $params = null): RedirectResponse
     {
         return Redirect::route($route, $params)->with('message', $message);
@@ -43,7 +37,6 @@ class BaseController extends Controller
     public function logErrorsAndReturnJsonMessage($exceptionMessage, $class = null, $functionName = null, int $code = 400, $customMessage = 'something went wrong we working on it'): JsonResponse
     {
         Log::error($exceptionMessage . '  At CLASS ' . $class . ' , ' . $functionName . '()');
-
         return response()->json(['message' => $customMessage], $code);
     }
 
@@ -56,6 +49,18 @@ class BaseController extends Controller
     {
         Log::error($exceptionMessage . '  At CLASS ' . $class . ' , ' . $functionName . '()');
 
-        return redirect()->back()->with('message', $customMessage);
+        return redirect()->back()->with([
+            'message' => $customMessage ?? 'something went wrong we working on it',
+            'code' => $code ?? '400',
+            'type' => 'error',
+        ]);
+    }
+
+    public function redirectBackWithMessage($message): RedirectResponse
+    {
+        return back()->with('message', [
+            'message' => $message ?? 'success',
+            'type' => 'success',
+        ]);
     }
 }

@@ -11,6 +11,7 @@ use App\Http\Store\Requests\StoreUpdateRequest;
 use App\Http\Store\Resources\SellerRequestResource;
 use App\Http\Store\Resources\StoreResource;
 use App\Jobs\NewSellerRequestJob;
+use App\Jobs\SellerRequestApprovedJob;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -142,5 +143,7 @@ class StoreService
         ]);
 
         $sellerRequest->delete();
+
+        SellerRequestApprovedJob::dispatch($store);
     }
 }

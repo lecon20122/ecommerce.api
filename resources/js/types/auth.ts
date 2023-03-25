@@ -13,20 +13,11 @@ export interface LoginInfo extends ResponseMessage {
 export interface User extends ModelCommonData {
   email: string;
   name: string;
+  roles :
 }
 
 
 export interface LoginInfo extends ResponseMessage {
   email: string;
   password: string;
-}
-
-export interface UserAddress {
-  id:               number;
-  district_id:      number;
-  apartment_number: string;
-  building:         string;
-  floor:            string;
-  nearby_landmark:  string;
-  street:           string;
 }

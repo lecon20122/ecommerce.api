@@ -40,6 +40,15 @@ export interface User {
   email: string;
   status: number;
   email_verified_at: null;
+  roles : Role[];
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface Role {
+  id: number;
+  name: string;
+  guard_name: string;
   created_at: Date;
   updated_at: Date;
 }

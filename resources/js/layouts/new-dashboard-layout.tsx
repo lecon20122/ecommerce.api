@@ -1,4 +1,4 @@
-import { Card, Layout, Menu, theme } from 'antd'
+import { Alert, Card, Layout, Menu, theme, message } from 'antd';
 import React from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FaSignOutAlt, FaStoreAlt, FaUserAlt, FaUsers } from 'react-icons/fa';
@@ -8,6 +8,7 @@ import SidebarLink from '../components/common/sidebar-link';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import { RolesEnum } from '../Enums/RolesEnum';
 import route from 'ziggy-js';
+import { User } from '../types/globalTypes';
 
 interface IProps {
   children: React.ReactNode,
@@ -15,10 +16,11 @@ interface IProps {
 
 export default function NewDashboardLayout({ children }: IProps) {
   const { Header, Sider, Content } = Layout;
-  const admin = usePage().props?.auth[0]
-  console.log('====================================');
-  console.log(admin);
-  console.log('====================================');
+
+  const admin = usePage().props?.auth as User
+
+  const serverMessages = usePage().props
+
   const {
     token: { colorBgContainer },
   } = theme?.useToken();
@@ -119,7 +121,12 @@ export default function NewDashboardLayout({ children }: IProps) {
 
           </Menu>
         </Sider>
-        <Content className='m-5'><Card>{children}</Card></Content>
+        <Content className='m-5'>
+          <Card>
+            {serverMessages?.flash?.message && <Alert className='my-3' message={serverMessages?.flash?.message['message']} type={serverMessages?.flash?.message['type'] ?? 'success'} showIcon closable />}
+            {children}
+          </Card>
+        </Content>
       </Layout>
     </Layout>
 

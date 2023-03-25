@@ -48,13 +48,6 @@ export default function StoreSellerRequests({ storeRequests }: IProps) {
       title: 'Store Owner',
       dataIndex: 'user',
       rowSpan: 1,
-      render: (_, record) => (
-        <Space size="small">
-          <span>{record.user?.name}</span> | <span>{record.user?.email}</span>
-          <Button onClick={() => handleOnRowClick(record)}><FaEye /></Button>
-        </Space>
-        // show
-      ),
     },
     {
       key: 'created_at',
@@ -66,11 +59,13 @@ export default function StoreSellerRequests({ storeRequests }: IProps) {
       title: 'Actions',
       dataIndex: 'Actions',
       render: (_, record) => (
-
-        <Button onClick={() => approveStoreRequest(record.id)}>
-          Approve
-        </Button>
-
+        <Space size="small">
+          <span>{record.user?.name}</span> | <span>{record.user?.email}</span>
+          <Button onClick={() => handleOnRowClick(record)}><FaEye /></Button>
+          <Button onClick={() => approveStoreRequest(record.id)}>
+            Approve
+          </Button>
+        </Space>
       )
     }
   ]

@@ -118,7 +118,7 @@ class ByPassController extends BaseController
     {
         try {
             $this->byPassService->deleteByPass($id);
-            return $this->redirectBackWithMessage('ByPass created successfully');
+            return $this->redirectBackWithMessage('ByPass deleted successfully');
         } catch (Exception $exception) {
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();

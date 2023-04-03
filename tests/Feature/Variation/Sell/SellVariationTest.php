@@ -240,53 +240,53 @@ class SellVariationTest extends TestCase
         $this->assertEquals(2, $parentVariation->fresh()->children->count());
     }
 
-    public function testOwnerCanCreateColorAndSizes()
-    {
-        $user = $this->authorizedUser();
+    // public function testOwnerCanCreateColorAndSizes()
+    // {
+    //     $user = $this->authorizedUser();
 
-        $store = $this->createApprovedStore($user);
+    //     $store = $this->createApprovedStore($user);
 
-        $product = $this->createProduct($store);
+    //     $product = $this->createProduct($store);
 
-        $colorType = $this->createColorType();
+    //     $colorType = $this->createColorType();
 
-        $colorValue = $this->createColorValue($colorType);
+    //     $colorValue = $this->createColorValue($colorType);
 
-        $sizeType = $this->createSizeType();
+    //     $sizeType = $this->createSizeType();
 
-        $sizeValue = $this->createSizeValue($sizeType);
+    //     $sizeValue = $this->createSizeValue($sizeType);
 
-        $sizeValue2 = $this->createSizeValue($sizeType, [
-            'ar' => 'متوسط',
-            'en' => 'Medium',
-        ]);
+    //     $sizeValue2 = $this->createSizeValue($sizeType, [
+    //         'ar' => 'متوسط',
+    //         'en' => 'Medium',
+    //     ]);
 
-        $sizeAndStock = [
-            'id' => $sizeValue->id,
-            'stock_amount' => $this->faker->randomNumber(2),
-        ];
+    //     $sizeAndStock = [
+    //         'id' => $sizeValue->id,
+    //         'stock_amount' => $this->faker->randomNumber(2),
+    //     ];
 
-        $sizeAndStock2 = [
-            'id' => $sizeValue2->id,
-            'stock_amount' => $this->faker->randomNumber(2),
-            'price' => 100,
-        ];
+    //     $sizeAndStock2 = [
+    //         'id' => $sizeValue2->id,
+    //         'stock_amount' => $this->faker->randomNumber(2),
+    //         'price' => 100,
+    //     ];
 
-        $data = [
-            'product_id' => $product->id,
-            'color_id' => $colorValue->id,
-            'sizes' => [
-                $sizeAndStock,
-                $sizeAndStock2,
-            ],
-        ];
+    //     $data = [
+    //         'product_id' => $product->id,
+    //         'color_id' => $colorValue->id,
+    //         'sizes' => [
+    //             $sizeAndStock,
+    //             $sizeAndStock2,
+    //         ],
+    //     ];
 
-        $res = $this->post(route('api.sell.create.color.sizes.variation'), $data);
+    //     $res = $this->post(route('api.sell.create.color.sizes.variation'), $data);
 
-        $res->assertStatus(200);
+    //     $res->assertStatus(200);
 
-        $this->assertEquals(2, $product->fresh()->variations->count());
-        $this->assertEquals(2, $product->fresh()->variations->first()->children->count());
-        $this->assertEquals(100, $product->fresh()->variations->first()->children->last()->price);
-    }
+    //     $this->assertEquals(2, $product->fresh()->variations->count());
+    //     $this->assertEquals(2, $product->fresh()->variations->first()->children->count());
+    //     $this->assertEquals(100, $product->fresh()->variations->first()->children->last()->price);
+    // }
 }

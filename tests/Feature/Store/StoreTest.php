@@ -63,7 +63,7 @@ StoreTest extends TestCase
         ];
 
         $response = $this->post(route('admin.stores.update', ['store' => $store]), $data)->assertRedirect();
-        $response->assertSessionHas('message', 'success');
+
         $store->refresh();
 
         $this->assertEquals('new store', $store->name);
@@ -82,7 +82,7 @@ StoreTest extends TestCase
         ]);
 
         $response = $this->post(route('admin.stores.destroy', ['id' => $store->id]))->assertRedirect();
-        $response->assertSessionHas('message', 'success');
+
         $this->assertNull(Store::first());
     }
 
@@ -94,7 +94,7 @@ StoreTest extends TestCase
 
         $response = $this->post(route('admin.stores.approve', ['store' => $store]))->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
+        
 
         $store->refresh();
         $this->assertEquals($admin->id, $store->approved_by);

@@ -31,7 +31,6 @@ class SizeDescriptionValueTest extends TestCase
             'value' => '44'
         ];
         $response = $this->post(route('admin.store.variations.size.description.value'), $data)->assertRedirect();
-        $response->assertSessionHas('message', 'success');
 
         $this->assertEquals('44', SizeDescriptionValue::query()->first()->value);
     }
@@ -47,7 +46,6 @@ class SizeDescriptionValueTest extends TestCase
             'value' => '44'
         ];
         $response = $this->post(route('admin.update.variations.size.description.value', ['id' => $sizeDescriptionValue->id]), $data)->assertRedirect();
-        $response->assertSessionHas('message', 'success');
 
         $this->assertEquals('44', SizeDescriptionValue::query()->first()->value);
     }

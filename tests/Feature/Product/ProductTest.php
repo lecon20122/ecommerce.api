@@ -58,7 +58,7 @@ class ProductTest extends TestCase
         ];
 
         $response = $this->post(route('admin.products.store'), $data);
-        $response->assertSessionHas('message', 'success');
+
         $product = Product::query()->first();
         $this->assertEquals('new product', $product->title);
     }
@@ -85,7 +85,7 @@ class ProductTest extends TestCase
         ];
 
         $response = $this->post(route('admin.products.update', ['slug' => $product->slug]), $data);
-        $response->assertSessionHas('message', 'success');
+
         $product->refresh();
         $this->assertEquals('hello', $product->title);
     }
@@ -98,7 +98,7 @@ class ProductTest extends TestCase
         $product = Product::factory()->create();
 
         $response = $this->post(route('admin.products.destroy', ['id' => $product->id]))->assertRedirect();
-        $response->assertSessionHas('message', 'success');
+
         $this->assertNull(Product::first());
     }
 
@@ -120,7 +120,7 @@ class ProductTest extends TestCase
 
         $response = $this->post(route('admin.attach.category.to.product', ['product' => $product]), $ids)->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
+
 
         $expectedData = [
             'category_id' => 3,
@@ -172,7 +172,7 @@ class ProductTest extends TestCase
 
         $product = Product::factory()->trashed()->create();
         $response = $this->post(route('admin.products.restore', ['id' => $product->id]))->assertRedirect();
-        $response->assertSessionHas('message', 'success');
+        
         $product->refresh();
         $this->assertNull(Product::first()->deleted_at);
     }

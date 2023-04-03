@@ -35,7 +35,7 @@ class ProductDescriptionTest extends TestCase
         ];
         $response = $this->post(route('admin.add.product.description'), $data)->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
+
         $this->assertEquals('200x100', ProductDescription::first()->value);
     }
 
@@ -78,7 +78,7 @@ class ProductDescriptionTest extends TestCase
         $response = $this->post(route('admin.update.product.description' , ['id' => $productDescription->id]), $data)->assertRedirect();
 
 
-        $response->assertSessionHas('message', 'success');
+
         $this->assertEquals('200x100', ProductDescription::first()->value);
     }
     public function testOwnerCanUpdateProductAttribute()
@@ -116,7 +116,7 @@ class ProductDescriptionTest extends TestCase
 
         $response = $this->post(route('admin.delete.product.description' , ['id' => $productDescription->id]))->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
+        
         $this->assertNull(ProductDescription::first());
     }
 

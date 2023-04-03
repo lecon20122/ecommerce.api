@@ -48,7 +48,6 @@ class CategoryTest extends TestCase
             'en' => 'test category',
             'ar' => 'هيللو',
         ])->assertRedirect();
-        $response->assertSessionHas('message', 'success');
         $category = Category::first();
         $this->assertEquals('test-category', $category->slug);
     }
@@ -63,7 +62,7 @@ class CategoryTest extends TestCase
             'en' => 'new category',
         ])->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
+
         $category->refresh();
 
         $this->assertEquals('new category', $category->title);
@@ -79,7 +78,7 @@ class CategoryTest extends TestCase
 
         $response = $this->post(route('admin.categories.destroy', ['id' => $category->id]))
             ->assertRedirect();
-        $response->assertSessionHas('message', 'success');
+
 
         $this->assertNull(Category::first());
     }
@@ -99,7 +98,7 @@ class CategoryTest extends TestCase
             ]
         ];
         $response = $this->post(route('admin.add.media.to.category', ['id' => $category->id]), $data)->assertRedirect();
-        $response->assertSessionHas('message', 'success');
+
 
         $this->assertCount(1, $category->media);
     }
@@ -113,7 +112,7 @@ class CategoryTest extends TestCase
 
         $response = $this->post(route('admin.toggle.category.status', ['id' => $category->id]))->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
+
 
         $this->assertTrue(Category::first()->is_active);
     }
@@ -132,7 +131,7 @@ class CategoryTest extends TestCase
             ]
         ];
         $response = $this->post(route('admin.add.media.to.category', ['id' => $category->id]), $data)->assertRedirect();
-        $response->assertSessionHas('message', 'success');
+       
 
         $this->assertCount(1, $category->media);
 

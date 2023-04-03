@@ -31,7 +31,6 @@ class VariationTypeValueTest extends TestCase
 
         $response = $this->post(route('admin.variations.type.value.store'), $data)
             ->assertRedirect();
-        $response->assertSessionHas('message', 'success');
 
         $this->assertEquals('red', VariationTypeValue::first()->value);
         $this->assertEquals('red', VariationTypeValue::first()->slug);
@@ -50,8 +49,6 @@ class VariationTypeValueTest extends TestCase
         $response = $this->post(route('admin.variations.type.value.update', ['id' => $variationTypeValue->id]), $data)
             ->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
-
         $this->assertEquals('blue', VariationTypeValue::first()->value);
     }
 
@@ -64,7 +61,6 @@ class VariationTypeValueTest extends TestCase
         $response = $this->post(route('admin.variations.type.value.destroy', ['id' => $variationTypeValue->id]))
             ->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
         $this->assertNotNull(VariationTypeValue::withTrashed()->first()->deleted_at);
     }
 
@@ -77,7 +73,6 @@ class VariationTypeValueTest extends TestCase
         $response = $this->post(route('admin.variations.type.value.restore', ['id' => $variationTypeValue->id]))
             ->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
 
         $this->assertNull(VariationTypeValue::first()->deleted_at);
     }

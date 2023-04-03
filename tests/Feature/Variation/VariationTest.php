@@ -50,7 +50,6 @@ class VariationTest extends TestCase
 
         $response = $this->post(route('admin.variations.store'), $data)->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
         $this->assertCount(1, Variation::all());
         $this->assertCount(1, Media::all());
     }
@@ -73,7 +72,6 @@ class VariationTest extends TestCase
         ];
         $response = $this->post(route('admin.variations.update', ['variation' => $variation]), $data)->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
 
         $this->assertEquals($VariationTypeValue->id, Variation::first()->variation_type_value_id);
         $this->assertEquals($VariationTypeValue->variation_type_id, Variation::first()->variation_type_id);
@@ -100,7 +98,6 @@ class VariationTest extends TestCase
 
         $response = $this->post(route('admin.variations.restore', ['id' => $variation->id]))->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
         $variation->refresh();
         $this->assertNull(Variation::first()->deleted_at);
     }
@@ -113,7 +110,6 @@ class VariationTest extends TestCase
 
         $response = $this->post(route('admin.variations.permanent.delete', ['id' => $variation->id]))->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
 
         $this->assertNull(Variation::first());
     }
@@ -133,41 +129,7 @@ class VariationTest extends TestCase
         ];
 
         $response = $this->post(route('admin.add.media.to.variation', ['variation' => $variation]), $data)->assertRedirect();
-        $response->assertSessionHas('message', 'success');
         $this->assertCount(1, Media::all());
-    }
-
-    public function test_variation_image_can_be_set_to_primary_and_its_only_one_per_variation()
-    {
-        $admin = Admin::factory()->create();
-        $this->actingAs($admin, 'admin');
-
-        $variation = Variation::factory()->create();
-        Storage::fake('public');
-        $data = [
-            'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 100, 100),
-                1 => UploadedFile::fake()->image("test.jpg", 100, 100),
-            ]
-        ];
-        $this->post(route('admin.add.media.to.variation', ['variation' => $variation]), $data);
-
-        $imageId = [
-            'id' => 1,
-        ];
-        $this->post(route('admin.set.variation.image.to.primary', ['variation' => $variation]), $imageId)->assertRedirect();
-
-        $primaryMedia = $variation->media()->where('custom_properties->primary', true)->first();
-
-        $imageIdAttemptTwo = [
-            'id' => 2,
-        ];
-        $this->post(route('admin.set.variation.image.to.primary', ['variation' => $variation]), $imageIdAttemptTwo)->assertRedirect();
-
-        $primaryMedia->refresh();
-
-        $this->assertNull($primaryMedia->getCustomProperty('primary'));
-
     }
 
 

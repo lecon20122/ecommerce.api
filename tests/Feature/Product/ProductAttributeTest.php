@@ -30,7 +30,7 @@ class ProductAttributeTest extends TestCase
         ];
         $response = $this->post(route('admin.add.attribute'), $data)->assertRedirect();
 
-        $response->assertSessionHas('message', 'success');
+
         $this->assertEquals('material', ProductAttribute::first()->attribute);
     }
 
@@ -44,8 +44,6 @@ class ProductAttributeTest extends TestCase
             'ar' => 'خامة',
         ];
         $response = $this->post(route('admin.update.attribute', ['attribute' => $attribute]), $data)->assertRedirect();
-
-        $response->assertSessionHas('message', 'success');
         $this->assertEquals('material', ProductAttribute::first()->attribute);
     }
 

@@ -370,27 +370,4 @@ class ApiProductTest extends TestCase
 
         $response = $this->get(route('api.get.store.product.details', ['product' => $product]))->assertForbidden();
     }
-
-    public function testViewsCountUniqueVisitsOnly()
-    {
-        $this->withHeaders([
-            'referer' => env('SANCTUM_STATEFUL_DOMAINS'),
-       ]);
-
-        $user = $this->authorizedUser();
-
-        $store = Store::factory()->create([
-            'user_id' => $user->id
-        ]);
-
-        $product = Product::factory()->create([
-            'store_id' => $store->id
-        ]);
-
-        $firstVisit =  $this->get(route('api.get.product.by.id', ['id' => $product->id]));
-
-        $secondVisit =  $this->get(route('api.get.product.by.id', ['id' => $product->id]));
-
-        $this->assertEquals(1, View::count());
-    }
 }

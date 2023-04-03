@@ -5,6 +5,7 @@ namespace App\Http\Product\Controllers;
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\ProductService;
+use App\Domain\Statistics\Service\StatisticsService;
 use App\Http\Product\Request\GetProductByIdRequest;
 use App\Http\Product\Requests\ProductBySlugRequest;
 use App\Http\Product\Requests\ProductFilterRequest;
@@ -77,6 +78,7 @@ class ApiProductController extends BaseController
         try {
             return $this->service->getProductById($request->validated('id'));
         } catch (Exception $exception) {
+            dd($exception->getMessage());
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }

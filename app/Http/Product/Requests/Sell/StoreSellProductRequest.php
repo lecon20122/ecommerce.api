@@ -41,12 +41,6 @@ class StoreSellProductRequest extends FormRequest
                     ->minWidth(600)
                     ->maxWidth(2000)
             ],
-            // 'main_image' => [
-            //     'mimes:jpg,webp,png|max:2048',
-            //     Rule::dimensions()
-            //         ->minWidth(600)
-            //         ->maxWidth(2000)
-            // ],
         ];
     }
 

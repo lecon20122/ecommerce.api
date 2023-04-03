@@ -21,7 +21,7 @@ class SellVariationService
         $store = $user->store()->approved()->first();
         if (!$store) abort(403, 'you are not allowed to view products yet!');
 
-        $variation = Variation::query()->with(['media','children' => function (HasMany $query) {
+        $variation = Variation::query()->with(['media', 'children' => function (HasMany $query) {
             $query->with('media', 'variationTypeValue:id,value');
         }])->findOrFail($id);
 
@@ -68,13 +68,25 @@ class SellVariationService
         }
     }
 
+    public function createColorVariation($product_id, $color_id, $sizes)
+    {
+        $user = auth()->user();
 
+        $store = $user->store()->approved()->first();
+
+        if (!$store) abort(403, 'you are not allowed to view products yet!');
+
+        $product = $store->products()->findOrFail($product_id);
+
+        $this->createColorAndSizes($product, $color_id, $sizes, $product->price);
+    }
 
     public function createColorAndSizes(Product $product, $colorId, array $sizesAndStock, $price): void
     {
         $color = $this->createColor($product, $colorId, $price);
-        // (new ImageService())->addMultipleMediaFromRequest($color, 'main_image', MediaCollectionEnums::VARIATION, $color->id);
+
         (new ImageService())->addMultipleMediaFromRequest($color, 'images', MediaCollectionEnums::VARIATION, $color->id);
+
         foreach ($sizesAndStock as $sizeAndStock) {
             $this->createSize($color, $sizeAndStock, $price);
         }
@@ -129,6 +141,4 @@ class SellVariationService
             $this->createSize($parentVariation, $sizeAndStock, $sizeAndStock['price'] ?? $parentVariation->price);
         }
     }
-
-
 }

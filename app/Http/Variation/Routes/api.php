@@ -9,6 +9,7 @@ Route::name('sell.')->prefix('sell/v1')->middleware(['auth:sanctum'])->group(fun
     Route::delete('variation/delete/{variation}', [SellVariationController::class, 'safeDelete'])->name('safe.delete.owner.variation');
     Route::get('variation/color/{id}', [SellVariationController::class, 'getColorVariationWithItsSizes'])->name('get.color.variation.with.sizes');
     Route::post('variation/sizes', [SellVariationController::class, 'createSizesVariation'])->name('create.sizes.variation');
+    Route::post('variation/color', [SellVariationController::class, 'createColorVariation'])->name('create.color.variation');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

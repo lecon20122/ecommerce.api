@@ -50,12 +50,6 @@ class SellVariationTest extends TestCase
 
         $res = $this->get(route('api.sell.get.color.variation.with.sizes', ['id' => $variation->id]))->assertOk();
 
-        // $res->assertJsonFragment(
-        //     [
-        //         'id' => $variation->id,
-        //         'price' => $variation->price,
-        //     ]
-        // );
         $this->assertEquals($variation->id, $res->json()['id']);
         $this->assertEquals($variation->price, $res->json()['price']);
     }
@@ -244,5 +238,55 @@ class SellVariationTest extends TestCase
         $this->assertEquals(150, $parentVariation->fresh()->children->first()->price);
         $this->assertEquals(100, $parentVariation->fresh()->children->last()->price);
         $this->assertEquals(2, $parentVariation->fresh()->children->count());
+    }
+
+    public function testOwnerCanCreateColorAndSizes()
+    {
+        $user = $this->authorizedUser();
+
+        $store = $this->createApprovedStore($user);
+
+        $product = $this->createProduct($store);
+
+        $colorType = $this->createColorType();
+
+        $colorValue = $this->createColorValue($colorType);
+
+        $sizeType = $this->createSizeType();
+
+        $sizeValue = $this->createSizeValue($sizeType);
+
+        $sizeValue2 = $this->createSizeValue($sizeType, [
+            'ar' => 'متوسط',
+            'en' => 'Medium',
+        ]);
+
+        $sizeAndStock = [
+            'id' => $sizeValue->id,
+            'stock_amount' => $this->faker->randomNumber(2),
+        ];
+
+        $sizeAndStock2 = [
+            'id' => $sizeValue2->id,
+            'stock_amount' => $this->faker->randomNumber(2),
+            'price' => 100,
+        ];
+
+        $data = [
+            'product_id' => $product->id,
+            'color_id' => $colorValue->id,
+            'sizes' => [
+                $sizeAndStock,
+                $sizeAndStock2,
+            ],
+        ];
+
+        $res = $this->post(route('api.sell.create.color.sizes.variation'), $data);
+
+        $res->assertStatus(200);
+
+        $this->assertEquals(2, $product->fresh()->variations->count());
+        $this->assertEquals(2, $product->fresh()->variations->first()->children->count());
+        $this->assertEquals(100, $product->fresh()->variations->first()->children->last()->price);
     }
 }

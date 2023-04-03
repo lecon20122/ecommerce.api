@@ -4,6 +4,7 @@ namespace App\Http\Variation\Controllers\Sell;
 
 use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Services\Sell\SellVariationService;
+use App\Http\Variation\Requests\Sell\StoreSellColorVariation;
 use App\Http\Variation\Resources\Sell\SellVariationResource;
 use App\Http\Variations\Requests\Sell\StoreSellSizeVariation;
 use Application\Controllers\BaseController;
@@ -79,6 +80,34 @@ class SellVariationController extends BaseController
             $this->service->createSizeVariation($request->validated());
             DB::commit();
             return $this->httpResponseOk(null, 'Size variations created successfully');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->httpResponse($exception->getMessage(), $code ?? 400);
+        }
+    }
+
+    /**
+     * Store a newly created Sell Color Variation
+     * @bodyParam product_id required The product id of the variation Example: 1
+     * @bodyParam color_id required The color id of the variation Example: 1
+     * @bodyParam price required The price of the variation Example: 100
+     * @param StoreSellColorVariation $request
+     * @return void
+     */
+    public function createColorVariation(StoreSellColorVariation $request): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->createColorVariation(
+                $request->validated('product_id'),
+                $request->validated('color_id'),
+                $request->validated('sizes')
+            );
+            DB::commit();
+            return $this->httpResponseOk(null, 'Color variation created successfully');
         } catch (\Exception $exception) {
             DB::rollBack();
             if ($exception instanceof HttpExceptionInterface) {

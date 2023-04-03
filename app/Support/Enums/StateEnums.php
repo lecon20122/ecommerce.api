@@ -9,4 +9,6 @@ enum StateEnums: string
     case COMPLETED = 'Completed';
     case SUCCESS = 'success';
     case ERROR = 'error';
+    case ACTIVE = 'active';
+    case DRAFT = 'draft';
 }

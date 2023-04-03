@@ -92,11 +92,11 @@ class CategoryController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param $id
      * @param CategoryService $categoryService
      * @return RedirectResponse|\Inertia\Response
      */
-    public function edit(int $id, CategoryService $categoryService): \Inertia\Response|RedirectResponse
+    public function edit(string $id, CategoryService $categoryService): \Inertia\Response|RedirectResponse
     {
 
         try {

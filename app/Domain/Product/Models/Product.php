@@ -3,6 +3,7 @@
 namespace App\Domain\Product\Models;
 
 use App\Domain\Category\Models\Category;
+use App\Domain\Statistics\Models\View;
 use App\Domain\Store\Models\Store;
 use App\Domain\User\Models\Favorite;
 use App\Domain\Variation\Models\Variation;
@@ -67,6 +68,11 @@ class Product extends Model
         return $this
             ->belongsToMany(User::class, 'favorites')
             ->using(Favorite::class);
+    }
+
+    public function views()
+    {
+        return $this->morphMany(View::class, 'viewable');
     }
 
     public function toSearchableArray(): array

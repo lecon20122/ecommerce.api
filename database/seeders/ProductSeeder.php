@@ -48,7 +48,6 @@ class ProductSeeder extends Seeder
 //                'ar' => $this->faker->name(),
 //            ],
 //            'price' => $this->faker->randomFloat(null, 99, 500),
-//            'live_at' => now(),
 //            'store_id' => rand(1, 5),
 //        ]);
         Product::factory(20)->create([

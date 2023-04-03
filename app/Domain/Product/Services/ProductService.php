@@ -4,6 +4,7 @@ namespace App\Domain\Product\Services;
 
 use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
+use App\Domain\Statistics\Services\StatisticsService;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\VariationTypeValue;
 use App\Domain\Variation\Services\VariationService;
@@ -11,6 +12,7 @@ use App\Http\Category\Resources\CategoryResource;
 use App\Http\Category\Services\CategoryService;
 use App\Http\Product\Resources\ProductResource;
 use App\Http\Variation\Resources\VariationTypeValueResource;
+use App\Support\Enums\ApplicationEnums;
 use App\Support\Requests\ModelIDsRequest;
 use App\Support\Services\SearchService;
 use Domain\User\Models\User;
@@ -21,7 +23,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -52,7 +53,6 @@ class ProductService
         } else {
             return response()->json(['no store']);
         }
-
     }
 
     public function createProduct(Store $store, $data): Model
@@ -77,19 +77,29 @@ class ProductService
         }
     }
 
-    public function getProductById(int $id): ProductResource
+    public function getProductById(int $id): JsonResponse | ProductResource
     {
         $product = Product::query()
-            ->with(['discount', 'store', 'description.productAttribute', 'variations' => function ($query) {
-                $query->with(['VariationImages', 'VariationColor', 'variationTypeValue', 'variationType', 'children' => function ($query) {
-                    $query->with(['variationTypeValue', 'variationType', 'media']);
-                }])
-                    ->has('VariationImages')
-                    ->parent();
-            }
+            ->with([
+                'discount', 'store', 'description.productAttribute', 'variations' => function ($query) {
+                    $query->with(['VariationImages', 'VariationColor', 'variationTypeValue', 'variationType', 'children' => function ($query) {
+                        $query->with(['variationTypeValue', 'variationType', 'media']);
+                    }])
+                        ->has('VariationImages')
+                        ->parent();
+                }
             ])
             ->find($id);
-        return new ProductResource($product);
+
+        $visitCookie = (new StatisticsService())->recordVisit($product);
+
+        if ($visitCookie) {
+            return (new ProductResource($product))
+                ->response()
+                ->cookie(cookie()->forever(ApplicationEnums::VISIT_ID_COOKIE, $visitCookie));
+        }
+
+        return (new ProductResource($product));
     }
 
     /**
@@ -109,11 +119,11 @@ class ProductService
 
         $variations =
             VariationTypeValue::query()
-                ->with(['VariationType:id,type', 'colorImage'])
-                ->select('id', 'value', 'slug', 'hex_value', 'variation_type_id')
-                ->find(
-                    [...array_keys($facets['color_ids']), ...array_keys($facets['size_ids'])]
-                );
+            ->with(['VariationType:id,type', 'colorImage'])
+            ->select('id', 'value', 'slug', 'hex_value', 'variation_type_id')
+            ->find(
+                [...array_keys($facets['color_ids']), ...array_keys($facets['size_ids'])]
+            );
 
         return [
             'filters' => VariationTypeValueResource::collection($variations),
@@ -218,14 +228,14 @@ class ProductService
         } else {
             return response()->json(['error' => 'something went wrong']);
         }
-
     }
 
     public function loadProductRelations(Product $product): ProductResource
     {
-        $product->load(['discounts', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
-            $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
-        }
+        $product->load([
+            'discounts', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
+                $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
+            }
         ]);
 
         return new ProductResource($product);
@@ -238,9 +248,10 @@ class ProductService
 
         if (!$user->isOwner($product->store_id)) abort(403, 'You are not allowed to access this product');
 
-        $product->load(['discount', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
-            $query->with([ 'variationTypeValue', 'variationType'])->parent();
-        }
+        $product->load([
+            'discount', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
+                $query->with(['variationTypeValue', 'variationType'])->parent();
+            }
         ])->first();
 
         return new ProductResource($product);
@@ -252,9 +263,10 @@ class ProductService
         $store = \auth()->user()->store()->first();
 
         if ($store) {
-            $products = $store->products()->withTrashed()->where('slug', $slug)->with(['description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
-                $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
-            }
+            $products = $store->products()->withTrashed()->where('slug', $slug)->with([
+                'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
+                    $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
+                }
             ])->first();
 
             if (is_null($products)) abort(404);

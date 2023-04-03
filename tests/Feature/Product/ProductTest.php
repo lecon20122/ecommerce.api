@@ -54,7 +54,6 @@ class ProductTest extends TestCase
             'en' => 'new product',
             'ar' => 'منتج جديد',
             'price' => 325,
-            'live_at' => now(),
             'store_id' => $store->id,
         ];
 

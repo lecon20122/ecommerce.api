@@ -6,21 +6,24 @@ use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Models\ProductDiscount;
 use App\Domain\Product\Services\ProductService;
+use App\Domain\Statistics\Models\View;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\VariationType;
 use App\Domain\Variation\Models\VariationTypeValue;
+use App\Support\Traits\FeatureTestTrait;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use JetBrains\PhpStorm\NoReturn;
 use Tests\TestCase;
 
 class ApiProductTest extends TestCase
 {
-    use WithFaker, RefreshDatabase;
+    use WithFaker, RefreshDatabase, FeatureTestTrait;
 
     public function test_that_as_store_can_get_his_products()
     {
@@ -50,15 +53,13 @@ class ApiProductTest extends TestCase
             'en' => 'new product',
             'ar' => 'منتج جديد',
             'price' => 325,
-            'live_at' => now(),
-//            'store_id' => $store->id,
+            //            'store_id' => $store->id,
         ];
 
         $response = $this->post(route('api.add.store.products'), $data);
         $product = Product::query()->first();
 
         $this->assertEquals('new product', $product->title);
-
     }
 
     public function test_as_a_store_owner_can_update_my_product()
@@ -84,8 +85,10 @@ class ApiProductTest extends TestCase
         $res = $this->post(route('api.update.store.product'), $data);
         $product->refresh();
 
-        $this->assertEquals('Zecotex New Winter Collection Pajamas 2 Pieces / Milton Camouflage Fashion Print / Stretchy Sweater and Pants with Pockets / Sweatshirts & Pants / Comfortable Home Wear Trousers',
-            Product::first()->title);
+        $this->assertEquals(
+            'Zecotex New Winter Collection Pajamas 2 Pieces / Milton Camouflage Fashion Print / Stretchy Sweater and Pants with Pockets / Sweatshirts & Pants / Comfortable Home Wear Trousers',
+            Product::first()->title
+        );
     }
 
     public function test_product_can_only_be_updated_by_its_owner()
@@ -366,5 +369,28 @@ class ApiProductTest extends TestCase
         ]);
 
         $response = $this->get(route('api.get.store.product.details', ['product' => $product]))->assertForbidden();
+    }
+
+    public function testViewsCountUniqueVisitsOnly()
+    {
+        $this->withHeaders([
+            'referer' => env('SANCTUM_STATEFUL_DOMAINS'),
+       ]);
+
+        $user = $this->authorizedUser();
+
+        $store = Store::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $product = Product::factory()->create([
+            'store_id' => $store->id
+        ]);
+
+        $firstVisit =  $this->get(route('api.get.product.by.id', ['id' => $product->id]));
+
+        $secondVisit =  $this->get(route('api.get.product.by.id', ['id' => $product->id]));
+
+        $this->assertEquals(1, View::count());
     }
 }

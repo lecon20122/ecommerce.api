@@ -36,10 +36,10 @@ class StoreSellProductRequest extends FormRequest
             "sizes" => 'array|nullable',
             'images' => 'required|array',
             'images.*' => [
-                'mimes:jpg,webp,png|max:2048',
+                'mimes:jpg,webp,png|max:3000',
                 Rule::dimensions()
                     ->minWidth(600)
-                    ->maxWidth(2000)
+                    ->maxWidth(3000)
             ],
         ];
     }

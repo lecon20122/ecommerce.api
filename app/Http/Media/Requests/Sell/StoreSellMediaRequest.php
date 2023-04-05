@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Variations\Requests\Sell;
+namespace App\Http\Media\Requests\Sell;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreSellSizeVariation extends FormRequest
+class StoreSellMediaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +25,14 @@ class StoreSellSizeVariation extends FormRequest
     public function rules()
     {
         return [
-            "parent_id" => 'required|integer',
-            "sizes" => 'array|required',
-            "sizes.*" => 'integer',
+            'color_id' => 'required|numeric',
+            'images' => 'required|array',
+            'images.*' => [
+                'mimes:jpg,webp,png|max:3000',
+                Rule::dimensions()
+                    ->minWidth(600)
+                    ->maxWidth(3000)
+            ],
         ];
     }
 }

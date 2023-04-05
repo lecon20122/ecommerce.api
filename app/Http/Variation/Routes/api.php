@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Route;
 Route::name('sell.')->prefix('sell/v1')->middleware(['auth:sanctum'])->group(function () {
     Route::delete('variation/delete/{variation}', [SellVariationController::class, 'safeDelete'])->name('safe.delete.owner.variation');
     Route::get('variation/color/{id}', [SellVariationController::class, 'getColorVariationWithItsSizes'])->name('get.color.variation.with.sizes');
-    Route::post('variation/sizes', [SellVariationController::class, 'createSizesVariation'])->name('create.sizes.variation');
+    Route::post('variation/size', [SellVariationController::class, 'createSizesVariation'])->name('create.sizes.variation');
     Route::post('variation/color', [SellVariationController::class, 'createColorVariation'])->name('create.color.variation');
+    Route::post('variation/color/upload-image', [SellVariationController::class, 'uploadImageToColor'])->name('upload.image.to.color.variation');
+    Route::delete('variation/color/delete-image', [SellVariationController::class, 'deleteImageFromColor'])->name('delete.image.from.color.variation');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

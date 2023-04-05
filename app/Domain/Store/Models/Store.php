@@ -5,6 +5,7 @@ namespace App\Domain\Store\Models;
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Location\Models\Address;
 use App\Domain\Product\Models\Product;
+use App\Domain\Variation\Models\Variation;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,6 +37,11 @@ class Store extends Model
     public function products(): HasMany
     {
         return $this->hasMany(Product::class, 'store_id', 'id');
+    }
+
+    public function variations()
+    {
+        return $this->hasMany(Variation::class, 'store_id', 'id');
     }
 
     public function scopeApproved($query)

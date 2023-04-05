@@ -44,13 +44,22 @@ class SellVariationService
                 'title' => $colorValue->value,
             ]);
         } else {
-            abort(404, 'Color not found!');
+            throw new \Exception('Color not found!');
         }
     }
 
-    public function createSize(Model $parent, array $sizeAndStock, $price): Model
+    public function createSize(Model $parent, array | int $sizeAndStock, $price): Model
     {
-        $sizeValue = VariationTypeValue::query()->with('variationType:type,id')->find($sizeAndStock['id']);
+        $sizeValue = VariationTypeValue::query()
+            ->with('variationType:type,id')
+            ->find($sizeAndStock['id'] ?? $sizeAndStock);
+
+        $isUserCreatingDuplicatingSize = Variation::query()->where('parent_id', $parent->id)
+            ->where('variation_type_id', $sizeValue->variationType->id)
+            ->where('variation_type_value_id', $sizeAndStock['id'] ?? $sizeAndStock)
+            ->first();
+
+        if ($isUserCreatingDuplicatingSize) throw new \Exception('Size already exists!');
 
         if ($sizeValue && $sizeValue->variationType->type === TypeEnum::SIZE) {
             return Variation::create([
@@ -64,7 +73,7 @@ class SellVariationService
                 'product_id' => $parent->product_id
             ]);
         } else {
-            abort(404, 'Size not found!');
+            throw new \Exception('Size not found!');
         }
     }
 
@@ -137,8 +146,46 @@ class SellVariationService
 
         $parentVariation = Variation::query()->where('store_id', $store->id)->findOrFail($data['parent_id']);
 
-        foreach ($data['sizes'] as $sizeAndStock) {
-            $this->createSize($parentVariation, $sizeAndStock, $sizeAndStock['price'] ?? $parentVariation->price);
+        if (!$parentVariation) abort(404, 'Parent variation not found!');
+
+        foreach ($data['sizes'] as $size) {
+            $this->createSize($parentVariation, $size, $parentVariation->price);
         }
+    }
+
+    public function uploadImageToColor($color_id)
+    {
+        $user = auth()->user();
+
+        $store = $user->store()->approved()->first();
+
+        if (!$store) throw new \Exception('you are not allowed to view products yet!');
+
+        $variation = $store->variations()->with('variationType')->find($color_id);
+
+        if (!$variation) throw new \Exception('You do not own this variation! or it does not exist!');
+
+        if ($variation->variationType->type !== TypeEnum::COLOR) throw new \Exception('This is not a color variation!');
+
+        (new ImageService())->addMultipleMediaFromRequest($variation, 'images', MediaCollectionEnums::VARIATION, $variation->id);
+    }
+
+    public function deleteImageFromColor(int $color_id, int $image_id)
+    {
+        $user = auth()->user();
+
+        $store = $user->store()->approved()->first();
+
+        if (!$store) throw new \Exception('you are not allowed to view products yet!');
+
+        $variation = $store->variations()->with('variationType')->find($color_id);
+
+        if (!$variation) throw new \Exception('You do not own this variation! or it does not exist!');
+
+        $image = $variation->media()->find($image_id);
+
+        if (!$image) throw new \Exception('Image not found!');
+
+        (new ImageService())->delete($image->id);
     }
 }

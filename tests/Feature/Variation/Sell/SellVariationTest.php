@@ -2,12 +2,16 @@
 
 namespace Tests\Feature\Variation\Sell;
 
-use App\Domain\Order\Models\Order;
+
 use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Services\Sell\SellVariationService;
 use App\Support\Traits\FeatureTestTrait;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Knuckles\Scribe\Extracting\Shared\ValidationRulesFinders\ThisValidate;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
 
 class SellVariationTest extends TestCase
@@ -212,32 +216,18 @@ class SellVariationTest extends TestCase
             'en' => 'Medium',
         ]);
 
-        $sizeAndStock = [
-            'id' => $sizeValue->id,
-            'stock_amount' => $this->faker->randomNumber(2),
-        ];
-
-        $sizeAndStock2 = [
-            'id' => $sizeValue2->id,
-            'stock_amount' => $this->faker->randomNumber(2),
-            'price' => 100,
-        ];
-
         $data = [
             'parent_id' => $parentVariation->id,
             'sizes' => [
-                $sizeAndStock,
-                $sizeAndStock2,
+                $sizeValue->id,
+                $sizeValue2->id,
+                $sizeValue2->id,
             ],
         ];
 
-        $res = $this->post(route('api.sell.create.sizes.variation'), $data);
+        $res = $this->post(route('api.sell.create.sizes.variation'), $data)->assertBadRequest();
 
-        $res->assertStatus(200);
-
-        $this->assertEquals(150, $parentVariation->fresh()->children->first()->price);
-        $this->assertEquals(100, $parentVariation->fresh()->children->last()->price);
-        $this->assertEquals(2, $parentVariation->fresh()->children->count());
+        $this->assertEquals("Size already exists!", $res->json()['message']);
     }
 
     // public function testOwnerCanCreateColorAndSizes()
@@ -289,4 +279,85 @@ class SellVariationTest extends TestCase
     //     $this->assertEquals(2, $product->fresh()->variations->first()->children->count());
     //     $this->assertEquals(100, $product->fresh()->variations->first()->children->last()->price);
     // }
+
+    public function testOwnerUploadImage()
+    {
+        Storage::fake('public');
+
+        $user = $this->authorizedUser();
+
+        $store = $this->createApprovedStore($user);
+
+        $product = $this->createProduct($store);
+
+        $colorValue = $this->createColorValue();
+
+        $variation = Variation::factory()->create(
+            [
+                'store_id' => $store->id,
+                'price' => 150, // in pounds
+                'product_id' => $product->id,
+                'variation_type_id' => $colorValue->variation_type_id,
+                'variation_type_value_id' => $colorValue->id,
+            ]
+        );
+
+        $data = [
+            'color_id' => $variation->id,
+            'images' => [
+                0 => UploadedFile::fake()->image("test.jpg", 1080, 1350),
+                1 => UploadedFile::fake()->image("test.jpg", 670, 838),
+            ],
+        ];
+
+
+        $res = $this->post(route('api.sell.upload.image.to.color.variation'), $data);
+
+        $res->assertStatus(200);
+
+        $this->assertEquals(2, Media::count());
+    }
+
+    public function testOwnerCanDeleteHisImage()
+    {
+        Storage::fake('public');
+
+        $user = $this->authorizedUser();
+
+        $store = $this->createApprovedStore($user);
+
+        $product = $this->createProduct($store);
+
+        $colorValue = $this->createColorValue();
+
+        $variation = Variation::factory()->create(
+            [
+                'store_id' => $store->id,
+                'price' => 150, // in pounds
+                'product_id' => $product->id,
+                'variation_type_id' => $colorValue->variation_type_id,
+                'variation_type_value_id' => $colorValue->id,
+            ]
+        );
+
+        $data = [
+            'color_id' => $variation->id,
+            'images' => [
+                0 => UploadedFile::fake()->image("test.jpg", 1080, 1350),
+            ],
+        ];
+
+
+        $this->post(route('api.sell.upload.image.to.color.variation'), $data);
+
+
+        $res = $this->delete(route('api.sell.delete.image.from.color.variation'), [
+            'color_id' => $variation->id,
+            'image_id' => $variation->fresh()->media->first()->id,
+        ]);
+
+        $res->assertStatus(200);
+
+        $this->assertEquals(0, Media::count());
+    }
 }

@@ -7,6 +7,7 @@ use App\Domain\Product\Models\Product;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\VariationType;
 use App\Support\Enums\RolesEnum;
+use App\Support\Enums\TypeEnum;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -52,7 +53,7 @@ trait FeatureTestTrait
         return VariationType::query()->create([
             'type' => [
                 'ar' => 'اللون',
-                'en' => 'color',
+                'en' => TypeEnum::COLOR,
             ],
             'is_mediable' => true,
             'is_stockable' => false,

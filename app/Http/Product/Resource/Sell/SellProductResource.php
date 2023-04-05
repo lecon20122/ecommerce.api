@@ -23,10 +23,11 @@ class SellProductResource extends JsonResource
             'id' => $this->id,
             'title' => $this->getTranslations('title'),
             'price' => $this->price,
+            'status' => $this->status,
             'variation' => new SellVariationResource($this->whenLoaded('variation')),
             'created_at' => $this->created_at,
             'variations' => SellVariationResource::collection($this->whenLoaded('variations')),
-            'discount_price' => $this->whenLoaded('discount', fn() => (new ProductDiscountService())->calculateDiscountedPrice($this->price, $this->discount)),
+            'discount_price' => $this->whenLoaded('discount', fn () => (new ProductDiscountService())->calculateDiscountedPrice($this->price, $this->discount)),
         ];
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Variation\Controllers\Sell;
 
 use App\Domain\Variation\Models\Variation;
 use App\Domain\Variation\Services\Sell\SellVariationService;
+use App\Http\Media\Requests\Sell\DeleteSellMediaRequest;
+use App\Http\Media\Requests\Sell\StoreSellMediaRequest;
 use App\Http\Variation\Requests\Sell\StoreSellColorVariation;
 use App\Http\Variation\Resources\Sell\SellVariationResource;
 use App\Http\Variations\Requests\Sell\StoreSellSizeVariation;
@@ -81,6 +83,7 @@ class SellVariationController extends BaseController
             DB::commit();
             return $this->httpResponseOk(null, 'Size variations created successfully');
         } catch (\Exception $exception) {
+            // dd($exception->getMessage());
             DB::rollBack();
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
@@ -108,6 +111,41 @@ class SellVariationController extends BaseController
             );
             DB::commit();
             return $this->httpResponseOk(null, 'Color variation created successfully');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->httpResponse($exception->getMessage(), $code ?? 400);
+        }
+    }
+
+    public function uploadImageToColor(StoreSellMediaRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->uploadImageToColor($request->validated('color_id'));
+            DB::commit();
+            return $this->httpResponseOk(null, 'Image uploaded successfully');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            if ($exception instanceof HttpExceptionInterface) {
+                $code = $exception->getStatusCode();
+            }
+            return $this->httpResponse($exception->getMessage(), $code ?? 400);
+        }
+    }
+
+    public function deleteImageFromColor(DeleteSellMediaRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $this->service->deleteImageFromColor(
+                $request->validated('color_id'),
+                $request->validated('image_id')
+            );
+            DB::commit();
+            return $this->httpResponseOk(null, 'Image deleted successfully');
         } catch (\Exception $exception) {
             DB::rollBack();
             if ($exception instanceof HttpExceptionInterface) {

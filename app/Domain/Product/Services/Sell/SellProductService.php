@@ -126,6 +126,20 @@ class SellProductService
         ]);
     }
 
+    public function changeProductStatus(int $id , string $status)
+    {
+        $user = auth()->user();
+        $approvedStore = $user->store()->approved()->first();
+        if (!$approvedStore) abort(403, 'you are not allowed to perform this action yet!');
+
+        $product = $approvedStore->products()->findOrFail($id);
+
+        $isUpdated = $product->update(['status' => $status]);
+
+        
+    }
+
+
     public function safeDelete(int $id)
     {
         $user = auth()->user();

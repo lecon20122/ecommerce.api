@@ -32,7 +32,7 @@ class StoreSellProductRequest extends FormRequest
             'price' => 'required|numeric|min:0,max:1000000',
             'color_id' => 'required|integer',
             'category_id' => 'required|numeric',
-            'unisex' => ['required', new Boolean],
+            'unisex' => ['nullable', new Boolean],
             "sizes" => 'array|nullable',
             'images' => 'required|array',
             'images.*' => [

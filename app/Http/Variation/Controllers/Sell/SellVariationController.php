@@ -83,7 +83,6 @@ class SellVariationController extends BaseController
             DB::commit();
             return $this->httpResponseOk(null, 'Size variations created successfully');
         } catch (\Exception $exception) {
-            // dd($exception->getMessage());
             DB::rollBack();
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();

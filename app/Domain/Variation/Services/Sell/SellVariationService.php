@@ -48,15 +48,15 @@ class SellVariationService
         }
     }
 
-    public function createSize(Model $parent, array | int $sizeAndStock, $price): Model
+    public function createSize(Model $parent, array | int $size, $price): Model
     {
         $sizeValue = VariationTypeValue::query()
             ->with('variationType:type,id')
-            ->find($sizeAndStock['id'] ?? $sizeAndStock);
+            ->find($size['id'] ?? $size);
 
         $isUserCreatingDuplicatingSize = Variation::query()->where('parent_id', $parent->id)
             ->where('variation_type_id', $sizeValue->variationType->id)
-            ->where('variation_type_value_id', $sizeAndStock['id'] ?? $sizeAndStock)
+            ->where('variation_type_value_id', $size['id'] ?? $size)
             ->first();
 
         if ($isUserCreatingDuplicatingSize) throw new \Exception('Size already exists!');
@@ -90,14 +90,19 @@ class SellVariationService
         $this->createColorAndSizes($product, $color_id, $sizes, $product->price);
     }
 
-    public function createColorAndSizes(Product $product, $colorId, array $sizesAndStock, $price): void
+    public function createColorAndSizes(Product $product, $colorId, array $sizes, $price, int $index = 0): void
     {
         $color = $this->createColor($product, $colorId, $price);
 
-        (new ImageService())->addMultipleMediaFromRequest($color, 'images', MediaCollectionEnums::VARIATION, $color->id);
+        (new ImageService())->addMultipleMediaFromRequest(
+            $color,
+            "variations[$index][images]",
+            MediaCollectionEnums::VARIATION,
+            $color->id
+        );
 
-        foreach ($sizesAndStock as $sizeAndStock) {
-            $this->createSize($color, $sizeAndStock, $price);
+        foreach ($sizes as $size) {
+            $this->createSize($color, $size, $price);
         }
     }
 

@@ -72,9 +72,10 @@ trait FeatureTestTrait
         ]);
     }
 
-    public function createColorValue(): Model|Builder
+    public function createColorValue($colorType = null): Model|Builder
     {
-        $colorType = $this->createColorType();
+
+        $colorType = $colorType ?? $this->createColorType();
         return $colorType->variationTypeValues()->create([
             'value' => [
                 'ar' => 'أحمر',

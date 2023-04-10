@@ -72,7 +72,16 @@ class SellProductService
 
         $this->assignCategories($product, $data['category_id'], $data['unisex']);
 
-        (new SellVariationService())->createColorAndSizes($product, $data['color_id'], $data['sizes'], $data['price']);
+        foreach ($data['variations'] as $index => $value) {
+            (new SellVariationService())
+                ->createColorAndSizes(
+                    $product,
+                    $value['color_id'],
+                    $value['sizes'],
+                    $data['price'],
+                    $index
+                );
+        }
 
         if ($product) NewProductCreatedJob::dispatch($product);
 
@@ -126,7 +135,7 @@ class SellProductService
         ]);
     }
 
-    public function changeProductStatus(int $id , string $status)
+    public function changeProductStatus(int $id, string $status)
     {
         $user = auth()->user();
         $approvedStore = $user->store()->approved()->first();
@@ -135,8 +144,6 @@ class SellProductService
         $product = $approvedStore->products()->findOrFail($id);
 
         $isUpdated = $product->update(['status' => $status]);
-
-        
     }
 
 

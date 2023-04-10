@@ -30,12 +30,14 @@ class StoreSellProductRequest extends FormRequest
             'title.ar' => 'required|string|max:255',
             'title.en' => 'required|string|max:255',
             'price' => 'required|numeric|min:0,max:1000000',
-            'color_id' => 'required|integer',
             'category_id' => 'required|numeric',
             'unisex' => ['nullable', new Boolean],
-            "sizes" => 'array|nullable',
-            'images' => 'required|array',
-            'images.*' => [
+            'variations' => 'required|array',
+            'variations.*.color_id' => 'required|integer',
+            'variations.*.sizes' => 'required|array',
+            'variations.*.sizes.*' => 'required|integer',
+            'variations.*.images' => 'required|array',
+            'variations.*.images.*' => [
                 'mimes:jpg,webp,png|max:3000',
                 Rule::dimensions()
                     ->minWidth(600)

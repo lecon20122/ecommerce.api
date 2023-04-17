@@ -90,6 +90,7 @@ export interface AdminMedia {
   file_name: string;
   mime_type: string;
   url: string;
+  big_url: string;
   width: number;
   height: number;
 }

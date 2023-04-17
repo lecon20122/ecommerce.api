@@ -21,6 +21,7 @@ class VariationThumbnailResource extends JsonResource
             'width' => $this->getCustomProperty('width'),
             'height' => $this->getCustomProperty('height'),
             'url' => $this->getFullUrl(MediaCollectionEnums::THUMB_CONVENTION),
+            'big_url' => $this->getFullUrl(MediaCollectionEnums::BIG_CONVENTION),
         ];
     }
 }

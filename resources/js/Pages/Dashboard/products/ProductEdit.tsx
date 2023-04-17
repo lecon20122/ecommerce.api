@@ -259,7 +259,7 @@ export default function ProductEdit({
                   <div className='flex justify-start items-center'>
                     {variation.thumbnails.map((thumbnail) => {
                       return (
-                        <Image width={100} src={thumbnail.url} />
+                        <Image width={100} src={thumbnail.big_url} />
                       )
                     })}
                   </div>

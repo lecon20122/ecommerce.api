@@ -145,22 +145,4 @@ class SellProductService
 
         $isUpdated = $product->update(['status' => $status]);
     }
-
-
-    public function safeDelete(int $id)
-    {
-        $user = auth()->user();
-        $approvedStore = $user->store()->approved()->first();
-        if (!$approvedStore) abort(403, 'you are not allowed to perform this action yet!');
-
-        $product = $approvedStore->products()->with(['variations' => function (HasMany $query) {
-            $query->whereHas('orders');
-        }])->findOrFail($id);
-
-        if ($product->variations) {
-            $product->delete(); //softDelete
-        } else {
-            $product->forceDelete();
-        }
-    }
 }

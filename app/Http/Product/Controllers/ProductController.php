@@ -13,23 +13,40 @@ use App\Support\Requests\ModelIDsRequest;
 use Application\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ProductController extends BaseController
 {
+
+    public function __construct(protected ProductService $service)
+    {
+    }
     /**
      * Display a listing of the resource.
      *
      * @return RedirectResponse|\Inertia\Response
      */
-    public function index(): \Inertia\Response|RedirectResponse
+    public function adminIndex(Request $request): \Inertia\Response|RedirectResponse
     {
         try {
-            return Inertia::render('Dashboard/products/index');
+            return Inertia::render('Dashboard/products/product-index', [
+                'products' => $this->service->getAdminProducts(),
+            ]);
         } catch (Exception $exception) {
             return $this->redirectBackWithMessage($exception->getMessage());
+        }
+    }
+
+    public function adminApproveProduct(int $id)
+    {
+        try {
+            $this->service->adminApproveProduct($id);
+            return $this->redirectBackWithMessage('Product approved successfully');
+        } catch (Exception $exception) {
+            return $this->redirectBackWithMessage($exception->getMessage(), 'error');
         }
     }
 
@@ -77,7 +94,7 @@ class ProductController extends BaseController
                 'attributes' => (new ProductAttributeService())->indexProductAttribute(),
                 'variationTypes' => (new VariationService())->getVariationTypes(),
                 'variationTypesValues' => (new VariationService())->getVariationTypeValues(),
-                'categories' => (new CategoryService())->getCategories(), //TODO: CACHE ALL CATEGORIES
+                'categories' => (new CategoryService())->getCategories(),
             ]);
         } catch (Exception $exception) {
             return $this->logAndRedirectBackWithError($exception->getMessage());

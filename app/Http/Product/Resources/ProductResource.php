@@ -37,6 +37,8 @@ class ProductResource extends JsonResource
             'description' => ProductDescriptionResource::collection($this->whenLoaded('description')),
             'discount' => new ProductDiscountResource($this->whenLoaded('discount')),
             'discount_price' => $this->whenLoaded('discount', fn() => (new ProductDiscountService())->calculateDiscountedPrice($this->price, $this->discount)),
+            'created_at' => $this->created_at->diffForHumans(),
+            'updated_at' => $this->updated_at->diffForHumans(),
         ];
     }
 }

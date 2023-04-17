@@ -56,11 +56,11 @@ class BaseController extends Controller
         ]);
     }
 
-    public function redirectBackWithMessage($message): RedirectResponse
+    public function redirectBackWithMessage($message , $type = 'success'): RedirectResponse
     {
         return back()->with('message', [
             'message' => $message ?? 'success',
-            'type' => 'success',
+            'type' => $type,
         ]);
     }
 }

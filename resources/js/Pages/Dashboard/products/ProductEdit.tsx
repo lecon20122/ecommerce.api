@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import DashboardLayout from '../../../layouts/dashboard'
-import { Button, Divider, Form, Input, InputNumber, Select, Space, Table } from 'antd';
+import { Button, Card, Collapse, Divider, Form, Image, Input, InputNumber, Popconfirm, Select, Space, Table, Tag } from 'antd';
 import { Inertia } from '@inertiajs/inertia';
 import route from 'ziggy-js';
-import { usePage } from "@inertiajs/inertia-react";
+import { Link, usePage } from "@inertiajs/inertia-react";
 import { Title } from "../../../types/CategoryType";
-import { Setting, Variation, VariationTypes, VariationTypesValues } from "../../../types/VariationType";
+import { AdminVariation, Setting, Variation, VariationTypes, VariationTypesValues } from "../../../types/VariationType";
 import VariationList from "../../../components/Lists/VariationList";
 import { Category, NewMediaProps } from "../../../types/products";
 import { ProductAttribute, ProductDescription } from "../../../types/globalTypes";
@@ -13,9 +13,10 @@ import { ColumnsType } from "antd/es/table";
 import { DeleteOutlined, EditOutlined, } from "@ant-design/icons";
 import ModalWithChildren from "../variations/ModalWithChildren";
 import NewDashboardLayout from '../../../layouts/new-dashboard-layout';
+import { AdminProduct } from './product-index';
 
 interface Props {
-  currentProduct: Product
+  currentProduct: AdminProduct,
   variationTypes: VariationTypes[]
   variationTypesValues: VariationTypesValues[]
   locale: string,
@@ -29,10 +30,12 @@ interface Product {
   price: string;
   slug: string;
   media: NewMediaProps[];
-  variations: Variation[],
+  variations: AdminVariation[],
   categories: Category[],
   store_id: number,
   description: ProductDescription[],
+  created_at: string,
+  updated_at: string,
 }
 
 interface DataType extends ProductDescription {
@@ -47,10 +50,13 @@ export default function ProductEdit({
   categories,
   attributes
 }: Props) {
-
+  console.log('====================================');
+  console.log(currentProduct);
+  console.log('====================================');
   const [openUpdateDescriptionModal, setOpenUpdateDescriptionModal] = useState<boolean>(false)
   const [openCreateDescriptionModal, setOpenCreateDescriptionModal] = useState<boolean>(false)
   const [currentDescription, setCurrentDescription] = useState<ProductDescription>()
+  const [openPopconfirm, setOpenPopconfirm] = useState<boolean>(false)
 
   const serverSideErrors = usePage().props.errors
 
@@ -141,84 +147,139 @@ export default function ProductEdit({
     },
   ]
 
+  const collapseHeader = (hex: string, colorName: string, sizes: AdminVariation[]) => {
+    return (
+      <div className='flex items-center space-x-2'>
+        <div className=' border border-black p-[2px]'>
+          <div style={{ backgroundColor: hex }} className='w-[35px] h-[17.5px]'></div>
+        </div>
+        <p>{colorName}</p>
+        {sizes.map((child) => {
+          return (
+            <Tag>
+              {child?.variation_type_value?.value.en}
+            </Tag>
+          )
+        })}
+      </div>
+    )
+  }
+
+  const onApproveConfirm = (id: number) => {
+    Inertia.post(route('admin.products.approve', { id }), {}, {
+      preserveScroll: true,
+    })
+  }
+
   return (
     <NewDashboardLayout>
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
-        <Form
-          name="basic"
-          labelCol={{ span: 2 }}
-          wrapperCol={{ span: 12 }}
-          onFinish={onFinish}
-          autoComplete="off"
-        >
-          <Form.Item
-            label="Title EN"
-            initialValue={currentProduct.title.en}
-            name="en"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Title AR"
-            name="ar"
-            initialValue={currentProduct.title.ar}
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Price"
-            initialValue={currentProduct.price}
-            name="price"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item wrapperCol={{ offset: 2, span: 1 }}>
-            <Button type="default" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-        <Divider />
-
-        <div className='flex flex-1'>
-          <div className='basis-1/3'>
-            <div className='container py-3 flex space-x-1 items-center'>
-              <h1>Currently Attached Categories :</h1>
-              {currentAttachedCategories}
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className='text-lg font-bold my-2 ml-2'>Overview</h1>
+          <div className='flex space-x-2 text-start'>
+            <div>
+              <small>last updated</small>
+              <h6 className='text-xs'>{currentProduct.updated_at}</h6>
             </div>
-            <Form onFinish={onFinishAttachCategories}
-              wrapperCol={{ span: 12 }}>
-              <Form.Item name="id">
-                <Select
-                  mode="multiple"
-                  placeholder="Select a category"
-                  allowClear
-                >
-                  {categories.map((category) => (
-                    <Select.Option
-                      key={category.id}
-                      value={category.id}>{category.title[locale as keyof typeof category.title]}</Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <Form.Item className={'ml-2'}>
-                <Button type="default" htmlType="submit">
-                  Submit
-                </Button>
-              </Form.Item>
-            </Form>
+            <div>
+              <small>created at</small>
+              <h6 className='text-xs'>{currentProduct.created_at}</h6>
+            </div>
+            <div>
+              <Popconfirm
+                title="Title"
+                description="Open Popconfirm with async logic"
+                open={openPopconfirm}
+                onConfirm={(_event) => onApproveConfirm(currentProduct.id)}
+                placement='bottomLeft'
+                onCancel={(_event) => setOpenPopconfirm(false)}
+              >
+                <Button size='large' onClick={() => setOpenPopconfirm(true)} className='bg-[#157050] text-white'>approve</Button>
+              </Popconfirm>
+            </div>
           </div>
+        </div>
+        <Card className='mb-2'>
+          <div className='flex items-center justify-center space-x-2'>
+            <div className='w-full border-r-[1px] text-center p-1'>
+              <small>Store</small>
+              <Link href={route('admin.stores.edit', { id: currentProduct.store_id })}>
+                <p className='underline'>{currentProduct.store.name}</p>
+              </Link>
+            </div>
+            <div className='w-full border-r-[1px] text-center p-1'>
+              <small>EN</small>
+              <p>{currentProduct.title.en}</p>
+            </div>
+            <div className='w-full border-r-[1px] text-center p-1'>
+              <small>AR</small>
+              <p>{currentProduct.title.ar}</p>
+            </div>
+            <div className='w-full text-center'>
+              <small>Price</small>
+              <p>{currentProduct.price} EGP</p>
+            </div>
+          </div>
+        </Card>
+        <Card className='mb-2'>
+          <div className='container py-3 flex space-x-1 items-center'>
+            {currentAttachedCategories}
+          </div>
+          <Form onFinish={onFinishAttachCategories}
+            wrapperCol={{ span: 12 }}>
+            <Form.Item name="id">
+              <Select
+                mode="multiple"
+                placeholder="Select a category"
+                allowClear
+              >
+                {categories.map((category) => (
+                  <Select.Option
+                    key={category.id}
+                    value={category.id}>{category.title[locale as keyof typeof category.title]}</Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item className={'ml-2'}>
+              <Button type="default" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+        </Card>
+        <Card className='mb-2'>
+          <Collapse>
+            {currentProduct?.variations?.map((variation) => {
+              return (
+                <Collapse.Panel
+                  header={collapseHeader(variation?.variation_type_value?.hex_value as string,
+                    variation?.variation_type_value?.value.en as string,
+                    variation?.children
+                  )} key={variation.id}>
+                  <div className='flex justify-start items-center'>
+                    {variation.thumbnails.map((thumbnail) => {
+                      return (
+                        <Image width={100} src={thumbnail.url} />
+                      )
+                    })}
+                  </div>
+                </Collapse.Panel>
+              )
+            })}
+
+          </Collapse>
+        </Card>
+
+
+        {/* <div className='flex flex-1'>
           <div className='basis-2/3'>
             <Button onClick={() => setOpenCreateDescriptionModal(true)}>create new record</Button>
             <Divider />
             <Table scroll={{ x: true }} rowKey="id" columns={columns}
               dataSource={currentProduct.description} />
           </div>
-        </div>
-        <Divider />
+        </div> */}
+        {/* <Divider />
         <VariationList variations={currentProduct.variations} storeId={currentProduct.store_id}
           variationTypes={variationTypes}
           variationTypesValues={variationTypesValues} productId={currentProduct.id} />
@@ -324,7 +385,7 @@ export default function ProductEdit({
               </Button>
             </Form.Item>
           </Form>
-        </ModalWithChildren>
+        </ModalWithChildren> */}
       </div>
     </NewDashboardLayout>
   )

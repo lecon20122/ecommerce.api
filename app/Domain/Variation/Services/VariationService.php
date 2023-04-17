@@ -21,6 +21,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use JetBrains\PhpStorm\NoReturn;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class VariationService
 {
@@ -148,7 +149,6 @@ class VariationService
         }
 
         return $variation;
-
     }
 
     public function createSizeVariation(array $data)
@@ -281,11 +281,22 @@ class VariationService
         }
     }
 
-    #[NoReturn] public function createManySizeVariants(Product $product, array $sizes, array $data, int $parent_id)
+    public function createManySizeVariants(Product $product, array $sizes, array $data, int $parent_id)
     {
         foreach ($sizes as $sizeValueId => $value) {
             $decodedValue = json_decode($value, true);
             $this->createSizeVariant($product, $decodedValue, $data, $parent_id);
         }
+    }
+
+    public function approveVariationImages(Product $product)
+    {
+        $product->load('variations');
+
+        if ($product->variations->isEmpty()) return;
+
+        $product->variations->each(function ($variation) {
+            $variation->media()->update(['is_approved' => true]);
+        });
     }
 }

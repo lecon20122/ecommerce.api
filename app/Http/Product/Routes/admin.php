@@ -6,7 +6,7 @@ use App\Http\Product\Controllers\ProductController;
 use App\Http\Product\Controllers\ProductDescriptionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
+Route::get('/products', [ProductController::class, 'adminIndex'])->name('admin.products.index');
 Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
 Route::get('/products/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
 Route::post('/products/{slug}', [ProductController::class, 'update'])->name('admin.products.update');
@@ -32,3 +32,6 @@ Route::post('/product/attribute/{attribute}/detach', [ProductAttributeController
 Route::post('/product/description', [ProductDescriptionController::class, 'store'])->name('admin.add.product.description');
 Route::post('/product/description/{id}/update', [ProductDescriptionController::class, 'update'])->name('admin.update.product.description');
 Route::post('/product/description/{id}/delete', [ProductDescriptionController::class, 'destroy'])->name('admin.delete.product.description');
+
+
+Route::post('/products/{id}/approve', [ProductController::class, 'adminApproveProduct'])->name('admin.products.approve');

@@ -1,5 +1,5 @@
-import {Title} from "./CategoryType";
-import {NewMediaProps} from "./products";
+import { Title } from "./CategoryType";
+import { NewMediaProps, Thumbnail } from './products';
 
 export interface Variation {
   id: number,
@@ -44,7 +44,7 @@ export interface VariationTypesValues {
   value: Title;
   variation_type_id: number;
   hex_value: string
-  color : VariationColorImage
+  color: VariationColorImage
 }
 
 export interface VariationTypes {
@@ -56,15 +56,40 @@ export interface VariationTypes {
 }
 
 export interface VariationColorImage {
-  id:        number;
-  name:      string;
-  width:     number;
-  height:    number;
-  url:     string;
+  id: number;
+  name: string;
+  width: number;
+  height: number;
+  url: string;
 }
 
 export interface Setting {
-  name : string,
-  value : string,
-  image : VariationColorImage
+  name: string,
+  value: string,
+  image: VariationColorImage
+}
+
+export interface AdminVariation {
+  id: number,
+  parent_id: number
+  product_id: number
+  store_id: number
+  price: string;
+  order: number;
+  title: Title;
+  children: AdminVariation[];
+  stock_count: number,
+  thumbnails: AdminMedia[],
+  variation_type?: VariationTypes,
+  variation_type_value?: VariationTypesValues
+}
+
+export interface AdminMedia {
+  id: number;
+  name: string;
+  file_name: string;
+  mime_type: string;
+  url: string;
+  width: number;
+  height: number;
 }

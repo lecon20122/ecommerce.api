@@ -1,7 +1,7 @@
 import { Alert, Card, Layout, Menu, theme, message } from 'antd';
 import React from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { FaSignOutAlt, FaStoreAlt, FaUserAlt, FaUsers } from 'react-icons/fa';
+import { FaSignOutAlt, FaStoreAlt, FaTshirt, FaUserAlt, FaUsers } from 'react-icons/fa';
 import { AiFillShop, AiTwotoneHome } from 'react-icons/ai';
 import { useWindowSize } from 'react-use';
 import SidebarLink from '../components/common/sidebar-link';
@@ -80,6 +80,11 @@ export default function NewDashboardLayout({ children }: IProps) {
               label: <SidebarLink routeName='admin.categories.index'>Categories</SidebarLink>,
             },
             {
+              key: "products",
+              icon: <FaTshirt />,
+              label: <SidebarLink routeName='admin.products.index'>Products</SidebarLink>,
+            },
+            {
               key: "admin.users",
               icon: <FaUsers />,
               label: <SidebarLink routeName='admin.users'>Customers</SidebarLink>,
@@ -122,10 +127,8 @@ export default function NewDashboardLayout({ children }: IProps) {
           </Menu>
         </Sider>
         <Content className='m-5'>
-          <Card>
             {serverMessages?.flash?.message && <Alert className='my-3' message={serverMessages?.flash?.message['message']} type={serverMessages?.flash?.message['type'] ?? 'success'} showIcon closable />}
             {children}
-          </Card>
         </Content>
       </Layout>
     </Layout>

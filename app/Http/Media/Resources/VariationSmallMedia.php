@@ -17,13 +17,12 @@ class VariationSmallMedia extends JsonResource
      */
     public function toArray($request)
     {
-        $data = [
+        return  [
             'id' => $this->id,
             'name' => $this->name,
             'width' => $this->getCustomProperty('width'),
             'height' => $this->getCustomProperty('height'),
             'url' => $this->getFullUrl(MediaCollectionEnums::SMALL_CONVENTION),
         ];
-        return $data;
     }
 }

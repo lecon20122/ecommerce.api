@@ -28,7 +28,9 @@ class Product extends Model
 
     public $translatable = ['title'];
     protected $fillable = ['title', 'description', 'price', 'store_id'];
-
+    protected $casts = [
+        'is_approved' => 'boolean',
+    ];
     public function variations(): HasMany
     {
         return $this->hasMany(Variation::class);
@@ -77,7 +79,7 @@ class Product extends Model
 
     public function toSearchableArray(): array
     {
-        $this->load(['variations' => fn($query) => $query->with(['variationType', 'variationTypeValue'])]);
+        $this->load(['variations' => fn ($query) => $query->with(['variationType', 'variationTypeValue'])]);
         return [
             'slug' => $this->slug,
             'title' => $this->title,
@@ -113,8 +115,18 @@ class Product extends Model
     protected function price(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $value / 100,
-            set: fn($value) => $value * 100,
+            get: fn ($value) => $value / 100,
+            set: fn ($value) => $value * 100,
         );
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('is_approved', true);
+    }
+
+    public function scopeNotApproved($query)
+    {
+        return $query->where('is_approved', false);
     }
 }

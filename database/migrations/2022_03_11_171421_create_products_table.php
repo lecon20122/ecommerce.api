@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('store_id')->constrained();
             $table->string('status')->default(StateEnums::DRAFT->value);
             $table->boolean('is_approved')->default(false);
+            
             $table->foreignId('admin_id')->nullable()->constrained();
             $table->softDeletes();
             $table->timestamps();

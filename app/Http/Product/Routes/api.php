@@ -19,7 +19,6 @@ Route::name('sell.')->prefix('sell/v1')->middleware(['auth:sanctum'])->group(fun
     Route::post('products', [SellProductController::class, 'store'])->name('post.products');
     Route::get('products/{id}', [SellProductController::class, 'show'])->name('get.product');
     Route::put('products/{id}', [SellProductController::class, 'update'])->name('update.product');
-    Route::delete('products/{id}', [SellProductController::class, 'destroy'])->name('delete.product');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

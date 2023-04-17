@@ -9,6 +9,7 @@ use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\Sell\SellProductService;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
+use App\Support\Enums\StateEnums;
 use App\Support\Traits\FeatureTestTrait;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -82,6 +83,7 @@ class SellProductTest extends TestCase
             'unisex' => true,
             'category_id' => $category->id,
             'price' => $this->faker->randomNumber(2),
+            'status' => StateEnums::ACTIVE->value,
             'variations' => [
                 [
                     'color_id' => $colorValue->id,
@@ -119,20 +121,6 @@ class SellProductTest extends TestCase
             'price' => $data['price'] * 100,
             'store_id' => $user->store->id,
         ]);
-
-        // $this->assertDatabaseHas('variations', [
-        //     'price' => $data['price'] * 100,
-        //     'variation_type_value_id' => $data['color_id'],
-        //     'variation_type_id' => $colorValue->variationType->id,
-        //     'store_id' => $user->store->id,
-        // ]);
-
-        // $this->assertDatabaseHas('variations', [
-        //     'price' => $data['price'] * 100,
-        //     'variation_type_value_id' => $sizeValue->id,
-        //     'variation_type_id' => $sizeValue->variationType->id,
-        //     'store_id' => $user->store->id,
-        // ]);
     }
 
     public function testUnAuthorizedUserCantCreateProduct()

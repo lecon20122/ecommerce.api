@@ -10,6 +10,7 @@ use App\Domain\Variation\Models\VariationTypeValue;
 use App\Domain\Variation\Services\VariationService;
 use App\Http\Category\Resources\CategoryResource;
 use App\Http\Category\Services\CategoryService;
+use App\Http\Product\Resources\Admin\AdminProductResource;
 use App\Http\Product\Resources\ProductResource;
 use App\Http\Variation\Resources\VariationTypeValueResource;
 use App\Support\Enums\ApplicationEnums;
@@ -40,6 +41,31 @@ class ProductService
     public static function __callStatic($name, $arguments)
     {
         return (new static)->$name(...$arguments);
+    }
+
+
+    public function getAdminProducts()
+    {
+        $products = Product::query()
+            ->with('store')
+            ->orderBy('is_approved', 'asc')
+            ->get();
+
+        return AdminProductResource::collection($products);
+    }
+
+    public function adminApproveProduct(int $id)
+    {
+        $product = Product::query()->findOrFail($id);
+
+        if ($product->is_approved) throw new Exception('product already approved');
+
+        $product->is_approved = true;
+        $product->admin_id = auth('admin')->id();
+        $product->save();
+
+
+        (new VariationService())->approveVariationImages($product);
     }
 
     public function createProductMegaForm(array $data)
@@ -162,22 +188,19 @@ class ProductService
      * @param int $id
      * @return ProductResource
      */
-    public function getProductsById(mixed $id): ProductResource
+    public function getProductsById(mixed $id): AdminProductResource
     {
-        return new ProductResource(
+        return new AdminProductResource(
             Product::query()
                 ->withTrashed()
-                ->with(['categories', 'description.productAttribute', 'variations' => function ($query) {
+                ->with(['categories', 'store', 'description.productAttribute', 'variations' => function ($query) {
                     $query->withTrashed()
                         ->parent()
-                        ->with(['variationType', 'media', 'variationTypeValue', 'children' => function ($query) {
-                            $query->with(['variationTypeValue', 'variationType', 'media']);
+                        ->with(['media', 'variationTypeValue', 'children' => function ($query) {
+                            $query->with(['variationTypeValue']);
                         }]);
                 }])
-                ->whereIn('id', [$id])
-                ->select('id', 'title', 'price', 'slug', 'store_id')
-                ->latest()
-                ->first()
+                ->find($id)
         );
     }
 

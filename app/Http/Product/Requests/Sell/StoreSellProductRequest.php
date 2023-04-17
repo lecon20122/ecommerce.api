@@ -26,6 +26,7 @@ class StoreSellProductRequest extends FormRequest
     public function rules()
     {
         return [
+            'status' => 'required|',
             'title' => 'required|array',
             'title.ar' => 'required|string|max:255',
             'title.en' => 'required|string|max:255',
@@ -54,22 +55,31 @@ class StoreSellProductRequest extends FormRequest
             'title.en.required' => 'English title is required',
             'title.ar.max' => 'Arabic title must be less than 255 characters',
             'title.en.max' => 'English title must be less than 255 characters',
+
+            'variations.required' => 'Variations are required',
+            'variations.array' => 'Variations must be an array',
+            'variations.*.color_id.required' => 'Color id is required',
+            'variations.*.color_id.integer' => 'Color id must be an integer',
+            'variations.*.sizes.required' => 'Sizes are required',
+            'variations.*.sizes.array' => 'Sizes must be an array',
+            'variations.*.sizes.*.required' => 'Size is required',
+            'variations.*.sizes.*.integer' => 'Size id must be an integer',
+            'variations.*.images.required' => 'Images are required',
+            'variations.*.images.array' => 'Images must be an array',
+            'variations.*.images.*.mimes' => 'Image must be jpg, webp or png',
+            'variations.*.images.*.max' => 'Image must be less than 3MB',
+            'variations.*.images.*.dimensions' => 'Image must be between 600x600 and 3000x3000 pixels',
+
             'price.required' => 'Price is required',
             'price.numeric' => 'Price must be a number',
             'price.min' => 'Price must be greater than 0',
             'price.max' => 'Price must be less than 1000000',
-            'color_id.required' => 'Color is required',
-            'color_id.integer' => 'Color must be an integer',
+
             'category_id.required' => 'Category is required',
             'category_id.numeric' => 'Category must be a number',
+
             'unisex.required' => 'Unisex is required',
             'unisex.boolean' => 'Unisex must be a boolean',
-            'sizes.array' => 'Sizes must be an array',
-            'images.required' => 'Images are required',
-            'images.array' => 'Images must be an array',
-            'images.*.mimes' => 'Images must be jpg, webp or png',
-            'images.*.max' => 'Images must be less than 2MB',
-            'images.*.dimensions' => 'Images must be within 600px width to 2000px width',
         ];
     }
 }

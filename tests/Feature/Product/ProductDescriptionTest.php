@@ -60,7 +60,7 @@ class ProductDescriptionTest extends TestCase
             'product_id' => $product->id,
             'product_attribute_id' => $productAttribute->id,
         ];
-        $response = $this->post(route('api.add.product.description'), $data)->assertOk();
+        $response = $this->post(route('api.sell.add.product.description'), $data)->assertOk();
         $this->assertEquals('200x100', ProductDescription::first()->value);
     }
 
@@ -102,7 +102,7 @@ class ProductDescriptionTest extends TestCase
             'en' => '200x100',
         ];
 
-        $response = $this->post(route('api.update.product.description' , ['id' => $productDescription->id]), $data)->assertOk();
+        $response = $this->post(route('api.sell.update.product.description' , ['id' => $productDescription->id]), $data)->assertOk();
 
         $this->assertEquals('200x100', ProductDescription::first()->value);
     }
@@ -116,7 +116,7 @@ class ProductDescriptionTest extends TestCase
 
         $response = $this->post(route('admin.delete.product.description' , ['id' => $productDescription->id]))->assertRedirect();
 
-        
+
         $this->assertNull(ProductDescription::first());
     }
 
@@ -137,7 +137,7 @@ class ProductDescriptionTest extends TestCase
             'product_id' => $product->id
         ]);
 
-        $response = $this->post(route('api.delete.product.description' , ['id' => $productDescription->id]))->assertOk();
+        $response = $this->post(route('api.sell.delete.product.description' , ['id' => $productDescription->id]))->assertOk();
 
         $this->assertNull(ProductDescription::first());
     }

@@ -135,7 +135,7 @@ class ProductPricingTest extends TestCase
             'is_active' => true,
         ];
 
-        $response = $this->post(route('api.update.or.create.product.discount'), $data);
+        $response = $this->post(route('api.sell.update.or.create.product.discount'), $data);
 
         $productDiscount->refresh();
         $this->assertCount(1, ProductDiscount::all());
@@ -168,7 +168,7 @@ class ProductPricingTest extends TestCase
 
         $this->assertCount(0, ProductDiscount::all());
 
-        $response = $this->post(route('api.update.or.create.product.discount'), $data);
+        $response = $this->post(route('api.sell.update.or.create.product.discount'), $data);
 
         $this->assertCount(1, ProductDiscount::all());
         $this->assertEquals(15, ProductDiscount::first()->value);
@@ -199,7 +199,7 @@ class ProductPricingTest extends TestCase
             'is_active' => true,
         ];
 
-        $response = $this->post(route('api.update.or.create.product.discount'), $data);
+        $response = $this->post(route('api.sell.update.or.create.product.discount'), $data);
 
         $response->assertStatus(403);
     }

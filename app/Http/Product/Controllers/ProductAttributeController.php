@@ -44,21 +44,6 @@ class ProductAttributeController extends BaseController
     }
 
     /**
-     * @return AnonymousResourceCollection|JsonResponse
-     */
-    public function getProductAttributes(): AnonymousResourceCollection|JsonResponse
-    {
-        try {
-            return $this->service->indexProductAttribute();
-        } catch (Exception $exception) {
-            if ($exception instanceof HttpExceptionInterface) {
-                $code = $exception->getStatusCode();
-            }
-            return $this->logErrorsAndReturnJsonMessage($exception->getMessage(), __CLASS__, __FUNCTION__, $code ?? 400);
-        }
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return Response

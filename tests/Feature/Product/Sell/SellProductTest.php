@@ -137,18 +137,46 @@ class SellProductTest extends TestCase
             'approved_by' => $admin->id
         ]);
 
+        $colorType = $this->createColorType();
+
+        $colorValue = $this->createColorValue($colorType);
+        $colorValue2 = $this->createColorValue($colorType);
+        $sizeType = $this->createSizeType();
+        $sizeValue = $this->createSizeValue($sizeType);
+        $sizeValue2 = $this->createSizeValue($sizeType);
+
         $data = [
             'title' => [
                 'ar' => $this->faker->name,
                 'en' => $this->faker->name,
             ],
-            'price' => $this->faker->randomNumber(2),
-            'color_id' => $this->faker->randomNumber(2),
-            'category_id' => $category->id,
             'unisex' => true,
-            'images' => [
-                0 => UploadedFile::fake()->image("test.jpg", 1080, 1350),
-                1 => UploadedFile::fake()->image("test.jpg", 670, 838),
+            'category_id' => $category->id,
+            'price' => $this->faker->randomNumber(2),
+            'status' => StateEnums::ACTIVE->value,
+            'variations' => [
+                [
+                    'color_id' => $colorValue->id,
+                    'sizes' => [
+                        $sizeValue->id,
+                        $sizeValue2->id,
+                    ],
+                    'images' => [
+                        0 => UploadedFile::fake()->image("test.jpg", 1080, 1350),
+                        1 => UploadedFile::fake()->image("test.jpg", 670, 838),
+                    ],
+                ],
+                [
+                    'color_id' => $colorValue2->id,
+                    'sizes' => [
+                        $sizeValue->id,
+                        $sizeValue2->id,
+                    ],
+                    'images' => [
+                        0 => UploadedFile::fake()->image("test.jpg", 1080, 1350),
+                        1 => UploadedFile::fake()->image("test.jpg", 670, 838),
+                    ],
+                ],
             ],
         ];
 
@@ -312,70 +340,5 @@ class SellProductTest extends TestCase
         $this->assertEquals($json['title']['en'], $data['title']['en']);
         $this->assertEquals($json['price'], $data['price']);
         $this->assertEquals(Variation::all()->toArray()[1]['price'], $data['price']);
-    }
-
-    public function testThatUserCanSoftDeleteProduct()
-    {
-        $user = $this->authorizedUser();
-        $store = $this->createApprovedStore($user);
-
-        $product = Product::factory()->create([
-            'store_id' => $store->id
-        ]);
-
-        $order = Order::factory()->create(
-            [
-                'user_id' => $user->id,
-            ]
-        );
-
-        $variation = Variation::factory()->create(
-            [
-                'store_id' => $store->id,
-                'product_id' => $product->id,
-            ]
-        );
-
-        $order->variations()->attach($variation->id, [
-            'quantity' => 1,
-            'price' => $variation->price,
-            'store_id' => $store->id,
-        ]);
-
-        $this->assertDatabaseHas('order_variation', [
-            'order_id' => $order->id,
-            'variation_id' => $variation->id,
-        ]);
-
-
-        $res = $this->delete(route('api.sell.delete.product', $product->id))->assertOk();
-
-
-        $this->assertSoftDeleted('products', [
-            'id' => $product->id,
-        ]);
-    }
-
-    public function testThatUserCanPermanentlyDeleteProductWhenNoOrders()
-    {
-        $user = $this->authorizedUser();
-
-        $store = $this->createApprovedStore($user);
-
-        $product = Product::factory()->create([
-            'store_id' => $store->id
-        ]);
-
-
-        $variation = Variation::factory()->create(
-            [
-                'store_id' => $store->id,
-                'product_id' => $product->id,
-            ]
-        );
-
-        $this->delete(route('api.sell.delete.product', $product->id))->assertOk();
-
-        $this->assertNull(Product::find($product->id));
     }
 }

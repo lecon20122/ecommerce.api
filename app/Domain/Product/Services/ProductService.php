@@ -68,19 +68,6 @@ class ProductService
         (new VariationService())->approveVariationImages($product);
     }
 
-    public function createProductMegaForm(array $data)
-    {
-        $store = \auth()->user()->getAuthenticatedStore();
-
-        if ($store) {
-            $product = $this->createProduct($store, $data);
-            (new CategoryService)->attach($product, $data['category_ids']);
-            (new VariationService)->createOneColorAndManySizes($product, $data);
-        } else {
-            return response()->json(['no store']);
-        }
-    }
-
     public function createProduct(Store $store, $data): Model
     {
         $data['title'] = [
@@ -88,19 +75,6 @@ class ProductService
             'ar' => $data['ar'],
         ];
         return $store->products()->create($data);
-    }
-
-    public function getStoreProducts()
-    {
-        /** @var Store $store */
-        $store = \auth()->user()->store()->first();
-
-        if ($store) {
-            $products = $store->products()->get();
-            return ProductResource::collection($products);
-        } else {
-            response()->json(['no products']);
-        }
     }
 
     public function getProductById(int $id): JsonResponse | ProductResource
@@ -262,69 +236,5 @@ class ProductService
         ]);
 
         return new ProductResource($product);
-    }
-
-    public function getStoreProduct(Product $product): JsonResponse|ProductResource
-    {
-        /** @var User $user */
-        $user = \auth()->user();
-
-        if (!$user->isOwner($product->store_id)) abort(403, 'You are not allowed to access this product');
-
-        $product->load([
-            'discount', 'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
-                $query->with(['variationTypeValue', 'variationType'])->parent();
-            }
-        ])->first();
-
-        return new ProductResource($product);
-    }
-
-    public function getStoreProductBySlug(string $slug): JsonResponse|ProductResource
-    {
-        /** @var Store $store */
-        $store = \auth()->user()->store()->first();
-
-        if ($store) {
-            $products = $store->products()->withTrashed()->where('slug', $slug)->with([
-                'description.productAttribute', 'categories', 'variations' => function (HasMany $query) {
-                    $query->with(['variationSmallImage', 'variationTypeValue', 'variationType'])->parent();
-                }
-            ])->first();
-
-            if (is_null($products)) abort(404);
-            return new ProductResource($products);
-        } else {
-            return response()->json(['Store Not Found']);
-        }
-    }
-
-    public function softDelete(int $id)
-    {
-        $product = Product::query()->find($id);
-        Gate::authorize('delete', $product);
-        $product?->delete();
-    }
-
-    public function restore(int $id)
-    {
-        $product = Product::withTrashed()->find($id);
-        $product?->restore();
-    }
-
-    public function attachCategoryToProduct(Product $product, ModelIDsRequest $request)
-    {
-        Gate::authorize('attachCategoryToProduct', $product);
-        $category = Category::query()
-            ->find($request->validated('id'));
-        $product->categories()->syncWithoutDetaching($category);
-    }
-
-    public function detachCategoryFromProduct(Product $product, ModelIDsRequest $request)
-    {
-        Gate::authorize('detachCategoryToProduct', $product);
-        $category = Category::query()
-            ->find($request->validated('id'));
-        $product->categories()->detach($category);
     }
 }

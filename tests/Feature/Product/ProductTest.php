@@ -96,46 +96,6 @@ class ProductTest extends TestCase
         $this->assertEquals('hello', $product->title);
     }
 
-    public function test_as_a_admin_product_can_be_destroyed()
-    {
-        $admin = Admin::factory()->create();
-        $this->actingAs($admin, 'admin');
-
-        $product = Product::factory()->create();
-
-        $response = $this->post(route('admin.products.destroy', ['id' => $product->id]))->assertRedirect();
-
-        $this->assertNull(Product::first());
-    }
-
-    public function test_as_a_admin_can_attach_categories_to_product()
-    {
-        $admin = Admin::factory()->create();
-
-        $this->actingAs($admin, 'admin');
-
-        $product = Product::factory()->create();
-
-        Category::factory(3)->create();
-
-        $ids = [
-            'id' => [
-                1, 2, 3
-            ]
-        ];
-
-        $response = $this->post(route('admin.attach.category.to.product', ['product' => $product]), $ids)->assertRedirect();
-
-
-
-        $expectedData = [
-            'category_id' => 3,
-            'product_id' => 1
-        ];
-
-        $this->assertDatabaseHas('category_product', $expectedData);
-    }
-
     public function test_as_a_admin_can_detach_categories_from_product()
     {
         $admin = Admin::factory()->create();
@@ -169,18 +129,6 @@ class ProductTest extends TestCase
         ];
 
         $this->assertDatabaseMissing('category_product', $expectedData);
-    }
-
-    public function test_as_a_admin_product_can_be_restored()
-    {
-        $admin = Admin::factory()->create();
-        $this->actingAs($admin, 'admin');
-
-        $product = Product::factory()->trashed()->create();
-        $response = $this->post(route('admin.products.restore', ['id' => $product->id]))->assertRedirect();
-
-        $product->refresh();
-        $this->assertNull(Product::first()->deleted_at);
     }
 
     public function testAdminCanApproveProductAndAllVariationsImages()

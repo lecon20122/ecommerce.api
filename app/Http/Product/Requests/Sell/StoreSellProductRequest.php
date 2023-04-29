@@ -26,7 +26,7 @@ class StoreSellProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' => 'required|',
+            'status' => 'nullable',
             'title' => 'required|array',
             'title.ar' => 'required|string|max:255',
             'title.en' => 'required|string|max:255',

@@ -25,6 +25,7 @@ class SellVariationResource extends JsonResource
             'created_at' => $this->created_at,
             'children' => SellVariationResource::collection($this->whenLoaded('children')),
             'variation_type_value' => new VariationTypeValueResource($this->whenLoaded('variationTypeValue')),
+            'stock_count' => $this->stock_count,
         ];
     }
 }

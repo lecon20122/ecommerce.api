@@ -27,6 +27,7 @@ class SellProductResource extends JsonResource
             'variation' => new SellVariationResource($this->whenLoaded('variation')),
             'created_at' => $this->created_at,
             'variations' => SellVariationResource::collection($this->whenLoaded('variations')),
+            'is_approved' => $this->is_approved,
             'discount_price' => $this->whenLoaded('discount', fn () => (new ProductDiscountService())->calculateDiscountedPrice($this->price, $this->discount)),
         ];
     }

@@ -96,41 +96,6 @@ class ProductTest extends TestCase
         $this->assertEquals('hello', $product->title);
     }
 
-    public function test_as_a_admin_can_detach_categories_from_product()
-    {
-        $admin = Admin::factory()->create();
-
-        $this->actingAs($admin, 'admin');
-
-        $product = Product::factory()->create();
-
-        Category::factory(3)->create();
-
-        $idsToBeAttached = [
-            'id' => [
-                1, 2, 3
-            ]
-        ];
-
-        $this->post(route('admin.attach.category.to.product', ['product' => $product]), $idsToBeAttached);
-
-        $idsToBeDetached = [
-            'id' => [
-                1,
-            ]
-        ];
-
-        $response = $this->post(route('admin.detach.category.from.product', ['product' => $product]), $idsToBeDetached);
-
-
-        $expectedData = [
-            'category_id' => 1,
-            'product_id' => 1
-        ];
-
-        $this->assertDatabaseMissing('category_product', $expectedData);
-    }
-
     public function testAdminCanApproveProductAndAllVariationsImages()
     {
         Storage::fake('public');

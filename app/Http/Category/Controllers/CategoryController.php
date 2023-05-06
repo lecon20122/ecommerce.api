@@ -80,7 +80,7 @@ class CategoryController extends BaseController
     public function sellGetCategories(): JsonResponse|AnonymousResourceCollection
     {
         try {
-            return (new CategoryService())->getParentsAndChildren();
+            return (new CategoryService())->sellGetParentsAndChildren();
         } catch (Exception $exception) {
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();

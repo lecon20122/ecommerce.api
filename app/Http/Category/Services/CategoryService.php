@@ -18,10 +18,10 @@ class CategoryService
 {
 
 
-    public function getParentsAndChildren(): AnonymousResourceCollection
+    public function sellGetParentsAndChildren(): AnonymousResourceCollection
     {
         return CategoryResource::collection(
-            Category::query()->with('childrenRecursive')->parent()->get()
+            Category::query()->with('childrenRecursive.oppositeCategory')->parent()->get()
         );
     }
 

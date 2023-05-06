@@ -2,12 +2,14 @@
 
 namespace App\Domain\Product\Services\Sell;
 
+use App\Domain\Category\Models\Category;
 use App\Domain\Product\Models\Product;
 use App\Domain\Variation\Services\Sell\SellVariationService;
 use App\Http\Product\Resource\Sell\SellProductResource;
 use App\Http\Product\Resources\ProductResource;
 use App\Jobs\NewProductCreatedJob;
 use App\Notifications\NewProductCreatedNotification;
+use App\Support\Enums\StateEnums;
 use App\Support\Enums\TypeEnum;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -91,29 +93,37 @@ class SellProductService
     public function update(array $data, int $id)
     {
         $store = auth()->user()->store()->approved()->first();
+
         if (!$store) abort(403, 'you are not allowed to view products yet!');
 
         $product = $store->products()->find($id);
 
-        //TODO: Variation Price Accessor not working, also when i update the Variation Model says its a Lazy Loading Error
-        $priceToCents = $data['price'] * 100;
-
-        if ($data['price']) {
+        if (isset($data['price'])) {
+            $priceToCents = $data['price'] * 100;
             $this->massProductDetailsAndPriceUpdate($product, $priceToCents);
         }
+
+        if (isset($data['status'])) {
+            $data['status'] = $this->toggleProductStatus($product, $data['status']);
+        }
+
+        if (isset($data['category_id'])) {
+            $this->assignCategories($product, $data['category_id'], $data['unisex'] ?? false);
+        }
+
         $product->update($data);
-
-        $this->loadProductRelations($product);
-
-        return new SellProductResource($product);
     }
 
     public function assignCategories(Product $product, $categoryId, bool $unisex = false): void
     {
-        $product->categories()->attach($categoryId);
         if ($unisex) {
-            $category = $product->categories()->find($categoryId);
-            $product->categories()->attach($category->opposite_category_id);
+            $category = Category::find($categoryId);
+
+            if (!$category || !$category->opposite_category_id) throw new \Exception('category is not unisex or not found!');
+
+            $product->categories()->sync([$categoryId, $category->opposite_category_id]);
+        } else {
+            $product->categories()->sync($categoryId);
         }
     }
 
@@ -135,14 +145,8 @@ class SellProductService
         ]);
     }
 
-    public function changeProductStatus(int $id, string $status)
+    public function toggleProductStatus(string $status): string
     {
-        $user = auth()->user();
-        $approvedStore = $user->store()->approved()->first();
-        if (!$approvedStore) abort(403, 'you are not allowed to perform this action yet!');
-
-        $product = $approvedStore->products()->findOrFail($id);
-
-        $isUpdated = $product->update(['status' => $status]);
+        return  $status === StateEnums::ACTIVE->value ? StateEnums::DRAFT->value : StateEnums::ACTIVE->value;
     }
 }

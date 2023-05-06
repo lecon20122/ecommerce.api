@@ -127,7 +127,16 @@ class SellProductTest extends TestCase
     {
         $unAuthorized = $this->unAuthorizedUser();
 
-        $category = Category::factory()->create();
+        $oppositeCategory = Category::factory()->create([
+            'title' => 'Men Shoes',
+        ]);
+
+        $category = Category::factory()->create([
+            'opposite_category_id' => $oppositeCategory->id,
+            'title' => 'Women Shoes',
+        ]);
+
+
 
         $admin = Admin::factory()->create();
 
@@ -181,6 +190,8 @@ class SellProductTest extends TestCase
         ];
 
         $res = $this->post(route('api.sell.post.products'), $data)->assertForbidden();
+
+        $this->assertEquals(0, Product::count());
     }
 
     public function testAssignAUnisexCategoryToProduct()
@@ -218,30 +229,24 @@ class SellProductTest extends TestCase
 
     public function testAssignCategoryToProduct()
     {
-        $user = $this->authorizedUser();
+        $this->authorizedUser();
 
         $oppositeCategory = Category::factory()->create([
             'title' => 'Men Shoes',
         ]);
+
         $category = Category::factory()->create([
-            'opposite_category_id' => $oppositeCategory->id,
             'title' => 'Women Shoes',
+            'opposite_category_id' => $oppositeCategory->id,
         ]);
 
         $product = Product::factory()->create();
 
-        $data = [
-            'category_id' => $category->id,
-        ];
+        (new SellProductService())->assignCategories($product, $category->id, true);
 
-        (new SellProductService())->assignCategories($product, $category->id);
+        $this->assertEquals($product->categories->count(), 2);
 
-        $this->assertEquals($product->categories->count(), 1);
-
-        $this->assertDatabaseHas('category_product', [
-            'category_id' => $category->id,
-            'product_id' => $product->id,
-        ]);
+        $this->assertEquals($product->categories->first()->id, $category->id);
     }
 
     public function test_seller_can_get_a_product_with_details()
@@ -332,13 +337,15 @@ class SellProductTest extends TestCase
                 'en' => $this->faker->name,
             ],
             'price' => 250,
+            'status' => StateEnums::ACTIVE->value,
         ];
 
-        $res = $this->put(route('api.sell.update.product', $product->id), $data)->assertOk();
-        $json = $res->json();
-        $this->assertEquals($json['title']['ar'], $data['title']['ar']);
-        $this->assertEquals($json['title']['en'], $data['title']['en']);
-        $this->assertEquals($json['price'], $data['price']);
+        $this->put(route('api.sell.update.product', $product->id), $data)->assertOk();
+        $updatedProduct = $product->fresh();
+        $this->assertEquals($updatedProduct->getTranslations('title')['ar'], $data['title']['ar']);
+        $this->assertEquals($updatedProduct->getTranslations('title')['en'], $data['title']['en']);
+        $this->assertEquals($updatedProduct->price, $data['price']);
+        $this->assertEquals($updatedProduct->status, $data['status']);
         $this->assertEquals(Variation::all()->toArray()[1]['price'], $data['price']);
     }
 }

@@ -39,6 +39,8 @@ class CategoryResource extends JsonResource
             ],
             'media' => MediaResource::collection($this->whenLoaded('media')),
             'thumbnail' => new CategoryThumbnailResource($this->whenLoaded('thumbnail')),
+            'opposite_category_id' => $this->opposite_category_id,
+            'opposite_category' => new CategoryResource($this->whenLoaded('oppositeCategory')),
         ];
     }
 }

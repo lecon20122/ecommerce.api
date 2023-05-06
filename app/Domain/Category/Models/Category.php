@@ -139,4 +139,9 @@ class Category extends Model implements HasMedia
             ->with('children')
             ->where('slug', $value)->firstOrFail();
     }
+
+    public function oppositeCategory()
+    {
+        return $this->hasOne(Category::class, 'id', 'opposite_category_id');
+    }
 }

@@ -112,10 +112,10 @@ class SellProductController extends BaseController
      * @param int $id
      * @return JsonResponse|SellProductResource
      */
-    public function update(UpdateSellProduct $request, int $id): JsonResponse|SellProductResource
+    public function update(UpdateSellProduct $request, int $id)
     {
         try {
-            return $this->service->update($request->validated(), $id);
+            $this->service->update($request->validated(), $id);
         } catch (Exception $exception) {
 
             if ($exception instanceof HttpExceptionInterface) {
@@ -125,4 +125,7 @@ class SellProductController extends BaseController
         }
     }
 
+    public function updateProduct()
+    {
+    }
 }

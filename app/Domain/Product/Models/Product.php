@@ -27,7 +27,7 @@ class Product extends Model
     use HasFactory, HasTranslations, SoftDeletes, Searchable;
 
     public $translatable = ['title'];
-    protected $fillable = ['title', 'description', 'price', 'store_id'];
+    protected $fillable = ['title', 'description', 'price', 'store_id', 'is_approved', 'status'];
     protected $casts = [
         'is_approved' => 'boolean',
     ];

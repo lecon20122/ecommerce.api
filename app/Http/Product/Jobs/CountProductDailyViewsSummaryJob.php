@@ -56,6 +56,8 @@ class CountProductDailyViewsSummaryJob implements ShouldQueue
             ]);
         }
 
+
+        $message = "<b>Environment:</b> " . config('app.env') . "\n";
         $message = "<b>Product Daily Views Summary</b> \n";
         $message .= "<b>Summary Date:</b> " . Carbon::yesterday()->startOfDay()->format('Y-m-d') . "\n";
         $message .= "<b>Products Count:</b> {$approvedActiveProducts->count()} \n";

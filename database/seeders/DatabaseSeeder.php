@@ -19,22 +19,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $product = Product::find(16);
 
-        // View::factory(120)->create([
-        //     'viewable_id' => $product->id,
-        //     'viewable_type' => Product::class,
-        //     'created_at' => Carbon::now()->addDay(),
-        // ]);
-
-
-        // Product::factory(5)->has(
-        //     \App\Domain\Statistics\Models\View::factory(rand(250, 1000))
-        // )->create();
-
-        // $this->call([
-        //     StartupSeeder::class,
-        //     PermissionSeeder::class,
-        // ]);
+        $this->call([
+            // StartupSeeder::class,
+            // PermissionSeeder::class,
+            ViewsSeeder::class,
+        ]);
     }
 }

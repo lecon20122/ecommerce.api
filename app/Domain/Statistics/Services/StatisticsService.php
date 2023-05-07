@@ -2,9 +2,12 @@
 
 namespace App\Domain\Statistics\Services;
 
+use App\Domain\Product\Models\Product;
 use App\Domain\Statistics\Models\View;
+use App\Http\Product\Resource\Sell\SellProductResource;
 use App\Support\Enums\ApplicationEnums;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class StatisticsService
 {
@@ -27,5 +30,13 @@ class StatisticsService
         }
 
         return null;
+    }
+
+    public function countDailyViewSummary(Product|SellProductResource $product): int
+    {
+        return $product
+            ->views()
+            ->whereDate('created_at', Carbon::today()->startOfDay())
+            ->count();
     }
 }

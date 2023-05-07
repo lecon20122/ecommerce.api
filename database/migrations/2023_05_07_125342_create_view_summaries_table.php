@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('views', function (Blueprint $table) {
+        Schema::create('view_summaries', function (Blueprint $table) {
             $table->id();
-            $table->morphs('viewable'); 
-            $table->string('ip_address'); 
-            $table->string('referer')->nullable(); 
-            $table->string('user_agent')->nullable(); 
-            $table->string('session_id')->nullable();   
-            $table->foreignId('user_id')->nullable();   
+            $table->morphs('viewable');
+            $table->unsignedBigInteger('views')->default(0);
+            $table->foreignId('store_id')->nullable()->constrained();
+            $table->timestamp('summary_date')->index();
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('views');
+        Schema::dropIfExists('view_summaries');
     }
 };

@@ -3,6 +3,7 @@
 namespace App\Http\Product\Resource\Sell;
 
 use App\Domain\Product\Services\ProductDiscountService;
+use App\Domain\Statistics\Services\StatisticsService;
 use App\Http\Variation\Resources\Sell\SellVariationResource;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ class SellProductResource extends JsonResource
             'variations' => SellVariationResource::collection($this->whenLoaded('variations')),
             'is_approved' => $this->is_approved,
             'discount_price' => $this->whenLoaded('discount', fn () => (new ProductDiscountService())->calculateDiscountedPrice($this->price, $this->discount)),
+            'views_count' => $this->whenLoaded('views', fn () => $this->views->count()),
         ];
     }
 }

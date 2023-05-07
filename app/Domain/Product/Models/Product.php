@@ -4,10 +4,11 @@ namespace App\Domain\Product\Models;
 
 use App\Domain\Category\Models\Category;
 use App\Domain\Statistics\Models\View;
+use App\Domain\Statistics\Models\ViewSummary;
 use App\Domain\Store\Models\Store;
 use App\Domain\User\Models\Favorite;
 use App\Domain\Variation\Models\Variation;
-use App\Support\Enums\MediaCollectionEnums;
+use App\Support\Enums\StateEnums;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,10 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
@@ -77,6 +76,11 @@ class Product extends Model
         return $this->morphMany(View::class, 'viewable');
     }
 
+    public function viewSummary()
+    {
+        return $this->morphMany(ViewSummary::class, 'viewable');
+    }
+
     public function toSearchableArray(): array
     {
         $this->load(['variations' => fn ($query) => $query->with(['variationType', 'variationTypeValue'])]);
@@ -123,6 +127,11 @@ class Product extends Model
     public function scopeApproved($query)
     {
         return $query->where('is_approved', true);
+    }
+
+    public function scopeActive()
+    {
+        return $this->where('status', StateEnums::ACTIVE->value);
     }
 
     public function scopeNotApproved($query)

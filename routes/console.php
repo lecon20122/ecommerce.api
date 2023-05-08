@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Artisan;
 */
 
 Artisan::command('views:update', function () {
-    $this->comment('Update Product Views Summary');
+    $currentDate = Carbon::yesterday('Africa/Cairo')->format('Y-m-d');
+    $this->comment('Updating views at ' . $currentDate);
     \App\Http\Product\Jobs\CountProductDailyViewsSummaryJob::dispatch();
 })->describe('Update Product Views Summary');

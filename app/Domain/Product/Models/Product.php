@@ -78,7 +78,15 @@ class Product extends Model
 
     public function viewSummary()
     {
-        return $this->morphMany(ViewSummary::class, 'viewable');
+        return $this
+            ->morphMany(ViewSummary::class, 'viewable');
+    }
+
+    public function viewSummaryTotal()
+    {
+        return $this
+            ->morphMany(ViewSummary::class, 'viewable')
+            ->sum('views');
     }
 
     public function toSearchableArray(): array

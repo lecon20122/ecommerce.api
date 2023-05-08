@@ -30,7 +30,7 @@ class SellProductResource extends JsonResource
             'variations' => SellVariationResource::collection($this->whenLoaded('variations')),
             'is_approved' => $this->is_approved,
             'discount_price' => $this->whenLoaded('discount', fn () => (new ProductDiscountService())->calculateDiscountedPrice($this->price, $this->discount)),
-            'views_count' => $this->whenLoaded('views', fn () => $this->views->count()),
+            'view_summary_sum_views' => $this->view_summary_sum_views,
         ];
     }
 }

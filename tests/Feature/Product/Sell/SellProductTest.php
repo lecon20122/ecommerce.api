@@ -4,11 +4,8 @@ namespace Tests\Feature\Product\Sell;
 
 use App\Domain\Admin\Models\Admin;
 use App\Domain\Category\Models\Category;
-use App\Domain\Order\Models\Order;
 use App\Domain\Product\Models\Product;
 use App\Domain\Product\Services\Sell\SellProductService;
-use App\Domain\Statistics\Models\View;
-use App\Domain\Statistics\Services\StatisticsService;
 use App\Domain\Store\Models\Store;
 use App\Domain\Variation\Models\Variation;
 use App\Support\Enums\StateEnums;
@@ -17,9 +14,7 @@ use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
-use Sentry\Util\JSON;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
 

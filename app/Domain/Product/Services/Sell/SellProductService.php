@@ -51,12 +51,15 @@ class SellProductService
         $store = auth()->user()->store()->approved()->first();
         if ($store) {
             $store->load(['products' => function (HasMany $query) {
-                $query->with([
-                    'discount',
-                    'variation' => function (HasOne $query) {
-                        $query->with('mainImage')->color();
-                    },
-                ])->orderByDesc('created_at');
+                $query
+                    ->with([
+                        'discount',
+                        'variation' => function (HasOne $query) {
+                            $query->with('mainImage')->color();
+                        },
+                    ])
+                    ->withSum('viewSummary', 'views')
+                    ->orderByDesc('created_at');
             }]);
             return SellProductResource::collection($store->products);
         } else {

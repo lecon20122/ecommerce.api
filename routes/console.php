@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+Artisan::command('views:update', function () {
+    $this->comment('Update Product Views Summary');
+    \App\Http\Product\Jobs\CountProductDailyViewsSummaryJob::dispatch();
+})->describe('Update Product Views Summary');

@@ -13,4 +13,11 @@ class ViewSummary extends Model
 
 
     protected $fillable = ['viewable_id', 'viewable_type', 'views', 'summary_date', 'store_id'];
+
+    protected $dates = ['summary_date', 'created_at', 'updated_at'];
+
+    public function viewable()
+    {
+        return $this->morphTo();
+    }
 }

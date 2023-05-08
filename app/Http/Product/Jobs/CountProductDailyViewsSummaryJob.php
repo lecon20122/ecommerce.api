@@ -44,8 +44,10 @@ class CountProductDailyViewsSummaryJob implements ShouldQueue
             $productCount =
                 $product
                 ->views()
-                ->whereDate('created_at', Carbon::yesterday()->startOfDay())
+                ->whereDate('created_at', Carbon::yesterday('Africa/Cairo')->format('Y-m-d'))
                 ->count();
+
+
 
             $totalCount += $productCount;
 

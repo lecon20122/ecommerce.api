@@ -43,6 +43,12 @@ class CountProductDailyViewsSummaryJob implements ShouldQueue
         $yesterdayDate = Carbon::yesterday('Africa/Cairo')->format('Y-m-d');
 
         foreach ($approvedActiveProducts as $product) {
+
+            if ($product->viewSummary()->where('summary_date', $yesterdayDate)->first()) {
+                echo "Product: {$product->id} already counted\n";
+                continue;
+            }
+
             $productCount =
                 $product
                 ->views()
@@ -53,19 +59,18 @@ class CountProductDailyViewsSummaryJob implements ShouldQueue
 
             $totalCount += $productCount;
 
-            if ($product->viewSummary()->where('summary_date', $yesterdayDate)) continue;
 
             $product->viewSummary()->create([
                 'views' => $productCount,
                 'store_id' => $product->store_id ?? null,
-                'summary_date' => Carbon::yesterday()->startOfDay(),
+                'summary_date' => $yesterdayDate,
             ]);
         }
 
 
         $message = "<b>Environment:</b> " . config('app.env') . "\n";
-        $message = "<b>Product Daily Views Summary</b> \n";
-        $message .= "<b>Summary Date:</b> " . Carbon::yesterday()->startOfDay()->format('Y-m-d') . "\n";
+        $message .= "<b>Product Daily Views Summary</b> \n";
+        $message .= "<b>Summary Date:</b> " . $yesterdayDate . "\n";
         $message .= "<b>Products Count:</b> {$approvedActiveProducts->count()} \n";
         $message .= "<b>Products Views Summary: {$totalCount}</b> \n";
 

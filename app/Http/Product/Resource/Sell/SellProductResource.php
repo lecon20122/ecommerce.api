@@ -31,6 +31,7 @@ class SellProductResource extends JsonResource
             'is_approved' => $this->is_approved,
             'discount_price' => $this->whenLoaded('discount', fn () => (new ProductDiscountService())->calculateDiscountedPrice($this->price, $this->discount)),
             'view_summary_sum_views' => $this->view_summary_sum_views,
+            // 'view_summary_sum_views' => (new \NumberFormatter('en_US', \NumberFormatter::PADDING_POSITION))->format($this->view_summary_sum_views),
         ];
     }
 }

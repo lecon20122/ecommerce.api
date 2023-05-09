@@ -48,12 +48,11 @@ class ViewTest extends TestCase
 
     public function testThatWeCanSaveProductDailyViewsCountToViewsSummary()
     {
-
-        $todayAtMidNight = Carbon::tomorrow()->startOfDay();
-
-        Carbon::setTestNow($todayAtMidNight);
+        // i used Asia/Riyadh to get the same timezone as the server
+        $yesterdayDate = Carbon::yesterday('Asia/Riyadh')->format('Y-m-d');
 
         $user = $this->authorizedUser();
+
         $store = $this->createApprovedStore($user);
 
         $product = Product::factory()->create([
@@ -62,22 +61,18 @@ class ViewTest extends TestCase
             'status' => StateEnums::ACTIVE,
         ]);
 
-        $product2 = Product::factory()->create([
-            'store_id' => $store->id,
-            'is_approved' => true,
-            'status' => StateEnums::ACTIVE,
-        ]);
-
         View::factory(5)->create([
             'viewable_id' => $product->id,
             'viewable_type' => Product::class,
-            'created_at' => now()->subDays(1), // yesterday
+            'created_at' => Carbon::yesterday('Asia/Riyadh'), // yesterday
         ]);
 
         View::factory(10)->create([   // today views (10)
             'viewable_id' => $product->id,
             'viewable_type' => Product::class,
         ]);
+
+        $this->assertEquals(5, View::whereDate('created_at', $yesterdayDate)->get()->count());
 
         dispatch(new CountProductDailyViewsSummaryJob());
 

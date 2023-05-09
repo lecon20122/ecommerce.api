@@ -42,7 +42,7 @@ class CountProductDailyViewsSummaryJob implements ShouldQueue
 
         $yesterdayDate = Carbon::yesterday('Africa/Cairo')->format('Y-m-d');
 
-        foreach ($approvedActiveProducts as $product) {
+        foreach (Product::all(['id']) as $product) {
 
             if ($product->viewSummary()->where('summary_date', $yesterdayDate)->first()) {
                 echo "Product: {$product->id} already counted\n";

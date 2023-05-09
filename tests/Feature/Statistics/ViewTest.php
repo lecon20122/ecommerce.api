@@ -57,9 +57,8 @@ class ViewTest extends TestCase
 
         $product = Product::factory()->create([
             'store_id' => $store->id,
-            'is_approved' => true,
-            'status' => StateEnums::ACTIVE,
         ]);
+
 
         View::factory(5)->create([
             'viewable_id' => $product->id,

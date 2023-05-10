@@ -44,7 +44,7 @@ class CountProductDailyViewsSummaryJob implements ShouldQueue
 
         echo "Timezone: {$appTimeZone}\n";
 
-        $yesterdayDate = Carbon::yesterday($appTimeZone)->format('Y-m-d');
+        $yesterdayDate = Carbon::yesterday($appTimeZone);
 
         foreach ($products as $product) {
 

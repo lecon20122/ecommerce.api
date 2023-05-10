@@ -51,6 +51,7 @@ class ViewTest extends TestCase
         $timezone = config('app-settings.timezone');
 
         $yesterdayDate = Carbon::yesterday($timezone);
+
         $user = $this->authorizedUser();
 
         $store = $this->createApprovedStore($user);
@@ -59,19 +60,40 @@ class ViewTest extends TestCase
             'store_id' => $store->id,
         ]);
 
+        $product2 = Product::factory()->create([
+            'store_id' => $store->id,
+        ]);
+
+        $product3 = Product::factory()->create([
+            'store_id' => $store->id,
+        ]);
+
 
         View::factory(5)->create([
             'viewable_id' => $product->id,
             'viewable_type' => Product::class,
-            'created_at' => $yesterdayDate->midDay(),
+            'created_at' => $yesterdayDate
+                ->hour(5)
+                ->minute(23)
+                ->second(10),
         ]);
 
-        View::factory(10)->create([   // today views (10)
-            'viewable_id' => $product->id,
+        View::factory(5)->create([
+            'viewable_id' => $product2->id,
             'viewable_type' => Product::class,
+            'created_at' => $yesterdayDate
+                ->hour(2)
+                ->minute(1)
+                ->second(24),
         ]);
 
-        $this->assertEquals(5, View::whereDate('created_at', $yesterdayDate)->get()->count());
+        View::factory(5)->create([
+            'viewable_id' => $product3->id,
+            'viewable_type' => Product::class,
+            'created_at' => $yesterdayDate->hour(6)->minute(20)->second(25),
+        ]);
+
+        $this->assertEquals(15, View::whereDate('created_at', $yesterdayDate)->get()->count());
 
         dispatch(new CountProductDailyViewsSummaryJob());
 
@@ -79,6 +101,21 @@ class ViewTest extends TestCase
             'viewable_id' => $product->id,
             'viewable_type' => Product::class,
             'views' => 5,
+            'summary_date' => $yesterdayDate->format('Y-m-d')
+        ]);
+
+        $this->assertDatabaseHas('view_summaries', [
+            'viewable_id' => $product2->id,
+            'viewable_type' => Product::class,
+            'views' => 5,
+            'summary_date' => $yesterdayDate->format('Y-m-d')
+        ]);
+
+        $this->assertDatabaseHas('view_summaries', [
+            'viewable_id' => $product3->id,
+            'viewable_type' => Product::class,
+            'views' => 5,
+            'summary_date' => $yesterdayDate->format('Y-m-d')
         ]);
     }
 }

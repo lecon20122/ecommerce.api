@@ -23,10 +23,10 @@ class ViewsSeeder extends Seeder
         echo "Start Date: {$yesterday->format('Y-m-d H:i:s')}\n";
         echo "timezone :" . config('app-settings.timezone') . "\n";
         echo "time now" . now()->format('Y-m-d H:i:s') . "\n";
-        
+
         foreach ($approvedActiveProducts as $product) {
 
-            View::factory(rand(100, 500))->create([
+            View::factory(100)->create([
                 'viewable_id' => $product->id,
                 'viewable_type' => Product::class,
                 'created_at' => $yesterday->midDay(),

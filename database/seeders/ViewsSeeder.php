@@ -20,11 +20,13 @@ class ViewsSeeder extends Seeder
     public function run()
     {
         $approvedActiveProducts = Product::all(['id']);
+        $yesterdayDate = Carbon::yesterday('Africa/Cairo')->format('Y-m-d');
 
         foreach ($approvedActiveProducts as $product) {
             View::factory(rand(100, 500))->create([
                 'viewable_id' => $product->id,
                 'viewable_type' => Product::class,
+                'created_at' => $yesterdayDate,
             ]);
         }
     }

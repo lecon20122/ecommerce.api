@@ -17,7 +17,9 @@ interface Props {
 
 export default function CategoryEdit({ currentCategory, locale, categories }: Props) {
 
-
+  console.log('====================================');
+  console.log(currentCategory);
+  console.log('====================================');
   const selectParentMenuItems = categories.map((category) => {
     return (
       <Select.Option value={category.id}
@@ -38,28 +40,38 @@ export default function CategoryEdit({ currentCategory, locale, categories }: Pr
     <NewDashboardLayout>
       <div className="m-5">
         <Form
+          initialValues={{
+            en: currentCategory.title.en,
+            ar: currentCategory.title.ar,
+            ...currentCategory
+          }}
           onFinish={onFinish}
-          labelCol={{ span: 2 }}
+          labelCol={{ span: 4 }}
           wrapperCol={{ span: 20 }}
           size={'large'}
         >
-          <Form.Item name={'en'} label='Title EN' initialValue={currentCategory.title.en}>
+          <Form.Item name={'en'} label='Title EN' >
             <Input />
           </Form.Item>
-          <Form.Item name={'ar'} label='Title AR' initialValue={currentCategory.title.ar}>
+          <Form.Item name={'ar'} label='Title AR' >
             <Input />
           </Form.Item>
-          <Form.Item name={'order'} label='Order' initialValue={currentCategory.order}>
+          <Form.Item name={'order'} label='Order' >
             <InputNumber />
           </Form.Item>
-          <Form.Item name={'primary_color'} label='Primary Color' initialValue={currentCategory.primary_color}>
+          <Form.Item name={'primary_color'} label='Primary Color' >
             <Input style={{ backgroundColor: currentCategory.primary_color }} />
           </Form.Item>
-          <Form.Item name={'secondary_color'} label='Secondary Color' initialValue={currentCategory.secondary_color}>
+          <Form.Item name={'secondary_color'} label='Secondary Color' >
             <Input style={{ backgroundColor: currentCategory.secondary_color }} />
           </Form.Item>
           <Form.Item name={'parent_id'} label='Category Parents'>
             <Select allowClear placeholder={'Select A Parent'}>
+              {selectParentMenuItems}
+            </Select>
+          </Form.Item>
+          <Form.Item name={'opposite_category_id'} label='Opposite Gender Category'>
+            <Select allowClear placeholder={'Select A Opposite Gender Category'}>
               {selectParentMenuItems}
             </Select>
           </Form.Item>

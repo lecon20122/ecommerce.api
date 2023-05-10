@@ -30,7 +30,8 @@ class StoreCategoryRequest extends FormRequest
             'order' => ValidationRuleEnums::NULLABLE_NUMERIC->value,
             'parent_id' => 'nullable',
             'images' => 'nullable',
-            'images.*' => 'mimes:jpg,webp|max:1024',
+            'images.*' => 'mimes:jpg,webp,png,jpeg|max:2048',
+            'opposite_category_id' => 'nullable|integer|exists:categories,id',
         ];
     }
 }

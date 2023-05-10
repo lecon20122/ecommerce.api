@@ -25,7 +25,7 @@ class Category extends Model implements HasMedia
     use HasFactory, HasTranslations, SoftDeletes, CustomHasMedia;
 
     public $translatable = ['title'];
-    protected $fillable = ['title', 'slug', 'parent_id', 'primary_color', 'secondary_color', 'is_active','order'];
+    protected $fillable = ['title', 'slug', 'parent_id', 'primary_color', 'secondary_color', 'is_active', 'order', 'opposite_category_id'];
     protected $casts = ['is_active' => 'boolean'];
 
     /**
@@ -50,7 +50,6 @@ class Category extends Model implements HasMedia
             ->width(1920)
             ->height(900)
             ->performOnCollections(MediaCollectionEnums::CATEGORY_BIG_BANNER);
-
     }
 
     public function registerMediaCollections(): void
@@ -96,7 +95,7 @@ class Category extends Model implements HasMedia
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('is_active','=' , true);
+        return $query->where('is_active', '=', true);
     }
 
     /**

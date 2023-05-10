@@ -25,24 +25,29 @@ class CategoryTest extends TestCase
      */
     public function test_that_category_can_be_stored_with_translation_and_Thumbnail()
     {
-        $admin = Admin::factory(1)->create()->first();
-        $this->actingAs($admin, 'admin');
+        $this->authorizedAdmin();
+
         Storage::fake('public');
+
+        $oppositeCategory = Category::factory()->create();
+
         $this->post(route('admin.categories.store'), [
             'en' => 'test category',
             'ar' => 'هيللو',
+            'opposite_category_id' => $oppositeCategory->id,
             'images' => [
                 0 => UploadedFile::fake()->image("test.jpg", 100, 100)
             ]
         ]);
-        $category = Category::with('media')->first();
+        $category = Category::with('media')->orderBy('id', 'desc')->first();
 
         $this->assertEquals($category->title, 'test category');
+        $this->assertEquals($category->oppositeCategory->title, $oppositeCategory->title);
     }
 
     public function test_that_category_title_is_slugged()
     {
-        $admin = Admin::factory(1)->create()->first();
+        $admin = Admin::factory(1)->create();
         $this->actingAs($admin, 'admin');
         $response = $this->post(route('admin.categories.store'), [
             'en' => 'test category',
@@ -57,16 +62,18 @@ class CategoryTest extends TestCase
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
         $category = Category::factory()->create();
-
+        $oppositeCategory = Category::factory()->create();
         $response = $this->post(route('admin.categories.update', ['id' => $category->id]), [
             'en' => 'new category',
+            'opposite_category_id' => $oppositeCategory->id,
         ])->assertRedirect();
 
 
         $category->refresh();
-
+        
         $this->assertEquals('new category', $category->title);
         $this->assertEquals('new-category', $category->slug);
+        $this->assertEquals($oppositeCategory->title, $category->oppositeCategory->title);
     }
 
     public function test_that_category_can_be_destroyed()
@@ -83,7 +90,7 @@ class CategoryTest extends TestCase
         $this->assertNull(Category::first());
     }
 
-    #[NoReturn] public function test_that_as_a_admin_can_add_a_single_thumbnail_to_category()
+    public function test_that_as_a_admin_can_add_a_single_thumbnail_to_category()
     {
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
@@ -103,7 +110,7 @@ class CategoryTest extends TestCase
         $this->assertCount(1, $category->media);
     }
 
-    #[NoReturn] public function test_that_as_a_admin_can_toggle_category_status()
+    public function test_that_as_a_admin_can_toggle_category_status()
     {
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
@@ -117,7 +124,7 @@ class CategoryTest extends TestCase
         $this->assertTrue(Category::first()->is_active);
     }
 
-    #[NoReturn] public function test_that_as_a_admin_can_delete_a_category_thumbnail()
+    public function test_that_as_a_admin_can_delete_a_category_thumbnail()
     {
         $admin = Admin::factory()->create();
         $this->actingAs($admin, 'admin');
@@ -131,7 +138,7 @@ class CategoryTest extends TestCase
             ]
         ];
         $response = $this->post(route('admin.add.media.to.category', ['id' => $category->id]), $data)->assertRedirect();
-       
+
 
         $this->assertCount(1, $category->media);
 

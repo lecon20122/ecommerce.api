@@ -34,6 +34,7 @@ class UpdateCategoryRequest extends FormRequest
             'secondary_color' => 'string|nullable',
             'primary_color' => 'string|nullable',
             'images.*' => 'mimes:jpg|max:1024',
+            'opposite_category_id' => 'nullable|integer|exists:categories,id',
         ];
     }
 }

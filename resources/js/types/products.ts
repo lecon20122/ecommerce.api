@@ -20,6 +20,8 @@ export interface Category {
   media: NewMediaProps[]
   primary_color: string
   secondary_color: string
+  opposite_category_id: number
+  opposite_category : Category
 }
 
 export interface Product {

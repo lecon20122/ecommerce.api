@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import { Category } from '../../../types/products';
 import route from 'ziggy-js';
 import { Inertia, } from '@inertiajs/inertia';
@@ -90,6 +90,16 @@ export default function CategoryIndex({ categories, locale }: Props) {
       ),
     },
     {
+      key: 'opposite_category',
+      title: 'Opposite Category',
+      dataIndex: 'parent',
+      render: (_, record) => (
+        <Space size="middle">
+          <span>{record.opposite_category?.title.en}</span>
+        </Space>
+      ),
+    },
+    {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
@@ -176,6 +186,17 @@ export default function CategoryIndex({ categories, locale }: Props) {
             >
               <Select
                 placeholder="Select Category Parent"
+                allowClear
+              >
+                {selectParentMenuItems}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Opposite Category"
+              name="opposite_category_id"
+            >
+              <Select
+                placeholder="Select Opposite Category"
                 allowClear
               >
                 {selectParentMenuItems}

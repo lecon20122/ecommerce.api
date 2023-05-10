@@ -55,7 +55,7 @@ class CategoryService
     {
         return CategoryResource::collection(
             Category::query()
-                ->with('parent:title,id')
+                ->with(['parent:title,id' , 'oppositeCategory:title,id'])
                 ->get());
     }
 

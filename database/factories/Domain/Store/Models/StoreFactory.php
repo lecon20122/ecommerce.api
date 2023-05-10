@@ -6,6 +6,7 @@ use App\Domain\Store\Models\Store;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Store\Models\Store>
  */

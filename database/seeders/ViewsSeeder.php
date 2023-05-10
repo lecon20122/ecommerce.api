@@ -4,11 +4,8 @@ namespace Database\Seeders;
 
 use App\Domain\Product\Models\Product;
 use App\Domain\Statistics\Models\View;
-use App\Support\Enums\StateEnums;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class ViewsSeeder extends Seeder
 {
@@ -20,13 +17,17 @@ class ViewsSeeder extends Seeder
     public function run()
     {
         $approvedActiveProducts = Product::all(['id']);
-        $yesterdayDate = Carbon::yesterday('Africa/Cairo')->format('Y-m-d');
+
+        $yesterday = Carbon::yesterday(config('app-settings.timezone'));
+
+        echo "Start Date: {$yesterday->format('Y-m-d H:i:s')}\n";
 
         foreach ($approvedActiveProducts as $product) {
+
             View::factory(rand(100, 500))->create([
                 'viewable_id' => $product->id,
                 'viewable_type' => Product::class,
-                'created_at' => $yesterdayDate,
+                'created_at' => $yesterday->midDay(),
             ]);
         }
     }

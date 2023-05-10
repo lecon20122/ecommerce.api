@@ -36,13 +36,17 @@ class CountProductDailyViewsSummaryJob implements ShouldQueue
      */
     public function handle()
     {
-        $approvedActiveProducts = Product::approved()->active()->get();
+        $products = Product::all(['id', 'store_id']);
 
         $totalCount = 0;
 
-        $yesterdayDate = Carbon::yesterday('Africa/Cairo')->format('Y-m-d');
+        $appTimeZone = config('app-settings.timezone');
 
-        foreach (Product::all(['id', 'store_id']) as $product) {
+        echo "Timezone: {$appTimeZone}\n";
+
+        $yesterdayDate = Carbon::yesterday($appTimeZone)->format('Y-m-d');
+
+        foreach ($products as $product) {
 
             if ($product->viewSummary()->where('summary_date', $yesterdayDate)->first()) {
                 echo "Product: {$product->id} already counted\n";
@@ -71,7 +75,8 @@ class CountProductDailyViewsSummaryJob implements ShouldQueue
         $message = "<b>Environment:</b> " . config('app.env') . "\n";
         $message .= "<b>Product Daily Views Summary</b> \n";
         $message .= "<b>Summary Date:</b> " . $yesterdayDate . "\n";
-        $message .= "<b>Products Count:</b> {$approvedActiveProducts->count()} \n";
+        $message .= "<b>Current Time:</b> " . Carbon::now($appTimeZone)->format('Y-m-d H:i:s') . "\n";
+        $message .= "<b>Products Count:</b> {$products->count()} \n";
         $message .= "<b>Products Views Summary: {$totalCount}</b> \n";
 
 

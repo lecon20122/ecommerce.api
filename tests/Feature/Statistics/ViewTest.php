@@ -48,9 +48,9 @@ class ViewTest extends TestCase
 
     public function testThatWeCanSaveProductDailyViewsCountToViewsSummary()
     {
-        // i used Asia/Riyadh to get the same timezone as the server
-        $yesterdayDate = Carbon::yesterday('Asia/Riyadh')->format('Y-m-d');
+        $timezone = config('app-settings.timezone');
 
+        $yesterdayDate = Carbon::yesterday($timezone);
         $user = $this->authorizedUser();
 
         $store = $this->createApprovedStore($user);
@@ -63,7 +63,7 @@ class ViewTest extends TestCase
         View::factory(5)->create([
             'viewable_id' => $product->id,
             'viewable_type' => Product::class,
-            'created_at' => Carbon::yesterday('Asia/Riyadh'), // yesterday
+            'created_at' => $yesterdayDate->midDay(),
         ]);
 
         View::factory(10)->create([   // today views (10)

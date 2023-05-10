@@ -19,27 +19,12 @@ class ViewsSeeder extends Seeder
      */
     public function run()
     {
-
-        DB::table('products')->update(['status' => StateEnums::ACTIVE->value]);
-
-        $approvedActiveProducts = Product::approved()->active()->get();
+        $approvedActiveProducts = Product::all(['id']);
 
         foreach ($approvedActiveProducts as $product) {
-            View::factory(1220)->create([
+            View::factory(rand(100, 500))->create([
                 'viewable_id' => $product->id,
                 'viewable_type' => Product::class,
-            ]);
-
-            View::factory(120)->create([
-                'viewable_id' => $product->id,
-                'viewable_type' => Product::class,
-                'created_at' => Carbon::now()->addDay(),
-            ]);
-
-            View::factory(120)->create([
-                'viewable_id' => $product->id,
-                'viewable_type' => Product::class,
-                'created_at' => Carbon::now()->addDays(2),
             ]);
         }
     }

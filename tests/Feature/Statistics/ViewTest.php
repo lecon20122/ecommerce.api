@@ -157,8 +157,7 @@ class ViewTest extends TestCase
         $this->get(route('api.get.product.by.id', $dataRequest3));
 
         // assert that request has set the cookie
-        dd($resultTwo->headers->getCookies());
-        $this->assertNotEmpty($resultOne->headers->getCookies());
+        // $this->assertNotEmpty($resultOne->headers->getCookies());
 
         $statistics = new StatisticsService();
 

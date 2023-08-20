@@ -93,6 +93,7 @@ class ProductService
 
         $visitCookie = (new StatisticsService())->recordVisit($product);
 
+
         if ($visitCookie) {
             return (new ProductResource($product))
                 ->response()

@@ -16,21 +16,11 @@ class StatisticsService
         $visitCookieId = request()->cookie(ApplicationEnums::VISIT_ID_COOKIE);
 
         if (!$visitCookieId) {
-            echo 'no cookie found' . PHP_EOL;
             $viewLog = View::createViewLog($model);
-
             return $viewLog->id;
         }
 
-        $viewLog = $model->views()->find($visitCookieId);
-
-        if (!$viewLog) {
-            $viewLog = View::createViewLog($model);
-
-            return $viewLog->id;
-        }
-
-        return null;
+        return (int) $visitCookieId;
     }
 
     public function countDailyViewSummary(Product|SellProductResource $product): int

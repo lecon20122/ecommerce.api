@@ -24,7 +24,9 @@ This is an API for creating and managing ecommerce products. It allows users to 
     - Offer percentage discounts or fixed discounts.
   - Count unique views.
     - Log a summary at the end of the day.
-    - Send a notification to the seller and admins for the total views counted.## Dependencies
+    - Send a notification to the seller and admins for the total views counted.
+
+## Dependencies
 
 This API requires the following dependencies:
 

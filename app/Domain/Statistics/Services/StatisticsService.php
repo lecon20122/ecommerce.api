@@ -16,6 +16,7 @@ class StatisticsService
         $visitCookieId = request()->cookie(ApplicationEnums::VISIT_ID_COOKIE);
 
         if (!$visitCookieId) {
+            echo 'no cookie found' . PHP_EOL;
             $viewLog = View::createViewLog($model);
 
             return $viewLog->id;

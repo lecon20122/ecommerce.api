@@ -18,7 +18,7 @@ class View extends Model
             'ip_address' => request()->ip() ?? null,
             'referer' => request()->headers->get('referer') ?? null,
             'user_agent' => request()->userAgent() ?? null,
-            'session_id' => request()->session()->getId() ?? null,
+            // 'session_id' => request()->session()->getId() ?? null,
             'user_id' => auth()->id() ?? null,
         ]);
     }

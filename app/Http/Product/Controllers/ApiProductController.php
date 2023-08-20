@@ -78,7 +78,7 @@ class ApiProductController extends BaseController
         try {
             return $this->service->getProductById($request->validated('id'));
         } catch (Exception $exception) {
-            dd($exception->getMessage());
+            // dd($exception->getMessage());.............
             if ($exception instanceof HttpExceptionInterface) {
                 $code = $exception->getStatusCode();
             }

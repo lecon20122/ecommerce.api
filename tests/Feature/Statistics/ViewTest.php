@@ -118,4 +118,53 @@ class ViewTest extends TestCase
             'summary_date' => $yesterdayDate->format('Y-m-d')
         ]);
     }
+
+    //test that verify that we can record a visit for a model if the same user visit different models
+
+    public function testThatWeCanRecordVisitForAModelIfTheSameUserVisitDifferentModels()
+    {
+        $user = $this->authorizedUser();
+
+        $store = $this->createApprovedStore($user);
+
+        $product = Product::factory()->create([
+            'store_id' => $store->id,
+        ]);
+
+        $product2 = Product::factory()->create([
+            'store_id' => $store->id,
+        ]);
+
+        $product3 = Product::factory()->create([
+            'store_id' => $store->id,
+        ]);
+
+        $dataRequest1 = [
+            'id' => $product->id
+        ];
+
+        $dataRequest2 = [
+            'id' => $product2->id
+        ];
+
+        $dataRequest3 = [
+            'id' => $product3->id
+        ];
+
+        $resultOne = $this->get(route('api.get.product.by.id', $dataRequest1));
+        $resultTwo = $this->get(route('api.get.product.by.id', $dataRequest2));
+        $this->get(route('api.get.product.by.id', $dataRequest3));
+        $this->get(route('api.get.product.by.id', $dataRequest3));
+
+        // assert that request has set the cookie
+        dd($resultTwo->headers->getCookies());
+        $this->assertNotEmpty($resultOne->headers->getCookies());
+
+        $statistics = new StatisticsService();
+
+        dd(View::all()->count());
+
+
+        // $this->assertEquals(3, View::count());
+    }
 }

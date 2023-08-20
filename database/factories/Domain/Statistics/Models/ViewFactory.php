@@ -24,7 +24,6 @@ class ViewFactory extends Factory
             'ip_address' => $this->faker->ipv4,
             'referer' => $this->faker->url,
             'user_agent' => $this->faker->userAgent,
-            'session_id' => $this->faker->uuid,
             'user_id' => null,
         ];
     }

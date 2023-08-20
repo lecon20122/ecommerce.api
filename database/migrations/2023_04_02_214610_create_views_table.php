@@ -15,12 +15,11 @@ return new class extends Migration
     {
         Schema::create('views', function (Blueprint $table) {
             $table->id();
-            $table->morphs('viewable'); 
-            $table->string('ip_address'); 
-            $table->string('referer')->nullable(); 
+            $table->morphs('viewable');
+            $table->string('ip_address');
+            $table->string('referer')->nullable();
             $table->string('user_agent')->nullable(); 
-            $table->string('session_id')->nullable();   
-            $table->foreignId('user_id')->nullable();   
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
         });
     }
